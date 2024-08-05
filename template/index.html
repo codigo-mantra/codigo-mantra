@@ -1,0 +1,861 @@
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+  <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Codigo Mantra</title>
+    <meta content="" name="descriptison">
+    <meta content="" name="keywords">
+    <!-- Favicons -->
+    <link href="{% static 'assets/img/Logo1.png'%}" rel="icon">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <!-- Vendor CSS Files -->
+    <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css'%}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/icofont/icofont.min.css'%}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/boxicons/css/boxicons.min.css'%}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/animate.css/animate.min.css'%}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/remixicon/remixicon.css'%}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/line-awesome/css/line-awesome.min.css'%}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/venobox/venobox.css'%}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/owl.carousel/assets/owl.carousel.min.css'%}" rel="stylesheet">
+    <link href="{% static 'assets/vendor/aos/aos.css'%}" rel="stylesheet">
+    <!-- Template Main CSS File -->
+    <link href="{% static 'assets/css/style.css'%}" rel="stylesheet">
+  </head>
+  <body>
+    <!-- ======= Header ======= -->
+    <header id="header" class="fixed-top d-flex align-items-center  header-transparent ">
+      <div class="container d-flex align-items-center">
+        <div class="logo mr-auto">
+          <h1 class="text-light"><a href="{% url 'index' %}"><img src="{% static 'assets/img/Logo_Name.png'%}" alt="" class="img-fluid"></a></h1>
+        </div>
+        <nav class="nav-menu d-none d-lg-block">
+          <ul>
+            <li class="active"><a href="{% url 'index' %}">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#portfolio">Portfolio</a></li>
+            {% comment %} <li><a href="#team">Team</a></li> {% endcomment %}
+            
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </nav><!-- .nav-menu -->
+      </div>
+    </header><!-- End Header -->
+    
+    {% comment %} message section {% endcomment %}
+    {% for message in messages %}
+    <div class="container-fluid p-0">
+      <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="True">&times;</span>
+        </button>
+        {{ message }}
+      </div>
+    </div>
+  {% endfor %}
+    
+    
+
+
+    <!-- ======= Hero Section ======= -->
+    <section id="hero" class="d-flex flex-column justify-content-end align-items-center">
+      <div id="heroCarousel" class="container carousel carousel-fade" data-ride="carousel">
+        <!-- Slide 1 -->
+        <div class="carousel-item active">
+          <div class="carousel-container">
+            <h2 class="animate__animated animate__fadeInDown">Welcome to <span>Codigo Mantra</span></h2>
+            <p class="animate__animated fanimate__adeInUp">
+              {% if '.com.au' in request.get_host %}
+                Codigo Manrta is an Australian based software solution development company. Our development services incorporate a wide range of technologies, and follow industry-standard software engineering.
+              {% else %}
+                Codigo Manrta is an Indian based software solution development company. Our development services incorporate a wide range of technologies, and follow industry-standard software engineering.
+              {% endif %}
+            </p>
+            <a href="#about" class="btn-get-started animate__animated animate__fadeInUp scrollto">Read More</a>
+          </div>
+        </div>
+        <!-- Slide 2 -->
+        <div class="carousel-item">
+          <div class="carousel-container">
+            <h2 class="animate__animated animate__fadeInDown">Research and Development services</h2>
+            <p class="animate__animated animate__fadeInUp">
+              Codigo Mantra’s Research and Development services provides a complete solution in various research area such as Data Mining , Parallel Computing, Digital Image Processing, Digital Signal Processing, Bio-metric, Cloud Computing, Big Data, Security System, Artificial Intelligence, Network Security and Protocol, Software engineering.
+            </p>
+            <a href="#about" class="btn-get-started animate__animated animate__fadeInUp scrollto">Read More</a>
+          </div>
+        </div>
+        <!-- Slide 3 -->
+        <div class="carousel-item">
+          <div class="carousel-container">
+            <h2 class="animate__animated animate__fadeInDown">Our Technologies</h2>
+            <p class="animate__animated animate__fadeInUp">
+              CodigoMantra’s development services incorporate a wide range of technologies, and follow industry-standard software engineering. The diverse range of technologies cover Python, Django, Ruby on Rails, .Net, PHP and NodeJS for web development, Android and other Mobile development.
+            </p>
+            <a href="#about" class="btn-get-started animate__animated animate__fadeInUp scrollto">Read More</a>
+          </div>
+        </div>
+        <a class="carousel-control-prev" href="#heroCarousel" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon bx bx-chevron-left" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#heroCarousel" role="button" data-slide="next">
+          <span class="carousel-control-next-icon bx bx-chevron-right" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+      </div>
+      <svg class="hero-waves" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 24 150 28 " preserveAspectRatio="none">
+        <defs>
+          <path id="wave-path" d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z">
+        </defs>
+        <g class="wave1">
+          <use xlink:href="#wave-path" x="50" y="3" fill="rgba(255,255,255, .1)">
+        </g>
+        <g class="wave2">
+          <use xlink:href="#wave-path" x="50" y="0" fill="rgba(255,255,255, .2)">
+        </g>
+        <g class="wave3">
+          <use xlink:href="#wave-path" x="50" y="9" fill="#fff">
+        </g>
+      </svg>
+    </section><!-- End Hero -->
+    <main id="main">
+      <!-- ======= About Section ======= -->
+      <section id="about" class="about">
+        <div class="container">
+          <div class="section-title" data-aos="zoom-out">
+            <h2>About  </h2>
+            <p>Who we are</p>
+          </div>
+          <div class="row content" data-aos="fade-up">
+            <div class="col-lg-6">
+              <p style="text-align: justify;">
+                CODIGO MANTRA had started their journey in the field of IT Business. 
+                It's a time when we identify prospect and business aspect in area of web design,
+                development and custom software application development. 
+                Main motive to introduce CODIGO MANTRA will be delivering correct 
+                and useful solution to the customer for their business which helps 
+                them to reduce cost and work faster way at their daily business activities 
+                and able to grab worldwide business inquiry from web prospect.
+
+              </p>
+              <ul>
+                <li style="text-align: justify;"><i class="ri-check-double-line"></i> <b>Vision :</b>
+                  To provide services to produce high-quality, low cost, easy to use products that incorporate high technology.
+                </li>
+                <li style="text-align: justify;"><i class="ri-check-double-line"></i><b>Mission :</b>
+                  To develop a holistic approach in providing services to the clients integrating techo-functional capabilities of a dedicated group of professionals to serve a common goal.
+                </li>
+              </ul>
+            </div>
+            <div class="col-lg-6 pt-4 pt-lg-0">
+              <div class="col-lg-12 pt-4 pt-lg-0 order-1 order-lg-2 text-center">
+                <img src="{% static 'assets/img/Logo.png'%}" alt="" class="img-fluid">
+              </div>
+            </div>
+          </div>
+        </div>
+      </section><!-- End About Section -->
+      <!-- ======= Features Section ======= -->
+      <section id="features" class="features">
+        <div class="container">
+          <ul class="nav nav-tabs row d-flex">
+            <li class="nav-item col-3" data-aos="zoom-in">
+              <a class="nav-link active show" data-toggle="tab" href="#tab-1">
+                <i class="ri-gps-line"></i>
+                <h4 class="d-none d-lg-block">Technologies</h4>
+              </a>
+            </li>
+            <li class="nav-item col-3" data-aos="zoom-in" data-aos-delay="100">
+              <a class="nav-link" data-toggle="tab" href="#tab-2">
+                <i class="ri-body-scan-line"></i>
+                <h4 class="d-none d-lg-block">R & D</h4>
+              </a>
+            </li>
+            <li class="nav-item col-3" data-aos="zoom-in" data-aos-delay="200">
+              <a class="nav-link" data-toggle="tab" href="#tab-3">
+                <i class="ri-store-line"></i>
+                <h4 class="d-none d-lg-block">Quality Ensured Product release</h4>
+              </a>
+            </li>
+            <li class="nav-item col-3" data-aos="zoom-in" data-aos-delay="300">
+              <a class="nav-link" data-toggle="tab" href="#tab-4">
+                <i class="ri-sun-line"></i>
+                <h4 class="d-none d-lg-block">Long-Lasting Maintenance</h4>
+              </a>
+            </li>
+          </ul>
+          <div class="tab-content" data-aos="fade-up">
+            <div class="tab-pane active show" id="tab-1">
+              <div class="row">
+                <div style="text-align: justify;" class="col-lg-6 order-2 order-lg-1 mt-3 mt-lg-0">
+                  <h3><i>"Technology our Priority"</i></h3>
+                  <p class="font-italic">
+                    CodigoMantra’s development services incorporate a wide range of technologies, 
+                    and follow industry-standard software engineering. 
+                    The diverse range of technologies covers  
+                    
+                  </p>
+                  <ul>
+                    <li><i class="ri-check-double-line"></i><b>Web Development:</b> 
+                      HTML, CSS, JS, Jquery, Bootstrap,
+                      Python and Django Framework, Ruby on Rails, Java, .Net, AngularJS, 
+                      NodeJs, PHP
+                    </li>
+                    <li><i class="ri-check-double-line"></i><b>Mobile App Development:</b> 
+                      IOS App, Native Android, Windows App, Mobile Game 
+                    </li>
+                    <li><i class="ri-check-double-line"></i><b>Machine Learning</b>
+                      Python, R Data Science, Matlab, Java 
+                    </li>
+                  </ul>
+                  <p style="text-align: justify;">
+                    We have developed a wide range of complex web applications 
+                    using above mentioned technologies. We worked with REST APIs, 
+                    Web servers, deployment with AWS, Google Cloud, 
+                    and databases (MYSQL, SQL, Oracle, MongoDB, POSTGRESSQL) etc.
+                  </p>
+                </div>
+                <div class="col-lg-6 order-1 order-lg-2 text-center">
+                  <img src="{% static 'assets/img/features-1.png'%}" alt="" class="img-fluid">
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-2">
+              <div class="row">
+                <div style="text-align: justify;" class="col-lg-6 order-2 order-lg-1 mt-3 mt-lg-0">
+                  <h3><i>"Research and Development Services"</i></h3>
+                  <p>
+                    Codigo Mantra’s Research and Development services provides 
+                    a complete solution in various research area 
+                    such as Data Mining , Parallel Computing, Digital Image Processing, 
+                    Digital Signal Processing, Bio-metric, Cloud Computing, 
+                    Big Data, Security System, Artificial Intelligence, 
+                    Network Security and Protocol, Software engineering.
+                  </p>
+                  <p class="font-italic">
+                    The diverse range of technologies that we use
+                  </p>
+                  <ul>
+                    <li><i class="ri-check-double-line"></i>Python Libraries :
+                    Numpy, Pandas, Sci-kit Learn, MatPlotLib, OpenCV, Tensorflow, Tensorflow-GPU, TensorRT 
+                    </li>
+                    <li><i class="ri-check-double-line"></i>Matlab
+                    </li>
+                    <li><i class="ri-check-double-line"></i>R Data Science
+                    </li>
+                    <li><i class="ri-check-double-line"></i>Java
+                    </li>
+                    <li><i class="ri-check-double-line"></i>Amazon Machine Learning(AML)
+                    </li>
+                    <li><i class="ri-check-double-line"></i>Google Cloud ML Engine
+                    </li>
+                  </ul>
+                </div>
+                <div class="col-lg-6 order-1 order-lg-2 text-center">
+                  <img style="margin-top: 80px;" src="{% static 'assets/img/features-2.svg'%}" alt="" class="img-fluid">
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-3">
+              <div class="row">
+                <div style="text-align: justify;" class="col-lg-6 order-2 order-lg-1 mt-3 mt-lg-0">
+                  <h3 ><i>"Quality is More Than Making a Good Product"</i></h3>
+                  <p>
+                    Being a consulting group we are not only limited 
+                    to the technical development of the websites. 
+                    We have a firm believe that to release a product or website, 
+                    web promotion goes in tandem with web implementations. 
+                    To promote your business our e-consultancy team provides a 
+                    systematic process driven approach for web marketing 
+                    through SEO copyrighting, SEM, PPC and CPM.
+                  </p>
+                  <ul>
+                    <li><i class="ri-check-double-line"></i>SEO copyrighting</li>
+                    <li><i class="ri-check-double-line"></i>Search engine marketing (SEM)</li>
+                    <li><i class="ri-check-double-line"></i>Pay per Click (PPC) </li>
+                    <li><i class="ri-check-double-line"></i>Cost per Mile (CPM) </li>
+                  </ul>
+                  <p class="font-italic">
+                    We are proud to maintain a diverse and satisfied client portfolio which consists of corporations and individual users.
+                  </p>
+                </div>
+                <div class="col-lg-6 order-1 order-lg-2 text-center">
+                  <img src="{% static 'assets/img/features-3.png' %}" alt="" class="img-fluid">
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-4">
+              <div class="row">
+                <div style="text-align: justify;" class="col-lg-6 order-2 order-lg-1 mt-3 mt-lg-0">
+                  <h3><i>"It is easier to make a good brand than to maintain a good brand already made."</i></h3>
+                  
+                  <p>
+                    Maintenance is a very broad activity that includes 
+                    error correction, enhancements of capabilities, 
+                    deletion of obsolete capabilities, and optimization. 
+                    Because change is inevitable, mechanisms must be developed 
+                    for evaluation, controlling and making modifications.
+                    <br>
+                    So any work done to change the software after it is 
+                    in operation is considered to be maintenance work. 
+                    The purpose is to preserve the value of software over the time. 
+                    The value can be enhanced by expanding the customer base, 
+                    meeting additional requirements, becoming easier to use, 
+                    more efficient and employing newer technology. 
+                  </p>
+                  <ul>
+                    <li><i class="ri-check-double-line"></i> Corrective maintenance</li>
+                    <li><i class="ri-check-double-line"></i> Adaptive maintenance</li>
+                    <li><i class="ri-check-double-line"></i> Perfective maintenance</li>
+                    <li><i class="ri-check-double-line"></i> Preventive maintenance</li>
+                  </ul>
+                  <p class="font-italic">
+                    We always believed in providing Services, Support and Guidance to our clients in the best way to make their product successful.
+                  </p>
+                </div>
+                <div class="col-lg-6 order-1 order-lg-2 text-center">
+                  <img style="margin-top: 100px;" src="{% static 'assets/img/features-14.png' %}" alt="" class="img-fluid">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section><!-- End Features Section -->
+      <!-- ======= Cta Section ======= -->
+      <section id="cta" class="cta">
+        <div class="container">
+          <div class="row" data-aos="zoom-out">
+            <div class="col-lg-9 text-center text-lg-left">
+              <h3>Build your Dreams</h3>
+              <p>To build your dream projects, career with CodigoMantra. Just click on "Get A Solution" and say Hello to our team and get expert's advise.   </p>
+            </div>
+            <div class="col-lg-3 cta-btn-container text-center">
+              <a class="cta-btn align-middle" href="#contact">Get a solution</a>
+            </div>
+          </div>
+        </div>
+      </section><!-- End Cta Section -->
+      <!-- ======= Services Section ======= -->
+      <section id="services" class="services">
+        <div class="container">
+
+          <div class="section-title" data-aos="zoom-out">
+            <h2>Services</h2>
+            <p>What we do offer</p>
+          </div>
+          <div class="row">
+            <div class="col-lg-4 col-md-6">
+              <div class="icon-box" data-aos="zoom-in-left">
+                <div class="icon"><i class="las la-globe-americas" style="color:green;"></i></div>
+                <h4 class="title">WEB DEVELOPMENT</h4>
+                <ul class="description" style="margin-left: 20px;">
+                  <li> HTML, CSS, JS, Jquery, Bootstrap</li>
+                  <li>Python and Django Framework</li>
+                  <li>Ruby on Rails</li>
+                  <li>Java(J2SE,J2EE)</li>
+                  <li>C#, ASP.Net</li>
+                  <li>AngularJS, NodeJS</li>
+                  <li>PHP, Laravel, Wordpress</li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mt-5 mt-md-0">
+              <div class="icon-box" data-aos="zoom-in-left" data-aos-delay="100">
+                <div class="icon"><i class="la la-mobile-phone" style="color:greenyellow;"></i></div>
+                <h4 class="title">MOBILE APP DEVELOPMENT</h4>
+                <ul class="description" style="margin-left: 20px;">
+                  <li>Native Android & iOS App</li>
+                  <li>Cross-platform</li>
+                  <li>Window App</li>
+                  <li>Enterprise Mobility Services</li>
+                  <li>App Migration/Upgradation</li>
+                  <li>Mobile Game</li>
+                </ul>
+                
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 mt-5 mt-lg-0 ">
+              <div class="icon-box" data-aos="zoom-in-left" data-aos-delay="200">
+                <div class="icon"><i class="la la-institution" style="color:royalblue;"></i></div>
+                <h4 class="title"><a href="">ERP/CRM Development</a></h4>
+                <ul class="description" style="margin-left: 20px;">
+                  <li>School Management ERP</li>
+                  <li>Accounting Platform Development</li>
+                  <li>HR Solutions Development</li>
+                  <li>Payroll Development </li>
+                  <li>Zoho/Salesforce CRM</li>
+                  <li>Point Of Sale System</li>
+                  <li>Corporate CRM/ERP</li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mt-5">
+              <div class="icon-box" data-aos="zoom-in-left" data-aos-delay="300">
+                <div class="icon"><i class="la la-soundcloud" style="color:skyblue;"></i></div>
+                <h4 class="title"><a href="">CLOUD COMPUTING & DATA SCIENCE</a></h4>
+                <ul class="description" style="margin-left: 20px;">
+                  <li>Amazon Web Services</li>
+                  <li>EC2, RDS, S3 Bucket, & Lambda</li>
+                  <li>Google CLoud Perform</li>
+                  <li>Digital Ocean, Big Data </li>
+                  <li>Data Mining</li>
+                  <li>Spark Server</li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 mt-5">
+              <div class="icon-box" data-aos="zoom-in-left" data-aos-delay="400">
+                <div class="icon"><i class="la la-weibo" style="color:yellow;"></i></div>
+                <h4 class="title"><a href="">DIGITAL MARKETING</a></h4>
+                <ul class="description" style="margin-left: 20px;">
+                  <li> Search Engine Optimization</li>
+                  <li>Social Media Management</li>
+                  <li>Social Media Optimization</li>
+                  <li>Email Marketing</li>
+                  <li>Online Reputation Management</li>
+                  <li>Facebook Advertising</li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mt-5">
+              <div class="icon-box" data-aos="zoom-in-left" data-aos-delay="500">
+                <div class="icon"><i class="la la-balance-scale" style="color:red;"></i></div>
+                <h4 class="title"><a href="">E-COMMERCE PLATFORM</a></h4>
+                <ul class="description" style="margin-left: 20px;">
+                  <li>WooCommerce</li>
+                  <li>Shopify</li>
+                  <li>Custom E-commerce Development</li>
+                  <li>Extension/Plug-in</li>
+                  <li>Spree Commerce</li>
+                  <li>Magento</li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mt-5">
+              <div class="icon-box" data-aos="zoom-in-left" data-aos-delay="600">
+                <div class="icon"><i class="la la-laptop" style="color:brown;"></i></div>
+                <h4 class="title"><a href="">MACHINE LEARNING</a></h4>
+                <ul class="description" style="margin-left: 20px;">
+                  <li>Python</li>
+                  <li>R Data Scinece</li>
+                  <li>Matlab</li>
+                  <li>Java</li>
+                  <li>.Net</li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mt-5">
+              <div class="icon-box" data-aos="zoom-in-left" data-aos-delay="700">
+                <div class="icon"><i class="la la-sellsy" style="color:seagreen;"></i></div>
+                <h4 class="title"><a href="">IoT Development</a></h4>
+                <ul class="description" style="margin-left: 20px;">
+                  <li> AWS and IoT</li>
+                  <li>Google Cloud IoT</li>
+                  <li>Blockchain</li>
+                  <li>Java, C, C++, Python, JS, NodeJS</li>
+                  <li>IoT Business Services</li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mt-5">
+              <div class="icon-box" data-aos="zoom-in-left" data-aos-delay="800">
+                <div class="icon"><i class="la la-gamepad" style="color:orange;"></i></div>
+                <h4 class="title"><a href="">Game Development</a></h4>
+                <ul class="description" style="margin-left: 20px;">
+                  <li>C#</li>
+                  <li>Unity 2D and Unity 3D</li>
+                  <li>Mobile Game Development</li>
+                  <li>Unreal Engine</li>
+                  <li>Google Gaming</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section><!-- End Services Section -->
+      <!-- ======= Portfolio Section ======= -->
+      <section id="portfolio" class="portfolio">
+        <div class="container">
+
+          <div class="section-title" data-aos="zoom-out">
+            <h2>Portfolio</h2>
+            <p>What we've done</p>
+          </div>
+
+          <ul id="portfolio-flters" class="d-flex justify-content-end" data-aos="fade-up">
+            <li data-filter="*" class="filter-active">All</li>
+            <li data-filter=".filter-web">Web</li>
+            <li data-filter=".filter-research">Research</li>
+          </ul>
+
+          <div class="row portfolio-container" data-aos="fade-up">
+            <div class="col-lg-4 col-md-6 portfolio-item filter-web">
+              <div class="portfolio-img"><img src="{% static 'assets/img/portfolio/eklavyaschool1.png'%}" class="img-fluid" alt=""></div>
+              <div class="portfolio-info">
+                <h4>Web</h4>
+                <p>Python Django Framework</p>
+                <a href="{% static 'assets/img/portfolio/eklavyaschool1.png' %}" data-gall="portfolioGallery" class="venobox preview-link" title="App 1"><i class="bx bx-plus"></i></a>
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 portfolio-item filter-web">
+              <div class="portfolio-img"><img src="{% static 'assets/img/portfolio/Capbeast1.png' %}" class="img-fluid" alt=""></div>
+              <div class="portfolio-info">
+                <h4>Web</h4>
+                <p>Ruby on Rails</p>
+                <a href="{% static 'assets/img/portfolio/Capbeast1.png'%}" data-gall="portfolioGallery" class="venobox preview-link" title="Web 3"><i class="bx bx-plus"></i></a>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 portfolio-item filter-web">
+              <div class="portfolio-img"><img src="{% static 'assets/img/portfolio/click2sell1.png' %}" class="img-fluid" alt=""></div>
+              <div class="portfolio-info">
+                <h4>Web</h4>
+                <p>Ruby on Rails</p>
+                <a href="{% static 'assets/img/portfolio/click2sell1.png'%}" data-gall="portfolioGallery" class="venobox preview-link" title="Web 3"><i class="bx bx-plus"></i></a>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 portfolio-item filter-research">
+              <div class="portfolio-img"><img src="{% static 'assets/img/portfolio/ECC.png'%}" class="img-fluid" alt=""></div>
+              <div class="portfolio-info">
+                <h4>Information Security</h4>
+                <p>Elliptic Curve Cryptography (ECC)</p>
+                <a href="{% static 'assets/img/portfolio/ECC.png'%}" data-gall="portfolioGallery" class="venobox preview-link" title="Web 2"><i class="bx bx-plus"></i></a>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 portfolio-item filter-research">
+              <div class="portfolio-img"><img src="{% static 'assets/img/portfolio/Codesmell.png'%}" class="img-fluid" alt=""></div>
+              <div class="portfolio-info">
+                <h4>Code Smell Detection</h4>
+                <p>Artificial Intelligence</p>
+                <a href="{% static 'assets/img/portfolio/Codesmell.png'%}" data-gall="portfolioGallery" class="venobox preview-link" title="App 2"><i class="bx bx-plus"></i></a>
+                
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 portfolio-item filter-research">
+              <div class="portfolio-img"><img src="{% static 'assets/img/portfolio/AlgoSort.png' %}" class="img-fluid" alt=""></div>
+              <div class="portfolio-info">
+                <h4>Data Structre</h4>
+                <p>Sorting Algorithm</p>
+                <a href="{% static 'assets/img/portfolio/AlgoSort.png'%}" data-gall="portfolioGallery" class="venobox preview-link" title="Card 2"><i class="bx bx-plus"></i></a>
+               
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6 portfolio-item filter-web">
+              <div class="portfolio-img"><img src="{% static 'assets/img/portfolio/UserAuth - Login (1).png' %}" class="img-fluid" alt=""></div>
+              <div class="portfolio-info">
+                <h4>BellsCRM</h4>
+                <p>Python, Django</p>
+                <a href="{% static 'assets/img/portfolio/UserAuth - Login (1).png'%}" data-gall="portfolioGallery" class="venobox preview-link" title="Card 2"><i class="bx bx-plus"></i></a>
+               
+              </div>
+            </div>
+            
+            <div class="col-lg-4 col-md-6 portfolio-item filter-web">
+              <div class="portfolio-img"><img src="{% static 'assets/img/portfolio/l.png' %}" class="img-fluid" alt=""></div>
+              <div class="portfolio-info">
+                <h4>Chess statistics</h4>
+                <p>Python, Django</p>
+                <a href="{% static 'assets/img/portfolio/l.png'%}" data-gall="portfolioGallery" class="venobox preview-link" title="Card 2"><i class="bx bx-plus"></i></a>
+               
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 portfolio-item filter-web">
+              <div class="portfolio-img"><img src="{% static 'assets/img/portfolio/Landing-page.jpg' %}" class="img-fluid" alt=""></div>
+              <div class="portfolio-info">
+                <h4>Mandora</h4>
+                <p>Python, Django, React</p>
+                <a href="{% static 'assets/img/portfolio/Landing-page.jpg'%}" data-gall="portfolioGallery" class="venobox preview-link" title="Card 2"><i class="bx bx-plus"></i></a>
+               
+              </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6 portfolio-item filter-web">
+              <div class="portfolio-img"><img src="{% static 'assets/img/portfolio/1.png' %}" class="img-fluid" alt=""></div>
+              <div class="portfolio-info">
+                <h4>Phoenix</h4>
+                <p>Python, Django</p>
+                <a href="{% static 'assets/img/portfolio/1.png'%}" data-gall="portfolioGallery" class="venobox preview-link" title="Card 2"><i class="bx bx-plus"></i></a>
+               
+              </div>
+            </div>
+
+            
+
+            
+          </div>
+        </div>
+      </section><!-- End Portfolio Section -->
+      <!-- ======= Testimonials Section ======= -->
+      <section id="testimonials" class="testimonials">
+        <div class="container">
+          <div class="section-title" data-aos="zoom-out">
+            <h2>Testimonials</h2>
+            <p>What they are saying about us</p>
+          </div>
+
+          <div class="owl-carousel testimonials-carousel" data-aos="fade-up">
+            <div class="testimonial-item">
+              <p>
+                <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                "Very skilled resources who are excellent at explaining complex concepts."
+                <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+              </p>
+              <img src="{% static 'assets/img/testimonials/steve.jpg'%}" class="testimonial-img" alt="">
+              <h3>Steve Hoberman</h3>
+              <h4>Data Modeler &amp; @DataMdlRockStar</h4>
+            </div>
+            <!-- <div class="testimonial-item">
+              <p>
+                <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                "Excellent support. On-time delivery. Thank you so much, Mr. Rohit, for your support and complete my development requirements."
+                <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+              </p>
+              <img src="{% static 'assets/img/testimonials/PS.jpeg'%}" class="testimonial-img" alt="">
+              <h3>Prabhjot Singh</h3>
+              <h4>Entrepreneur</h4>
+            </div> -->
+            <div class="testimonial-item">
+              <p>
+                <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                "Rohit is a Python and Tensorflow expert and delivered a very high quality product for us."
+                <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+              </p>
+              <img src="{% static 'assets/img/testimonials/GB.jpeg'%}" class="testimonial-img" alt="">
+              <h3>Gaurav Bazaz</h3>
+              <h4>Entrepreneur</h4>
+            </div>
+          </div>
+
+        </div>
+      </section><!-- End Testimonials Section -->
+      <!-- ======= Team Section ======= -->
+      {% comment %} <section id="team" class="team">
+        <div class="container">
+
+          <div class="section-title" data-aos="zoom-out">
+            <h2>Team</h2>
+            <p>Our Hardworking Team</p>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
+              <div class="member" data-aos="fade-up">
+                <div class="member-img">
+                  <img style="height: 250px;" src="{% static 'assets/img/team/Rohit.jpg'%}" class="img-fluid" alt="">
+                  <div class="social">
+                    <a href="https://twitter.com/ER_RohitKansal"><i class="icofont-twitter"></i></a>
+                    <a href="https://www.facebook.com/Kansal.Innovative/"><i class="icofont-facebook"></i></a>
+                    <a href="https://www.linkedin.com/in/er-rohit-k-kansal-9a851771/"><i class="icofont-linkedin"></i></a>
+                  </div>
+                </div>
+                <div class="member-info">
+                  <h4>Er. Rohit K. Kansal</h4>
+                  <span>Chief Executive Officer</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
+              <div class="member" data-aos="fade-up" data-aos-delay="100">
+                <div class="member-img">
+                  <img style="height: 250px;" src="{% static 'assets/img/team/sakshi11.png'%}" class="img-fluid" alt="">
+                </div>
+                <div class="member-info">
+                  <h4>Er. Sakshi Kansal</h4>
+                  <span>Chief Operating Officer</span>
+                </div>
+              </div>
+            </div> -->
+
+            <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
+              <div class="member" data-aos="fade-up" data-aos-delay="200">
+                <div class="member-img">
+                  <img style="height: 250px;" src="{% static 'assets/img/team/Prabh1.jpeg'%}" class="img-fluid" alt="">
+                  
+                </div>
+                <div class="member-info">
+                  <h4>Er. Prabhjot Singh</h4>
+                  <span>Chief Technology Officer</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
+              <div class="member" data-aos="fade-up" data-aos-delay="300">
+                <div class="member-img">
+                  <img style="height: 250px;" src="{% static 'assets/img/team/Manpreet.jpeg'%}" class="img-fluid" alt="">
+                </div>
+                <div class="member-info">
+                  <h4>Er. Manpreet Kaur</h4>
+                  <span>Product Manager</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- <div class="col-lg-3 col-md-6 d-flex align-items-stretch">
+              <div class="member" data-aos="fade-up" data-aos-delay="200">
+                <div class="member-img">
+                  <img style="height: 250px;" src="{% static 'assets/img/team/Prabh1.jpeg'%}" class="img-fluid" alt="">
+                  
+                </div>
+                <div class="member-info">
+                  <h4>Er. Sunil Rajput</h4>
+                  <span>Team Leader</span>
+                </div>
+              </div>
+            </div> -->
+
+          </div>
+
+        </div>
+      </section><!-- End Team Section --> {% endcomment %}
+      <!-- ======= Contact Section ======= -->
+      <section id="contact" class="contact">
+        <div class="container">
+
+          <div class="section-title" data-aos="zoom-out">
+            <h2>Contact</h2>
+            <p>Contact Us</p>
+          </div>
+
+          <div class="row mt-5">
+
+            <div class="col-lg-4" data-aos="fade-right">
+              {% if  ".com.au" not in request.get_host %}
+                  <div class="info">
+                    <div class="address">
+                      <i class="icofont-google-map"></i>
+                      <h4>Location:</h4>
+                      <p><b>Bathinda Office: </b>MCB Z3 04617 Second Floor, Bathinda, Punjab (151001), India
+                        <br>
+                        <b>Mohali Office: </b>QUARK ATRIUM, Industrial Area, 
+                        Sector 74, Sahibzada Ajit Singh Nagar, Punjab 160072
+                      </p>
+                    </div>
+
+                    <div class="email">
+                      <i class="icofont-envelope"></i>
+                      <h4>Email:</h4>
+                      <p>info@codigomantra.com</p>
+                    </div>
+
+                    <div class="phone">
+                      <i class="icofont-phone"></i>
+                      <h4>Call:</h4>
+                      <p>+91 9779111611</p>
+                    </div>
+
+                  </div>
+                {% else %}
+                  <div class="info">
+                    <div class="address">
+                      <i class="icofont-google-map"></i>
+                      <h4>Location:</h4>
+                      <p>119 Montrose Rd, Montrose, 7010 Tas Australia 
+                      </p>
+                    </div>
+                    <div class="email">
+                      <i class="icofont-envelope"></i>
+                      <h4>Email:</h4>
+                      <p>info@codigomantra.com</p>
+                    </div>
+
+                    <div class="phone">
+                      <i class="icofont-phone"></i>
+                      <h4>Call:</h4>
+                      <p>0416 720 008</p>
+                    </div>
+
+                  </div>
+              {% endif %}
+
+            </div>
+
+            <div class="col-lg-8 mt-5 mt-lg-0" data-aos="fade-left">
+              <form action="" method="post" role="form" class="php-email-form">
+                {% csrf_token %} 
+                <div class="form-row">
+                  <div class="col-md-6 form-group">
+                    {% render_field form.name  type="text" name="name" class="form-control" id="name" placeholder="Your Name"   %} 
+                    <div class="validate"></div>
+                  </div>
+                  <div class="col-md-6 form-group">
+                    {%  render_field form.email  type="email" class="form-control" name="email" id="email" placeholder="Your Email" data-rule="email" data-msg="Please enter a valid email"  %}
+                    <div class="validate"></div>
+                  </div>
+                  <div class="col-md-6 form-group">
+                    {% render_field  form.subject type="text" class="form-control" name="subject" id="subject" placeholder="Subject" %}
+                    <div class="validate"></div>
+                  </div>
+                  <div class="col-md-6 form-group">
+                    {% render_field form.contact  type="tel"  pattern="[0-9]{10}"  class="form-control"  name="contact"  id="contact"  placeholder="Contact Number"  data-rule="required"  title="Enter 10 digits" %}
+                    <div class="validate"></div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  {% render_field form.message  class="form-control" name="message" rows="5" data-rule="required" data-msg="Please write something for us" placeholder="Message" %}
+                  <div class="validate"></div>
+                </div>
+                <div class="mb-3">
+                  <div class="loading">Sending...</div>
+                  <div class="sent-message">Your message has been sent. Thank you!</div>
+                </div>
+                <div class="text-center"><button type="submit">Send Message</button></div>
+              </form>
+
+            </div>
+
+          </div>
+
+        </div>
+      </section><!-- End Contact Section -->
+    </main><!-- End #main -->
+    <!-- ======= Footer ======= -->
+    <footer id="footer">
+      <div class="container">
+        <h3>Codigo Mantra</h3>
+        {% if '.com.au' in request.get_host %}
+          <p>Codigo Manrta is an Australian based software solution development company. Our development services incorporate a wide range of technologies, and follow industry-standard software engineering. </p>
+        {% else %}
+          <p>Codigo Manrta is an Indian based software solution development company. Our development services incorporate a wide range of technologies, and follow industry-standard software engineering. </p>
+          {% endif %} 
+        
+        <div class="social-links">
+          {% comment %} <a href="https://twitter.com/ER_RohitKansal" class="twitter"><img class = "twitter-image" src="{% static '/assets/img/twitter (2).png' %}" alt=""></a>
+          <a href="https://www.facebook.com/codigomantra" class="facebook"><i class="bx bxl-facebook"></i></a> {% endcomment %}
+          <a href="https://www.linkedin.com/in/er-rohit-k-kansal-9a851771/" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+        </div>
+        <div class="copyright">
+          &copy; 2019-<span id="current_year">2020</span>  <strong><span>Codigo Mantra</span></strong>. All Rights Reserved
+        </div>
+      </div>
+    </footer><!-- End Footer -->
+    <a href="#" class="back-to-top"><i class="ri-arrow-up-line"></i></a>
+    <!-- Vendor JS Files -->
+    <script src="{% static 'assets/vendor/jquery/jquery.min.js'%}"></script>
+    <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js'%}"></script>
+    <script src="{% static 'assets/vendor/jquery.easing/jquery.easing.min.js'%}"></script>
+    {% comment %} <script src="{% static 'assets/vendor/php-email-form/validate.js'%}"></script> {% endcomment %}
+    <script src="{% static 'assets/vendor/isotope-layout/isotope.pkgd.min.js'%}"></script>
+    <script src="{% static 'assets/vendor/venobox/venobox.min.js'%}"></script>
+    <script src="{% static 'assets/vendor/owl.carousel/owl.carousel.min.js'%}"></script>
+    <script src="{% static 'assets/vendor/aos/aos.js'%}"></script>
+    <!-- Template Main JS File -->
+    <script src="{% static 'assets/js/main.js'%}"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('current_year').innerText = new Date().getFullYear();
+      });
+    </script>
+  </body>
+</html>
