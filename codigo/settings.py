@@ -35,9 +35,7 @@ SECRET_KEY = '%a4-))8=7y0*z=de#zg+4vft8q9p9q27!gx9vteo6jmr#)k7y7'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['3.108.56.110','codigomantra.com','www.codigomantra.com','localhost']
-
-# ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -129,7 +127,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_URL = '/static/'
+# STATIC_URL = '/static/'
+# STATICFILES_DIRS=[
+# STATIC_DIR,
+# ]
+STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
 STATICFILES_DIRS=[
 STATIC_DIR,
 ]
