@@ -1629,3 +1629,8 @@ ul.errorlist {
   color: red;
   margin-left: 0px;
 }
+
+span.errorMessage {
+  list-style: none;
+  color: red;
+}
