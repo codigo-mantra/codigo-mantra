@@ -20,8 +20,8 @@ class LandingPage(views.View):
                 subject = form.cleaned_data.get('subject','') or ''
                 contact = form.cleaned_data.get('contact','') or ''
                 message = form.cleaned_data.get('message','')
-                # toEmail='codigomantra@gmail.com'
-                toEmail = "himanshu.codigomantra@gmail.com"
+                toEmail='codigomantra@gmail.com'
+                # toEmail = "himanshu.codigomantra@gmail.com"
                 message= "Client Name is :  "+name+" , email is : "+fromEmail+" , contact number is : "+contact + " and message is : "+message
                 send_mail(subject,message,settings.EMAIL_HOST_USER,[toEmail])
                 messages.success(request,'Thank you for contacting us.')
