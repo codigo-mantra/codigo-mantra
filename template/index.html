@@ -806,6 +806,11 @@
                   {% render_field form.message  class="form-control" name="message" rows="5" data-rule="required" data-msg="Please write something for us" placeholder="Message" %}
                   <div class="validate"></div>
                 </div>
+
+                {% render_field form.captcha   %}
+                <span class="errorMessage">
+                  {{form.errors.captcha}}
+              </span>
                 <div class="mb-3">
                   <div class="loading">Sending...</div>
                   <div class="sent-message">Your message has been sent. Thank you!</div>

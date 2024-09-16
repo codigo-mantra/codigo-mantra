@@ -1622,3 +1622,10 @@ img.twitter-image {
 
   }
 }
+
+
+ul.errorlist {
+  list-style: none;
+  color: red;
+  margin-left: 0px;
+}

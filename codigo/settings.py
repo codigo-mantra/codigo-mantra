@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'widget_tweaks',
+    'django_recaptcha',
 ]
 
 MIDDLEWARE = [
@@ -152,3 +153,7 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = "info@codigomantra.com"
 EMAIL_HOST_PASSWORD = "vrch uuci zrnp eivo"
+
+
+RECAPTCHA_PUBLIC_KEY = "6LdPu0UqAAAAAMp_IsK82v7iIJ5VuNqrInQBw0wM"
+RECAPTCHA_PRIVATE_KEY = "6LdPu0UqAAAAAChqZjUDj8fbUQptNbEIuE_zedLr"
