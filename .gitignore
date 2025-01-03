@@ -12,16 +12,12 @@ db.sqlite3
 # Environments
 .env
 .venv
+.DS_Store
 env/
 venv/
 ENV/
 
 # Visual Studio Code #
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
 .history
 
 # Specific directories and files
@@ -29,3 +25,6 @@ admin/__pycache__/
 codigo/__pycache__/
 
 
+temp_auto_push.bat
+temp_interactive_push.bat
+.gitignore
