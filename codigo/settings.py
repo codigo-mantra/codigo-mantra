@@ -42,6 +42,10 @@ DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = ['*']
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://yurayi.com",
+    "https://www.yurayi.com",
+]
 # Application definition
 
 INSTALLED_APPS = [
