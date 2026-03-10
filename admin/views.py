@@ -9,6 +9,7 @@ from django.template.loader import render_to_string
 from django.core.exceptions import ValidationError
 import json
 from django.core.validators import validate_email as django_validate_email
+from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 
 
@@ -33,7 +34,7 @@ class LandingPage(views.View):
             print(form.errors)
             return render(request,'index.html',{'form':form})
 
-
+@csrf_exempt
 def contactus_form_view(request):
     if request.method == 'POST':
         try:
