@@ -1,0 +1,66 @@
+{% extends './base_email.html' %} 
+{% load static %}
+
+{% block main_content %}
+ <!-- Main Content -->
+  <style>
+  .a6S{
+    display: none !important;
+  }
+</style>
+    <tr>
+      <td style="padding:40px 30px; background: url('https://time-capsoul-files.s3.ap-south-1.amazonaws.com/image/assets/background_image.png') no-repeat; min-height: 559px;margin: 60px 0px; background-position: center; background-size: cover;">
+        <table width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+          <tr>
+            <td>
+              <h2 style="font-family:'Mauline',serif;font-size:30px;font-weight:400;color:#000;margin:0 0 15px;line-height:1.2;">
+                We’ve received your message
+              </h2>
+              <p style="font-size:14px;font-weight:400;color:#17252E;line-height:140%;margin:0 0 30px;">
+                Thank you for reaching out. Our team will get back to you within 24 hours.
+              </p>
+              <a href="https://yurayi.com" style="display:inline-block;background:#EB629B;color:#FFF;text-decoration:none;border-radius:100px;padding:14px 40px;font-size:14px;font-weight:600;transition:background-color .3s;">
+                ❤️ Visit Website →
+              </a>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding-top:30px;">
+              <p style="font-size:14px;font-weight:600;color:#17252E;margin:0 0 15px;">
+                Dear {{first_name}} {{last_name}},
+              </p>
+              <p style="font-size:14px;font-weight:400;color:#17252E;line-height:140%;margin:0 0 15px;">
+                Thank you for getting in touch. We’ve received your message and our team is reviewing it now.
+              </p>
+              <p style="font-size:14px;font-weight:400;color:#17252E;line-height:140%;margin:0 0 15px;">
+                Whether it was a question, feedback, or something personal — we appreciate you taking the time to share it with us. We’ll get back to you as soon as we can.
+              </p>
+              <p style="font-size:14px;font-weight:400;color:#17252E;line-height:140%;margin:0 0 15px;">
+                In the meantime, feel free to reply to this email if there’s anything else you’d like to add.
+              </p>
+
+              <p style="font-size:14px;font-weight:400;color:#17252E;line-height:140%;margin:0 0 15px;">
+                This is your forever space.
+              </p>
+              <p style="font-size:14px;font-weight:400;color:#17252E;line-height:140%;margin:0 0 15px;">
+                Let’s begin.
+              </p>
+            </td>
+          </tr>
+
+          <tr>
+            <td style="padding-top:20px;">
+              <p style="font-size:14px;font-weight:400;color:#17252E;line-height:140%;margin:0 0 5px;">
+                <b>Warmly</b>
+              </p>
+              <p style="font-size:14px;font-weight:400;color:#17252E;line-height:140%;margin:0;">
+                <b> The Yurayi Team </b>
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+{% endblock main_content %}

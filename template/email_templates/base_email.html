@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %} {% endblock title %} </title>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Mauline&display=swap" rel="stylesheet">
+</head>
+<style>
+  .a6S{
+    display: none !important;
+  }
+  /* This is a widely used fix for the Gmail download icon issue */
+  img + div {
+    display: none !important;
+  }
+</style>
+<body style="margin:0;padding:0;background-color:#f8f8f8;font-family:'Open Sans',sans-serif;color:#17252E;line-height:1.4;">
+
+  <table class="email-container" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin:0 auto;background-color:#ffffff;box-shadow:0 0 20px rgba(0,0,0,0.1);border-collapse:collapse;">
+    
+    <tr>
+      <td style="padding:0;">
+        <a href="#" style="cursor:default;pointer-events:none;">
+          <img src="https://yurayi.s3.ap-south-1.amazonaws.com/headerimg.png" alt="Yurayi Start Image" style="height:auto;display:block;width:100%;pointer-events:none;user-select:none;-webkit-user-drag:none;">
+        </a>
+      </td>
+    </tr>
+
+   <tr>
+  <td style="padding:20px;text-align:center;">
+ <div style="width: 100%;">
+   <a href="#" style="cursor:default;pointer-events:none; margin:auto;text-align: center; width: auto;">
+     <img 
+       src="https://yurayi.s3.ap-south-1.amazonaws.com/yurayilog.png"  
+       alt="Yurayi Logo"
+       width="150"
+       style="display:block;max-width:150px;width:150px;height:auto;margin:0 auto;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic;"
+     >
+   </a>
+ </div>
+</td>
+</tr>
+
+<tr>
+  <td style="padding:0 46px 18px;">
+    <a href="#" style="cursor:default;pointer-events:none;">
+      <img 
+        src="https://yurayi.s3.ap-south-1.amazonaws.com/backgroundimgemailtemplate.png"  
+        alt="Hero Image"
+        width="100%"
+        style="display:block;height:auto;border:0;outline:none;text-decoration:none;pointer-events:none;user-select:none;-webkit-user-drag:none;-webkit-touch-callout:none;"
+      >
+    </a>
+  </td>
+</tr>
+
+
+    {% block main_content %}
+    {% endblock main_content %}
+
+    <tr>
+      <td style="padding:20px 0 10px; text-align: center;">
+        <table role="presentation" cellpadding="0" cellspacing="0" style="margin: 0 auto;">
+          <tr>
+            <td style="padding:0 8px;">
+              <a href="https://www.instagram.com/yurayi_/" style="display:flex;width:40px;height:40px;border-radius:50%;text-align:center;line-height:40px;background:#21599B;">
+                <img src="https://i.postimg.cc/SR6Hnb3v/instalogo.png" alt="Yurayi youtube" width="20" height="20" style="display:inline-block;pointer-events:none;user-select:none;-webkit-user-drag:none; margin:auto; margin-top: 10px;">
+              </a>
+            </td>
+
+            </tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr>
+      <td align="center" style="padding:0 30px 20px;">
+        <table role="presentation" cellpadding="0" cellspacing="0" align="center">
+          <tr>
+            <td style="font-size:12px;font-weight:600;padding:0 6px;">
+              <a href="#" style="color:#17252E;text-decoration:none;">Manage Your Account</a>
+            </td>
+            <td style="font-size:12px;font-weight:600;padding:0 6px;color:#17252E;">|</td>
+            <td style="font-size:12px;font-weight:600;padding:0 6px;">
+              <a href="#" style="color:#17252E;text-decoration:none;">Customer Support</a>
+            </td>
+            <td style="font-size:12px;font-weight:600;padding:0 6px;color:#17252E;">|</td>
+            <td style="font-size:12px;font-weight:600;padding:0 6px;">
+              <a href="#" style="color:#17252E;text-decoration:none;">Terms &amp; Conditions</a>
+            </td>
+            <td style="font-size:12px;font-weight:600;padding:0 6px;color:#17252E;">|</td>
+            <td style="font-size:12px;font-weight:600;padding:0 6px;">
+              <a href="#" style="color:#17252E;text-decoration:none;">Unsubscribe</a>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr>
+      <td style="background-color:#fff;padding:0 30px 30px;text-align:center;">
+        <p style="font-size:10px;color:#17252E;line-height:140%;margin:0 0 5px;">
+          Create, save and share time capsoul filled with photos, voice notes, letters, and love.
+        </p>
+        <p style="font-size:10px;color:#17252E;line-height:140%;margin:0 0 10px;">
+          Because some moments should last forever.
+        </p>
+        <p style="font-size:10px;color:#17252E;margin:0;">
+          © 2025 Yurayi. All rights reserved. | Memory, made eternal.
+        </p>
+      </td>
+    </tr>
+
+  </table>
+
+</body>
+</html>

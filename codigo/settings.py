@@ -13,7 +13,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 import os, sys
 from pathlib import Path
 from django.contrib.messages import constants as messages
-
+from dotenv import load_dotenv
+load_dotenv()
 
 MESSAGE_TAGS = {
         messages.DEBUG: 'alert-secondary',
@@ -34,10 +35,10 @@ sys.path.insert(0, os.path.join(BASE_DIRR, 'apps'))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '%a4-))8=7y0*z=de#zg+4vft8q9p9q27!gx9vteo6jmr#)k7y7'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = ['*']
 
@@ -168,22 +169,14 @@ STATICFILES_DIRS=[
 STATIC_DIR,
 ]
 
-#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-#EMAIL_HOST = 'smtp.gmail.org'
-#EMAIL_PORT = 587
-#EMAIL_HOST_USER = 'er.rkkansal@gmail.com'
-#EMAIL_HOST_PASSWORD = ''
-#EMAIL_USE_TLS = True
+RECAPTCHA_PUBLIC_KEY = os.getenv('RECAPTCHA_PUBLIC_KEY')
+RECAPTCHA_PRIVATE_KEY = os.getenv('RECAPTCHA_PRIVATE_KEY')
 
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = "info@codigomantra.com"
-EMAIL_HOST_PASSWORD = "vrch uuci zrnp eivo"
-
-
-RECAPTCHA_PUBLIC_KEY = "6LfhyUUqAAAAALWtHDmDjfALmGvNkS__D9JH26Vz"
-RECAPTCHA_PRIVATE_KEY = "6LfhyUUqAAAAAEUMGWOH46qR3OIbyCm79ugcJET4"
+EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
+EMAIL_PORT = os.getenv('EMAIL_PORT', 587)
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True') == 'True'
+EMAIL_HOST_USER=os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD=os.getenv('EMAIL_HOST_PASSWORD')
