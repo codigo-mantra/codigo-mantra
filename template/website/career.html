@@ -1,0 +1,403 @@
+{%extends 'base.html' %}
+{% block title %}Career - Codigo Mantra{% endblock %}
+{% block content %}
+
+            <section class="hero career-hero h-100">
+                <div class="container">
+                    <div class="hero-center">
+                        <h1 class="hero-title service-hero-title">
+                            Build Your Career at <span class="text-orange">CodigoMantra</span>
+                        </h1>
+                        <p class="hero-sub service-hero-sub hero-sub--about text-center">
+                            Join a team where design, engineering, and growth come together to build meaningful digital
+                            products. We value ownership, collaboration, and continuous learning.
+                        </p>
+                        <a href="#" class="btn btn-cm-cta btn-pill">
+                            <span class="label-up">Explore Open Roles</span>
+                            <span class="label-up">Explore Open Roles</span>
+                        </a>
+                    </div>
+                </div>
+            </section>
+            {%if job_openings%}
+                <section class="open-roles">
+                    <div class="container">
+                        <!-- Top: heading left + text right -->
+                        <div class="row mb-5">
+                            <div class="col-lg-4">
+                                <div class="hero-badge-wrap mb-3 about-badge">
+                                    <div class="primary-badge">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" viewBox="0 0 18 20"
+                                            fill="none">
+                                            <path
+                                                d="M11.5 6.5C11.5 6.5 11.1317 10.3846 12.67 11.895C14.1868 13.3843 18 13 18 13C18 13 14.0968 13.0922 12.67 14.7556C11.4276 16.204 11.5 19.5 11.5 19.5C11.5 19.5 11.3338 16.1726 10.005 14.7556C8.58811 13.2447 5 13 5 13C5 13 8.51659 13.2334 10.005 11.895C11.6307 10.4332 11.5 6.5 11.5 6.5Z"
+                                                fill="#F05D35" />
+                                            <path
+                                                d="M5 0C5 0 4.7167 2.98814 5.9 4.15C7.06678 5.29564 10 5 10 5C10 5 6.99755 5.07093 5.9 6.35045C4.94427 7.46464 5 10 5 10C5 10 4.87219 7.44047 3.85 6.35045C2.76008 5.18822 0 5 0 5C0 5 2.70507 5.17951 3.85 4.15C5.10054 3.02553 5 0 5 0Z"
+                                                fill="#F16535" />
+                                        </svg>
+                                        Openings
+                                    </div>
+                                </div>
+                                <h2 class="ws-heading">Our Open Roles</h2>
+                                <p class="hero-sub text-start mb-2">Explore opportunities or contact us on :</p>
+                                <a class="hr-mail-address" href="mailto:[hr@codigomantra.com]">hr@codigomantra.com</a>
+                            </div>
+                            <div class="col-md-8">
+                                <div class="jobs-list">
+                                    {%for job in job_openings %}
+                                        <div class="job-item">
+                                            <div class="job-tag">Open Position</div>
+                                            <div class="job-title">{{ job.title }}</div>
+                                            <div class="job-desc" id="desc-1">{{job.short_description|safe}}
+                                            </div>
+                                            <div class="job-meta">
+                                                <span>{{ job.job_type }}</span>
+                                                <span>{{ job.package }} LPA</span>
+                                                <span>{{ job.experience }} Years of experience</span>
+                                                <span>{{ job.location }}</span>
+                                            </div>
+                                            <div class="job-actions">
+                                                <button class="btn-toggle" id="toggle-1" onclick="toggleDesc(1)"
+                                                    aria-label="Toggle description">
+                                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                                                        <path d="M2 5L7 10L12 5" stroke="white" stroke-width="1.8"
+                                                            stroke-linecap="round" stroke-linejoin="round" />
+                                                    </svg>
+                                                </button>
+                                                <a href="{% url 'career-apply' job.id %}" class="btn btn-cm-cta btn-pill open-position-btn">
+                                                    <span class="label-up">Submit Application
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="9"
+                                                            viewBox="0 0 13 9" fill="none">
+                                                            <path
+                                                                d="M9.69443 7.91307L11.4945 2.55027M11.4945 2.55027L6.13172 0.750171M11.4945 2.55027L0.750178 7.89433"
+                                                                stroke="#F6F6F6" stroke-width="1.5" stroke-linecap="round"
+                                                                stroke-linejoin="round" />
+                                                        </svg>
+                                                    </span>
+                                                    <span class="label-up">Submit Application
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="9"
+                                                            viewBox="0 0 13 9" fill="none">
+                                                            <path
+                                                                d="M9.69443 7.91307L11.4945 2.55027M11.4945 2.55027L6.13172 0.750171M11.4945 2.55027L0.750178 7.89433"
+                                                                stroke="#F6F6F6" stroke-width="1.5" stroke-linecap="round"
+                                                                stroke-linejoin="round" />
+                                                        </svg>
+                                                    </span>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    {%endfor%}
+
+
+                                    <!-- <div class="job-item">
+                                        <div class="job-tag">Open Position</div>
+                                        <div class="job-title">Sr. Full Stack Engineer</div>
+                                        <div class="job-desc" id="desc-1">
+                                            We are looking for a skilled full stack engineer to join our growing team. The
+                                            ideal candidate will have experience with both front-end and back-end
+                                            technologies, and be able to work independently as well as collaborate with
+                                            other team members. If you are passionate about technology and want to make a
+                                            real impact, we encourage you to apply.
+                                        </div>
+                                        <div class="job-meta">
+                                            <span>Full Time</span>
+                                            <span>8-10 LPA</span>
+                                            <span>0-2 Years of experience</span>
+                                            <span>Sahibzada Ajit Singh Nagar, Punjab</span>
+                                        </div>
+                                        <div class="job-actions">
+                                            <button class="btn-toggle" id="toggle-1" onclick="toggleDesc(1)"
+                                                aria-label="Toggle description">
+                                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                                                    <path d="M2 5L7 10L12 5" stroke="white" stroke-width="1.8"
+                                                        stroke-linecap="round" stroke-linejoin="round" />
+                                                </svg>
+                                            </button>
+                                            <a href="#" class="btn btn-cm-cta btn-pill open-position-btn">
+                                                <span class="label-up">Submit Application
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="9"
+                                                        viewBox="0 0 13 9" fill="none">
+                                                        <path
+                                                            d="M9.69443 7.91307L11.4945 2.55027M11.4945 2.55027L6.13172 0.750171M11.4945 2.55027L0.750178 7.89433"
+                                                            stroke="#F6F6F6" stroke-width="1.5" stroke-linecap="round"
+                                                            stroke-linejoin="round" />
+                                                    </svg>
+                                                </span>
+                                                <span class="label-up">Submit Application
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="9"
+                                                        viewBox="0 0 13 9" fill="none">
+                                                        <path
+                                                            d="M9.69443 7.91307L11.4945 2.55027M11.4945 2.55027L6.13172 0.750171M11.4945 2.55027L0.750178 7.89433"
+                                                            stroke="#F6F6F6" stroke-width="1.5" stroke-linecap="round"
+                                                            stroke-linejoin="round" />
+                                                    </svg>
+                                                </span>
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div class="job-item">
+                                        <div class="job-tag">Open Position</div>
+                                        <div class="job-title">Data Scientist</div>
+                                        <div class="job-desc" id="desc-2">
+                                            Skilled in machine learning algorithms and data analytics to drive insights and
+                                            decision-making. You will work with large datasets to build predictive models
+                                            and provide actionable insights to our clients and internal teams.
+                                        </div>
+                                        <div class="job-meta">
+                                            <span>Full Time</span>
+                                            <span>8-10 LPA</span>
+                                            <span>0-2 Years of experience</span>
+                                            <span>Sahibzada Ajit Singh Nagar, Punjab</span>
+                                        </div>
+                                        <div class="job-actions">
+                                            <button class="btn-toggle" id="toggle-2" onclick="toggleDesc(2)"
+                                                aria-label="Toggle description">
+                                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                                                    <path d="M2 5L7 10L12 5" stroke="white" stroke-width="1.8"
+                                                        stroke-linecap="round" stroke-linejoin="round" />
+                                                </svg>
+                                            </button>
+                                        <a href="#" class="btn btn-cm-cta btn-pill open-position-btn">
+                                                <span class="label-up">Submit Application
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="9"
+                                                        viewBox="0 0 13 9" fill="none">
+                                                        <path
+                                                            d="M9.69443 7.91307L11.4945 2.55027M11.4945 2.55027L6.13172 0.750171M11.4945 2.55027L0.750178 7.89433"
+                                                            stroke="#F6F6F6" stroke-width="1.5" stroke-linecap="round"
+                                                            stroke-linejoin="round" />
+                                                    </svg>
+                                                </span>
+                                                <span class="label-up">Submit Application
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="9"
+                                                        viewBox="0 0 13 9" fill="none">
+                                                        <path
+                                                            d="M9.69443 7.91307L11.4945 2.55027M11.4945 2.55027L6.13172 0.750171M11.4945 2.55027L0.750178 7.89433"
+                                                            stroke="#F6F6F6" stroke-width="1.5" stroke-linecap="round"
+                                                            stroke-linejoin="round" />
+                                                    </svg>
+                                                </span>
+                                            </a>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="job-item">
+                                        <div class="job-tag">Open Position</div>
+                                        <div class="job-title">UI/UX Designer</div>
+                                        <div class="job-desc" id="desc-3">
+                                            Creative professional dedicated to crafting intuitive and engaging user
+                                            experiences across digital platforms. You will collaborate with developers and
+                                            product teams to design beautiful, functional interfaces.
+                                        </div>
+                                        <div class="job-meta">
+                                            <span>Full Time</span>
+                                            <span>8-10 LPA</span>
+                                            <span>0-2 Years of experience</span>
+                                            <span>Sahibzada Ajit Singh Nagar, Punjab</span>
+                                        </div>
+                                        <div class="job-actions">
+                                            <button class="btn-toggle" id="toggle-3" onclick="toggleDesc(3)"
+                                                aria-label="Toggle description">
+                                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                                                    <path d="M2 5L7 10L12 5" stroke="white" stroke-width="1.8"
+                                                        stroke-linecap="round" stroke-linejoin="round" />
+                                                </svg>
+                                            </button>
+                                            <a href="#" class="btn btn-cm-cta btn-pill open-position-btn">
+                                                <span class="label-up">Submit Application
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="9"
+                                                        viewBox="0 0 13 9" fill="none">
+                                                        <path
+                                                            d="M9.69443 7.91307L11.4945 2.55027M11.4945 2.55027L6.13172 0.750171M11.4945 2.55027L0.750178 7.89433"
+                                                            stroke="#F6F6F6" stroke-width="1.5" stroke-linecap="round"
+                                                            stroke-linejoin="round" />
+                                                    </svg>
+                                                </span>
+                                                <span class="label-up">Submit Application
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="9"
+                                                        viewBox="0 0 13 9" fill="none">
+                                                        <path
+                                                            d="M9.69443 7.91307L11.4945 2.55027M11.4945 2.55027L6.13172 0.750171M11.4945 2.55027L0.750178 7.89433"
+                                                            stroke="#F6F6F6" stroke-width="1.5" stroke-linecap="round"
+                                                            stroke-linejoin="round" />
+                                                    </svg>
+                                                </span>
+                                            </a>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="job-item" style="border-bottom: none;">
+                                        <div class="job-tag">Open Position</div>
+                                        <div class="job-title">DevOps Engineer</div>
+                                        <div class="job-desc" id="desc-4">
+                                            Expert in automating and optimizing deployment processes to enhance operational
+                                            efficiency and reliability. You will manage CI/CD pipelines, cloud
+                                            infrastructure, and ensure smooth deployments across environments.
+                                        </div>
+                                        <div class="job-meta">
+                                            <span>Full Time</span>
+                                            <span>9-11 LPA</span>
+                                            <span>0-2 Years of experience</span>
+                                            <span>Sahibzada Ajit Singh Nagar, Punjab</span>
+                                        </div>
+                                        <div class="job-actions">
+                                            <button class="btn-toggle" id="toggle-4" onclick="toggleDesc(4)"
+                                                aria-label="Toggle description">
+                                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                                                    <path d="M2 5L7 10L12 5" stroke="white" stroke-width="1.8"
+                                                        stroke-linecap="round" stroke-linejoin="round" />
+                                                </svg>
+                                            </button>
+                                            <a href="#" class="btn btn-cm-cta btn-pill open-position-btn">
+                                                <span class="label-up">Submit Application
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="9"
+                                                        viewBox="0 0 13 9" fill="none">
+                                                        <path
+                                                            d="M9.69443 7.91307L11.4945 2.55027M11.4945 2.55027L6.13172 0.750171M11.4945 2.55027L0.750178 7.89433"
+                                                            stroke="#F6F6F6" stroke-width="1.5" stroke-linecap="round"
+                                                            stroke-linejoin="round" />
+                                                    </svg>
+                                                </span>
+                                                <span class="label-up">Submit Application
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="9"
+                                                        viewBox="0 0 13 9" fill="none">
+                                                        <path
+                                                            d="M9.69443 7.91307L11.4945 2.55027M11.4945 2.55027L6.13172 0.750171M11.4945 2.55027L0.750178 7.89433"
+                                                            stroke="#F6F6F6" stroke-width="1.5" stroke-linecap="round"
+                                                            stroke-linejoin="round" />
+                                                    </svg>
+                                                </span>
+                                            </a>
+                                        </div>
+                                    </div> -->
+
+                                </div>
+                                
+                            </div>
+
+                        </div>
+                        <div class="row justify-content-center">
+                            <div class="col-md-8">
+                                <div class="job-description">
+                                    <h4>Didn’t Find a Role?</h4>
+                                    <p>We’re Always Open to Talent. If you don’t see a role that fits your profile, feel free to reach out. We’re always interested in connecting with people who share our values.</p>
+                                </div>
+                            </div>  
+                        </div>
+                    </div>
+
+                </section>
+            {%else%}
+             <!-- empty job openings -->
+                <section class="no-openings">
+                    <div class="container text-center">
+                        <h2 class="display-heading">No Openings at the Moment</h2>
+                        <p class="hero-sub service-hero-sub hero-sub--about text-center">We are currently not hiring, but we are always looking for talented individuals to join our team. Please check back later or contact us at <a href="mailto:contact@codigomantra.com">contact@codigomantra.com</a></p>
+                    </div>
+                </section>
+            {%endif%}
+    <section class="services-section">
+        <div class="container text-center">
+            <div class="hero-badge-wrap">
+                <div class="primary-badge">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" viewBox="0 0 18 20" fill="none">
+                        <path
+                            d="M11.5 6.5C11.5 6.5 11.1317 10.3846 12.67 11.895C14.1868 13.3843 18 13 18 13C18 13 14.0968 13.0922 12.67 14.7556C11.4276 16.204 11.5 19.5 11.5 19.5C11.5 19.5 11.3338 16.1726 10.005 14.7556C8.58811 13.2447 5 13 5 13C5 13 8.51659 13.2334 10.005 11.895C11.6307 10.4332 11.5 6.5 11.5 6.5Z"
+                            fill="#F05D35" />
+                        <path
+                            d="M5 0C5 0 4.7167 2.98814 5.9 4.15C7.06678 5.29564 10 5 10 5C10 5 6.99755 5.07093 5.9 6.35045C4.94427 7.46464 5 10 5 10C5 10 4.87219 7.44047 3.85 6.35045C2.76008 5.18822 0 5 0 5C0 5 2.70507 5.17951 3.85 4.15C5.10054 3.02553 5 0 5 0Z"
+                            fill="#F16535" />
+                    </svg>
+                    Why choose us
+                </div>
+            </div>
+            <h2 class="display-heading">
+                Our impact values
+            </h2>
+
+            <!-- <div class="row g-4 text-start" style="margin-bottom: 30px;">
+
+                <div class="col-lg-4">
+                    <div class="service-card-wrapper">
+                        <div class="service-card-new">
+                            <div class="career-job-img">
+                                <img src="../assets/images/career/job-1.png" alt="Product Design">
+                            </div>
+                            <div class="service-top">
+                                <h5 class="service-title">Product Design & UX</h5>
+                                <p class="service-desc">User-focused design that improves experience,
+                                    engagement,
+                                    and conversion.</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="service-card-wrapper">
+                        <div class="service-card-new">
+                            <div class="career-job-img">
+                                <img src="../assets/images/career/job-1.png" alt="Product Design">
+                            </div>
+                            <div class="service-top">
+                                <h5 class="service-title">Product Design & UX</h5>
+                                <p class="service-desc">User-focused design that improves experience,
+                                    engagement,
+                                    and conversion.</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="service-card-wrapper">
+                        <div class="service-card-new">
+                            <div class="career-job-img">
+                                <img src="../assets/images/career/job-1.png" alt="Product Design">
+                            </div>
+                            <div class="service-top">
+                                <h5 class="service-title">Product Design & UX</h5>
+                                <p class="service-desc">User-focused design that improves experience,
+                                    engagement,
+                                    and conversion.</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+
+            
+            <div class="row g-4 text-start" style="margin-bottom: 30px;">
+                {% for service in services %}
+                    <div class="col-lg-4">
+                        <div class="service-card-wrapper">
+                            <div class="service-card-new">
+                                <div class="service-top">
+                                    <div class="service-icon-box">
+                                        <i class="{{ service.icon }} text-orange"></i>
+                                    </div>
+
+                                    <h5 class="service-title">{{ service.name }}</h5>
+
+                                    <p class="service-desc">
+                                        {{ service.description }}
+                                    </p>
+                                </div>
+
+                                <!-- <div class="service-mockup">
+                                    <img loading="lazy" src="{{service.svg_icon}}" alt="{{ service.name }}">
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

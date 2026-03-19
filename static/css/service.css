@@ -1,0 +1,310 @@
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* ─── SERVICES HERO SECTION ─── */
+.service-hero {
+    padding: 120px 0 80px;
+    background-color: #0C0C0C;
+    position: relative;
+    overflow: hidden;
+}
+
+.service-marquee-track {
+    margin-top: 40px;
+}
+
+.service-hero-sub {
+    color: var(--white, #F6F6F6);
+    font-family: Poppins;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
+    opacity: 0.8;
+    text-align: left;
+}
+
+.hero-title.service-hero-title {
+    color: #F6F6F6;
+    font-family: "Bricolage Grotesque", sans-serif;
+    font-size: clamp(34px, 5vw, 58px);
+    font-style: normal;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 24px;
+}
+
+.hero-sub {
+    color: rgba(246, 246, 246, 0.7);
+    font-family: "Poppins", sans-serif;
+    font-size: 18px;
+    line-height: 1.6;
+    max-width: 700px;
+    margin-bottom: 40px;
+}
+
+.text-orange {
+    color: #F05D35 !important;
+}
+
+.right-server-col {
+    background-image: url(../images/service-side-banner.svg);
+    background-size: auto;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.right-server-col img {
+    width: 100%;
+}
+
+.count-services {
+    color: #F16535;
+    font-family: Poppins;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 150%;
+    text-align: right;
+    margin-bottom: 7px;
+}
+
+.our-services-img img {
+    border-radius: 20px;
+    border: 1px solid #FFF;
+    background: rgba(255, 255, 255, 0.15);
+    height: 195px;
+    width: 100%;
+    margin-bottom: 23px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991px) {
+    .hero-title {
+        font-size: 42px;
+    }
+
+    .hero-right {
+        margin-top: 40px;
+    }
+}
+
+
+.hero-left {
+    padding-right: 40px;
+}
+
+.hero-right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.service-card-new{
+    border-radius: 10px;
+  background: #0C0C0C;
+  border: 1px solid #333232;
+  box-shadow: 0 4px 5.3px 0 rgba(241, 101, 53, 0.10);
+  transition: all 0.35s ease;
+  background: rgba(29, 29, 29, 0.20);
+  box-shadow: 0.5rem 1rem 1rem rgb(0 0 0 / 40%), -1px -1px 0px rgb(179 179 179), 1px 1px 0px rgb(234 234 234);
+}
+
+.service-card-new:hover {
+    /* border-radius: 10px;
+    border: 1px solid #333232;
+    background: #0C0C0C;
+    box-shadow: 0 4px 5.3px 0 rgba(241, 101, 53, 0.19); */
+    border-radius: 10px;
+  background: rgba(12, 12, 12, 0);
+  border: 1px solid transparent;
+
+  background-image:
+    linear-gradient(rgba(12, 12, 12, 0), rgba(12, 12, 12, 0)),
+    linear-gradient(
+      to bottom,
+      #333232 0%,
+      #333232 40%,
+      #F16535 100%
+    );
+
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+
+  box-shadow:
+    2px 1000px 1px #0C0C0C inset,
+    0 0 24px rgba(241, 101, 53, 0.20);
+}
+
+/* ─── WHY CHOOSE US SECTION ─── */
+.why-choose-section {
+    padding: 100px 0;
+}
+
+.why-left-card {
+    border-radius: 30px;
+    border: 1px solid #2F2F2F;
+    background: #171717;
+    padding: 30px;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.why-left-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -72px;
+    bottom: 0;
+    width: 100%;
+    background-image: url('../images/server-orange-map.svg');
+    background-size: contain;
+    background-position: bottom;
+    background-repeat: no-repeat;
+    opacity: 0.7;
+    /* mix-blend-mode: soft-light; */
+    pointer-events: none;
+    /* z-index: 0; */
+}
+
+.why-left-title {
+    color: #F6F6F6;
+    font-family: Poppins;
+    font-size: 42px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 150%;
+    /* 63px */
+    margin-bottom: 10px;
+}
+
+.why-left-desc {
+    color: rgba(246, 246, 246, 0.55);
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    line-height: 1.7;
+    margin-bottom: 28px;
+}
+
+.btn-why-cta {
+    display: inline-block;
+    background: #F05D35;
+    color: #fff;
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 12px 24px;
+    border-radius: 30px;
+    text-decoration: none;
+    border: none;
+    width: fit-content;
+    transition: background 0.2s;
+    margin-bottom: 30px;
+}
+
+.btn-why-cta:hover {
+    background: #d44d27;
+    color: #fff;
+}
+
+.why-globe-wrap {
+    margin-top: auto;
+    text-align: center;
+}
+
+.why-globe-img {
+    width: 100%;
+    max-width: 380px;
+    opacity: 0.6;
+    border-radius: 12px;
+}
+
+/* Right feature card */
+.why-right-card {
+    background: #161616;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    padding: 54px;
+    height: 100%;
+    display: flex;
+    align-items: flex-start;
+}
+
+/* Track: bar + items side by side */
+.why-features-track {
+    display: flex;
+    align-items: stretch;
+    gap: 62px;
+    width: 100%;
+}
+
+/* The vertical gradient orange pill bar */
+.why-bar {
+    flex-shrink: 0;
+    width: 56px;
+    border-radius: 40px;
+    background: linear-gradient(180deg, #131313 0.01%, #F45D34 135.52%);
+    position: relative;
+}
+
+/* The feature list is positioned to overlay icon boxes on the bar */
+.why-features-list {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.why-feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 52px;
+    padding: 26px 0;
+}
+
+.why-feature-icon {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.00);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Pull leftward to sit on top of the bar */
+    margin-left: -112px;
+    position: relative;
+    z-index: 1;
+    background: rgba(29, 29, 29, 0.20);
+    box-shadow: 0.5rem 1rem 1rem rgb(0 0 0 / 40%), -1px -1px 0px rgb(179 179 179), 1px 1px 0px rgb(234 234 234);
+}
+
+.why-feature-body {
+    flex: 1;
+}
+
+.why-feature-title {
+    color: var(--white, #F6F6F6);
+    font-family: Poppins;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 150%;
+    /* 30px */
+    margin-bottom: 10px;
+}
+
+.why-feature-desc {
+    color: var(--white, #F6F6F6);
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
+    /* 24px */
+    margin: 0;
+    opacity: 0.7;
+}

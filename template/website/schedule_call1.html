@@ -1,0 +1,249 @@
+{%extends 'base.html' %}
+{% block title %}Schedule a Call - Codigo Mantra{% endblock %}
+{% block content %}
+      <section class="contact-page-hero">
+                <div class="container">
+                    <!-- Hero Header -->
+                    <div class="hero-center">
+                        <h1 class="hero-title service-hero-title">
+                            Book a <span class="text-orange">15-min calla</span> to know<br> more about us
+                        </h1>
+
+                    </div>
+
+                <div class="row g-3 align-items-stretch">
+
+                  <!-- LEFT: Info -->
+                  <div class="col-lg-3 col-md-4">
+                    <div class="booking-card">
+                      <div class="d-flex align-items-center gap-2 mb-1">
+                        <div class="navbar-brand d-flex align-items-center gap-2 m-0" href="#">
+                            <span class="cm-logo" aria-hidden="true">
+                                <img src="../assets/images/codigo-mantra-logo.svg" alt="Logo">
+                            </span>
+                            <span class="cm-brand-contact">Codigo Mantra</span>
+                        </div>
+                      </div>
+                      <p class="info-desc">We are a software development company specializing in innovative digital solutions for businesses of all sizes.</p>
+                      <p class="info-thank">Thank you!</p>
+                      <div class="info-meta">
+                        <div class="info-meta-item">
+                          <!-- Google Meet icon -->
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                          <path d="M2 18.7188C2 19.4259 2.57772 19.9987 3.28952 19.9987H3.30806C2.58536 19.9987 2 19.4259 2 18.7188Z" fill="#FBBC05"/>
+                          <path d="M13.0827 8.79969V12.1413L17.5879 8.50744V5.27991C17.5879 4.57276 17.0101 4 16.2983 4H6.53801L6.5293 8.79969H13.0827Z" fill="#FBBC05"/>
+                          <path d="M13.0817 15.4842H6.51741L6.50977 19.9991H16.2974C17.0102 19.9991 17.5869 19.4264 17.5869 18.7192V15.8053L13.0817 12.1426V15.4842Z" fill="#34A853"/>
+                          <path d="M6.53677 4L2 8.79969H6.52913L6.53677 4Z" fill="#EA4335"/>
+                          <path d="M2 15.4824V18.7174C2 19.4246 2.58536 19.9973 3.30806 19.9973H6.50957L6.51713 15.4824H2Z" fill="#1967D2"/>
+                          <path d="M6.52913 8.80078H2V15.4851H6.51713L6.52913 8.80078Z" fill="#4285F4"/>
+                          <path d="M21.5481 17.5809V6.59503C21.294 5.137 19.695 6.80835 19.695 6.80835L17.5879 8.50744V15.8039L20.604 18.256C21.693 18.399 21.5481 17.5809 21.5481 17.5809Z" fill="#34A853"/>
+                          <path d="M13.082 12.1406L17.5883 15.8043V8.50781L13.082 12.1406Z" fill="#188038"/>
+                        </svg>
+                          Google meet
+                        </div>
+                        <div class="info-meta-item">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M15.473 16.527L16.527 15.473L12.75 11.696V7H11.25V12.3038L15.473 16.527ZM12.0017 21.5C10.6877 21.5 9.45267 21.2507 8.2965 20.752C7.14033 20.2533 6.13467 19.5766 5.2795 18.7218C4.42433 17.8669 3.74725 16.8617 3.24825 15.706C2.74942 14.5503 2.5 13.3156 2.5 12.0017C2.5 10.6877 2.74933 9.45267 3.248 8.2965C3.74667 7.14033 4.42342 6.13467 5.27825 5.2795C6.13308 4.42433 7.13833 3.74725 8.294 3.24825C9.44967 2.74942 10.6844 2.5 11.9983 2.5C13.3123 2.5 14.5473 2.74933 15.7035 3.248C16.8597 3.74667 17.8653 4.42342 18.7205 5.27825C19.5757 6.13308 20.2528 7.13833 20.7518 8.294C21.2506 9.44967 21.5 10.6844 21.5 11.9983C21.5 13.3123 21.2507 14.5473 20.752 15.7035C20.2533 16.8597 19.5766 17.8653 18.7218 18.7205C17.8669 19.5757 16.8617 20.2528 15.706 20.7518C14.5503 21.2506 13.3156 21.5 12.0017 21.5ZM12 20C14.2167 20 16.1042 19.2208 17.6625 17.6625C19.2208 16.1042 20 14.2167 20 12C20 9.78333 19.2208 7.89583 17.6625 6.3375C16.1042 4.77917 14.2167 4 12 4C9.78333 4 7.89583 4.77917 6.3375 6.3375C4.77917 7.89583 4 9.78333 4 12C4 14.2167 4.77917 16.1042 6.3375 17.6625C7.89583 19.2208 9.78333 20 12 20Z" fill="#F6F6F6"/>
+                          </svg>
+                          15 mins call
+                        </div>
+                        <div class="info-meta-item">
+                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                          <path d="M8.3125 20.751C7.15667 20.2517 6.14867 19.5718 5.2885 18.7115C4.42817 17.8513 3.74833 16.8433 3.249 15.6875C2.74967 14.5317 2.5 13.2999 2.5 11.9923C2.5 10.6846 2.74967 9.45542 3.249 8.30475C3.74833 7.15408 4.42817 6.14867 5.2885 5.2885C6.14867 4.42817 7.15667 3.74833 8.3125 3.249C9.46833 2.74967 10.7001 2.5 12.0078 2.5C13.3154 2.5 14.5446 2.74967 15.6953 3.249C16.8459 3.74833 17.8513 4.42817 18.7115 5.2885C19.5718 6.14867 20.2517 7.15408 20.751 8.30475C21.2503 9.45542 21.5 10.6846 21.5 11.9923C21.5 13.2999 21.2503 14.5317 20.751 15.6875C20.2517 16.8433 19.5718 17.8513 18.7115 18.7115C17.8513 19.5718 16.8459 20.2517 15.6953 20.751C14.5446 21.2503 13.3154 21.5 12.0078 21.5C10.7001 21.5 9.46833 21.2503 8.3125 20.751ZM12 19.9788C12.5103 19.3019 12.9398 18.6192 13.2885 17.9307C13.6372 17.2422 13.9212 16.4897 14.1405 15.673H9.8595C10.0917 16.5153 10.3789 17.2808 10.7213 17.9693C11.0634 18.6578 11.4897 19.3276 12 19.9788ZM10.0635 19.7038C9.68017 19.1538 9.33592 18.5285 9.03075 17.828C8.72558 17.1273 8.48842 16.409 8.31925 15.673H4.927C5.45517 16.7115 6.1635 17.584 7.052 18.2905C7.9405 18.9968 8.94433 19.4679 10.0635 19.7038ZM13.9365 19.7038C15.0557 19.4679 16.0595 18.9968 16.948 18.2905C17.8365 17.584 18.5448 16.7115 19.073 15.673H15.6807C15.4794 16.4153 15.2262 17.1368 14.921 17.8375C14.616 18.5382 14.2878 19.1603 13.9365 19.7038ZM4.298 14.173H8.0155C7.95267 13.8013 7.90708 13.4369 7.87875 13.0798C7.85058 12.7228 7.8365 12.3628 7.8365 12C7.8365 11.6372 7.85058 11.2773 7.87875 10.9202C7.90708 10.5631 7.95267 10.1987 8.0155 9.827H4.298C4.20183 10.1667 4.12817 10.5198 4.077 10.8865C4.02567 11.2532 4 11.6243 4 12C4 12.3757 4.02567 12.7468 4.077 13.1135C4.12817 13.4802 4.20183 13.8333 4.298 14.173ZM9.51525 14.173H14.4848C14.5474 13.8013 14.5929 13.4402 14.6212 13.0895C14.6494 12.7388 14.6635 12.3757 14.6635 12C14.6635 11.6243 14.6494 11.2612 14.6212 10.9105C14.5929 10.5598 14.5474 10.1987 14.4848 9.827H9.51525C9.45258 10.1987 9.40708 10.5598 9.37875 10.9105C9.35058 11.2612 9.3365 11.6243 9.3365 12C9.3365 12.3757 9.35058 12.7388 9.37875 13.0895C9.40708 13.4402 9.45258 13.8013 9.51525 14.173ZM15.9845 14.173H19.702C19.7982 13.8333 19.8718 13.4802 19.923 13.1135C19.9743 12.7468 20 12.3757 20 12C20 11.6243 19.9743 11.2532 19.923 10.8865C19.8718 10.5198 19.7982 10.1667 19.702 9.827H15.9845C16.0473 10.1987 16.0929 10.5631 16.1212 10.9202C16.1494 11.2773 16.1635 11.6372 16.1635 12C16.1635 12.3628 16.1494 12.7228 16.1212 13.0798C16.0929 13.4369 16.0473 13.8013 15.9845 14.173ZM15.6807 8.327H19.073C18.5385 7.27567 17.835 6.40317 16.9625 5.7095C16.09 5.016 15.0813 4.54167 13.9365 4.2865C14.3198 4.8685 14.6608 5.50508 14.9595 6.19625C15.2583 6.88725 15.4987 7.5975 15.6807 8.327ZM9.8595 8.327H14.1405C13.9083 7.491 13.6163 6.72075 13.2645 6.01625C12.9125 5.31175 12.491 4.64675 12 4.02125C11.509 4.64675 11.0875 5.31175 10.7355 6.01625C10.3837 6.72075 10.0917 7.491 9.8595 8.327ZM4.927 8.327H8.31925C8.50125 7.5975 8.74167 6.88725 9.0405 6.19625C9.33917 5.50508 9.68017 4.8685 10.0635 4.2865C8.91217 4.54167 7.90192 5.01767 7.03275 5.7145C6.16342 6.41117 5.4615 7.282 4.927 8.327Z" fill="#F6F6F6"/>
+                        </svg>
+                          <select class="timezone-select">
+                            <option>Australia/Adelaide</option>
+                            <option>Asia/Kolkata</option>
+                            <option>America/New_York</option>
+                            <option>Europe/London</option>
+                            <option>Asia/Dubai</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- MIDDLE: Calendar -->
+                  <div class="col-lg-5 col-md-8">
+                    <div class="booking-card">
+                      <div class="cal-header">
+                        <div class="cal-month" id="calMonthLabel">February <span>2026</span></div>
+                        <div class="d-flex gap-1">
+                          <button class="cal-nav" onclick="changeMonth(-1)">&#8249;</button>
+                          <button class="cal-nav" onclick="changeMonth(1)">&#8250;</button>
+                        </div>
+                      </div>
+                      <div class="cal-grid" id="calGrid"></div>
+                    </div>
+                  </div>
+
+                  <!-- RIGHT: Time Slots -->
+                  <div class="col-lg-4 col-md-12">
+                    <div class="booking-card">
+                      <div class="time-header">
+                        <div class="time-date" id="timeDateLabel">Thu <span>06</span></div>
+                        <div class="time-format">
+                          <button class="fmt-btn active" id="btn12" onclick="setFormat('12h')">12h</button>
+                          <button class="fmt-btn" id="btn24" onclick="setFormat('24h')">24h</button>
+                        </div>
+                      </div>
+                      <div class="time-slots" id="timeSlots"></div>
+                    </div>
+                  </div>
+
+                </div><!-- /row -->
+
+                <!-- Footer Buttons -->
+                <div class="schedule-call-footer">
+                  <a href="#" class="btn btn-secondary-cm">
+                      <span class="label-up">Back</span>
+                      <span class="label-up">Back</span>
+                  </a>
+                  <!-- <button class="btn-next">Next</button>  -->
+                  <a class="btn btn-cm-cta btn-pill" href="#contact">
+                      <span class="label-up">Next</span>
+                      <span class="label-up">Next</span>
+                  </a>
+                 </div>
+          
+              </div>
+      </section>
+        <section class="faq-section">
+          <div class="container">
+
+            <!-- Header -->
+            <div class="faq-header text-center mb-5">
+              <h1>Codigo Mantra FAQs</h1>
+              <p class="mx-auto" style="max-width: 560px;">
+                Welcome to the Codigo Mantra FAQ page! Find quick answers here about our services.
+              </p>
+            </div>
+
+            <!-- Accordion -->
+            <div class="accordion faq-accordion" id="faqAccordion">
+
+              <!-- Item 1 — open by default -->
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#faq1"
+                    aria-expanded="true" aria-controls="faq1">
+                    How do I request a design consultation?
+                    <span class="faq-icon ms-auto flex-shrink-0">
+                      <svg class="icon-minus" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
+                        <path d="M7 11H15M21 11C21 16.5228 16.5228 21 11 21C5.47715 21 1 16.5228 1 11C1 5.47715 5.47715 1 11 1C16.5228 1 21 5.47715 21 11Z" stroke="#F05D35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <svg class="icon-plus" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
+                        <path d="M11 7V15M7 11H15M21 11C21 16.5228 16.5228 21 11 21C5.47715 21 1 16.5228 1 11C1 5.47715 5.47715 1 11 1C16.5228 1 21 5.47715 21 11Z" stroke="#F05D35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </span>
+                  </button>
+                </h2>
+                <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                  <div class="accordion-body">
+                    Visit the 'Contact Us' page and fill out the consultation request form.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Item 2 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#faq2"
+                    aria-expanded="false" aria-controls="faq2">
+                    What services does Codigo Mantra provide?
+                    <span class="faq-icon ms-auto flex-shrink-0">
+                      <svg class="icon-minus" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
+                        <path d="M7 11H15M21 11C21 16.5228 16.5228 21 11 21C5.47715 21 1 16.5228 1 11C1 5.47715 5.47715 1 11 1C16.5228 1 21 5.47715 21 11Z" stroke="#F05D35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <svg class="icon-plus" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
+                        <path d="M11 7V15M7 11H15M21 11C21 16.5228 16.5228 21 11 21C5.47715 21 1 16.5228 1 11C1 5.47715 5.47715 1 11 1C16.5228 1 21 5.47715 21 11Z" stroke="#F05D35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </span>
+                  </button>
+                </h2>
+                <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                  <div class="accordion-body">
+                    Codigo Mantra provides web design, web development, mobile app development, UI/UX design, and digital branding services tailored to your business needs.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Item 3 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#faq3"
+                    aria-expanded="false" aria-controls="faq3">
+                    How do I submit a support ticket?
+                    <span class="faq-icon ms-auto flex-shrink-0">
+                      <svg class="icon-minus" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
+                        <path d="M7 11H15M21 11C21 16.5228 16.5228 21 11 21C5.47715 21 1 16.5228 1 11C1 5.47715 5.47715 1 11 1C16.5228 1 21 5.47715 21 11Z" stroke="#F05D35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <svg class="icon-plus" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
+                        <path d="M11 7V15M7 11H15M21 11C21 16.5228 16.5228 21 11 21C5.47715 21 1 16.5228 1 11C1 5.47715 5.47715 1 11 1C16.5228 1 21 5.47715 21 11Z" stroke="#F05D35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </span>
+                  </button>
+                </h2>
+                <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                  <div class="accordion-body">
+                    You can submit a support ticket through our Help Center portal. Log in, navigate to Support, and click 'New Ticket' to describe your issue.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Item 4 -->
+              <div class="accordion-item">
+                <h2 class="accordion-header">
+                  <button class="accordion-button collapsed" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#faq4"
+                    aria-expanded="false" aria-controls="faq4">
+                    What is the typical project timeline?
+                    <span class="faq-icon ms-auto flex-shrink-0">
+                      <svg class="icon-minus" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
+                        <path d="M7 11H15M21 11C21 16.5228 16.5228 21 11 21C5.47715 21 1 16.5228 1 11C1 5.47715 5.47715 1 11 1C16.5228 1 21 5.47715 21 11Z" stroke="#F05D35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                      <svg class="icon-plus" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
+                        <path d="M11 7V15M7 11H15M21 11C21 16.5228 16.5228 21 11 21C5.47715 21 1 16.5228 1 11C1 5.47715 5.47715 1 11 1C16.5228 1 21 5.47715 21 11Z" stroke="#F05D35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                    </span>
+                  </button>
+                </h2>
+                <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                  <div class="accordion-body">
+                    Project timelines vary depending on scope and complexity. A typical website takes 4–8 weeks, while larger applications may take 3–6 months.
+                  </div>
+                </div>
+              </div>
+
+            </div>  
+          </div>
+       </section>
+        <!-- ══════════════════════════════════
+                 CTA SECTION REDESIGNED
+            ══════════════════════════════════ -->
+            <section class="cta-refined-section">
+                <div class="container">
+                    <div class="cta-refined-box">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6">
+                                <h1 class="cta-title-refined">Unleash Growth with Powerful Solutions</h1>
+                                <p class="cta-subtitle-refined">Maximize your business potential with our suite of
+                                    innovative tools and expert support.</p>
+                                <a href="{% url 'contact' %}" class="btn btn-cta-refined">
+                                    <span class="label-up">Get in touch</span>
+                                    <span class="label-up">Get in touch</span>
+                                </a>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="tech-stack-container">
+                                    <img src="{% static 'images/group-icon-cm.svg' %}" >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+{% endblock %}

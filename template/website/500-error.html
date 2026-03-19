@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Internal Server Error {% endblock %}
+
+
+{% block content %}
+    <section class="hero career-hero h-100">
+        <div class="container">
+            <div class="hero-center">
+                <img src="{% static 'images/500.svg' %}" alt="500 Error" class="500-error-img">
+                <h1 class="erro-title">
+                    Something went wrong on our end.
+                </h1>
+                <p class="error-sub text-center">
+                    Our server encountered an issue while loading this page. Our team has been notified and is working to fix it.</p>
+                <a href="{% url 'index' %}" class="btn btn-cm-cta btn-pill">
+                    <span class="label-up">Go to Homepage →</span>
+                    <span class="label-up">Go to Homepage →</span>
+                </a>
+            </div>
+        </div>
+    </section>
+{% endblock %}

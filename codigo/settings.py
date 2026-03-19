@@ -37,13 +37,15 @@ sys.path.insert(0, os.path.join(BASE_DIRR, 'apps'))
 SECRET_KEY = '%a4-))8=7y0*z=de#zg+4vft8q9p9q27!gx9vteo6jmr#)k7y7'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
+
 
 ALLOWED_HOSTS = ['*']
 
 # Application definition
 
 INSTALLED_APPS = [
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -55,11 +57,9 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'users',
+    'website',
     'corsheaders',
-    'core',
-    'projects',
-    'boards',
-    'tasks',
+    'ckeditor',
     'django_extensions',
 ]
 
@@ -74,6 +74,90 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+JAZZMIN_SETTINGS = {
+
+    "site_title": "Codigomantra Admin",
+    "site_header": "Codigomantra Administration",
+    "site_brand": " ",
+
+    "site_logo": "images/codigo-mantra-logo.svg",
+
+    "login_logo": "images/codigo-mantra-logo.svg",
+
+    "site_logo_classes": "img-circle",
+    "site_icon": "images/favicon.png",
+
+    "welcome_sign": "Welcome to Codigomantra Admin",
+    "copyright": "Codigomantra",
+    "user_avatar": None,
+
+    "topmenu_links": [
+
+        {"name": "Dashboard", "url": "admin:index"},
+
+        {"name": "Website", "url": "/", "new_window": True},
+
+    ],
+
+    "usermenu_links": [
+        {"name": "Visit Website", "url": "/", "new_window": True},
+    ],
+    "show_sidebar": True,
+    "navigation_expanded": True,
+
+    "hide_apps": [],
+    "hide_models": [],
+
+    "order_with_respect_to": [
+        "auth",
+        "website.services",
+        "website.industries",
+        "website.testimonials",
+        "website.teammember",
+        "website.casestudy",
+        "website.faq",
+        "website.newsletter",
+        "website.jobopening",
+        "website.application",
+    ],
+    "icons": {
+        "auth": "fas fa-users-cog",
+        "auth.user": "fas fa-user",
+
+        "website.service": "fas fa-briefcase",
+        "website.industry": "fas fa-industry",
+        "website.product": "fas fa-box",
+        "website.testimonial": "fas fa-comment",
+        "website.teammember": "fas fa-user-tie",
+        "website.casestudy": "fas fa-chart-line",
+        "website.faq": "fas fa-question-circle",
+        "website.newsletter": "fas fa-envelope",
+        "website.jobopening": "fas fa-briefcase",
+        "website.application": "fas fa-file-alt",
+        "website.photoarchive": "fas fa-images",
+    },
+
+    "default_icon_parents": "fas fa-angle-right",
+    "default_icon_children": "fas fa-circle",
+
+    "related_modal_active": False,
+
+    "custom_css": None,
+    "custom_js": None,
+
+    "use_google_fonts_cdn": True,
+    "show_ui_builder": False,
+
+    "changeform_format": "horizontal_tabs",
+
+    "changeform_format_overrides": {
+        "auth.user": "collapsible",
+        "auth.group": "vertical_tabs",
+    },
+
+}
+
+
 ROOT_URLCONF = 'codigo.urls'
 
 TEMPLATES = [
@@ -87,6 +171,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'website.context_processor.navbar_context',
             ],
         },
     },
@@ -154,6 +239,8 @@ USE_L10N = True
 
 USE_TZ = True
 
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
@@ -162,11 +249,15 @@ USE_TZ = True
 # STATICFILES_DIRS=[
 # STATIC_DIR,
 # ]
+
+
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
 STATICFILES_DIRS=[
 STATIC_DIR,
 ]
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 #EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 #EMAIL_HOST = 'smtp.gmail.org'
@@ -187,3 +278,13 @@ EMAIL_HOST_PASSWORD = "vrch uuci zrnp eivo"
 
 RECAPTCHA_PUBLIC_KEY = "6LfhyUUqAAAAALWtHDmDjfALmGvNkS__D9JH26Vz"
 RECAPTCHA_PRIVATE_KEY = "6LfhyUUqAAAAAEUMGWOH46qR3OIbyCm79ugcJET4"
+
+
+
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+        "LOCATION": "unique-codigomantra-cache",
+    }
+}

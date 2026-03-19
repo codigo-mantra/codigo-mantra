@@ -1,0 +1,143 @@
+{% load static %}
+
+<header class="site-header">
+            <nav class="navbar navbar-expand-lg py-4">
+                <div class="container">
+                    <div class="cm-headerbar">
+                        <a class="navbar-brand d-flex align-items-center gap-2 m-0" href="/">
+                            <span class="cm-logo" aria-hidden="true">
+                               <img src="{% static 'images/codigo-mantra-logo.svg' %}" alt="Logo">
+                            </span>
+                            <span class="cm-brand">Codigo Mantra</span>
+                        </a>
+
+                        <button class="navbar-toggler cm-navtoggle" type="button" data-bs-toggle="collapse" data-bs-target="#primaryNav" aria-controls="primaryNav" aria-expanded="false" aria-label="Toggle navigation">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+
+                        <div class="collapse navbar-collapse" id="primaryNav">
+                            <ul class="navbar-nav ms-auto align-items-lg-center cm-nav">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle active" href="{% url 'services' %}" role="button" data-bs-toggle="dropdown" aria-expanded="false">What we do</a>
+                                    <div class="dropdown-menu cm-mega" aria-label="What we do menu">
+                                        <div class="cm-mega__panel">
+                                            <div class="cm-mega__grid">
+                                                <div class="cm-mega__col">
+                                                    <div class="cm-mega__h">Services</div>
+                                                    {% for service in services_nav|slice:":6" %}
+                                                        <a class="cm-mega__link" href="{% url 'service_detail' service.slug %}">{{ service.name }}</a>
+
+                                                    {% endfor %}
+                                                </div>
+
+                                                <div class="cm-mega__col cm-mega__col--mid">
+                                                    <div class="cm-mega__h">&nbsp;</div>
+                                                    {% for service in services_nav|slice:"6:12" %}
+                                                        <a class="cm-mega__link" href="{% url 'service_detail' service.slug %}">{{ service.name }}</a>
+                                                    {% endfor %}
+                                                </div>
+
+                                                <div class="cm-mega__col cm-mega__col--product">
+                                                    <div class="cm-mega__h">Our Product</div>
+                                                    <a class="cm-mega__product" href="{% url 'portfolio' %}">
+                                                        <span class="cm-mega__thumb" aria-hidden="true"></span>
+                                                        <span class="cm-mega__productBody">
+                                                            <span class="cm-mega__productT">{{case_study_nav.title}}</span>
+                                                            <span class="cm-mega__productD">{{case_study_nav.content|truncatewords:10}}</span>
+                                                        </span>
+                                                    </a>
+                                                </div>
+                                            </div>
+
+                                            <div class="cm-mega__bottom">
+                                                <span class="cm-mega__bottomText">Want to know more about us ?</span>
+                                                <a class="cm-mega__bottomLink" href="{% url 'contact' %}">Talk to experts</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="{% url 'portfolio' %}" role="button" data-bs-toggle="dropdown" aria-expanded="false">Industries</a>
+                                    <div class="dropdown-menu cm-mega" aria-label="Industries menu">
+                                        <div class="cm-mega__panel">
+                                            <div class="cm-mega__grid">
+                                                <div class="cm-mega__col">
+                                                    <div class="cm-mega__h">Industries</div>
+                                                    {% for industry in industries_nav|slice:":6" %}
+                                                        <!-- <a class="cm-mega__link" href="/industries/{{ industry.slug }}/">{{ industry.name }}</a> -->
+                                                        <a class="cm-mega__link" href="{% url 'portfolio' %}?industry={{ industry.name|lower }}">{{ industry.name }}</a>
+                                                    {% endfor %}
+                                                </div>
+
+                                                <div class="cm-mega__col cm-mega__col--mid">
+                                                    <div class="cm-mega__h">&nbsp;</div>
+                                                    {% for industry in industries_nav|slice:"6:12" %}
+                                                        <!-- <a class="cm-mega__link" href="/industries/{{ industry.slug }}/">{{ industry.name }}</a> -->
+                                                        <a class="cm-mega__link" href="{% url 'portfolio' %}?industry={{ industry.name|lower }}">{{ industry.name }}</a>
+                                                    {% endfor %}
+                                                </div>
+                                                <div class="cm-mega__col cm-mega__col--product">
+                                                    <div class="cm-mega__h">Our Product</div>
+                                                    <a class="cm-mega__product" href="{% url 'portfolio' %}">
+                                                        <span class="cm-mega__thumb" aria-hidden="true">
+                                                            <!-- <img src="http://localhost:8000{{ case_study_nav.cover_image }}" alt="" loading="lazy"> -->
+                                                        </span>
+                                                        <span class="cm-mega__productBody">
+                                                            <span class="cm-mega__productT">{{case_study_nav.title}}</span>
+                                                            <span class="cm-mega__productD">{{case_study_nav.content|truncatewords:10}}</span>
+                                                        </span>
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div class="cm-mega__bottom">
+                                                <span class="cm-mega__bottomText">Want to know more about us ?</span>
+                                                <a class="cm-mega__bottomLink" href="{% url 'contact' %}">Talk to experts</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="nav-item"><a class="nav-link" href="{% url 'portfolio' %}">Case Studies</a></li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="{% url 'about-us' %}" role="button" data-bs-toggle="dropdown" aria-expanded="false">Who We Are</a>
+                                    <div class="dropdown-menu cm-mega" aria-label="Who we are menu">
+                                        <div class="cm-mega__panel-2">
+                                            <div class="cm-mega__grid-2">
+                                                <div class="cm-mega__col">
+                                                    <div class="cm-mega__h">Who are we</div>
+                                                    <a class="cm-mega__link" href="{% url 'about-us' %}">About us</a>
+                                                    <a class="cm-mega__link" href="#about">Our Mission</a>
+                                                    <a class="cm-mega__link" href="#about">Our Vision</a>
+                                                    <a class="cm-mega__link" href="#about">Our Team</a>
+                                                </div>
+                                                 <div class="cm-mega__col cm-mega__col--product">
+                                                    <div class="cm-mega__h">Our Product</div>
+                                                    <a class="cm-mega__product" href="{% url 'portfolio' %}">
+                                                        <span class="cm-mega__thumb" aria-hidden="true">
+                                                            <!-- <img loading="lazy" src="http://localhost:8000{{ case_study_nav.cover_image.url }}" alt="{{ case_study_nav.title }}"> -->
+                                                        </span>
+                                                        <span class="cm-mega__productBody">
+                                                            <span class="cm-mega__productT">{{case_study_nav.title}}</span>
+                                                            <span class="cm-mega__productD">{{case_study_nav.content|truncatewords:10}}</span>
+                                                        </span>
+                                                    </a>ss
+                                                </div>
+                                            </div>
+                                            <div class="cm-mega__bottom">
+                                                <span class="cm-mega__bottomText">Want to know more about us ?</span>
+                                                <a class="cm-mega__bottomLink" href="{% url 'contact' %}">Talk to experts</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="nav-item ms-lg-3">
+                                     <a class="btn btn-cm-cta btn-pill" href="{% url 'contact' %}">
+                                        <span class="label-up">Request a Quote</span>
+                                        <span class="label-up">Request a Quote</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </header>
