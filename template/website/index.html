@@ -258,9 +258,11 @@
                 </div>
             </section>
 
-            <!-- ══════════════════════════════════
-     TESTIMONIALS
-══════════════════════════════════ -->
+        <!-- ══════════════════════════════════
+            TESTIMONIALS
+        ══════════════════════════════════ -->
+
+
             <section class="testimonials-section">
                 <div class="container">
                     <div class="text-center mb-5">
@@ -299,14 +301,12 @@
                                 {% else %}
                                 <div class="testimonial-card-v2 {% if forloop.first %}first-card-t{% else %}second-card-t{% endif %}">
                                     <p class="t-quote">{{ t.message }}</p>
-
                                     <div class="t-footer">
                                         <div class="t-profile">
                                             <img src="{{ t.client_image.url }}"
                                                 alt="{{ t.client_name }}"
                                                 class="t-avatar"
                                                 loading="lazy">
-
                                             <div class="t-user-info">
                                                 <span class="t-name">{{ t.client_name }}</span>
                                                 <span class="t-role">{{ t.client_designation }}</span>
@@ -316,7 +316,6 @@
                                 </div>
                                 {% endif %}
                             {% endfor %}
-
                             <!-- <div class="testimonial-card-v2 second-card-t">
                                 <p class="t-quote">"Working with CodigoMantra empowered our team to meet tight deadlines
                                     without compromising quality. Highly recommend their services!"</p>
@@ -342,7 +341,6 @@
                                 </div>
                             </div> -->
                         </div>
-
                         <div class="col-lg-4 d-flex flex-column gap-4">
                             {% for t in testimonials|slice:"2:4" %}
                                 {% if t.media_type == 'video' %}
@@ -356,16 +354,15 @@
                                         </div>
                                     </div>
                                 {% else %}
-                                <div class="testimonial-card-v2 {% if forloop.first %}first-card-t{% else %}second-card-t{% endif %}">
-                                    <p class="t-quote">{{ t.message }}</p>
 
+                                <div class="testimonial-card-v2 {% if forloop.first %}third-card-t{% else %}fourth-card-t{% endif %}">
+                                    <p class="t-quote">{{ t.message }}</p>
                                     <div class="t-footer">
                                         <div class="t-profile">
                                             <img src="{{ t.client_image.url }}"
                                                 alt="{{ t.client_name }}"
                                                 class="t-avatar"
                                                 loading="lazy">
-
                                             <div class="t-user-info">
                                                 <span class="t-name">{{ t.client_name }}</span>
                                                 <span class="t-role">{{ t.client_designation }}</span>
@@ -375,11 +372,10 @@
                                 </div>
                                 {% endif %}
                             {% endfor %}
-
                         </div>
-
                         <div class="col-lg-4 d-flex flex-column gap-4">
                              {% for t in testimonials|slice:"4:6" %}
+
                                 {% if t.media_type == 'video' %}
                                     <div class="testimonial-video-card">
                                         <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=600&h=800"
@@ -391,16 +387,14 @@
                                         </div>
                                     </div>
                                 {% else %}
-                                <div class="testimonial-card-v2 {% if forloop.first %}first-card-t{% else %}second-card-t{% endif %}">
+                                <div class="testimonial-card-v2 {% if forloop.first %}fifth-card-t{% else %}second-card-t{% endif %}">
                                     <p class="t-quote">{{ t.message }}</p>
-
                                     <div class="t-footer">
                                         <div class="t-profile">
                                             <img src="{{ t.client_image.url }}"
                                                 alt="{{ t.client_name }}"
                                                 class="t-avatar"
                                                 loading="lazy">
-
                                             <div class="t-user-info">
                                                 <span class="t-name">{{ t.client_name }}</span>
                                                 <span class="t-role">{{ t.client_designation }}</span>
@@ -410,11 +404,11 @@
                                 </div>
                                 {% endif %}
                             {% endfor %}
-
                         </div>
                     
                 </div>
             </section>
+
 
             <!-- ══════════════════════════════════
                  INSIGHTS SECTION
