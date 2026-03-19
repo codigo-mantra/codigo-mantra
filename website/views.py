@@ -27,7 +27,9 @@ class LandingPage(views.View):
         form = ContactUsForm()
         services = Service.objects.all().order_by('display_order')[:6].values("name", "description", "icon")  # last 6 services
         insights = Insight.objects.all().order_by('-created_at')[:3]  # last 3 insights
-        testimonials = Testimonial.objects.all().order_by('-created_at')[:6]  # last 6 testimonials
+        testimonials_qs = list(Testimonial.objects.all().order_by('-created_at')[:6])  # last 6 testimonials
+        # Ensure image testimonials appear before video testimonials (preserve recency within each group)
+        testimonials = sorted(testimonials_qs, key=lambda t: t.media_type == "video")
         industries = Industry.objects.all().values("name", "svg_icon")  # all industries with svg icons
         case_studies = CaseStudy.objects.all().order_by('-created_at')[:3].prefetch_related(
             "services", "industries", "images"

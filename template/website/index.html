@@ -98,6 +98,7 @@
                                             <div class="service-icon-box">
                                                 <i class="{{ service.icon }} text-orange"></i>
                                             </div>
+
                                             <h5 class="service-title">{{ service.name }}</h5>
 
                                             <p class="service-desc">
@@ -344,7 +345,6 @@
 
                         <div class="col-lg-4 d-flex flex-column gap-4">
                             {% for t in testimonials|slice:"2:4" %}
-                            {{t.media_type}}sdfdsdddsdfdsf
                                 {% if t.media_type == 'video' %}
                                     <div class="testimonial-video-card">
                                         <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=600&h=800"
@@ -380,7 +380,6 @@
 
                         <div class="col-lg-4 d-flex flex-column gap-4">
                              {% for t in testimonials|slice:"4:6" %}
-                            {{t.media_type}}sdfdsdddsdfdsf
                                 {% if t.media_type == 'video' %}
                                     <div class="testimonial-video-card">
                                         <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=600&h=800"
