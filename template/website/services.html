@@ -71,13 +71,18 @@
                         <!-- Card 1 -->
                          {%for service in services%}
                         <div class="col-lg-4">
-                            <div class="service-card-new">
+                            <div class="service-card-new service-card-new-2">
                                 <div class="service-top">
-                                    <div class="service-icon-box">
-                                        <i class="bi bi-bezier2 text-orange"></i>
+                                    <div class="mobile-view">
+                                        <div class="service-icon-box">
+                                            <i class="bi bi-bezier2 text-orange"></i>
+                                        </div>
+                                        <div>
+                                            <h5 class="service-title">{{ service.name }}</h5>
+                                        
+                                        <p class="service-desc">{{ service.description }}</p>
+                                        </div>
                                     </div>
-                                    <h5 class="service-title">{{ service.name }}</h5>
-                                    <p class="service-desc">{{ service.description }}</p>
                                 </div>
                             </div>
                         </div>

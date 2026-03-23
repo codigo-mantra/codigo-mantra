@@ -120,8 +120,8 @@ body {
 }
 
 .badge-avatar img {
-    width: 32px;
-    height: 32px;
+    width: 50px;
+    height: 35px;   
     border-radius: 50%;
     object-fit: cover;
     border: 1px solid rgba(0, 0, 0, 0.1);
@@ -391,7 +391,7 @@ body {
 
 /* ─── SERVICES SECTION ─── */
 .services-section {
-    padding: 90px 0 80px;
+    padding: 110px 0 130px;
 }
 
 /* ─── SERVICES NEW ─── */
@@ -592,7 +592,7 @@ body {
 
 /* ─── PORTFOLIO REFINED ─── */
 .portfolio-section {
-    padding: 100px 0;
+    padding: 130px 0 0;
     position: relative;
     /* overflow-x: hidden; */
     /* background: #000;     */
@@ -771,7 +771,7 @@ body {
 
 /* ─── TESTIMONIALS V2 ─── */
 .testimonials-section {
-    padding: 100px 0;
+    padding: 130px 0 0;
 }
 
 .testimonials-v2-grid {
@@ -795,6 +795,7 @@ body {
     border: 1px solid #333232;
     background: #0C0C0C;
     box-shadow: 0 -5px 28px 8px rgba(244, 93, 52, 0.27) inset;
+    transform: translateY(-5px);
 }
 
 .t-quote {

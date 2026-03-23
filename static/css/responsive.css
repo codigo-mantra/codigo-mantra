@@ -453,7 +453,7 @@
         display: flex;
         align-items: center;
         gap: 11px;
-        margin-bottom: 50px;
+        /* margin-bottom: 50px; */
     }
     .cs-slider::before {
         width: 15.98px;
@@ -521,5 +521,39 @@
     }
     .case-study-content {
         padding: 70px 0 0;
+    }
+    .mobile-view {
+        display: grid;
+        align-items: flex-start;
+        gap: 16.787px;
+        align-self: stretch;
+        grid-template-columns: 0.1fr 1fr;
+    }
+    .service-card-new-home {
+        flex-direction: column;
+    }
+    .cm-footer {
+    padding: 20px;
+    border-radius: 20px;
+    }
+    .footer-h {
+        font-size: 14px;
+    }
+    .footer-a {
+        font-size: 12px;
+    }
+    span.reserved-rights {
+        font-size: 14px;
+    }
+    .cm-footer__bottom svg {
+        width: 25px;
+        height: 25.325px;
+    }
+    .footer-sub {
+        font-size: 10px;
+    }
+    .footer-row {
+        gap: 30px;
+        flex-direction: column-reverse;
     }
 }

@@ -98,7 +98,7 @@
     align-items: center;
     justify-content: center;
 }
-.service-card-new{
+.service-card-new-2{
     border-radius: 10px;
   background: #0C0C0C;
   border: 1px solid #333232;
@@ -108,7 +108,7 @@
   box-shadow: 0.5rem 1rem 1rem rgb(0 0 0 / 40%), -1px -1px 0px rgb(179 179 179), 1px 1px 0px rgb(234 234 234);
 }
 
-.service-card-new:hover {
+.service-card-new-2:hover {
     /* border-radius: 10px;
     border: 1px solid #333232;
     background: #0C0C0C;
@@ -132,12 +132,13 @@
   box-shadow:
     2px 1000px 1px #0C0C0C inset,
     0 0 24px rgba(241, 101, 53, 0.20);
+    transform: translateY(-5px);
 }
 
 /* ─── WHY CHOOSE US SECTION ─── */
-.why-choose-section {
+/* .why-choose-section {
     padding: 100px 0;
-}
+} */
 
 .why-left-card {
     border-radius: 30px;
@@ -207,6 +208,7 @@
 .btn-why-cta:hover {
     background: #d44d27;
     color: #fff;
+    transform: translateY(-5px);
 }
 
 .why-globe-wrap {

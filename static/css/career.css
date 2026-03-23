@@ -61,6 +61,22 @@
     margin-bottom: 14px;
     text-transform: none;
 }
+a.open-position-btn {
+    color: var(--Orange, #F05D35);
+    text-align: center;
+    font-family: Poppins;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 150%;
+    text-decoration-line: underline;
+    text-decoration-style: solid;
+    text-decoration-skip-ink: auto;
+    text-decoration-thickness: auto;
+    text-underline-offset: auto;
+    text-underline-position: from-font;
+    position: relative;
+}
 
 .job-title {
     color: var(--white, #F6F6F6);
@@ -412,4 +428,19 @@
 }
 .career-page-form{
     padding-top: 134px;
+}
+a.open-position-btn::after {
+    content: '';
+    background-image: url(../images/career/Union.svg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 104px;
+    height: 57px;
+    display: inline-block;
+    position: absolute;
+    right: -47%;
+    top: 11%;
+    transform: translateY(-50%);
+    transform: translateY(-50%);
 }
