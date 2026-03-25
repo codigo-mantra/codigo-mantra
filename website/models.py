@@ -63,6 +63,15 @@ class Industry(TimeStamp):
         return self.name
     
 
+class Technology(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=255)
+    slug = models.SlugField(unique=True)
+
+    def __str__(self):
+        return self.name
+    
+
 class Department(TimeStamp):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255)
@@ -96,6 +105,10 @@ class CaseStudy(TimeStamp):
     title = models.CharField(max_length=255)
     slug = models.SlugField(unique=True)
     content = models.TextField()
+    about = models.TextField(blank=True, null=True)
+    goal = models.TextField(blank=True, null=True)
+    challenge = models.TextField(blank=True, null=True)
+    outcome = models.TextField(blank=True, null=True)
     timeline = models.CharField(max_length=255, blank=True)
     team = models.CharField(max_length=255, blank=True)
     url = models.URLField(blank=True, null=True)
@@ -103,6 +116,7 @@ class CaseStudy(TimeStamp):
 
     services = models.ManyToManyField(Service, through="CaseStudyService")
     industries = models.ManyToManyField(Industry, through="CaseStudyIndustry")
+    technologies = models.ManyToManyField(Technology, through="CaseStudyTechnology")
 
     def __str__(self):
         return self.title
@@ -130,6 +144,12 @@ class CaseStudyService(TimeStamp):
 class CaseStudyIndustry(TimeStamp):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     industry = models.ForeignKey(Industry, on_delete=models.CASCADE)
+    case_study = models.ForeignKey(CaseStudy, on_delete=models.CASCADE)
+
+
+class CaseStudyTechnology(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    technology = models.ForeignKey(Technology, on_delete=models.CASCADE)
     case_study = models.ForeignKey(CaseStudy, on_delete=models.CASCADE)
 
 
@@ -287,3 +307,23 @@ class FAQ(TimeStamp):
 
     def __str__(self):
         return self.question
+
+class PrivacyPolicy(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    title = models.TextField()
+    content = RichTextField(blank=True, null = True)
+    pdf = models.FileField(upload_to="documents/privacy_policy/", blank=True, null=True)
+
+    def __str__(self):
+        return self.title
+
+
+
+class TermsofService(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    title = models.TextField()
+    content = RichTextField(blank=True, null = True)
+    pdf = models.FileField(upload_to="documents/terms_of_service/", blank=True, null=True)
+
+    def __str__(self):
+        return self.title

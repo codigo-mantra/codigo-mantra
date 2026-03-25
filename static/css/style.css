@@ -1569,3 +1569,145 @@ p.error-sub.text-center {
   max-width: 611px;
   margin: 20px auto 40px;
 }
+
+
+/* Legal PDF (inline PDF.js): same #171717 as body — no iframe gray gutter */
+.legal-pdf-wrap,
+.legal-pdfjs-root {
+  background: #171717 !important;
+}
+
+.legal-pdfjs-root {
+  min-height: calc(100vh - 220px);
+}
+
+.legal-pdfjs-loading {
+  color: rgba(255, 255, 255, 0.85);
+}
+/* Legal Pages (Privacy Policy & Terms and Conditions) */
+.legal-page-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 3rem 15px;
+}
+
+.legal-text-content {
+    text-align: left;
+}
+
+.legal-text-content h1, 
+.legal-text-content h2, 
+.legal-text-content h3 {
+    margin-top: 2.5rem;
+    margin-bottom: 1.2rem;
+    font-weight: 600;
+    color: #fff;
+}
+
+.legal-text-content h1 { 
+    font-size: 2.5rem; 
+    text-align: center; 
+    margin-bottom: 3rem; 
+}
+
+.legal-text-content h2 { 
+    font-size: 2rem; 
+}
+
+.legal-text-content h3 { 
+    font-size: 1.5rem; 
+}
+
+.legal-text-content .content-body {
+    text-align: justify;
+    line-height: 1.8;
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.legal-text-content .content-body p { 
+    margin-bottom: 1.5rem; 
+}
+
+.legal-text-content .content-body ul, 
+.legal-text-content .content-body ol { 
+    margin-bottom: 1.5rem; 
+    padding-left: 1.5rem; 
+}
+
+.legal-text-content .content-body li { 
+    margin-bottom: 0.8rem; 
+}
+
+/* PDFJS Viewer Styling */
+.legal-pdfjs-root {
+    width: 100%;
+    background: #fff;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.legal-pdfjs-loading {
+    color: #000;
+}
+
+
+.legal-text-content {
+    max-width: 900px;
+    margin: auto;
+    padding: 40px 20px;
+    color: #1a1a1a;
+    line-height: 1.8;
+}
+
+/* Title */
+.legal-title {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 30px;
+}
+
+/* Paragraph spacing */
+.content-body p {
+    margin-bottom: 18px;
+    font-size: 16px;
+}
+
+/* Headings */
+.content-body h1,
+.content-body h2,
+.content-body h3,
+.content-body h4 {
+    margin-top: 30px;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+/* Lists */
+.content-body ul {
+    padding-left: 20px;
+    margin-bottom: 20px;
+}
+
+.content-body li {
+    margin-bottom: 8px;
+}
+
+/* Bold text */
+.content-body strong {
+    font-weight: 600;
+}
+.cm-mega__productD a{
+  color: var(--Primary-Primary700, #E5562F);
+  font-family: Poppins;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%;
+  text-decoration-line: underline;
+  text-decoration-style: solid;
+  text-decoration-skip-ink: auto;
+  text-decoration-thickness: auto;
+  text-underline-offset: auto;
+  text-underline-position: from-font;
+}

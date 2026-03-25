@@ -26,7 +26,7 @@
                                                     <div class="cm-mega__h">Services</div>
                                                     <div class="cm-sub-menu">AUTOMATION</div>
                                                     {% for service in services_nav|slice:":6" %}
-                                                        <a class="cm-mega__link" href="{% url 'service_detail' service.slug %}">{{ service.name }}</a>
+                                                        <a class="cm-mega__link" href="#">{{ service.name }}</a>
 
                                                     {% endfor %}
                                                 </div>
@@ -40,15 +40,12 @@
 
                                                 <div class="cm-mega__col cm-mega__col--product">
                                                     <div class="cm-mega__h">Our Product</div>
-                                                    <a class="cm-mega__product" href="{% url 'portfolio' %}">
-                                                        <span class="cm-mega__thumb" aria-hidden="true">
-                                                            <img src="{% static 'images/HSG-project-cm.png' %}" alt="HSG Project">
-                                                        </span>
+                                                        <span class="cm-mega__thumb" aria-hidden="true"></span>
                                                         <span class="cm-mega__productBody">
                                                             <span class="cm-mega__productT">{{case_study_nav.title}}</span>
-                                                            <span class="cm-mega__productD">{{case_study_nav.content|truncatewords:10}}</span>
+                                                            <span class="cm-mega__productD">{{case_study_nav.content|truncatewords:10}}<a href="{% url 'portfolio' %}">View Product</a></span>  
                                                         </span>
-                                                    </a>
+                                                  
                                                 </div>
                                             </div>
 
@@ -67,29 +64,30 @@
                                                 <div class="cm-mega__col">
                                                     <div class="cm-mega__h">Industries</div>
                                                     {% for industry in industries_nav|slice:":6" %}
-                                                        <a class="cm-mega__link" href="/industries/{{ industry.slug }}/">{{ industry.name }}</a>
-                                                        <a class="cm-mega__link" href="{% url 'portfolio' %}?industry={{ industry.name|lower }}">{{ industry.name }}</a>
+                                                        <!-- <a class="cm-mega__link" href="{% url 'portfolio' %}?industry={{ industry.name|lower }}">{{ industry.name }}</a> -->
+                                                        <a class="cm-mega__link" href="#">{{ industry.name }}</a>
+
                                                     {% endfor %}
                                                 </div>
 
                                                 <div class="cm-mega__col cm-mega__col--mid">
                                                     <div class="cm-mega__h">&nbsp;</div>
                                                     {% for industry in industries_nav|slice:"6:12" %}
-                                                        <a class="cm-mega__link" href="/industries/{{ industry.slug }}/">{{ industry.name }}</a>
-                                                        <a class="cm-mega__link" href="{% url 'portfolio' %}?industry={{ industry.name|lower }}">{{ industry.name }}</a>
+                                                        <!-- <a class="cm-mega__link" href="{% url 'portfolio' %}?industry={{ industry.name|lower }}">{{ industry.name }}</a> -->
+                                                        <a class="cm-mega__link" href="#">{{ industry.name }}</a>
                                                     {% endfor %}
                                                 </div>
                                                 <div class="cm-mega__col cm-mega__col--product">
                                                     <div class="cm-mega__h">Our Product</div>
-                                                    <a class="cm-mega__product" href="{% url 'portfolio' %}">
+                                                    
                                                         <span class="cm-mega__thumb" aria-hidden="true">
                                                             <img src="http://localhost:8000{{ case_study_nav.cover_image }}" alt="" loading="lazy">
                                                         </span>
                                                         <span class="cm-mega__productBody">
                                                             <span class="cm-mega__productT">{{case_study_nav.title}}</span>
-                                                            <span class="cm-mega__productD">{{case_study_nav.content|truncatewords:10}}</span>
+                                                            <span class="cm-mega__productD">{{case_study_nav.content|truncatewords:10}} <a href="{% url 'portfolio' %}">View Product</a></span>  
                                                         </span>
-                                                    </a>
+                                                    
                                                 </div>
                                             </div>
                                             <div class="cm-mega__bottom">
@@ -108,21 +106,20 @@
                                                 <div class="cm-mega__col">
                                                     <div class="cm-mega__h">Who are we</div>
                                                     <a class="cm-mega__link" href="{% url 'about-us' %}">About us</a>
-                                                    <a class="cm-mega__link" href="#about">Our Mission</a>
-                                                    <a class="cm-mega__link" href="#about">Our Vision</a>
-                                                    <a class="cm-mega__link" href="#about">Our Team</a>
+                                                    <a class="cm-mega__link" href="{% url 'career' %}">Career</a>
+                                                    <a class="cm-mega__link" href="{% url 'portfolio' %}">Our Products</a>
+                                                    <a class="cm-mega__link" href="#about">Insights</a>
                                                 </div>
                                                  <div class="cm-mega__col cm-mega__col--product">
                                                     <div class="cm-mega__h">Our Product</div>
-                                                    <a class="cm-mega__product" href="{% url 'portfolio' %}">
                                                         <span class="cm-mega__thumb" aria-hidden="true">
                                                             <img loading="lazy" src="http://localhost:8000{{ case_study_nav.cover_image.url }}" alt="{{ case_study_nav.title }}">
                                                         </span>
                                                         <span class="cm-mega__productBody">
                                                             <span class="cm-mega__productT">{{case_study_nav.title}}</span>
-                                                            <span class="cm-mega__productD">{{case_study_nav.content|truncatewords:10}}</span>
+                                                            <span class="cm-mega__productD">{{case_study_nav.content|truncatewords:10}} <a href="{% url 'portfolio' %}">View Product</a></span>  
                                                         </span>
-                                                    </a>ss
+                                               
                                                 </div>
                                             </div>
                                             <div class="cm-mega__bottom">

@@ -39,7 +39,9 @@ $(document).ready(function () {
 });
 $(document).ready(function () {
     $('.case-study-slider').slick({
-        slidesToShow: 3,
+        slidesToShow: 1,
+        centerMode: true,
+        centerPadding: '33.333%',
         slidesToScroll: 1,
         arrows: false,
         dots: true,
@@ -49,15 +51,25 @@ $(document).ready(function () {
         autoplay: true,
         responsive: [
             {
+                breakpoint: 1199,
+                settings: {
+                    centerPadding: '28%',
+                }
+            },
+            {
                 breakpoint: 991,
                 settings: {
-                    slidesToShow: 3,
+                    slidesToShow: 1,
+                    centerMode: true,
+                    centerPadding: '15%',
                 }
             },
             {
                 breakpoint: 767,
                 settings: {
                     slidesToShow: 1,
+                    centerMode: false,
+                    centerPadding: '0',
                 }
             }
         ]

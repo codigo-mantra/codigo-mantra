@@ -34,6 +34,7 @@ urlpatterns = [
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
+
 # For serving static/media files locally when DEBUG=False
 if not settings.DEBUG:
     urlpatterns += [

@@ -22,8 +22,8 @@
                             <div class="col-lg-2">
                                 <div class="footer-col">
                                     <div class="footer-h">Documents</div>
-                                    <a class="footer-a" href="#privacy">Privacy Policy</a>
-                                    <a class="footer-a" href="#terms">Terms of Service</a>
+                                    <a class="footer-a" href="{% url 'privacy-policy' %}">Privacy Policy</a>
+                                    <a class="footer-a" href="{% url 'terms-conditions' %}">Terms of Service</a>
                                 </div>
                             </div>
                       
@@ -69,10 +69,7 @@
                                     <label class="visually-hidden" for="footerEmail">Email</label>
                                     <div class="input-group-custom">
                                         <input id="footerEmail" class="form-control footer-input" name="email" type="email" placeholder="Email address" autocomplete="email" required>
-                                        <button class="btn btn-sm btn-cm-cta btn-pill custom-footer-btn" type="submit">
-                                            <span class="label-up">Subscribe</span>
-                                            <span class="label-up">Subscribe</span>
-                                        </button>
+                                        <button class="btn btn-sm btn-cm-cta btn-pill custom-footer-btn" type="submit" data-bs-target="#newsletterModal" data-bs-toggle="modal">Subscribe</button>
                                     </div>
                                 </form>
                             </div>
@@ -287,3 +284,92 @@
                 </div>
             </div>
         </footer>
+
+<div class="modal fade" id="newsletterModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content newsletter-modal">
+        <!-- Illustration Area -->
+        <div class="newsletter-illustration">
+  
+         
+  
+          <!-- Balloons + Envelope -->
+          <div class="balloon-envelope-wrap">
+            <img src="{% static 'images/contact-us-modal.svg' %}" 
+                alt="Contact Us Modal">
+          </div>
+        </div>
+  
+        <!-- Text Content -->
+        <div class="newsletter-body">
+          <h2 class="newsletter-title">You're Subscribed!</h2>
+          <p class="newsletter-desc">Thanks for joining our newsletter. You'll now receive updates, insights, and the latest from Codigo Mantra.</p>
+        </div>
+  
+      </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const footerForm = document.querySelector('.footer-form');
+
+    if (!footerForm) return;
+
+    footerForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(footerForm);
+        const actionUrl = footerForm.getAttribute('action');
+        const csrfToken = footerForm.querySelector('[name=csrfmiddlewaretoken]').value;
+        const submitBtn = footerForm.querySelector('[type=submit]');
+
+        // Disable button to prevent double submit
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Subscribing...';
+
+        fetch(actionUrl, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken,
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
+                footerForm.reset();
+                // Show success modal
+                const modal = new bootstrap.Modal(document.getElementById('newsletterModal'));
+                modal.show();
+            } else {
+                // Show inline error
+                showFormError(footerForm, 'Please enter a valid email address.');
+            }
+        })
+        .catch(() => {
+            showFormError(footerForm, 'Something went wrong. Please try again.');
+        })
+        .finally(() => {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Subscribe';
+        });
+    });
+
+    function showFormError(form, message) {
+        // Remove existing error
+        const existing = form.querySelector('.footer-form-error');
+        if (existing) existing.remove();
+
+        const err = document.createElement('p');
+        err.className = 'footer-form-error';
+        err.style.cssText = 'color:#ff6b6b; font-size:0.8rem; margin-top:6px; margin-bottom:0;';
+        err.textContent = message;
+        form.appendChild(err);
+
+        // Auto-remove after 4s
+        setTimeout(() => err.remove(), 4000);
+    }
+});
+</script>

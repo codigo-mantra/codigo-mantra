@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Terms & Conditions{% endblock %}
+
+{% block content %}
+<section class="legal-pdf-wrap container-fluid px-0">
+    <div class="legal-page-container">
+        {% if terms %}
+            {% if terms.pdf %}
+                <div class="legal-text-content">
+                    <h1 class="mb-5">{{ terms.title }}</h1>
+                </div>
+                {{ pdf_absolute_url|json_script:"legal-pdf-data" }}
+                <div id="legal-pdfjs-mount" class="legal-pdfjs-root" role="region" aria-label="Terms PDF"></div>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" crossorigin="anonymous"></script>
+                <script>
+                (function () {
+                  var dataEl = document.getElementById('legal-pdf-data');
+                  if (!dataEl || typeof pdfjsLib === 'undefined') return;
+                  var pdfUrl = JSON.parse(dataEl.textContent);
+                  if (!pdfUrl) return;
+                  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+                  var mount = document.getElementById('legal-pdfjs-mount');
+                  if (!mount) return;
+                  var resizeTimer;
+                  function renderPdf() {
+                    mount.innerHTML = '<p class="text-center p-4 legal-pdfjs-loading">Loading…</p>';
+                    pdfjsLib.getDocument({ url: pdfUrl }).promise.then(function (pdf) {
+                      return pdf.getPage(1).then(function (p1) {
+                        var cw = mount.clientWidth;
+                        var base = p1.getViewport({ scale: 1 });
+                        var scale = cw / base.width;
+                        mount.innerHTML = '';
+                        function appendPage(pageNum) {
+                          return pdf.getPage(pageNum).then(function (page) {
+                            var viewport = page.getViewport({ scale: scale });
+                            var canvas = document.createElement('canvas');
+                            var ctx = canvas.getContext('2d');
+                            canvas.width = viewport.width;
+                            canvas.height = viewport.height;
+                            canvas.style.cssText = 'display:block;width:100%;height:auto;background:#fff';
+                            return page.render({ canvasContext: ctx, viewport: viewport }).promise.then(function () {
+                              mount.appendChild(canvas);
+                            });
+                          });
+                        }
+                        var chain = Promise.resolve();
+                        for (var i = 1; i <= pdf.numPages; i++) {
+                          (function (n) {
+                            chain = chain.then(function () { return appendPage(n); });
+                          })(i);
+                        }
+                        return chain;
+                      });
+                    }).catch(function (err) {
+                      mount.innerHTML = '';
+                      var p = document.createElement('p');
+                      p.className = 'text-center p-4 legal-pdfjs-loading';
+                      p.appendChild(document.createTextNode('Could not load PDF. '));
+                      var a = document.createElement('a');
+                      a.href = pdfUrl;
+                      a.rel = 'noopener';
+                      a.textContent = 'Open file';
+                      p.appendChild(a);
+                      mount.appendChild(p);
+                      console.error(err);
+                    });
+                  }
+                  renderPdf();
+                  window.addEventListener('resize', function () {
+                    clearTimeout(resizeTimer);
+                    resizeTimer = setTimeout(renderPdf, 280);
+                  });
+                })();
+                </script>
+            {% else %}
+              <div class="legal-text-content">
+                <h1 class="legal-title">{{ policy.title }}</h1>
+                <div class="content-body">
+                  {{ policy.content|linebreaks }}
+                </div>
+              </div>
+            {% endif %}
+        {% else %}
+            <div class="legal-text-content text-center">
+                <h2>No Terms & Conditions Available</h2>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

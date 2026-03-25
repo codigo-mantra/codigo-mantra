@@ -18,5 +18,9 @@ urlpatterns = [
     
     # URL to intentionally trigger a 500 error for testing
     path('trigger-error/', trigger_error, name='trigger_error'),
+
+    path('privacy-policy/', PrivacyPolicyView.as_view(), name='privacy-policy'),
+    path('terms-and-conditions/', TermsConditionsView.as_view(), name='terms-conditions'),
+
 ]
 

@@ -2,26 +2,27 @@
 {% block title %}Portfolio | Codigo Mantra{% endblock %}
 {% load static %}
 {% block content %}
-  <section class="case-study-hero">
-                <div class="container">
-                    <!-- Hero Header -->
-                    <div class="hero-center">
-                        <h1 class="hero-title service-hero-title">
-                            Innovate the Future with  <span class="text-orange">Your Vision</span> and <span class="text-orange">Our Tech</span>
-                        </h1>
+<section class="case-study-hero">
+    <div class="container">
+        <!-- Hero Header -->
+        <div class="hero-center">
+            <h1 class="hero-title service-hero-title">
+                Innovate the Future with <span class="text-orange">Your Vision</span> and <span class="text-orange">Our
+                    Tech</span>
+            </h1>
 
+        </div>
+
+        <div class="row">
+            <!-- <div class="col-lg-12 col-md-12">
+                <h4 class="project-title-cm">Featured Projects</h4>
+                <div class="case-study-slide case-study-slider" id="project">
+                    {% for case_study in case_studies %}
+                    <div class="case-study-image" aria-hidden="true">
+                        <img src="{{ case_study.images.first.image.url }}" alt="Case Study 1">
                     </div>
-
-                    <div class="row">
-                        <div class="col-lg-12 col-md-12">
-                            <h4 class="project-title-cm">Featured Projects</h4>
-                                <div class="case-study-slide case-study-slider" id="project">
-                                    {% for case_study in case_studies %}
-                                        <div class="case-study-image" aria-hidden="true">
-                                            <img src="{{ case_study.images.first.image.url }}" alt="Case Study 1">    
-                                        </div>
-                                    {%endfor%}
-                                        <!-- <div class="case-study-image" aria-hidden="true">
+                    {%endfor%} -->
+                    <!-- <div class="case-study-image" aria-hidden="true">
                                             <img src="{% static 'images/case-studies/project-1.jpg' %}" alt="Case Study 1">    
                                         </div>
                                         <div class="case-study-image" aria-hidden="true">
@@ -33,53 +34,86 @@
                                         <div class="case-study-image" aria-hidden="true">
                                             <img src="{% static 'images/case-studies/project-1.jpg' %}" alt="Case Study 2">
                                         </div> -->
-                            </div>
+                <!--</div> -->
+            <!-- </div> -->
+            <div class="col-lg-12 col-md-12">
+                <h4 class="project-title-cm">Featured Projects</h4>
+                <div class="case-study-slide case-study-slider" id="project">
+                    {# Change 'case_studies' to 'featured_projects' to limit to exactly 3 #}
+                    {% for case_study in featured_projects %}
+                        <div class="case-study-image" aria-hidden="true">
+                            {% if case_study.cover_image %}
+                                <img src="{{ case_study.cover_image.url }}" alt="{{ case_study.title }}">
+                            {% elif case_study.images.first %}
+                                <img src="{{ case_study.images.first.image.url }}" alt="{{ case_study.title }}">
+                            {% else %}
+                                <img src="{% static 'images/case-studies/project-1.jpg' %}" alt="Placeholder">
+                            {% endif %}
                         </div>
-                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
 
-                
-      </section>
-      <section class="case-study-content">
-            <div class="container text-center">
-                <div class="hero-badge-wrap">
-                <div class="primary-badge">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" viewBox="0 0 18 20" fill="none">
-                    <path d="M11.5 6.5C11.5 6.5 11.1317 10.3846 12.67 11.895C14.1868 13.3843 18 13 18 13C18 13 14.0968 13.0922 12.67 14.7556C11.4276 16.204 11.5 19.5 11.5 19.5C11.5 19.5 11.3338 16.1726 10.005 14.7556C8.58811 13.2447 5 13 5 13C5 13 8.51659 13.2334 10.005 11.895C11.6307 10.4332 11.5 6.5 11.5 6.5Z" fill="#F05D35"/>
-                    <path d="M5 0C5 0 4.7167 2.98814 5.9 4.15C7.06678 5.29564 10 5 10 5C10 5 6.99755 5.07093 5.9 6.35045C4.94427 7.46464 5 10 5 10C5 10 4.87219 7.44047 3.85 6.35045C2.76008 5.18822 0 5 0 5C0 5 2.70507 5.17951 3.85 4.15C5.10054 3.02553 5 0 5 0Z" fill="#F16535"/>
+
+</section>
+<section class="case-study-content">
+    <div class="container text-center">
+        <div class="hero-badge-wrap">
+            <div class="primary-badge">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" viewBox="0 0 18 20" fill="none">
+                    <path
+                        d="M11.5 6.5C11.5 6.5 11.1317 10.3846 12.67 11.895C14.1868 13.3843 18 13 18 13C18 13 14.0968 13.0922 12.67 14.7556C11.4276 16.204 11.5 19.5 11.5 19.5C11.5 19.5 11.3338 16.1726 10.005 14.7556C8.58811 13.2447 5 13 5 13C5 13 8.51659 13.2334 10.005 11.895C11.6307 10.4332 11.5 6.5 11.5 6.5Z"
+                        fill="#F05D35" />
+                    <path
+                        d="M5 0C5 0 4.7167 2.98814 5.9 4.15C7.06678 5.29564 10 5 10 5C10 5 6.99755 5.07093 5.9 6.35045C4.94427 7.46464 5 10 5 10C5 10 4.87219 7.44047 3.85 6.35045C2.76008 5.18822 0 5 0 5C0 5 2.70507 5.17951 3.85 4.15C5.10054 3.02553 5 0 5 0Z"
+                        fill="#F16535" />
+                </svg>
+                We're hiring
+            </div>
+        </div>
+
+        <h2 class="display-heading">
+            Crafting digital solutions for<br> tomorrow's challenges.
+        </h2>
+
+        <!-- Toggle Switch -->
+        <div class="cs-toggle-wrap">
+            <span class="cs-toggle-label active-label" id="label-industries">Industries</span>
+            <label class="cs-switch">
+                <input type="checkbox" id="cs-toggle-input">
+                <span class="cs-slider"></span>
+            </label>
+            <span class="cs-toggle-label" id="label-technologies">Technologies</span>
+            <div class="cs-filter-header d-lg-none">
+                <button class="cs-mobile-filter-btn" id="cs-mobile-filter-btn">
+                    Filters
+                    <svg class="filter-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <path d="M6 9l6 6 6-6" />
                     </svg>
-                    We're hiring
-                </div>
-                </div>
+                </button>
+            </div>
+        </div>
 
-                <h2 class="display-heading">
-                Crafting digital solutions for<br> tomorrow's challenges.
-                </h2>
-
-                <!-- Toggle Switch -->
-                <div class="cs-toggle-wrap">
-                <span class="cs-toggle-label" id="label-industries">Industries</span>
-                <label class="cs-switch">
-                    <input type="checkbox" id="cs-toggle-input">
-                    <span class="cs-slider"></span>
-                </label>
-                <span class="cs-toggle-label" id="label-technologies">Technologies</span>
-                </div>
-
-                <div class="row">
-                <!-- Sidebar -->
-                <div class="col-lg-3 col-md-4 mb-4">
-                    <div class="cs-sidebar">
+        <div class="row position-relative">
+            <!-- Sidebar -->
+            <div class="col-lg-3 col-md-4 mb-4 cs-sidebar-col" id="cs-sidebar-col">
+                <div class="cs-sidebar">
                     <div class="cs-sidebar-header">
                         <span class="cs-all-btn active" id="cs-all-btn">All</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                             <path d="M13.125 11.625V20.25C13.125 20.5484 13.0065 20.8345 12.7955 21.0455C12.5845 21.2565 12.2984 21.375 12 21.375C11.7016 21.375 11.4155 21.2565 11.2045 21.0455C10.9935 20.8345 10.875 20.5484 10.875 20.25V11.625C10.875 11.3266 10.9935 11.0405 11.2045 10.8295C11.4155 10.6185 11.7016 10.5 12 10.5C12.2984 10.5 12.5845 10.6185 12.7955 10.8295C13.0065 11.0405 13.125 11.3266 13.125 11.625ZM18.75 18C18.4516 18 18.1655 18.1185 17.9545 18.3295C17.7435 18.5405 17.625 18.8266 17.625 19.125V20.25C17.625 20.5484 17.7435 20.8345 17.9545 21.0455C18.1655 21.2565 18.4516 21.375 18.75 21.375C19.0484 21.375 19.3345 21.2565 19.5455 21.0455C19.7565 20.8345 19.875 20.5484 19.875 20.25V19.125C19.875 18.8266 19.7565 18.5405 19.5455 18.3295C19.3345 18.1185 19.0484 18 18.75 18ZM21 14.25H19.875V3.75C19.875 3.45163 19.7565 3.16548 19.5455 2.9545C19.3345 2.74353 19.0484 2.625 18.75 2.625C18.4516 2.625 18.1655 2.74353 17.9545 2.9545C17.7435 3.16548 17.625 3.45163 17.625 3.75V14.25H16.5C16.2016 14.25 15.9155 14.3685 15.7045 14.5795C15.4935 14.7905 15.375 15.0766 15.375 15.375C15.375 15.6734 15.4935 15.9595 15.7045 16.1705C15.9155 16.3815 16.2016 16.5 16.5 16.5H21C21.2984 16.5 21.5845 16.3815 21.7955 16.1705C22.0065 15.9595 22.125 15.6734 22.125 15.375C22.125 15.0766 22.0065 14.7905 21.7955 14.5795C21.5845 14.3685 21.2984 14.25 21 14.25ZM5.25 15C4.95163 15 4.66548 15.1185 4.4545 15.3295C4.24353 15.5405 4.125 15.8266 4.125 16.125V20.25C4.125 20.5484 4.24353 20.8345 4.4545 21.0455C4.66548 21.2565 4.95163 21.375 5.25 21.375C5.54837 21.375 5.83452 21.2565 6.0455 21.0455C6.25647 20.8345 6.375 20.5484 6.375 20.25V16.125C6.375 15.8266 6.25647 15.5405 6.0455 15.3295C5.83452 15.1185 5.54837 15 5.25 15ZM7.5 11.25H6.375V3.75C6.375 3.45163 6.25647 3.16548 6.0455 2.9545C5.83452 2.74353 5.54837 2.625 5.25 2.625C4.95163 2.625 4.66548 2.74353 4.4545 2.9545C4.24353 3.16548 4.125 3.45163 4.125 3.75V11.25H3C2.70163 11.25 2.41548 11.3685 2.2045 11.5795C1.99353 11.7905 1.875 12.0766 1.875 12.375C1.875 12.6734 1.99353 12.9595 2.2045 13.1705C2.41548 13.3815 2.70163 13.5 3 13.5H7.5C7.79837 13.5 8.08452 13.3815 8.2955 13.1705C8.50647 12.9595 8.625 12.6734 8.625 12.375C8.625 12.0766 8.50647 11.7905 8.2955 11.5795C8.08452 11.3685 7.79837 11.25 7.5 11.25ZM14.25 6.75H13.125V3.75C13.125 3.45163 13.0065 3.16548 12.7955 2.9545C12.5845 2.74353 12.2984 2.625 12 2.625C11.7016 2.625 11.4155 2.74353 11.2045 2.9545C10.9935 3.16548 10.875 3.45163 10.875 3.75V6.75H9.75C9.45163 6.75 9.16548 6.86853 8.9545 7.0795C8.74353 7.29048 8.625 7.57663 8.625 7.875C8.625 8.17337 8.74353 8.45952 8.9545 8.6705C9.16548 8.88147 9.45163 9 9.75 9H14.25C14.5484 9 14.8345 8.88147 15.0455 8.6705C15.2565 8.45952 15.375 8.17337 15.375 7.875C15.375 7.57663 15.2565 7.29048 15.0455 7.0795C14.8345 6.86853 14.5484 6.75 14.25 6.75Z" fill="#F6F6F6"/>
+                        <svg id="cs-filter-icon" style="cursor: pointer;" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M13.125 11.625V20.25C13.125 20.5484 13.0065 20.8345 12.7955 21.0455C12.5845 21.2565 12.2984 21.375 12 21.375C11.7016 21.375 11.4155 21.2565 11.2045 21.0455C10.9935 20.8345 10.875 20.5484 10.875 20.25V11.625C10.875 11.3266 10.9935 11.0405 11.2045 10.8295C11.4155 10.6185 11.7016 10.5 12 10.5C12.2984 10.5 12.5845 10.6185 12.7955 10.8295C13.0065 11.0405 13.125 11.3266 13.125 11.625ZM18.75 18C18.4516 18 18.1655 18.1185 17.9545 18.3295C17.7435 18.5405 17.625 18.8266 17.625 19.125V20.25C17.625 20.5484 17.7435 20.8345 17.9545 21.0455C18.1655 21.2565 18.4516 21.375 18.75 21.375C19.0484 21.375 19.3345 21.2565 19.5455 21.0455C19.7565 20.8345 19.875 20.5484 19.875 20.25V19.125C19.875 18.8266 19.7565 18.5405 19.5455 18.3295C19.3345 18.1185 19.0484 18 18.75 18ZM21 14.25H19.875V3.75C19.875 3.45163 19.7565 3.16548 19.5455 2.9545C19.3345 2.74353 19.0484 2.625 18.75 2.625C18.4516 2.625 18.1655 2.74353 17.9545 2.9545C17.7435 3.16548 17.625 3.45163 17.625 3.75V14.25H16.5C16.2016 14.25 15.9155 14.3685 15.7045 14.5795C15.4935 14.7905 15.375 15.0766 15.375 15.375C15.375 15.6734 15.4935 15.9595 15.7045 16.1705C15.9155 16.3815 16.2016 16.5 16.5 16.5H21C21.2984 16.5 21.5845 16.3815 21.7955 16.1705C22.0065 15.9595 22.125 15.6734 22.125 15.375C22.125 15.0766 22.0065 14.7905 21.7955 14.5795C21.5845 14.3685 21.2984 14.25 21 14.25ZM5.25 15C4.95163 15 4.66548 15.1185 4.4545 15.3295C4.24353 15.5405 4.125 15.8266 4.125 16.125V20.25C4.125 20.5484 4.24353 20.8345 4.4545 21.0455C4.66548 21.2565 4.95163 21.375 5.25 21.375C5.54837 21.375 5.83452 21.2565 6.0455 21.0455C6.25647 20.8345 6.375 20.5484 6.375 20.25V16.125C6.375 15.8266 6.25647 15.5405 6.0455 15.3295C5.83452 15.1185 5.54837 15 5.25 15ZM7.5 11.25H6.375V3.75C6.375 3.45163 6.25647 3.16548 6.0455 2.9545C5.83452 2.74353 5.54837 2.625 5.25 2.625C4.95163 2.625 4.66548 2.74353 4.4545 2.9545C4.24353 3.16548 4.125 3.45163 4.125 3.75V11.25H3C2.70163 11.25 2.41548 11.3685 2.2045 11.5795C1.99353 11.7905 1.875 12.0766 1.875 12.375C1.875 12.6734 1.99353 12.9595 2.2045 13.1705C2.41548 13.3815 2.70163 13.5 3 13.5H7.5C7.79837 13.5 8.08452 13.3815 8.2955 13.1705C8.50647 12.9595 8.625 12.6734 8.625 12.375C8.625 12.0766 8.50647 11.7905 8.2955 11.5795C8.08452 11.3685 7.79837 11.25 7.5 11.25ZM14.25 6.75H13.125V3.75C13.125 3.45163 13.0065 3.16548 12.7955 2.9545C12.5845 2.74353 12.2984 2.625 12 2.625C11.7016 2.625 11.4155 2.74353 11.2045 2.9545C10.9935 3.16548 10.875 3.45163 10.875 3.75V6.75H9.75C9.45163 6.75 9.16548 6.86853 8.9545 7.0795C8.74353 7.29048 8.625 7.57663 8.625 7.875C8.625 8.17337 8.74353 8.45952 8.9545 8.6705C9.16548 8.88147 9.45163 9 9.75 9H14.25C14.5484 9 14.8345 8.88147 15.0455 8.6705C15.2565 8.45952 15.375 8.17337 15.375 7.875C15.375 7.57663 15.2565 7.29048 15.0455 7.0795C14.8345 6.86853 14.5484 6.75 14.25 6.75Z"
+                                fill="#F6F6F6" />
                         </svg>
                     </div>
 
                     <!-- Industries list -->
                     <div class="cs-filter-list active" id="list-industries">
                         {%for industry in industries%}
-                            <label class="cs-radio-item"><input type="checkbox" name="cs-filter" value="{{ industry.name|lower }}"><span class="cs-radio-dot"></span>{{ industry.name }}</label>
+                        <label class="cs-radio-item"><input type="checkbox" name="cs-filter"
+                                value="{{ industry.name|lower }}"><span class="cs-radio-dot"></span>{{ industry.name }}</label>
                         {%endfor%}
                     </div>
 
@@ -115,46 +149,58 @@
                     <label class="cs-radio-item"><input type="checkbox" name="cs-filter" value="wellness"><span class="cs-radio-dot"></span>Wellness and Sports</label>
                     <label class="cs-radio-item"><input type="checkbox" name="cs-filter" value="professional"><span class="cs-radio-dot"></span>Professional Services</label>
                     <label class="cs-radio-item"><input type="checkbox" name="cs-filter" value="public"><span class="cs-radio-dot"></span>Public Services</label> -->
-                <!-- </div> -->
+                    <!-- </div> -->
 
-                <!-- Technologies list -->
-                <div class="cs-filter-list" id="list-technologies">
-                    <label class="cs-radio-item"><input type="checkbox" name="cs-filter" value="all"><span class="cs-radio-dot"></span>All</label>
-                    <label class="cs-radio-item"><input type="checkbox" name="cs-filter" value="react"><span class="cs-radio-dot"></span>React</label>
-                    <label class="cs-radio-item"><input type="checkbox" name="cs-filter" value="node"><span class="cs-radio-dot"></span>Node.js</label>
-                    <label class="cs-radio-item"><input type="checkbox" name="cs-filter" value="python"><span class="cs-radio-dot"></span>Python</label>
-                    <label class="cs-radio-item"><input type="checkbox" name="cs-filter" value="vue"><span class="cs-radio-dot"></span>Vue.js</label>
-                    <label class="cs-radio-item"><input type="checkbox" name="cs-filter" value="angular"><span class="cs-radio-dot"></span>Angular</label>
-                    <label class="cs-radio-item"><input type="checkbox" name="cs-filter" value="flutter"><span class="cs-radio-dot"></span>Flutter</label>
-                    <label class="cs-radio-item"><input type="checkbox" name="cs-filter" value="django"><span class="cs-radio-dot"></span>Django</label>
-                </div>
+                    <!-- Technologies list -->
+                    <div class="cs-filter-list" id="list-technologies">
+                        <label class="cs-radio-item"><input type="checkbox" name="cs-filter" value="react"><span
+                                class="cs-radio-dot"></span>React</label>
+                        <label class="cs-radio-item"><input type="checkbox" name="cs-filter" value="node"><span
+                                class="cs-radio-dot"></span>Node.js</label>
+                        <label class="cs-radio-item"><input type="checkbox" name="cs-filter" value="python"><span
+                                class="cs-radio-dot"></span>Python</label>
+                        <label class="cs-radio-item"><input type="checkbox" name="cs-filter" value="vue"><span
+                                class="cs-radio-dot"></span>Vue.js</label>
+                        <label class="cs-radio-item"><input type="checkbox" name="cs-filter" value="angular"><span
+                                class="cs-radio-dot"></span>Angular</label>
+                        <label class="cs-radio-item"><input type="checkbox" name="cs-filter" value="flutter"><span
+                                class="cs-radio-dot"></span>Flutter</label>
+                        <label class="cs-radio-item"><input type="checkbox" name="cs-filter" value="django"><span
+                                class="cs-radio-dot"></span>Django</label>
+                    </div>
                 </div>
             </div>
 
-        <!-- Projects Grid -->
-        <div class="col-lg-9 col-md-8">
-            <div class="cs-grid" id="cs-grid">
-                {% for case_study in case_studies %}
-                    
-                <div class="cs-card" data-industries="{% for industry in case_study.industries.all %}{{ industry.name|lower }} {% endfor %}" data-technologies="{% for tech in case_study.technologies.all %}{{ tech.name|lower }} {% endfor %}">
-                    <div class="cs-card-img"><img src="{{ case_study.cover_image.url }}" alt="{{ case_study.title }}"></div>
+            <!-- Projects Grid -->
+            <div class="col-lg-9 col-md-8">
+                <div class="cs-grid" id="cs-grid">
+                    {% for case_study in case_studies %}
+
+                    <div class="cs-card"
+                        data-industries="{% for industry in case_study.industries.all %}{{ industry.name|lower }} {% endfor %}"
+                        data-technologies="{% for tech in case_study.technologies.all %}{{ tech.name|lower }} {% endfor %}">
+                        <div class="cs-card-img"><img src="{{ case_study.cover_image.url }}"
+                                alt="{{ case_study.title }}"></div>
                         <div class="cs-card-body">
-                        <div>
-                            <div class="cm-card-header-text">
-                                <h5 class="cs-card-title">Featured Project</h5> 
-                                <a href="{% url 'case_study_detail' case_study.pk %}" class="cs-card-arrow">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="13" viewBox="0 0 14 13" fill="none">
-                                    <path d="M0.357509 11.0218C-0.0657032 11.3766 -0.121131 12.0074 0.233707 12.4306C0.588545 12.8538 1.21928 12.9092 1.64249 12.5544L1 11.7881L0.357509 11.0218ZM13.9232 1.87552C13.9715 1.32535 13.5647 0.840162 13.0146 0.791814L4.04913 0.00394332C3.49897 -0.0444047 3.01378 0.362398 2.96543 0.912563C2.91708 1.46273 3.32388 1.94792 3.87405 1.99626L11.8433 2.69659L11.143 10.6659C11.0947 11.216 11.5015 11.7012 12.0516 11.7496C12.6018 11.7979 13.087 11.3911 13.1353 10.841L13.9232 1.87552ZM1 11.7881L1.64249 12.5544L13.5695 2.55427L12.927 1.78797L12.2845 1.02168L0.357509 11.0218L1 11.7881Z" fill="#F05D35"/>
-                                    </svg>
-                                </a>
+                            <div>
+                                <div class="cm-card-header-text">
+                                    <h5 class="cs-card-title">Featured Project</h5>
+                                    <a href="{% url 'case_study_detail' case_study.pk %}" class="cs-card-arrow">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="13"
+                                            viewBox="0 0 14 13" fill="none">
+                                            <path
+                                                d="M0.357509 11.0218C-0.0657032 11.3766 -0.121131 12.0074 0.233707 12.4306C0.588545 12.8538 1.21928 12.9092 1.64249 12.5544L1 11.7881L0.357509 11.0218ZM13.9232 1.87552C13.9715 1.32535 13.5647 0.840162 13.0146 0.791814L4.04913 0.00394332C3.49897 -0.0444047 3.01378 0.362398 2.96543 0.912563C2.91708 1.46273 3.32388 1.94792 3.87405 1.99626L11.8433 2.69659L11.143 10.6659C11.0947 11.216 11.5015 11.7012 12.0516 11.7496C12.6018 11.7979 13.087 11.3911 13.1353 10.841L13.9232 1.87552ZM1 11.7881L1.64249 12.5544L13.5695 2.55427L12.927 1.78797L12.2845 1.02168L0.357509 11.0218L1 11.7881Z"
+                                                fill="#F05D35" />
+                                        </svg>
+                                    </a>
+                                </div>
+                                <p class="cs-card-desc">{{case_study.content}}</p>
                             </div>
-                            <p class="cs-card-desc">{{case_study.content}}</p>
+
                         </div>
-                        
                     </div>
-                </div>
-                {%endfor%}
-<!-- 
+                    {%endfor%}
+                    <!-- 
             <div class="cs-card" data-industries="ecommerce" data-technologies="react node">
                 <div class="cs-card-img"><img src="{% static 'images/case-studies/project-1.jpg' %}" alt="Project 1"></div>
                 <div class="cs-card-body">
@@ -257,34 +303,200 @@
                 </div>
             </div> -->
 
+                </div>
             </div>
         </div>
-        </div>
-             </div>
-        </section>
-        <!-- ══════════════════════════════════
+    </div>
+</section>
+<!-- ══════════════════════════════════
                  CTA SECTION REDESIGNED
             ══════════════════════════════════ -->
-            <section class="cta-refined-section">
-                <div class="container">
-                    <div class="cta-refined-box">
-                        <div class="row align-items-center">
-                            <div class="col-lg-6">
-                                <h1 class="cta-title-refined">Unleash Growth with Powerful Solutions</h1>
-                                <p class="cta-subtitle-refined">Maximize your business potential with our suite of
-                                    innovative tools and expert support.</p>
-                                <a href="{% url 'contact' %}" class="btn btn-cta-refined">
-                                    <span class="label-up">Get in touch</span>
-                                    <span class="label-up">Get in touch</span>
-                                </a>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="tech-stack-container">
-                                    <img src="{% static 'images/group-icon-cm.svg' %}" >
-                                </div>
-                            </div>
-                        </div>
+<section class="cta-refined-section">
+    <div class="container">
+        <div class="cta-refined-box">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="cta-title-refined">Unleash Growth with Powerful Solutions</h1>
+                    <p class="cta-subtitle-refined">Maximize your business potential with our suite of
+                        innovative tools and expert support.</p>
+                    <a href="{% url 'contact' %}" class="btn btn-cta-refined">
+                        <span class="label-up">Get in touch</span>
+                        <span class="label-up">Get in touch</span>
+                    </a>
+                </div>
+                <div class="col-lg-6">
+                    <div class="tech-stack-container">
+                        <img src="{% static 'images/group-icon-cm.svg' %}">
                     </div>
                 </div>
-      </section>
+            </div>
+        </div>
+    </div>
+</section>
 {%endblock content%}
+{% block JavaScript %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        // ── ELEMENTS ──
+        const toggleInput = document.getElementById('cs-toggle-input');
+        const labelIndustries = document.getElementById('label-industries');
+        const labelTechnologies = document.getElementById('label-technologies');
+        const listIndustries = document.getElementById('list-industries');
+        const listTechnologies = document.getElementById('list-technologies');
+        const cards = document.querySelectorAll('.cs-card');
+        const allBtn = document.getElementById('cs-all-btn');
+        const mobileFilterBtn = document.getElementById('cs-mobile-filter-btn');
+        const sidebarCol = document.getElementById('cs-sidebar-col');
+        const filterIcon = document.getElementById('cs-filter-icon');
+
+        if (!toggleInput) return;
+
+        // ── GET ACTIVE LIST ──
+        function getActiveList() {
+            return toggleInput.checked ? listTechnologies : listIndustries;
+        }
+
+        // ── SHOW ALL CARDS ──
+        function showAllCards() {
+            cards.forEach(c => c.classList.remove('hidden'));
+        }
+
+        // ── RESET TO ALL STATE ──
+        function resetToAll() {
+            document.querySelectorAll('.cs-radio-item input[type="checkbox"]').forEach(cb => cb.checked = false);
+            const allCb = getActiveList().querySelector('input[value="all"]');
+            if (allCb) allCb.checked = true;
+            showAllCards();
+            if (allBtn) allBtn.classList.add('active');
+
+            // Revert to default list visibility (only active list)
+            const isTech = toggleInput.checked;
+            listIndustries.classList.toggle('active', !isTech);
+            listTechnologies.classList.toggle('active', isTech);
+        }
+
+        // ── FILTER ICON CLICK ──
+        if (filterIcon) {
+            filterIcon.addEventListener('click', function() {
+                // Show both lists
+                listIndustries.classList.add('active');
+                listTechnologies.classList.add('active');
+            });
+        }
+
+        // ── APPLY FILTER ──
+        function applyFilter() {
+            const isTech = toggleInput.checked;
+            const attr = isTech ? 'data-technologies' : 'data-industries';
+            const activeList = getActiveList();
+
+            const checked = Array.from(activeList.querySelectorAll('input[type="checkbox"]:checked'))
+                .map(cb => cb.value)
+                .filter(v => v !== 'all');
+
+            if (checked.length === 0) {
+                showAllCards();
+            } else {
+                cards.forEach(card => {
+                    const cardVals = (card.getAttribute(attr) || '').split(' ').map(v => v.trim().toLowerCase());
+                    const match = checked.some(val => cardVals.includes(val.toLowerCase()));
+                    card.classList.toggle('hidden', !match);
+                });
+            }
+        }
+
+        // ── CHECKBOX CHANGE ──
+        document.querySelectorAll('.cs-radio-item input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', function () {
+                const activeList = getActiveList();
+                const allCb = activeList.querySelector('input[value="all"]');
+
+                if (this.value === 'all') {
+                    activeList.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+                    this.checked = true;
+                    showAllCards();
+                    if (allBtn) allBtn.classList.add('active');
+                } else {
+                    if (allCb) allCb.checked = false;
+                    if (allBtn) allBtn.classList.remove('active');
+                    applyFilter();
+
+                    const anyChecked = Array.from(activeList.querySelectorAll('input[type="checkbox"]:checked'))
+                        .filter(cb => cb.value !== 'all').length > 0;
+                    if (!anyChecked) {
+                        if (allCb) allCb.checked = true;
+                        if (allBtn) allBtn.classList.add('active');
+                        showAllCards();
+                    }
+                }
+
+                // Close sidebar on mobile after selection
+                if (window.innerWidth < 992 && sidebarCol) {
+                    sidebarCol.classList.remove('show');
+                    if (mobileFilterBtn) mobileFilterBtn.classList.remove('active');
+                }
+            });
+        });
+
+        // ── ALL BUTTON ──
+        if (allBtn) {
+            allBtn.addEventListener('click', function () {
+                resetToAll();
+            });
+        }
+
+        // ── TOGGLE SWITCH ──
+        toggleInput.addEventListener('change', function () {
+            const isTech = this.checked;
+
+            // ── ACTIVE LABEL on toggle ──
+            labelIndustries.classList.toggle('active-label', !isTech);
+            labelTechnologies.classList.toggle('active-label', isTech);
+
+            // Swap lists
+            listIndustries.classList.toggle('active', !isTech);
+            listTechnologies.classList.toggle('active', isTech);
+
+            // Reset
+            document.querySelectorAll('.cs-radio-item input[type="checkbox"]').forEach(cb => cb.checked = false);
+            const allCb = getActiveList().querySelector('input[value="all"]');
+            if (allCb) allCb.checked = true;
+            showAllCards();
+            if (allBtn) allBtn.classList.add('active');
+        });
+
+        // ── MOBILE FILTER BUTTON ──
+        if (mobileFilterBtn && sidebarCol) {
+            mobileFilterBtn.addEventListener('click', function () {
+                const isOpen = sidebarCol.classList.contains('show');
+                sidebarCol.classList.toggle('show', !isOpen);
+                mobileFilterBtn.classList.toggle('active', !isOpen);
+            });
+
+            // Close on outside click
+            document.addEventListener('click', function (e) {
+                if (
+                    window.innerWidth < 992 &&
+                    sidebarCol.classList.contains('show') &&
+                    !sidebarCol.contains(e.target) &&
+                    !mobileFilterBtn.contains(e.target)
+                ) {
+                    sidebarCol.classList.remove('show');
+                    mobileFilterBtn.classList.remove('active');
+                }
+            });
+        }
+
+        // ── INIT ──
+        labelIndustries.classList.add('active-label');
+        labelTechnologies.classList.remove('active-label');
+        const initAllCb = listIndustries.querySelector('input[value="all"]');
+        if (initAllCb) initAllCb.checked = true;
+        if (allBtn) allBtn.classList.add('active');
+        showAllCards();
+        
+
+    });
+</script>
+{% endblock JavaScript %}

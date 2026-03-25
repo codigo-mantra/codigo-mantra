@@ -3,216 +3,181 @@
 {% block title %}Case Study Details | Codigo Mantra{% endblock %}
 
 {% block content %}
-<section class="case-study-hero">
-    <div class="container">
-        <!-- Hero Header -->
-        <div class="hero-center-project">
-            <h1 class="display-heading-project">
-                Lorem ipsum dolor sit amet consectetur. Bibendum quam lectus elementum leo.
-            </h1>
-            <p class="hero-desc-project">
-                Lorem ipsum dolor sit amet consectetur. Bibendum quam lectus elementum leo.
-                Donec sed odio dui. Nulla vitae elit libero, a pharetra augue.</p>
-        </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="project-img">
-                    <img src="{% static 'images/case-studies/details-project-cm.png' %}" alt="Project Image"
-                        class="img-fluid">
-                </div>
-                <div class="project-specsfications">
-                    <div class="job-meta project-meta">
-                        <span>Timeline
-                            <p class="job-meta-sub">4 Weeks</p>
-                        </span>
-                        <span>Industry
-                            <p class="job-meta-sub">Finance</p>
-                        </span>
-                        <span>Services
-                            <p class="job-meta-sub">Branding | Ux | Development </p>
-                        </span>
-                        <span>Team Setup
-                            <p class="job-meta-sub">1 Designer + 4 Developers</p>
-                        </span>
+      <section class="case-study-hero">
+                <div class="container">
+                    <!-- Hero Header -->
+                    <div class="hero-center-project">
+                        <h1 class="display-heading-project">
+                          {{ case_study.title }}
+                        </h1>
+                        <p class="hero-desc-project">
+                          {{ case_study.content|truncatewords:30|striptags }}
+                        </p>
                     </div>
-                    <a href="#" class="btn btn-secondary-cm">
-                        <span class="label-up">Visit website →</span>
-                        <span class="label-up">Visit website →</span>
-                    </a>
-                </div>
-            </div>
-            <div class="col-lg-12">
-                <div class="project-overview">
-                    <div class="project-overview-img">
-                        <h2 class="project-overview-heading">About the project</h2>
-                        <p class="project-overview-desc">Lorem ipsum dolor sit amet consectetur. Sed sem in vitae tellus
-                            venenatis. Fermentum venenatis nibh aliquam rutrum ultrices venenatis lacinia vulputate
-                            faucibus. Ac ridiculus mollis gravida urna. Elementum nunc vel enim feugiat elementum odio
-                            lectus nec. Blandit rhoncus fringilla malesuada porttitor. Elit tincidunt justo integer
-                            lorem vestibulum metus. Ipsum lacinia facilisis sed scelerisque diam suspendisse habitant.
-                            Dictum diam at eget molestie porttitor. Commodo nec lectus varius mauris aenean turpis
-                            aliquam lorem.</p>
-                    </div>
-                    <div class="project-overview-img">
-                        <h2 class="project-overview-heading">Goal</h2>
-                        <p class="project-overview-desc">Lorem ipsum dolor sit amet consectetur. Sed sem in vitae tellus
-                            venenatis. Fermentum venenatis nibh aliquam rutrum ultrices venenatis lacinia vulputate
-                            faucibus. Ac ridiculus mollis gravida urna. Elementum nunc vel enim feugiat elementum odio
-                            lectus nec. Blandit rhoncus fringilla malesuada porttitor. Elit tincidunt justo integer
-                            lorem vestibulum metus. Ipsum lacinia facilisis sed scelerisque diam suspendisse habitant.
-                            Dictum diam at eget molestie porttitor. Commodo nec lectus varius mauris aenean turpis
-                            aliquam lorem.</p>
-                    </div>
-                    <div class="project-overview-img">
-                        <h2 class="project-overview-heading">Challenge</h2>
-                        <p class="project-overview-desc">Lorem ipsum dolor sit amet consectetur. Sed sem in vitae tellus
-                            venenatis. Fermentum venenatis nibh aliquam rutrum ultrices venenatis lacinia vulputate
-                            faucibus. Ac ridiculus mollis gravida urna. Elementum nunc vel enim feugiat elementum odio
-                            lectus nec. Blandit rhoncus fringilla malesuada porttitor. Elit tincidunt justo integer
-                            lorem vestibulum metus. Ipsum lacinia facilisis sed scelerisque diam suspendisse habitant.
-                            Dictum diam at eget molestie porttitor. Commodo nec lectus varius mauris aenean turpis
-                            aliquam lorem.</p>
-                    </div>
-                    <div class="project-overview-img">
-                        <h2 class="project-overview-heading">Outcome</h2>
-                        <p class="project-overview-desc">Lorem ipsum dolor sit amet consectetur. Sed sem in vitae tellus
-                            venenatis. Fermentum venenatis nibh aliquam rutrum ultrices venenatis lacinia vulputate
-                            faucibus. Ac ridiculus mollis gravida urna. Elementum nunc vel enim feugiat elementum odio
-                            lectus nec. Blandit rhoncus fringilla malesuada porttitor. Elit tincidunt justo integer
-                            lorem vestibulum metus. Ipsum lacinia facilisis sed scelerisque diam suspendisse habitant.
-                            Dictum diam at eget molestie porttitor. Commodo nec lectus varius mauris aenean turpis
-                            aliquam lorem.</p>
-                    </div>
-                </div>
-            </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="project-img">
+                                {% if case_study.cover_image %}
+                                    <img src="{{ case_study.cover_image.url }}" alt="{{ case_study.title }}" class="img-fluid">
+                                {% elif case_study.images.all %}
+                                    <img src="{{ case_study.images.first.image.url }}" alt="{{ case_study.title }}" class="img-fluid">
+                                {% endif %}
+                            </div>
+                            <div class="project-specsfications">
+                                    <div class="job-meta project-meta">
+                                        <span>Timeline
+                                            <p class="job-meta-sub">{{ case_study.timeline|default:"4 Weeks" }}</p>
+                                        </span>
+                                        <span>Industry 
+                                            <p class="job-meta-sub">
+                                                {% for industry in case_study.industries.all %}
+                                                    {{ industry.name }}{% if not forloop.last %}, {% endif %}
+                                                {% empty %}
+                                                    Finance
+                                                {% endfor %}
+                                            </p>
+                                        </span>
+                                        <span>Services
+                                            <p class="job-meta-sub">
+                                                {% for service in case_study.services.all %}
+                                                    {{ service.name }}{% if not forloop.last %} | {% endif %}
+                                                {% empty %}
+                                                    Branding | Ux | Development
+                                                {% endfor %}
+                                            </p>
+                                        </span>
+                                        <span>Team Setup
+                                            <p class="job-meta-sub">{{ case_study.team|default:"1 Designer + 4 Developers" }}</p>
+                                        </span>
+                                    </div>
+                                    {% if case_study.url %}
+                                    <a href="{{ case_study.url }}" target="_blank" class="btn btn-secondary-cm">
+                                        <span class="label-up">Visit website →</span>
+                                        <span class="label-up">Visit website →</span>
+                                    </a>
+                                    {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="project-overview">
+                                {% if case_study.about %}
+                                <div class="project-overview-img">  
+                                    <h2 class="project-overview-heading">About the project</h2>
+                                    <div class="project-overview-desc">
+                                        {{ case_study.about|safe }}
+                                    </div>
+                                </div>
+                                {% endif %}
 
-        </div>
-        <div class="row">
-            <div class="col-lg-6 col-md-6">
-                <div class="project-image-section">
-                    <img src="{% static '/images/case-studies/project-details-1.jpg' %}" alt="Project Image"
-                        class="img-fluid">
+                                {% if case_study.goal %}
+                                <div class="project-overview-img">  
+                                    <h2 class="project-overview-heading">Goal</h2>
+                                    <div class="project-overview-desc">
+                                        {{ case_study.goal|safe }}
+                                    </div>
+                                </div>
+                                {% endif %}
+
+                                {% if case_study.challenge %}
+                                <div class="project-overview-img">  
+                                    <h2 class="project-overview-heading">Challenge</h2>
+                                    <div class="project-overview-desc">
+                                        {{ case_study.challenge|safe }}
+                                    </div>
+                                </div>
+                                {% endif %}
+
+                                {% if case_study.outcome %}
+                                <div class="project-overview-img">  
+                                    <h2 class="project-overview-heading">Outcome</h2>
+                                    <div class="project-overview-desc">
+                                        {{ case_study.outcome|safe }}
+                                    </div>
+                                </div>
+                                {% endif %}
+
+                                {% if not case_study.about and not case_study.goal and not case_study.challenge and not case_study.outcome %}
+                                <div class="project-overview-img">  
+                                    <h2 class="project-overview-heading">About the project</h2>
+                                    <div class="project-overview-desc">
+                                        {{ case_study.content|safe }}
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>   
+                        </div>
+                        
+                    </div>
+                    {% if case_study.images.all %}
+                        <div class="row">
+                            {% for project_image in case_study.images.all|slice:":3" %}
+                            
+                            <div class="{% if forloop.last %}col-12{% else %}col-lg-6 col-md-6{% endif %} mb-4">
+                                <div class="project-image-section">
+                                    <img src="{{ project_image.image.url }}" 
+                                        alt="{{ case_study.title }} Gallery" 
+                                        class="img-fluid">
+                                </div>
+                            </div>
+
+                            {% endfor %}
+                        </div>
+                    {% endif %}
                 </div>
-            </div>
-            <div class="col-lg-6 col-md-6">
-                <div class="project-image-section">
-                    <img src="{% static '/images/case-studies/project-details-1.jpg' %}" alt="Project Image"
-                        class="img-fluid">
-                </div>
-            </div>
-        </div>
-        <div class="row mt-3">
-            <div class="col-lg-12 col-md-12">
-                <div class="project-image-section">
-                    <img src="{% static '/images/case-studies/project-details-1.jpg' %}" alt="Project Image"
-                        class="img-fluid">
-                </div>
-            </div>
-        </div>
-    </div>
 
 
-
-</section>
-<section class="case-study-content">
-    <div class="container text-center">
-        <div class="hero-badge-wrap">
-            <div class="primary-badge">
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" viewBox="0 0 18 20" fill="none">
-                    <path
-                        d="M11.5 6.5C11.5 6.5 11.1317 10.3846 12.67 11.895C14.1868 13.3843 18 13 18 13C18 13 14.0968 13.0922 12.67 14.7556C11.4276 16.204 11.5 19.5 11.5 19.5C11.5 19.5 11.3338 16.1726 10.005 14.7556C8.58811 13.2447 5 13 5 13C5 13 8.51659 13.2334 10.005 11.895C11.6307 10.4332 11.5 6.5 11.5 6.5Z"
-                        fill="#F05D35" />
-                    <path
-                        d="M5 0C5 0 4.7167 2.98814 5.9 4.15C7.06678 5.29564 10 5 10 5C10 5 6.99755 5.07093 5.9 6.35045C4.94427 7.46464 5 10 5 10C5 10 4.87219 7.44047 3.85 6.35045C2.76008 5.18822 0 5 0 5C0 5 2.70507 5.17951 3.85 4.15C5.10054 3.02553 5 0 5 0Z"
-                        fill="#F16535" />
-                </svg>
-                We're hiring
-            </div>
-        </div>
+                
+      </section>
+      <section class="case-study-content">
+            <div class="container text-center">
+                <div class="hero-badge-wrap">
+                <div class="primary-badge">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" viewBox="0 0 18 20" fill="none">
+                    <path d="M11.5 6.5C11.5 6.5 11.1317 10.3846 12.67 11.895C14.1868 13.3843 18 13 18 13C18 13 14.0968 13.0922 12.67 14.7556C11.4276 16.204 11.5 19.5 11.5 19.5C11.5 19.5 11.3338 16.1726 10.005 14.7556C8.58811 13.2447 5 13 5 13C5 13 8.51659 13.2334 10.005 11.895C11.6307 10.4332 11.5 6.5 11.5 6.5Z" fill="#F05D35"/>
+                    <path d="M5 0C5 0 4.7167 2.98814 5.9 4.15C7.06678 5.29564 10 5 10 5C10 5 6.99755 5.07093 5.9 6.35045C4.94427 7.46464 5 10 5 10C5 10 4.87219 7.44047 3.85 6.35045C2.76008 5.18822 0 5 0 5C0 5 2.70507 5.17951 3.85 4.15C5.10054 3.02553 5 0 5 0Z" fill="#F16535"/>
+                    </svg>
+                    Case studies
+                </div>
+                </div>
 
         <h2 class="display-heading">
-            Crafting digital solutions for<br> tomorrow's challenges.
+            Our Other Projects
         </h2>
 
-
         <div class="row">
-
             <!-- Projects Grid -->
             <div class="col-lg-12 col-md-12">
-                <div class=" cs-grid--2 insights-row-slider" id="project">
-
-                    <div class="cs-card" data-industries="ecommerce" data-technologies="react node">
-                        <div class="cs-card-img"><img src="{% static 'images/case-studies/project-1.jpg' %}"
-                                alt="Project 1">
-                        </div>
-                        <div class="cs-card-body">
-                            <div>
-                                <div class="cm-card-header-text">
-                                    <h5 class="cs-card-title">Featured Project</h5>
-                                    <a href="#" class="cs-card-arrow">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="13"
-                                            viewBox="0 0 14 13" fill="none">
-                                            <path
-                                                d="M0.357509 11.0218C-0.0657032 11.3766 -0.121131 12.0074 0.233707 12.4306C0.588545 12.8538 1.21928 12.9092 1.64249 12.5544L1 11.7881L0.357509 11.0218ZM13.9232 1.87552C13.9715 1.32535 13.5647 0.840162 13.0146 0.791814L4.04913 0.00394332C3.49897 -0.0444047 3.01378 0.362398 2.96543 0.912563C2.91708 1.46273 3.32388 1.94792 3.87405 1.99626L11.8433 2.69659L11.143 10.6659C11.0947 11.216 11.5015 11.7012 12.0516 11.7496C12.6018 11.7979 13.087 11.3911 13.1353 10.841L13.9232 1.87552ZM1 11.7881L1.64249 12.5544L13.5695 2.55427L12.927 1.78797L12.2845 1.02168L0.357509 11.0218L1 11.7881Z"
-                                                fill="#F05D35" />
-                                        </svg>
-                                    </a>
-                                </div>
-                                <p class="cs-card-desc">Ippsum is the result of synergy between our teams and our
-                                    customers. Our company culture is focused on ...</p>
+                <div class="cs-grid--2">
+                    {% for other_study in case_studies %}
+                        {% if other_study.id != case_study.id %}
+                        <div class="cs-card">
+                            <div class="cs-card-img">
+                                <a href="{% url 'case_study_detail' other_study.pk %}">
+                                    {% if other_study.cover_image %}
+                                        <img src="{{ other_study.cover_image.url }}" alt="{{ other_study.title }}">
+                                    {% elif other_study.images.all %}
+                                        <img src="{{ other_study.images.first.image.url }}" alt="{{ other_study.title }}">
+                                    {% else %}
+                                        <img src="{% static 'images/case-studies/project-1.jpg' %}" alt="Placeholder">
+                                    {% endif %}
+                                </a>
                             </div>
-
-                        </div>
-                    </div>
-
-                    <div class="cs-card" data-industries="ecommerce" data-technologies="react node">
-                        <div class="cs-card-img"><img src="{% static 'images/case-studies/project-1.jpg' %}"
-                                alt="Project 1">
-                        </div>
-                        <div class="cs-card-body">
-                            <div>
-                                <div class="cm-card-header-text">
-                                    <h5 class="cs-card-title">Featured Project</h5>
-                                    <a href="#" class="cs-card-arrow">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="13"
-                                            viewBox="0 0 14 13" fill="none">
-                                            <path
-                                                d="M0.357509 11.0218C-0.0657032 11.3766 -0.121131 12.0074 0.233707 12.4306C0.588545 12.8538 1.21928 12.9092 1.64249 12.5544L1 11.7881L0.357509 11.0218ZM13.9232 1.87552C13.9715 1.32535 13.5647 0.840162 13.0146 0.791814L4.04913 0.00394332C3.49897 -0.0444047 3.01378 0.362398 2.96543 0.912563C2.91708 1.46273 3.32388 1.94792 3.87405 1.99626L11.8433 2.69659L11.143 10.6659C11.0947 11.216 11.5015 11.7012 12.0516 11.7496C12.6018 11.7979 13.087 11.3911 13.1353 10.841L13.9232 1.87552ZM1 11.7881L1.64249 12.5544L13.5695 2.55427L12.927 1.78797L12.2845 1.02168L0.357509 11.0218L1 11.7881Z"
-                                                fill="#F05D35" />
-                                        </svg>
-                                    </a>
+                            <div class="cs-card-body">
+                                <div>
+                                    <div class="cm-card-header-text">
+                                        <h5 class="cs-card-title">{{ other_study.title }}</h5>
+                                        <a href="{% url 'case_study_detail' other_study.pk %}" class="cs-card-arrow">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="13" viewBox="0 0 14 13" fill="none">
+                                                <path d="M0.357509 11.0218C-0.0657032 11.3766 -0.121131 12.0074 0.233707 12.4306C0.588545 12.8538 1.21928 12.9092 1.64249 12.5544L1 11.7881L0.357509 11.0218ZM13.9232 1.87552C13.9715 1.32535 13.5647 0.840162 13.0146 0.791814L4.04913 0.00394332C3.49897 -0.0444047 3.01378 0.362398 2.96543 0.912563C2.91708 1.46273 3.32388 1.94792 3.87405 1.99626L11.8433 2.69659L11.143 10.6659C11.0947 11.216 11.5015 11.7012 12.0516 11.7496C12.6018 11.7979 13.087 11.3911 13.1353 10.841L13.9232 1.87552ZM1 11.7881L1.64249 12.5544L13.5695 2.55427L12.927 1.78797L12.2845 1.02168L0.357509 11.0218L1 11.7881Z" fill="#F05D35"/>
+                                            </svg>
+                                        </a>
+                                    </div>
+                                    <p class="cs-card-desc">{{ other_study.content|truncatewords:15|striptags }}</p>
                                 </div>
-                                <p class="cs-card-desc">Ippsum is the result of synergy between our teams and our
-                                    customers. Our company culture is focused on ...</p>
                             </div>
-
                         </div>
-                    </div>
-
-                    <div class="cs-card" data-industries="ecommerce" data-technologies="react node">
-                        <div class="cs-card-img"><img src="{% static 'images/case-studies/project-1.jpg' %}"
-                                alt="Project 1">
-                        </div>
-                        <div class="cs-card-body">
-                            <div>
-                                <div class="cm-card-header-text">
-                                    <h5 class="cs-card-title">Featured Project</h5>
-                                    <a href="#" class="cs-card-arrow">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="13"
-                                            viewBox="0 0 14 13" fill="none">
-                                            <path
-                                                d="M0.357509 11.0218C-0.0657032 11.3766 -0.121131 12.0074 0.233707 12.4306C0.588545 12.8538 1.21928 12.9092 1.64249 12.5544L1 11.7881L0.357509 11.0218ZM13.9232 1.87552C13.9715 1.32535 13.5647 0.840162 13.0146 0.791814L4.04913 0.00394332C3.49897 -0.0444047 3.01378 0.362398 2.96543 0.912563C2.91708 1.46273 3.32388 1.94792 3.87405 1.99626L11.8433 2.69659L11.143 10.6659C11.0947 11.216 11.5015 11.7012 12.0516 11.7496C12.6018 11.7979 13.087 11.3911 13.1353 10.841L13.9232 1.87552ZM1 11.7881L1.64249 12.5544L13.5695 2.55427L12.927 1.78797L12.2845 1.02168L0.357509 11.0218L1 11.7881Z"
-                                                fill="#F05D35" />
-                                        </svg>
-                                    </a>
-                                </div>
-                                <p class="cs-card-desc">Ippsum is the result of synergy between our teams and our
-                                    customers. Our company culture is focused on ...</p>
-                            </div>
-
-                        </div>
-                    </div>
-
+                        {% endif %}
+                    {% endfor %}
                 </div>
             </div>
         </div>
@@ -239,43 +204,5 @@
                         <img src="{% static 'images/group-icon-cm.svg' %}">
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</section>
+            </section>
 {% endblock content %}
-{% block JavaScript %}
-<script>
-    $(document).ready(function () {
-        $('.insights-row-slider').slick({
-            slidesToShow: 3,
-            slidesToScroll: 1,
-            arrows: false,
-            dots: false,
-            speed: 300,
-            infinite: false,
-            autoplaySpeed: 5000,
-            autoplay: false,
-            responsive: [
-                {
-                    breakpoint: 991,
-                    settings: {
-                        slidesToShow: 3,
-                    }
-                },
-                {
-                    breakpoint: 767,
-                    settings: {
-                        slidesToShow: 1,
-                        dots: true,
-                        speed: 300,
-                        infinite: true,
-                        autoplaySpeed: 5000,
-                        autoplay: true,
-                    }
-                }
-            ]
-        });
-    });
-</script>
-{% endblock JavaScript %}
