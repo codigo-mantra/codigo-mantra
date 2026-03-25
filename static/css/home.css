@@ -79,6 +79,7 @@ body {
     box-shadow: 0 -0.535px 2.677px 0 rgba(0, 0, 0, 0.09);
     position: relative;
 }
+
 .hero-badge::after {
     content: '';
     border-radius: 10.708px;
@@ -96,6 +97,7 @@ body {
     z-index: -99;
     left: 5.2%;
 }
+
 .hero-badge::before {
     content: '';
     border-radius: 10.708px;
@@ -121,7 +123,7 @@ body {
 
 .badge-avatar img {
     width: 50px;
-    height: 35px;   
+    height: 35px;
     border-radius: 50%;
     object-fit: cover;
     border: 1px solid rgba(0, 0, 0, 0.1);
@@ -284,7 +286,7 @@ body {
 
 .marquee-track {
     display: inline-flex;
-    animation: marqueeScroll 30s linear infinite;
+    /* animation: marqueeScroll 30s linear infinite; */
     align-items: center;
     gap: 34.241px;
     margin-top: 220px;
@@ -295,18 +297,19 @@ body {
 }
 
 .marquee-item {
-    display: flex;
+    display: flex !important;
     padding: 9.556px 15.926px;
     align-items: center;
     gap: 10.352px;
-    color: rgba(255, 255, 255, 0.65);
-    font-size: 13.5px;
+    color: #6E6E6E !important;
+    font-size: 15.926px;
     font-weight: 400;
     letter-spacing: 0.01em;
     white-space: nowrap;
     border-radius: 15.926px;
     border: 0.796px solid rgba(110, 110, 110, 0.11);
     background: rgba(0, 0, 0, 0.12);
+    flex-direction:row-reverse;
 }
 
 .marquee-item svg {
@@ -457,24 +460,22 @@ body {
     font-weight: 500;
     line-height: 150%;
     background: rgba(0, 0, 0, 0);
-  border: 1px solid transparent;
+    border: 1px solid transparent;
 
-  background-image:
-    linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)),
-    linear-gradient(
-      135deg,
-      #000000 0%,
-      #000000 40%,
-      #902500 75%,
-      #F16535 100%
-    );
+    background-image:
+        linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)),
+        linear-gradient(135deg,
+            #000000 0%,
+            #000000 40%,
+            #902500 75%,
+            #F16535 100%);
 
-  background-origin: border-box;
-  background-clip: content-box, border-box;
+    background-origin: border-box;
+    background-clip: content-box, border-box;
 
-  box-shadow:
-    2px 1000px 1px #0a0a0a inset,
-    0 4px 4px 0 rgba(0, 0, 0, 0.25);
+    box-shadow:
+        2px 1000px 1px #0a0a0a inset,
+        0 4px 4px 0 rgba(0, 0, 0, 0.25);
 }
 
 .service-desc {
@@ -523,38 +524,37 @@ body {
 
 /* ─── RESULTS NEW ─── */
 .result-card {
-  position: relative;
-  overflow: hidden;
-  padding: 2px 15px;
-  border-radius: 10px; /* Figma: corner radius 10 */
+    position: relative;
+    overflow: hidden;
+    padding: 2px 15px;
+    border-radius: 10px;
+    /* Figma: corner radius 10 */
 
-  /* Exact Figma fill: 1D1D1D at 20% */
-  background: rgba(29, 29, 29, 0.20);
-  box-shadow: 0.5rem 1rem 1rem rgb(0 0 0 / 40%), -1px -1px 0px rgb(179 179 179), 1px 1px 0px rgb(234 234 234);
+    /* Exact Figma fill: 1D1D1D at 20% */
+    background: rgba(29, 29, 29, 0.20);
+    box-shadow: 0.5rem 1rem 1rem rgb(0 0 0 / 40%), -1px -1px 0px rgb(179 179 179), 1px 1px 0px rgb(234 234 234);
 
-  color: #ffffff;
+    color: #ffffff;
 }
 
 /* Dispersion=50 — chromatic light at -45° */
 .result-card::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(
-    -45deg,
-    rgba(255, 255, 255, 0.07) 0%,
-    rgba(246, 246, 246, 0.02) 35%,
-    rgba(200, 215, 255, 0.04) 65%,
-    rgba(255, 210, 200, 0.02) 100%
-  );
-  pointer-events: none;
-  z-index: 0;
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: linear-gradient(-45deg,
+            rgba(255, 255, 255, 0.07) 0%,
+            rgba(246, 246, 246, 0.02) 35%,
+            rgba(200, 215, 255, 0.04) 65%,
+            rgba(255, 210, 200, 0.02) 100%);
+    pointer-events: none;
+    z-index: 0;
 }
 
-.result-card > * {
-  position: relative;
-  z-index: 1;
+.result-card>* {
+    position: relative;
+    z-index: 1;
 }
 
 .result-card h3 {
@@ -597,7 +597,8 @@ body {
     /* overflow-x: hidden; */
     /* background: #000;     */
 }
-.portfolio-section::after{
+
+.portfolio-section::after {
     content: '';
     position: absolute;
     border-radius: 394px;
@@ -609,7 +610,8 @@ body {
     bottom: 11%;
     left: -13%;
 }
-.portfolio-section::before{
+
+.portfolio-section::before {
     content: '';
     position: absolute;
     border-radius: 394px;

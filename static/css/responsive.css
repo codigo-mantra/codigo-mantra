@@ -556,4 +556,21 @@
         gap: 30px;
         flex-direction: column-reverse;
     }
+    .cm-mega__col.cm-mega__col--mid-last {
+        grid-template-columns: 1fr;
+        padding: 0;
+    }
+    .cm-mega__col--product {
+        border-left: none;
+    }
+    .right-col-cm-app-development {
+        border-left: none;
+        padding-left: 0;
+    }
+    .cm-mega__grid-2 {
+        grid-template-columns: 1fr;
+    }
+   .cm-mega__panel-2 {
+        margin: 0 !important;
+    }
 }

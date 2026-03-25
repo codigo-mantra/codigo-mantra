@@ -45,7 +45,7 @@
                 </a>
             </div>
         </div>
-        <div class="marquee-track">
+        <div class="marquee-track" dir="rtl">
             <!-- Set 1 -->
             {%for industry in industries%}
             <span class="marquee-item">
@@ -477,3 +477,22 @@
 </section>
 
 {% endblock %}
+
+{% block JavaScript %}
+<script>
+    $(function () {
+        $('.marquee-track').slick({
+            autoplay: true,
+            autoplaySpeed: 0,
+            speed: 5000,
+            arrows: false,
+            swipe: false,
+            slidesToShow: 7,
+            cssEase: 'linear',
+            pauseOnFocus: false,
+            pauseOnHover: false,
+            rtl: true
+        });
+    });
+</script>
+{% endblock JavaScript %}

@@ -21,7 +21,7 @@
                                     <a class="nav-link dropdown-toggle active" href="{% url 'services' %}" role="button" data-bs-toggle="dropdown" aria-expanded="false">What we do</a>
                                     <div class="dropdown-menu cm-mega" aria-label="What we do menu">
                                         <div class="cm-mega__panel">
-                                            <div class="cm-mega__grid">
+                                            <div class="cm-mega__grid cm-mega__grid-server">
                                                 <div class="cm-mega__col">
                                                     <div class="cm-mega__h">Services</div>
                                                     <div class="cm-sub-menu">AUTOMATION</div>
@@ -29,16 +29,64 @@
                                                         <a class="cm-mega__link" href="#">{{ service.name }}</a>
 
                                                     {% endfor %}
+                                                    <div class="cm-sub-menu mt-4">Product Design</div>
+                                                        <a class="cm-mega__link" href="#">UI/UX Design</a>
+                                                        <a class="cm-mega__link" href="#">Design Systems</a>
+                                                        <a class="cm-mega__link" href="#">Landing Page Design</a>
+                                                        <a class="cm-mega__link" href="#">Framer Website Design</a>
+                                                        <a class="cm-mega__link" href="#">Website & Interface Design</a>
+                                                    
+
+
                                                 </div>
 
                                                 <div class="cm-mega__col cm-mega__col--mid">
                                                     <div class="cm-mega__h">&nbsp;</div>
-                                                    {% for service in services_nav|slice:"6:12" %}
-                                                        <a class="cm-mega__link" href="{% url 'service_detail' service.slug %}">{{ service.name }}</a>
-                                                    {% endfor %}
+                                                     <div class="cm-sub-menu ">ARTIFICIAL INTELLIGENCE</div>
+                                                        <a class="cm-mega__link" href="#">Generative AI Development</a>
+                                                        <a class="cm-mega__link" href="#">AI Consulting</a>
+                                                        <a class="cm-mega__link" href="#">AI Agent Development</a>
+                                                        <a class="cm-mega__link" href="#">AI Copilot Development</a>
+                                                        <a class="cm-mega__link" href="#">ChatGPT Integration</a>
+                                                        <a class="cm-mega__link" href="#">LLM Development</a>
+                                                        <a class="cm-mega__link" href="#">Data Annotation</a>
+                                                        <a class="cm-mega__link" href="#">Recommendation Systems</a>
+
+
+                                                    <div class="cm-sub-menu mt-4">MARKETING</div>
+                                                        <a class="cm-mega__link" href="#">UI/UX Design</a>
+                                                        <a class="cm-mega__link" href="#">SEO & Content Strategy</a>
+                                                        <a class="cm-mega__link" href="#">Social Media Marketing</a>
+                                                        <a class="cm-mega__link" href="#">Email Marketing</a>
+                                                        <a class="cm-mega__link" href="#">Performance Marketing</a>
+                                                    
                                                 </div>
 
                                                 <div class="cm-mega__col cm-mega__col--product">
+                                                    <div class="cm-mega__col cm-mega__col--mid-last">
+                                                        <div>
+                                                            <div class="cm-mega__h mb-0">&nbsp;</div>
+                                                            <div class="cm-sub-menu ">ARTIFICIAL INTELLIGENCE</div>
+                                                                <a class="cm-mega__link" href="#">Generative AI Development</a>
+                                                                <a class="cm-mega__link" href="#">AI Consulting</a>
+                                                                <a class="cm-mega__link" href="#">AI Agent Development</a>
+                                                                <a class="cm-mega__link" href="#">AI Copilot Development</a>
+                                                                <a class="cm-mega__link" href="#">ChatGPT Integration</a>
+                                                                <a class="cm-mega__link" href="#">LLM Development</a>
+                                                                <a class="cm-mega__link" href="#">Data Annotation</a>
+                                                                <a class="cm-mega__link" href="#">Recommendation Systems</a>
+                                                        </div>
+
+                                                        <div class="right-col-cm-app-development">
+                                                            <div class="cm-mega__h mb-0">&nbsp;</div>
+                                                            <div class="cm-sub-menu ">MARKETING</div>
+                                                            <a class="cm-mega__link" href="#">UI/UX Design</a>
+                                                            <a class="cm-mega__link" href="#">SEO & Content Strategy</a>
+                                                            <a class="cm-mega__link" href="#">Social Media Marketing</a>
+                                                            <a class="cm-mega__link" href="#">Email Marketing</a>
+                                                            <a class="cm-mega__link" href="#">Performance Marketing</a>
+                                                        </div>
+                                                    </div>
                                                     <div class="cm-mega__h">Our Product</div>
                                                         <span class="cm-mega__thumb" aria-hidden="true"></span>
                                                         <span class="cm-mega__productBody">
