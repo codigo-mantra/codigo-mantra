@@ -1,4 +1,5 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
+from django.urls import reverse
 from django.core.mail import send_mail, EmailMessage
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
@@ -70,68 +71,72 @@ class LandingPage(views.View):
             "services", "industries", "images"
         )  # last 3 case studies
         return render(request,'website/index.html',{'form':form, 'services':services, 'insights':insights, 'testimonials':testimonials, 'industries':industries, 'case_studies':case_studies})
-    def post(self,request):
-            form = ContactUsForm(data = request.POST)
-            if form.is_valid():
-                contact_instance = form.save()
-                
-                name = f"{contact_instance.first_name} {contact_instance.last_name}"
-                from_email = contact_instance.email
-                phone = contact_instance.phone
-                message_body = contact_instance.message
-                
-                # 1. Send Email to Admin (Abbas)
-                admin_subject = f"New Contact Form Submission from {name}"
-                admin_recipient = "info@codigomantra.com"
-                admin_message = (
-                    f"You have a new contact form submission:\n\n"
-                    f"Name: {name}\n"
-                    f"Email: {from_email}\n"
-                    f"Phone: {phone}\n\n"
-                    f"Message:\n{message_body}"
+    def post(self, request):
+        is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+        form = ContactUsForm(request.POST)
+
+        if form.is_valid():
+            contact_instance = form.save()
+            
+            name         = f"{contact_instance.first_name} {contact_instance.last_name}"
+            from_email   = contact_instance.email
+            phone        = contact_instance.phone
+            message_body = contact_instance.message
+            base_url     = request.build_absolute_uri('/')[:-1]
+
+            admin_html_message = render_to_string('email-contact-admin.html', {
+                'name': name, 'email': from_email,
+                'phone': phone, 'message_body': message_body, 'base_url': base_url
+            })
+            html_message = render_to_string('email-contact.html', {
+                'name': contact_instance.first_name, 'base_url': base_url
+            })
+
+            try:
+                email = EmailMessage(
+                    f"New Contact Form Submission from {name}",
+                    admin_html_message,
+                    settings.DEFAULT_FROM_EMAIL,
+                    ["abbas.codigo@gmail.com"],
+                    reply_to=[from_email],
                 )
-                
-                # 2. Send HTML Email to User
-                user_subject = "Thank You for Reaching Out to Codigo Mantra!"
-                base_url = request.build_absolute_uri('/')[:-1]
-                html_message = render_to_string('email-contact.html', {
-                    'name': contact_instance.first_name,
-                    'base_url': base_url
-                })
-                plain_message = strip_tags(html_message)
-                plain_message = strip_tags(html_message)
-                
-                try:
-                    # Notify Admin with Reply-To set to User's email
-                    email = EmailMessage(
-                        admin_subject,
-                        admin_message,
-                        settings.DEFAULT_FROM_EMAIL,
-                        [admin_recipient],
-                        reply_to=[from_email],
-                    )
-                    email.send(fail_silently=False)
-                    
-                    # Confirm to User
-                    send_mail(
-                        user_subject,
-                        plain_message,
-                        settings.DEFAULT_FROM_EMAIL,
-                        [from_email],
-                        html_message=html_message,
-                        fail_silently=False,
-                    )
-                    
-                    messages.success(request,'Thank you for contacting us.')
-                except Exception as e:
-                    print(f"Error sending email: {e}")
-                    messages.error(request, 'There was an error sending your message. Please try again later.')
+                email.content_subtype = "html"
+                email.send(fail_silently=False)
 
-                return redirect('index')
-            print(form.errors)
-            return render(request,'website/index.html',{'form':form})
+                send_mail(
+                    "Thank You for Reaching Out to Codigo Mantra!",
+                    strip_tags(html_message),
+                    settings.DEFAULT_FROM_EMAIL,
+                    [from_email],
+                    html_message=html_message,
+                    fail_silently=False,
+                )
 
+            except Exception as e:
+                print(f"Email error: {e}")
+                if is_ajax:
+                    return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
 
+            # Return JSON for AJAX
+            if is_ajax:
+                return JsonResponse({'status': 'success'})
+
+            messages.success(request, 'Your message has been sent successfully!')
+            return redirect('contact')
+
+        # Form invalid
+        if is_ajax:
+            errors = {
+                field: [{'message': str(e)} for e in errs]
+                for field, errs in form.errors.items()
+            }
+            return JsonResponse({'status': 'error', 'errors': errors}, status=400)
+
+        return render(request, 'website/contact.html', {
+            'form'   : form,
+            'faqs'   : FAQ.objects.all(),
+            'contact': ContactInfo.objects.first()
+        })
 
 class AboutUsPage(views.View):
     def get(self,request):
@@ -164,26 +169,121 @@ class CareerFormPage(views.View):
             return redirect('career')
 
         form = CareerApplicationForm()
-        return render(request,'website/career_form.html',{'form':form, 'job':job, 'similar_jobs':similar_jobs})
+        show_application_success = request.GET.get('success') == '1'
+        return render(
+            request,
+            'website/career_form.html',
+            {
+                'form': form,
+                'job': job,
+                'similar_jobs': similar_jobs,
+                'show_application_success': show_application_success,
+            },
+        )
     
     
     def post(self, request, job_id):
+        is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+
         try:
             job = JobOpening.objects.get(id=job_id)
         except JobOpening.DoesNotExist:
-            print("Job opening not found.")
+            if is_ajax:
+                return JsonResponse(
+                    {'status': 'error', 'message': 'This job is no longer available.'},
+                    status=404,
+                )
             return redirect('career')
 
         form = CareerApplicationForm(request.POST, request.FILES)
 
-        if form.is_valid():
-            application = form.save(commit=False)
-            application.job = job
-            application.save()
-            print("Application submitted successfully.")
-            return redirect("career")
+        if not form.is_valid():
+            if is_ajax:
+                errors = {
+                    field: [{'message': str(e)} for e in errs]
+                    for field, errs in form.errors.items()
+                }
+                return JsonResponse({'status': 'error', 'errors': errors}, status=400)
 
-        return render(request, 'website/career_form.html', {'form': form, 'job': job})
+            similar_jobs = JobOpening.objects.filter(
+                job_type=job.job_type, department=job.department
+            ).exclude(id=job_id)[:2]
+            return render(
+                request,
+                'website/career_form.html',
+                {
+                    'form': form,
+                    'job': job,
+                    'similar_jobs': similar_jobs,
+                    'show_application_success': False,
+                },
+            )
+
+        application = form.save(commit=False)
+        application.job = job
+        application.save()
+
+        name = application.name
+        applicant_email = application.email
+        phone = application.phone
+        job_title = job.title
+
+        user_html = render_to_string('email-application.html', {})
+        admin_html = render_to_string('email-application-admin.html', {
+            'name': name,
+            'email': applicant_email,
+            'job_title': job_title,
+            'message_body': (
+                f'Phone: {phone}\n\n'
+                f'Resume is attached to this email for HR review.'
+            ),
+        })
+        hr_recipients = ['abbas.codigo@gmail.com']
+
+        email_warning = False
+        try:
+            admin_msg = EmailMessage(
+                f'New job application: {name} — {job_title}',
+                admin_html,
+                settings.DEFAULT_FROM_EMAIL,
+                hr_recipients,
+                reply_to=[applicant_email],
+            )
+            admin_msg.content_subtype = 'html'
+            if application.resume:
+                try:
+                    admin_msg.attach_file(application.resume.path)
+                except Exception:
+                    pass
+            admin_msg.send(fail_silently=False)
+
+            send_mail(
+                f'Application received — {job_title}',
+                strip_tags(user_html),
+                settings.DEFAULT_FROM_EMAIL,
+                [applicant_email],
+                html_message=user_html,
+                fail_silently=False,
+            )
+            messages.success(
+                request,
+                'Your application has been submitted successfully.',
+            )
+        except Exception as e:
+            print(f'Application email error: {e}')
+            email_warning = True
+            messages.warning(
+                request,
+                'Your application was saved, but we could not send the emails. Our team will still review it.',
+            )
+
+        if is_ajax:
+            payload = {'status': 'success'}
+            if email_warning:
+                payload['email_warning'] = True
+            return JsonResponse(payload)
+
+        return redirect(f"{reverse('career-apply', kwargs={'job_id': job_id})}?success=1")
     
 
 class PortfolioPage(views.View):
@@ -225,66 +325,71 @@ class ContactPage(views.View):
         return render(request,'website/contact.html',{'form':form, 'faqs':faqs})
     
     def post(self, request):
+        is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
         form = ContactUsForm(request.POST)
 
         if form.is_valid():
             contact_instance = form.save()
             
-            # Extract data for email
-            name = f"{contact_instance.first_name} {contact_instance.last_name}"
-            from_email = contact_instance.email
-            phone = contact_instance.phone
+            name         = f"{contact_instance.first_name} {contact_instance.last_name}"
+            from_email   = contact_instance.email
+            phone        = contact_instance.phone
             message_body = contact_instance.message
-            
-            # 1. Send Email to Admin (Abbas)
-            admin_subject = f"New Contact Form Submission from {name}"
-            admin_recipient = "info@codigomantra.com"
-            admin_message = (
-                f"You have a new contact form submission:\n\n"
-                f"Name: {name}\n"
-                f"Email: {from_email}\n"
-                f"Phone: {phone}\n\n"
-                f"Message:\n{message_body}"
-            )
-            
-            # 2. Send HTML Email to User
-            user_subject = "Thank You for Reaching Out to Codigo Mantra!"
-            base_url = request.build_absolute_uri('/')[:-1]
-            html_message = render_to_string('email-contact.html', {
-                'name': contact_instance.first_name,
-                'base_url': base_url
+            base_url     = request.build_absolute_uri('/')[:-1]
+
+            admin_html_message = render_to_string('email-contact-admin.html', {
+                'name': name, 'email': from_email,
+                'phone': phone, 'message_body': message_body, 'base_url': base_url
             })
-            plain_message = strip_tags(html_message)
-            
+            html_message = render_to_string('email-contact.html', {
+                'name': contact_instance.first_name, 'base_url': base_url
+            })
+
             try:
-                # Notify Admin with Reply-To set to User's email
                 email = EmailMessage(
-                    admin_subject,
-                    admin_message,
+                    f"New Contact Form Submission from {name}",
+                    admin_html_message,
                     settings.DEFAULT_FROM_EMAIL,
-                    [admin_recipient],
+                    ["abbas.codigo@gmail.com"],
                     reply_to=[from_email],
                 )
+                email.content_subtype = "html"
                 email.send(fail_silently=False)
-                
-                # Confirm to User
+
                 send_mail(
-                    user_subject,
-                    plain_message,
+                    "Thank You for Reaching Out to Codigo Mantra!",
+                    strip_tags(html_message),
                     settings.DEFAULT_FROM_EMAIL,
                     [from_email],
                     html_message=html_message,
                     fail_silently=False,
                 )
-                
-                messages.success(request, 'Your message has been sent successfully!')
-            except Exception as e:
-                print(f"Error sending email: {e}")
-                messages.error(request, 'There was an error sending your message. Please try again later.')
 
+            except Exception as e:
+                print(f"Email error: {e}")
+                if is_ajax:
+                    return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
+
+            # Return JSON for AJAX
+            if is_ajax:
+                return JsonResponse({'status': 'success'})
+
+            messages.success(request, 'Your message has been sent successfully!')
             return redirect('contact')
 
-        return render(request, 'website/contact.html', {'form': form})
+        # Form invalid
+        if is_ajax:
+            errors = {
+                field: [{'message': str(e)} for e in errs]
+                for field, errs in form.errors.items()
+            }
+            return JsonResponse({'status': 'error', 'errors': errors}, status=400)
+
+        return render(request, 'website/contact.html', {
+            'form'   : form,
+            'faqs'   : FAQ.objects.all(),
+            'contact': ContactInfo.objects.first()
+        })
     
 
 
@@ -325,8 +430,27 @@ def newsletter_subscribe(request):
                 return JsonResponse({'status': 'error', 'message': 'Email is required.'}, status=400)
             return redirect(request.META.get('HTTP_REFERER', '/'))
 
+        # Helper to send email
+        def send_welcome_email(email_to):
+            try:
+                html_message = render_to_string('email-newsletter.html', {
+                    'email': email_to,
+                    'base_url': request.build_absolute_uri('/')[:-1]
+                })
+                send_mail(
+                    'Welcome to Codigo Mantra Newsletter!',
+                    strip_tags(html_message),
+                    settings.DEFAULT_FROM_EMAIL,
+                    [email_to],
+                    html_message=html_message,
+                    fail_silently=False,
+                )
+            except Exception as e:
+                print(f"Newsletter email error: {e}")
+
         # Handle duplicate silently — still show success to user
         if Newsletter.objects.filter(email=email).exists():
+            send_welcome_email(email)
             if is_ajax:
                 return JsonResponse({'status': 'success', 'already': True})
             messages.success(request, "You're already subscribed!")
@@ -337,6 +461,10 @@ def newsletter_subscribe(request):
         if form.is_valid():
             try:
                 form.save()
+                
+                # Send confirmation email
+                send_welcome_email(email)
+
                 if is_ajax:
                     return JsonResponse({'status': 'success', 'already': False})
                 messages.success(request, "Subscribed successfully!")

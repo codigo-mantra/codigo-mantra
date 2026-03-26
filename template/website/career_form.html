@@ -1,4 +1,5 @@
-{%extends 'base.html' %}
+{% extends 'base.html' %}
+{% load static %}
 {% block title %}Career - Codigo Mantra{% endblock %}
 {% block content %}
     <section class="job-page">
@@ -74,11 +75,12 @@
                             </a>
                         </div> -->
                         
-                        <form method="POST" enctype="multipart/form-data">
+                        <form id="careerApplicationForm" method="POST" enctype="multipart/form-data" action="">
     {% csrf_token %}
 
     <div class="apply-card">
         <h2>Apply for this job</h2>
+        <p id="careerFormGlobalError" class="text-danger small mb-2" style="display:none;"></p>
 
         <div class="form-row">
             <div class="form-group mb-0">
@@ -345,4 +347,134 @@
 
             </section>
 
+
+            <div class="modal fade" id="contactModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content newsletter-modal">
+                    <!-- Illustration Area -->
+                    <div class="newsletter-illustration">
+              
+                     
+              
+                      <!-- Balloons + Envelope -->
+                      <div class="balloon-envelope-wrap">
+                        <img src="{% static 'images/application-success.png' %}"
+                            alt="Application received">
+                      </div>
+                    </div>
+              
+                    <!-- Text Content -->
+                    <div class="newsletter-body">
+                      <h2 class="newsletter-title">Application Received!</h2>
+                      <p class="newsletter-desc">Thank you for applying to Codigo Mantra. Our team will review your application and reach out if your profile is a good match.</p>
+                    </div>
+              
+                  </div>
+                </div>
+            </div>
+            
+
+{% endblock %}
+
+{% block JavaScript %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  {% if show_application_success %}
+  var elOk = document.getElementById('contactModal');
+  if (elOk && window.bootstrap && bootstrap.Modal) {
+    bootstrap.Modal.getOrCreateInstance(elOk).show();
+  }
+  {% endif %}
+
+  var careerForm = document.getElementById('careerApplicationForm');
+  if (!careerForm) return;
+
+  careerForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var submitBtn = careerForm.querySelector('[type="submit"]');
+    var globalErr = document.getElementById('careerFormGlobalError');
+    if (globalErr) {
+      globalErr.style.display = 'none';
+      globalErr.textContent = '';
+    }
+    careerForm.querySelectorAll('.ajax-error').forEach(function (node) {
+      if (node.id !== 'careerFormGlobalError') node.remove();
+    });
+
+    if (submitBtn) {
+      submitBtn.disabled = true;
+    }
+
+    var formData = new FormData(careerForm);
+    var csrfInput = careerForm.querySelector('[name="csrfmiddlewaretoken"]');
+
+    fetch(window.location.href, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+        'X-CSRFToken': csrfInput ? csrfInput.value : ''
+      },
+      credentials: 'same-origin'
+    })
+      .then(function (res) {
+        return res.json().then(function (data) {
+          return { ok: res.ok, status: res.status, data: data };
+        });
+      })
+      .then(function (result) {
+        var data = result.data;
+        if (result.ok && data.status === 'success') {
+          careerForm.reset();
+          var modalEl = document.getElementById('contactModal');
+          if (modalEl && window.bootstrap && bootstrap.Modal) {
+            bootstrap.Modal.getOrCreateInstance(modalEl).show();
+          }
+          if (data.email_warning && globalErr) {
+            globalErr.textContent =
+              'Your application was saved, but we could not send the confirmation emails. Our team will still review it.';
+            globalErr.style.display = 'block';
+          }
+          return;
+        }
+        if (data.errors) {
+          Object.keys(data.errors).forEach(function (field) {
+            var msgs = data.errors[field];
+            var msgText = msgs && msgs[0] && msgs[0].message ? msgs[0].message : (msgs && msgs[0]) || '';
+            if (field === '__all__') {
+              if (globalErr) {
+                globalErr.textContent = msgText;
+                globalErr.style.display = 'block';
+              }
+              return;
+            }
+            var input = careerForm.querySelector('[name="' + field + '"]');
+            if (input) {
+              var err = document.createElement('p');
+              err.className = 'ajax-error';
+              err.style.cssText = 'color:#ff6b6b;font-size:0.8rem;margin-top:4px;';
+              err.textContent = msgText;
+              var group = input.closest('.form-group');
+              if (group) group.appendChild(err);
+            }
+          });
+          return;
+        }
+        if (data.message && globalErr) {
+          globalErr.textContent = data.message;
+          globalErr.style.display = 'block';
+        }
+      })
+      .catch(function () {
+        if (globalErr) {
+          globalErr.textContent = 'Something went wrong. Please try again.';
+          globalErr.style.display = 'block';
+        }
+      })
+      .finally(function () {
+        if (submitBtn) submitBtn.disabled = false;
+      });
+  });
+});
+</script>
 {% endblock %}

@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>{% block title %}Codigo Mantra{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  {% block extra_css %}{% endblock %}
+</head>
+<body style="margin:0;padding:0;background-color:#6b6b6b;font-family:poppins;-webkit-font-smoothing:antialiased;">
+
+  <!-- Wrapper -->
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#6b6b6b;padding:32px 16px;">
+    <tr>
+      <td align="center">
+
+        <!-- Main Container -->
+        <table width="540" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background-color:#171717;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.5);">
+
+          <!-- ── HEADER ── -->
+          <tr>
+            <td style="background-color:#171717;padding:24px 32px 0px;text-align:center;">
+              <table cellpadding="0" cellspacing="0" border="0" style="margin:0 auto;">
+                <tr>
+                  <td style="vertical-align:middle;padding-right:12px;">
+                    <!-- Logo -->
+                    <img src='https://yurayi.s3.ap-south-1.amazonaws.com/logo-cm.svg' alt='Logo'>
+                  </td>
+                  <td style="vertical-align:middle;">
+                    <span style="font-size:18px;font-weight:500;color:#F6F6F6;font-family: poppins;">Codigo Mantra</span>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          {% block content %}{% endblock %}
+
+          <!-- ── FOOTER ── -->
+          <tr>
+            <td style="background-color:#161616;padding:28px 32px;text-align:center;">
+
+              <!-- Footer Brand -->
+              <table cellpadding="0" cellspacing="0" border="0" style="margin:0 auto 14px;">
+                <tr>
+                  <td style="vertical-align:middle;padding-right:8px;">
+                    <img src='https://yurayi.s3.ap-south-1.amazonaws.com/logo-cm.svg' alt="Logo">
+                  </td>
+                  <td style="vertical-align:middle;">
+                    <span style="font-size:12px;font-weight:500;color:#F6F6F6;font-family:poppins;">Codigo Mantra</span>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Footer text -->
+              <p style="margin:0 auto 20px;font-size:8px;color:rgba(246,246,246,0.8);line-height:1.6;max-width:320px;font-family:poppins;">Codigo Mantra is dedicated to providing exceptional service and support. We appreciate your trust in our products and services. If you have any questions, please do not hesitate to contact us.</p>
+
+              <!-- Social Icons -->
+              <table cellpadding="0" cellspacing="0" border="0" style="margin:0 auto;">
+                <tr>
+                  <!-- Facebook -->
+                  <td style="padding:0 6px;">
+                    <a href="https://www.facebook.com/codigomantra/" style="display:inline-block;width:34px;height:34px;border-radius:50%;background-color:rgba(255,255,255,0.08);text-align:center;line-height:34px;text-decoration:none;" target="_blank">
+                      <img src='https://yurayi.s3.ap-south-1.amazonaws.com/facebook.svg' alt="Facebook" style="margin-top: 7px;">
+                    </a>
+                  </td>
+                  <!-- Instagram -->
+                  <td style="padding:0 6px;">
+                    <a href="https://www.instagram.com/codigomantra/" style="display:inline-block;width:34px;height:34px;border-radius:50%;background-color:rgba(255,255,255,0.08);text-align:center;line-height:34px;text-decoration:none;" target="_blank">
+                      <img src='https://yurayi.s3.ap-south-1.amazonaws.com/instagram.svg' alt="Instagram" style="margin-top: 7px;">
+                    </a>
+                  </td>
+                  <!-- LinkedIn -->
+                  <td style="padding:0 6px;">
+                    <a href="https://www.linkedin.com/company/codigo-mantra-2406/posts/?feedView=all" style="display:inline-block;width:34px;height:34px;border-radius:50%;background-color:rgba(255,255,255,0.08);text-align:center;line-height:34px;text-decoration:none;" target="_blank">
+                        <img src='https://yurayi.s3.ap-south-1.amazonaws.com/linkdin.svg' alt="LinkedIn" style="margin-top: 7px;">
+                    </a>
+                  </td>
+                  <!-- YouTube -->
+                  <td style="padding:0 6px;">
+                    <a href="https://www.youtube.com/@codigo.mantra/" style="display:inline-block;width:34px;height:34px;border-radius:50%;background-color:rgba(255,255,255,0.08);text-align:center;line-height:34px;text-decoration:none;" target="_blank">
+                      <img src='https://yurayi.s3.ap-south-1.amazonaws.com/youtube.svg' alt="YouTube" style="margin-top: 7px;">
+                    </a>
+                  </td>
+                </tr>
+              </table>
+
+            </td>
+          </tr>
+
+        </table>
+        <!-- /Main Container -->
+
+      </td>
+    </tr>
+  </table>
+  <!-- /Wrapper -->
+
+</body>
+</html>

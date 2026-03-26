@@ -27,8 +27,6 @@ def navbar_context(request):
         "industries_nav": industries,
     }
 
-
-
 # def footer_context(request):
 #     """Global context available in all templates"""
 #     contact = CompanyContact.objects.first()
@@ -37,3 +35,5 @@ def navbar_context(request):
        
 #         "case_study":case_study
 #     }
+
+

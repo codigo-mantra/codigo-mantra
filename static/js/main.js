@@ -241,12 +241,6 @@ if (applyForm) {
 }
 
 
-
-
-
-
-
-
 document.getElementById("footer-form").addEventListener("submit", function(e) {
     e.preventDefault();
     console.log("Submitting newsletter form...");

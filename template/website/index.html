@@ -5,7 +5,6 @@
 <section class="hero">
     <!-- Background Grid -->
     <!-- <div class="hero-grid-bg"></div> -->
-
     <!-- Floating Cards -->
     <div class="hero-floating-elements d-none d-lg-flex">
         <div class="hero-floating-card card-tl"><img src="{% static 'images/first-card.png' %}" alt="Card 1">
@@ -113,7 +112,7 @@
             {% endfor %}
         </div>
         <div class="text-center mt-5">
-            <a href="#" class="btn btn-secondary-cm">
+            <a href="{% url 'services' %}" class="btn btn-secondary-cm">
                 <span class="label-up">Explore Services</span>
                 <span class="label-up">Explore Services</span>
             </a>
@@ -480,19 +479,73 @@
 
 {% block JavaScript %}
 <script>
-    $(function () {
-        $('.marquee-track').slick({
-            autoplay: true,
-            autoplaySpeed: 0,
-            speed: 5000,
-            arrows: false,
-            swipe: false,
-            slidesToShow: 7,
-            cssEase: 'linear',
-            pauseOnFocus: false,
-            pauseOnHover: false,
-            rtl: true
+    document.addEventListener('DOMContentLoaded', function () {
+        const footerForm = document.querySelector('.footer-form');
+        if (!footerForm) return;
+    
+        footerForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+    
+            const emailInput = footerForm.querySelector('#footerEmail');
+            const submitBtn  = footerForm.querySelector('[type=submit]');
+            const formData   = new FormData(footerForm);
+    
+            // Basic client-side check
+            if (!emailInput.value.trim()) {
+                showFormError(footerForm, 'Please enter your email address.');
+                return;
+            }
+    
+            submitBtn.disabled    = true;
+            submitBtn.textContent = 'Subscribing...';
+    
+            fetch(footerForm.getAttribute('action'), {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken'     : footerForm.querySelector('[name=csrfmiddlewaretoken]').value,
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                body: formData,
+            })
+            .then(response => {
+                // Check content type before parsing JSON
+                const contentType = response.headers.get('content-type');
+                if (contentType && contentType.includes('application/json')) {
+                    return response.json();
+                }
+                // If Django returned a redirect (HTML), treat as success
+                return { status: 'success' };
+            })
+            .then(data => {
+                if (data.status === 'success') {
+                    footerForm.reset();
+                    new bootstrap.Modal(document.getElementById('newsletterModal')).show();
+                } else {
+                    showFormError(footerForm, 'Please enter a valid email address.');
+                }
+            })
+            .catch(err => {
+                console.error('Newsletter error:', err);
+                showFormError(footerForm, 'Something went wrong. Please try again.');
+            })
+            .finally(() => {
+                submitBtn.disabled    = false;
+                submitBtn.textContent = 'Subscribe';
+            });
         });
+    
+        function showFormError(form, message) {
+            const existing = form.querySelector('.footer-form-error');
+            if (existing) existing.remove();
+    
+            const err = document.createElement('p');
+            err.className  = 'footer-form-error';
+            err.style.cssText = 'color:#ff6b6b;font-size:0.8rem;margin-top:6px;margin-bottom:0;';
+            err.textContent   = message;
+            form.appendChild(err);
+    
+            setTimeout(() => err.remove(), 4000);
+        }
     });
 </script>
 {% endblock JavaScript %}

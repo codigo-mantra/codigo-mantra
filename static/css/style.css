@@ -124,6 +124,25 @@ a:hover {
   line-height: 56px;
   text-align: center;
 }
+.btn-cm-cta:disabled {
+    border-radius: 10px;
+  border: 2px solid #D83903;
+  background: var(--Orange, #F05D35);
+  box-shadow: 0 4px 9.6px 0 rgba(241, 101, 53, 0.23), 0 6px 4px 0 rgba(255, 242, 242, 0.25) inset, 0 4px 4px 0 rgba(0, 0, 0, 0.25);
+  display: inline-block;
+  padding: 0;
+  color: #FFF;
+  font-family: Poppins;
+  font-size: 16px;
+  font-weight: 400;
+  overflow: hidden;
+  position: relative;
+  height: 56px;
+  line-height: 56px;
+  text-align: center;
+  /* opacity: 0.9; */
+  cursor: not-allowed;
+}
 
 
 .label-up {

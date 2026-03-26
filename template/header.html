@@ -90,8 +90,8 @@
                                                     <div class="cm-mega__h">Our Product</div>
                                                         <span class="cm-mega__thumb" aria-hidden="true"></span>
                                                         <span class="cm-mega__productBody">
-                                                            <span class="cm-mega__productT">{{case_study_nav.title}}</span>
-                                                            <span class="cm-mega__productD">{{case_study_nav.content|truncatewords:10}}<a href="{% url 'portfolio' %}">View Product</a></span>  
+                                                            <span class="cm-mega__productT">{{ case_study_nav.title }}</span>
+                                                            <span class="cm-mega__productD">{{ case_study_nav.content|truncatewords:18 }} <a href="{{ case_study_nav.url }}">View Product</a></span>
                                                         </span>
                                                   
                                                 </div>
@@ -129,11 +129,11 @@
                                                     <div class="cm-mega__h">Our Product</div>
                                                     
                                                         <span class="cm-mega__thumb" aria-hidden="true">
-                                                            <img src="http://localhost:8000{{ case_study_nav.cover_image }}" alt="" loading="lazy">
+                                                            <!-- <img src="http://localhost:8000{{ case_study_nav.cover_image }}" alt="" loading="lazy"> -->
                                                         </span>
                                                         <span class="cm-mega__productBody">
-                                                            <span class="cm-mega__productT">{{case_study_nav.title}}</span>
-                                                            <span class="cm-mega__productD">{{case_study_nav.content|truncatewords:10}} <a href="{% url 'portfolio' %}">View Product</a></span>  
+                                                            <span class="cm-mega__productT">{{ case_study_nav.title }}</span>
+                                                            <span class="cm-mega__productD">{{ case_study_nav.content|truncatewords:18 }} <a href="{{ case_study_nav.url }}">View Product</a></span>
                                                         </span>
                                                     
                                                 </div>
@@ -155,17 +155,17 @@
                                                     <div class="cm-mega__h">Who are we</div>
                                                     <a class="cm-mega__link" href="{% url 'about-us' %}">About us</a>
                                                     <a class="cm-mega__link" href="{% url 'career' %}">Career</a>
-                                                    <a class="cm-mega__link" href="{% url 'portfolio' %}">Our Products</a>
+                                                    <a class="cm-mega__link" href="#about">Our Products</a>
                                                     <a class="cm-mega__link" href="#about">Insights</a>
                                                 </div>
                                                  <div class="cm-mega__col cm-mega__col--product">
                                                     <div class="cm-mega__h">Our Product</div>
                                                         <span class="cm-mega__thumb" aria-hidden="true">
-                                                            <img loading="lazy" src="http://localhost:8000{{ case_study_nav.cover_image.url }}" alt="{{ case_study_nav.title }}">
+                                                            <!-- <img loading="lazy" src="http://localhost:8000{{ case_study_nav.cover_image.url }}" alt="{{ case_study_nav.title }}"> -->
                                                         </span>
                                                         <span class="cm-mega__productBody">
-                                                            <span class="cm-mega__productT">{{case_study_nav.title}}</span>
-                                                            <span class="cm-mega__productD">{{case_study_nav.content|truncatewords:10}} <a href="{% url 'portfolio' %}">View Product</a></span>  
+                                                            <span class="cm-mega__productT">{{ bells_crm_nav.title }}</span>
+                                                            <span class="cm-mega__productD">{{ bells_crm_nav.content|truncatewords:18 }} <a href="{{ bells_crm_nav.url }}">View Product</a></span>
                                                         </span>
                                                
                                                 </div>
