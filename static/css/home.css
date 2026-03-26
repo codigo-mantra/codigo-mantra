@@ -529,7 +529,7 @@ body {
     padding: 2px 15px;
     border-radius: 10px;
     /* Figma: corner radius 10 */
-
+    height: 100%;
     /* Exact Figma fill: 1D1D1D at 20% */
     background: rgba(29, 29, 29, 0.20);
     box-shadow: 0.5rem 1rem 1rem rgb(0 0 0 / 40%), -1px -1px 0px rgb(179 179 179), 1px 1px 0px rgb(234 234 234);

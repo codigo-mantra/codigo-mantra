@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Space+Grotesk:wght@300..700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Space+Grotesk:wght@300..700&display=swap');
 
 :root {
@@ -124,8 +124,9 @@ a:hover {
   line-height: 56px;
   text-align: center;
 }
+
 .btn-cm-cta:disabled {
-    border-radius: 10px;
+  border-radius: 10px;
   border: 2px solid #D83903;
   background: var(--Orange, #F05D35);
   box-shadow: 0 4px 9.6px 0 rgba(241, 101, 53, 0.23), 0 6px 4px 0 rgba(255, 242, 242, 0.25) inset, 0 4px 4px 0 rgba(0, 0, 0, 0.25);
@@ -392,11 +393,14 @@ a:hover {
   border: 1px solid rgba(52, 51, 51, 0.89);
   background: #131313;
   box-shadow: 0 4px 34px 0 rgba(244, 93, 52, 0.09);
+  width: 100%;
 }
+
 .cm-mega__col.cm-mega__col--mid-last {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
+
 .cm-mega__grid-server {
   display: grid;
   grid-template-columns: 1fr 1fr 2fr;
@@ -406,10 +410,12 @@ a:hover {
   background: #131313;
   box-shadow: 0 4px 34px 0 rgba(244, 93, 52, 0.09);
 }
+
 .right-col-cm-app-development {
-    border-left: 1px solid rgba(52, 50, 50, 0.53);
-    padding-left: 25px;
+  border-left: 1px solid rgba(52, 50, 50, 0.53);
+  padding-left: 25px;
 }
+
 .cm-mega__grid-2 {
   display: grid;
   grid-template-columns: 1.05fr 2fr;
@@ -418,6 +424,7 @@ a:hover {
   border: 1px solid rgba(52, 51, 51, 0.89);
   background: #131313;
   box-shadow: 0 4px 34px 0 rgba(244, 93, 52, 0.09);
+  width: 100%;
 }
 
 .cm-mega__col {
@@ -1284,7 +1291,7 @@ span.cm-mega__thumb img {
   padding: 18px;
   border-radius: 20px;
   background: rgba(29, 29, 29, 0.20);
-    box-shadow: 0.5rem 1rem 1rem rgb(0 0 0 / 40%), -1px -1px 0px rgb(179 179 179), 1px 1px 0px rgb(234 234 234);
+  box-shadow: 0.5rem 1rem 1rem rgb(0 0 0 / 40%), -1px -1px 0px rgb(179 179 179), 1px 1px 0px rgb(234 234 234);
   overflow: hidden;
 }
 
@@ -1296,7 +1303,7 @@ span.cm-mega__thumb img {
   font-style: normal;
   font-weight: 300;
   line-height: 150%;
-  opacity: 0.8; 
+  opacity: 0.8;
   /* 18px */
 }
 

@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400..700;1,400..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 
 section.case-study-hero {
   padding-top: 36px;
@@ -573,38 +574,41 @@ section.case-study-hero {
   }
 
   /* ── MOBILE FILTER BUTTON ── */
-.cs-filter-header {
-  display: flex;
-  justify-content: flex-end;
-}
-.cs-switch input:checked~.cs-slider::before {
-  transform: translateX(12px);
-}
-.cs-mobile-filter-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  border-radius: 10px;
-  background: rgba(0, 0, 0, 0.20);
-  padding: 3px 10px;
-  color: #F6F6F6;
-  font-family: 'Poppins', sans-serif;
-  font-size: 12px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.2s;
-  box-shadow: 0.5rem 1rem 1rem rgb(0 0 0 / 40%), -1px -1px 0px rgb(179 179 179), 1px 1px 0px rgb(234 234 234);
-}
+  .cs-filter-header {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .cs-switch input:checked~.cs-slider::before {
+    transform: translateX(12px);
+  }
+
+  .cs-mobile-filter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 10px;
+    background: rgba(0, 0, 0, 0.20);
+    padding: 3px 10px;
+    color: #F6F6F6;
+    font-family: 'Poppins', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+    box-shadow: 0.5rem 1rem 1rem rgb(0 0 0 / 40%), -1px -1px 0px rgb(179 179 179), 1px 1px 0px rgb(234 234 234);
+  }
 
 
-.filter-chevron {
-  transition: transform 0.3s ease;
+  .filter-chevron {
+    transition: transform 0.3s ease;
+  }
+
+  .cs-mobile-filter-btn.active .filter-chevron {
+    transform: rotate(180deg);
+  }
 }
 
-.cs-mobile-filter-btn.active .filter-chevron {
-  transform: rotate(180deg);
-}
-}
 /* ── MOBILE SIDEBAR DROPDOWN ── */
 @media (max-width: 991px) {
 
@@ -616,9 +620,11 @@ section.case-study-hero {
     flex: 0 0 100%;
     margin-bottom: 16px;
   }
-.cs-toggle-wrap{
-  margin-bottom: 16px;
-}
+
+  .cs-toggle-wrap {
+    margin-bottom: 16px;
+  }
+
   /* Show when active */
   .cs-sidebar-col.show {
     display: block;
@@ -629,9 +635,9 @@ section.case-study-hero {
     max-height: 400px;
     overflow-y: auto;
     border-radius: 14px;
-    border: 1px solid rgba(255,255,255,0.12);
+    border: 1px solid rgba(255, 255, 255, 0.12);
     background: #111111;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
   }
 
   /* Full width grid on mobile */
@@ -645,11 +651,13 @@ section.case-study-hero {
     opacity: 0;
     transform: translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
   }
 }
+
 /* project details page specific styles */
 
 h1.display-heading-project {
@@ -718,6 +726,7 @@ p.job-meta-sub {
   flex-direction: column;
   gap: 6px;
   padding: 0 40px;
+  align-items: flex-start;
 }
 
 /* Remove left padding from first item */

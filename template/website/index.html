@@ -29,18 +29,18 @@
             </div>
 
             <h1 class="hero-title">
-                <span class="text-orange">Build</span> and <span class="text-orange">Scale</span> digital
-                products tha
-                drive real <span class="text-orange">Business Growth.</span>
+                <span class="text-orange">Transform</span> Your <span class="text-orange">Business</span> with
+                Custom <span class="text-orange"> Digital Solutions</span>
             </h1>
             <p class="hero-sub">
-                Design, engineering, and growth support for startups, scale-ups, and enterprises.
+                Empowering startups, scale-ups, and enterprises with cutting-edge software designed to accelerate growth
+                and innovation.
             </p>
 
             <div class="hero-cta-wrap">
                 <a class="btn btn-cm-cta btn-pill" href="#contact">
-                    <span class="label-up">Book a 15 min call</span>
-                    <span class="label-up">Book a 15 min call</span>
+                    <span class="label-up">Talk to Our Tech Architects</span>
+                    <span class="label-up">Talk to Our Tech Architects</span>
                 </a>
             </div>
         </div>
@@ -82,8 +82,7 @@
             </div>
         </div>
         <h2 class="display-heading">
-            A true powerhouse for <br>
-            Businesses Grow
+            Your Partner in Building<br> Scalable Software
         </h2>
 
         <div class="row g-4 text-start" style="margin-bottom: 30px;">
@@ -138,20 +137,19 @@
                 Why Choose Us
             </div>
         </div>
-        <h2 class="display-heading mb-5">Our Results</h2>
+        <h2 class="display-heading mb-5">Real Results, Proven Impact</h2>
 
         <div class="row g-4">
             <div class="col-lg-3 col-md-3 text-start">
                 <div class="result-card">
-                    <h3>98%</h3>
-                    <h5>Client Satisfaction</h5>
-                    <p>We prioritize trust, transparency, and a shared drive to deliver exceptional outcomes
-                        for our clients.</p>
+                    <h3>100+</h3>
+                    <h5>Satisfied Clients</h5>
+                    <p>We prioritize trust, transparency, and a shared drive to deliver exceptional outcomes for our clients.</p>
                 </div>
             </div>
             <div class="col-lg-3 col-md-3 text-start">
                 <div class="result-card">
-                    <h3>250+</h3>
+                    <h3>200+</h3>
                     <h5>Products Delivered</h5>
                     <p>Our dedication ensures every project benefits from our vast technical knowledge.</p>
                 </div>
@@ -166,10 +164,9 @@
             </div>
             <div class="col-lg-3 col-md-3 text-start">
                 <div class="result-card">
-                    <h3>10+</h3>
-                    <h5>Years of experience</h5>
-                    <p>With over a decade of experience, we've honed our skills to deliver top-notch digital
-                        solutions.</p>
+                    <h3>50+</h3>
+                    <h5>Professional Team members</h5>
+                    <p>Our team of over 50 professionals brings diverse skills and perspectives to deliver innovative solutions for our clients.</p>
                 </div>
             </div>
         </div>
@@ -195,7 +192,7 @@
                     Projects
                 </div>
             </div>
-            <h2 class="display-heading mt-3">Explore our portfolio</h2>
+            <h2 class="display-heading mt-3">Our Work Speaks for Itself</h2>
         </div>
 
         <div class="portfolio-list">
@@ -274,7 +271,7 @@
                     Testimonials
                 </div>
             </div>
-            <h2 class="display-heading mt-3">Trusted by Teams We Work With</h2>
+            <h2 class="display-heading mt-3">The Trusted Partner for High-Growth Startups and Enterprises</h2>
             <p class="section-subtext mx-auto" style="max-width: 600px; color: rgba(255,255,255,0.6);">
                 What our clients say about working with us and the results we help them achieve.
             </p>
@@ -457,12 +454,11 @@
         <div class="cta-refined-box">
             <div class="row align-items-center">
                 <div class="col-lg-6">
-                    <h1 class="cta-title-refined">Unleash Growth with Powerful Solutions</h1>
-                    <p class="cta-subtitle-refined">Maximize your business potential with our suite of
-                        innovative tools and expert support.</p>
+                    <h1 class="cta-title-refined">Unlock Your Business’s Potential with Codigo Mantra</h1>
+                    <p class="cta-subtitle-refined">Ready to turn your ideas into scalable digital products? Let’s work together to create a software solution that propels your business forward.</p>
                     <a href="{% url 'contact' %}" class="btn btn-cta-refined">
-                        <span class="label-up">Get in touch</span>
-                        <span class="label-up">Get in touch</span>
+                        <span class="label-up">Talk to a Solutions Architect</span>
+                        <span class="label-up">Talk to a Solutions Architect</span>
                     </a>
                 </div>
                 <div class="col-lg-6">
@@ -482,70 +478,95 @@
     document.addEventListener('DOMContentLoaded', function () {
         const footerForm = document.querySelector('.footer-form');
         if (!footerForm) return;
-    
+
         footerForm.addEventListener('submit', function (e) {
             e.preventDefault();
-    
+
             const emailInput = footerForm.querySelector('#footerEmail');
-            const submitBtn  = footerForm.querySelector('[type=submit]');
-            const formData   = new FormData(footerForm);
-    
+            const submitBtn = footerForm.querySelector('[type=submit]');
+            const formData = new FormData(footerForm);
+
             // Basic client-side check
             if (!emailInput.value.trim()) {
                 showFormError(footerForm, 'Please enter your email address.');
                 return;
             }
-    
-            submitBtn.disabled    = true;
+
+            submitBtn.disabled = true;
             submitBtn.textContent = 'Subscribing...';
-    
+
             fetch(footerForm.getAttribute('action'), {
                 method: 'POST',
                 headers: {
-                    'X-CSRFToken'     : footerForm.querySelector('[name=csrfmiddlewaretoken]').value,
+                    'X-CSRFToken': footerForm.querySelector('[name=csrfmiddlewaretoken]').value,
                     'X-Requested-With': 'XMLHttpRequest',
                 },
                 body: formData,
             })
-            .then(response => {
-                // Check content type before parsing JSON
-                const contentType = response.headers.get('content-type');
-                if (contentType && contentType.includes('application/json')) {
-                    return response.json();
-                }
-                // If Django returned a redirect (HTML), treat as success
-                return { status: 'success' };
-            })
-            .then(data => {
-                if (data.status === 'success') {
-                    footerForm.reset();
-                    new bootstrap.Modal(document.getElementById('newsletterModal')).show();
-                } else {
-                    showFormError(footerForm, 'Please enter a valid email address.');
-                }
-            })
-            .catch(err => {
-                console.error('Newsletter error:', err);
-                showFormError(footerForm, 'Something went wrong. Please try again.');
-            })
-            .finally(() => {
-                submitBtn.disabled    = false;
-                submitBtn.textContent = 'Subscribe';
-            });
+                .then(response => {
+                    // Check content type before parsing JSON
+                    const contentType = response.headers.get('content-type');
+                    if (contentType && contentType.includes('application/json')) {
+                        return response.json();
+                    }
+                    // If Django returned a redirect (HTML), treat as success
+                    return { status: 'success' };
+                })
+                .then(data => {
+                    if (data.status === 'success') {
+                        footerForm.reset();
+                        new bootstrap.Modal(document.getElementById('newsletterModal')).show();
+                    } else {
+                        showFormError(footerForm, 'Please enter a valid email address.');
+                    }
+                })
+                .catch(err => {
+                    console.error('Newsletter error:', err);
+                    showFormError(footerForm, 'Something went wrong. Please try again.');
+                })
+                .finally(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Subscribe';
+                });
         });
-    
+
         function showFormError(form, message) {
             const existing = form.querySelector('.footer-form-error');
             if (existing) existing.remove();
-    
+
             const err = document.createElement('p');
-            err.className  = 'footer-form-error';
+            err.className = 'footer-form-error';
             err.style.cssText = 'color:#ff6b6b;font-size:0.8rem;margin-top:6px;margin-bottom:0;';
-            err.textContent   = message;
+            err.textContent = message;
             form.appendChild(err);
-    
+
             setTimeout(() => err.remove(), 4000);
         }
+    });
+
+
+
+    $(function () {
+        $('.marquee-track').slick({
+            autoplay: true,
+            autoplaySpeed: 0,
+            speed: 5000,
+            arrows: false,
+            swipe: false,
+            slidesToShow: 7,
+            cssEase: 'linear',
+            pauseOnFocus: false,
+            pauseOnHover: false,
+            rtl: true,
+            responsive: [
+                {
+                    breakpoint: 768,
+                    settings: {
+                        slidesToShow: 1.7
+                    }
+                }
+            ]
+        });
     });
 </script>
 {% endblock JavaScript %}
