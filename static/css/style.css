@@ -104,7 +104,7 @@ a:hover {
   border: 1px solid #FEFEFE;
   background: linear-gradient(180deg, #363636 0%, #1A1A1A 100%);
   box-shadow: 0 2px 0 0 rgba(201, 201, 201, 0.25) inset, 0 4px 3px 0 rgba(255, 242, 242, 0.25) inset, 0 4px 8.6px 0 rgba(107, 107, 107, 0.25);
-  transform: translateY(-5px);
+  /* transform: translateY(-5px); */
 }
 
 .btn-cm-cta {
@@ -1218,8 +1218,6 @@ span.cm-mega__thumb img {
 /* Footer */
 .site-footer {
   padding: 18px 0 40px;
-  border-top: 1px solid rgba(255, 255, 255, .08);
-  background: rgba(0, 0, 0, .18);
 }
 
 .cm-footer {
@@ -1403,6 +1401,7 @@ span.reserved-rights {
   font-style: normal;
   font-weight: 400;
   line-height: 160%;
+  opacity: 0.8;
 }
 
 .cm-social {
