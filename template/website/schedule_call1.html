@@ -70,8 +70,10 @@
                       <div class="cal-header">
                         <div class="cal-month" id="calMonthLabel">February <span>2026</span></div>
                         <div class="d-flex gap-1">
-                          <button class="cal-nav" onclick="changeMonth(-1)">&#8249;</button>
-                          <button class="cal-nav" onclick="changeMonth(1)">&#8250;</button>
+                          <!-- <button class="cal-nav" onclick="changeMonth(-1)">&#8249;</button>
+                          <button class="cal-nav" onclick="changeMonth(1)">&#8250;</button> -->
+                          <button id="prevMonthBtn" class="cal-nav" onclick="changeMonth(-1)">&#8249;</button>
+                          <button id="nextMonthBtn" class="cal-nav" onclick="changeMonth(1)">&#8250;</button>
                         </div>
                       </div>
                       <div class="cal-grid" id="calGrid"></div>
@@ -443,25 +445,83 @@ if (tzSelect) {
 }
 
 
+// function updateNavButtons() {
+//   const prevBtn = document.getElementById('prevMonthBtn');
+//   const nextBtn = document.getElementById('nextMonthBtn');
+
+//   // Disable prev button if previous month is fully past
+//   const firstDayOfCurrentMonth = new Date(currentYear, currentMonth, 1);
+//   if (firstDayOfCurrentMonth.getMonth() === TODAY.getMonth() &&
+//       firstDayOfCurrentMonth.getFullYear() === TODAY.getFullYear()) {
+//     // current month = today month → can't go back
+//     prevBtn.disabled = true;
+//     prevBtn.classList.remove('bold');
+//   } else {
+//     prevBtn.disabled = false;
+//     prevBtn.classList.add('bold');
+//   }
+
+//   // Always bold next button
+//   nextBtn.classList.add('bold');
+// }
+
+// // Call this after rendering calendar or changing month
+// function changeMonth(dir) {
+//   let newMonth = currentMonth + dir;
+//   let newYear  = currentYear;
+
+//   if (newMonth < 0) {
+//     newMonth = 11;
+//     newYear--;
+//   } else if (newMonth > 11) {
+//     newMonth = 0;
+//     newYear++;
+//   }
+
+//   // Prevent going to fully past months
+//   const firstDayOfNewMonth = new Date(newYear, newMonth, 1);
+//   const lastDayOfNewMonth  = new Date(newYear, newMonth + 1, 0);
+
+//   // If last day of new month < today → fully past → block
+//   if (lastDayOfNewMonth < TODAY) {
+//     return; // do nothing
+//   }
+
+//   currentMonth = newMonth;
+//   currentYear  = newYear;
+
+//   renderCalendar();
+//   updateNavButtons(); // update button styles
+// }
+
+// // Initial call
+// updateNavButtons();
+
 function updateNavButtons() {
   const prevBtn = document.getElementById('prevMonthBtn');
   const nextBtn = document.getElementById('nextMonthBtn');
 
   // Disable prev button if previous month is fully past
   const firstDayOfCurrentMonth = new Date(currentYear, currentMonth, 1);
-  if (firstDayOfCurrentMonth.getMonth() === TODAY.getMonth() &&
-      firstDayOfCurrentMonth.getFullYear() === TODAY.getFullYear()) {
+
+  if (
+    firstDayOfCurrentMonth.getMonth() === TODAY.getMonth() &&
+    firstDayOfCurrentMonth.getFullYear() === TODAY.getFullYear()
+  ) {
     // current month = today month → can't go back
     prevBtn.disabled = true;
+    prevBtn.classList.add('disabled');   // add disabled class
     prevBtn.classList.remove('bold');
   } else {
     prevBtn.disabled = false;
+    prevBtn.classList.remove('disabled'); // remove disabled class
     prevBtn.classList.add('bold');
   }
 
   // Always bold next button
   nextBtn.classList.add('bold');
 }
+
 
 // Call this after rendering calendar or changing month
 function changeMonth(dir) {
@@ -480,7 +540,6 @@ function changeMonth(dir) {
   const firstDayOfNewMonth = new Date(newYear, newMonth, 1);
   const lastDayOfNewMonth  = new Date(newYear, newMonth + 1, 0);
 
-  // If last day of new month < today → fully past → block
   if (lastDayOfNewMonth < TODAY) {
     return; // do nothing
   }
@@ -489,7 +548,7 @@ function changeMonth(dir) {
   currentYear  = newYear;
 
   renderCalendar();
-  updateNavButtons(); // update button styles
+  updateNavButtons();
 }
 
 // Initial call

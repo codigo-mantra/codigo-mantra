@@ -290,46 +290,56 @@
           </div>
 
 
-          <div class="modal fade" id="bookingConflictModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
+          
+        <div class="modal fade" id="bookingConflictModal" tabindex="-1" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content newsletter-modal">
-                <!-- Illustration Area -->
-                <div class="newsletter-illustration position-relative">
-          
-                
-                        <a type="button" class="btn-close modal-close-btn" data-bs-dismiss="modal" aria-label="Close">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
-                            <path fill-rule="evenodd" clip-rule="evenodd"
-                                  d="M15.692 17.6039C16.22 18.1319 17.076 18.1319 17.604 17.6039C18.132 17.076 18.132 16.2199 17.604 15.6919L10.912 8.99999L17.604 2.30806C18.132 1.78008 18.132 0.924049 17.604 0.396066C17.076 -0.131916 16.22 -0.131916 15.692 0.396066L9.00004 7.088L2.30801 0.395987C1.78002 -0.131996 0.923989 -0.131995 0.396004 0.395987C-0.13198 0.92397 -0.131981 1.78 0.396004 2.30798L7.08804 8.99999L0.395989 15.692C-0.131997 16.22 -0.131996 17.076 0.395989 17.604C0.923973 18.132 1.78 18.132 2.30799 17.604L9.00004 10.912L15.692 17.6039Z"
-                                    fill="#F6F6F6" />
+
+                  <!-- Illustration Area -->
+                  <div class="newsletter-illustration position-relative">
+
+                      <a type="button" class="btn-close modal-close-btn" data-bs-dismiss="modal" aria-label="Close">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                              <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M15.692 17.6039C16.22 18.1319 17.076 18.1319 17.604 17.6039C18.132 17.076 18.132 16.2199 17.604 15.6919L10.912 8.99999L17.604 2.30806C18.132 1.78008 18.132 0.924049 17.604 0.396066C17.076 -0.131916 16.22 -0.131916 15.692 0.396066L9.00004 7.088L2.30801 0.395987C1.78002 -0.131996 0.923989 -0.131995 0.396004 0.395987C-0.13198 0.92397 -0.131981 1.78 0.396004 2.30798L7.08804 8.99999L0.395989 15.692C-0.131997 16.22 -0.131996 17.076 0.395989 17.604C0.923973 18.132 1.78 18.132 2.30799 17.604L9.00004 10.912L15.692 17.6039Z"
+                                      fill="#F6F6F6" />
                           </svg>
-                        </a>
-                  <!-- Balloons + Envelope -->
-                  <div class="balloon-envelope-wrap">
-                    <img src="{% static 'images/contact-us-modal.svg' %}" 
-                        alt="Contact Us Modal">
+                      </a>
+
+                      <!-- REPLACED IMAGE HERE -->
+                      <div class="balloon-envelope-wrap">
+                          <img src="{% static 'images/call-scheduled.svg' %}" 
+                              alt="Call Scheduled Image">
+                      </div>
+
                   </div>
-                </div>
-          
-                <!-- Text Content (match booking success modal: no extra inline margins) -->
-                <div class="newsletter-body">
-                  <h2 class="newsletter-title">You already have a call scheduled</h2>
-                  <p class="newsletter-desc">It looks like you already have a call scheduled at <span class="existing-time-span">{{ existing_time }}</span>. Do you still want to book another one at <span class="selected-time-span">{{ selected_time }}</span>?</p>
-                  <div class="d-flex gap-4 w-100" style="margin-top: 30px !important;">
-                    <a href="#" class="btn btn-secondary-cm w-100" style="transform: none !important;">
-                        <span class="label-up">Cancel</span>
-                        <span class="label-up text-white fw-400">Cancel</span>
-                    </a>
-                    <a href="{% url 'schedule-call' %}" class="btn btn-cm-cta w-100" >
-                        <span class="label-up">Schedule Anyway →</span>
-                        <span class="label-up text-white fw-400">Schedule Anyway →</span>
-                    </a>
+
+                  <!-- Text Content -->
+                  <div class="newsletter-body">
+                      <h2 class="newsletter-title">You already have a call scheduled</h2>
+
+                      <p class="newsletter-desc">
+                          It looks like you already have a call scheduled at 
+                          <span class="existing-time-span">{{ existing_time }}</span>. 
+                          Do you still want to book another one at 
+                          <span class="selected-time-span">{{ selected_time }}</span>?
+                      </p>
+
+                      <div class="d-flex gap-4 w-100" style="margin-top: 30px !important;">
+                          <a href="#" class="btn btn-secondary-cm w-100" style="transform: none !important;">
+                              <span class="label-up">Cancel</span>
+                              <span class="label-up text-white fw-400">Cancel</span>
+                          </a>
+                          <a href="{% url 'schedule-call' %}" class="btn btn-cm-cta w-100">
+                              <span class="label-up">Schedule Anyway →</span>
+                              <span class="label-up text-white fw-400">Schedule Anyway →</span>
+                          </a>
+                      </div>
                   </div>
-                </div>
-          
+
               </div>
-            </div>
-        </div>
+          </div>
+      </div>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
