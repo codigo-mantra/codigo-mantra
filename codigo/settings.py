@@ -14,6 +14,16 @@ import os, sys
 from pathlib import Path
 from django.contrib.messages import constants as messages
 
+from dotenv import load_dotenv
+import os
+
+load_dotenv()  # loads variables from .env
+
+# --- Google Meet (Calendar API) — optional; see website/google_meet.py ---
+# Booking flow uses Zoom by default. Uncomment import + fallback in website/views.py
+# to use Meet when Zoom fails. Share the calendar with the service account email.
+GOOGLE_SERVICE_ACCOUNT_FILE = os.environ.get("GOOGLE_SERVICE_ACCOUNT_FILE")
+GOOGLE_CALENDAR_ID = os.environ.get("GOOGLE_CALENDAR_ID", "primary")
 
 MESSAGE_TAGS = {
         messages.DEBUG: 'alert-secondary',
@@ -37,7 +47,7 @@ sys.path.insert(0, os.path.join(BASE_DIRR, 'apps'))
 SECRET_KEY = '%a4-))8=7y0*z=de#zg+4vft8q9p9q27!gx9vteo6jmr#)k7y7'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 
 ALLOWED_HOSTS = ['*']
@@ -269,12 +279,27 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+DEFAULT_FROM_EMAIL = "Codigo Mantra <abbas.codigo@gmail.com>"
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
-EMAIL_HOST_USER = "info@codigomantra.com"
-EMAIL_HOST_PASSWORD = "vrch uuci zrnp eivo"
+EMAIL_HOST_USER = "abbas.codigo@gmail.com"
+EMAIL_HOST_PASSWORD = "mond zenp tfjj uoxy"
 
+# Comma-separated extra admin addresses for booking notifications (optional).
+BOOKING_ADMIN_EMAILS = [
+    e.strip()
+    for e in os.environ.get("BOOKING_ADMIN_EMAILS", "").split(",")
+    if e.strip()
+]
+
+# True: client + admin booking mails use only EMAIL_HOST_USER / BOOKING_ADMIN_EMAILS (no consultant CC).
+# Set env BOOKING_SINGLE_ADMIN_INBOX=false when multiple admins need consultant copies.
+BOOKING_SINGLE_ADMIN_INBOX = os.environ.get("BOOKING_SINGLE_ADMIN_INBOX", "true").lower() in (
+    "1",
+    "true",
+    "yes",
+)
 
 RECAPTCHA_PUBLIC_KEY = "6LfhyUUqAAAAALWtHDmDjfALmGvNkS__D9JH26Vz"
 RECAPTCHA_PRIVATE_KEY = "6LfhyUUqAAAAAEUMGWOH46qR3OIbyCm79ugcJET4"
@@ -287,4 +312,22 @@ CACHES = {
         "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
         "LOCATION": "unique-codigomantra-cache",
     }
+}
+
+# So `website.zoom_meet` and other app loggers show Zoom/Google API warnings in the console
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "console": {
+            "class": "logging.StreamHandler",
+        },
+    },
+    "loggers": {
+        "website": {
+            "handlers": ["console"],
+            "level": "WARNING",
+            "propagate": False,
+        },
+    },
 }

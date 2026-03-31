@@ -1,7 +1,8 @@
 from django import forms
 # from django_recaptcha.fields import ReCaptchaField
 # from django_recaptcha.widgets import ReCaptchaV2Checkbox 
-from .models import ContactUs, Newsletter, Application
+from .models import ContactUs, Newsletter, Application, Booking, User
+import datetime
 
 
 
@@ -21,6 +22,22 @@ from .models import ContactUs, Newsletter, Application
 #     #     if not captcha:
 #     #         self.add_error('captcha','Captcha is required')
 #     #     return captcha
+
+
+class BookingForm(forms.ModelForm):
+    # These fields are for the client User model
+    client_name = forms.CharField(max_length=255, label="Full name")
+    client_email = forms.EmailField(label="Email address")
+
+    class Meta:
+        model = Booking
+        fields = ['booking_date', 'start_time', 'service_requested', 'project_brief']
+        widgets = {
+            'booking_date': forms.DateInput(attrs={'type': 'date'}),
+            'start_time': forms.TimeInput(attrs={'type': 'time'}),
+            'service_requested': forms.TextInput(attrs={'placeholder': 'Mention service here'}),
+            'project_brief': forms.Textarea(attrs={'placeholder': 'Please describe your project in detail that will help prepare for our meeting'}),
+        }
 
 
 class ContactUsForm(forms.ModelForm):

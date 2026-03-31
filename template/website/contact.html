@@ -156,7 +156,7 @@
                             For Other Dedicated Support
                         </h2>
                         <p class="pera-contact">Need specific help or want to schedule a deeper conversation? Book a 15-minute call with one of our experts. We’re here to assist!</p>
-                        <a href="#" class="btn btn-cm-cta btn-pill" style="width: fit-content;">
+                        <a href="{% url 'schedule-call' %}" class="btn btn-cm-cta btn-pill" style="width: fit-content;">
                             <span class="label-up">Book a 15 min call
                             </span>
                             <span class="label-up">Book a 15 min call
@@ -166,19 +166,17 @@
                 </div>
 
             </section>
-            <section class="faq-section">
-                <div class="container">
-
+            <!-- <section class="faq-section">
+                <div class="container"> -->
                     <!-- Header -->
-                    <div class="faq-header text-center mb-5">
+                    <!-- <div class="faq-header text-center mb-5">
                     <h1>Codigo Mantra FAQs</h1>
                     <p class="mx-auto" style="max-width: 560px;">
                         Welcome to the Codigo Mantra FAQ page! Find quick answers here about our services.
                     </p>
-                    </div>
-
+                    </div> -->
                     <!-- Accordion -->
-                    <div class="accordion faq-accordion" id="faqAccordion">
+                    <!-- <div class="accordion faq-accordion" id="faqAccordion">
                     {% for faq in faqs %}
                         <div class="accordion-item">
                             <h2 class="accordion-header">
@@ -203,6 +201,45 @@
                             </div>
                         </div>
                     {% endfor %}
+                    </div>
+                </div>
+            </section> -->
+            <section class="faq-section">
+                <div class="container">
+                    <!-- Header -->
+                    <div class="faq-header text-center mb-5">
+                        <h1>Codigo Mantra FAQs</h1>
+                        <p class="mx-auto" style="max-width: 560px;">
+                            Welcome to the Codigo Mantra FAQ page! Find quick answers here about our services.
+                        </p>
+                    </div>
+                    <!-- Accordion -->
+                    <div class="accordion faq-accordion" id="faqAccordion">
+                        {% for faq in faqs %}
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#faq{{ forloop.counter }}"
+                                    aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}"
+                                    aria-controls="faq{{ forloop.counter }}">
+                                    {{ faq.question }}
+                                    <span class="faq-icon ms-auto flex-shrink-0">
+                                        <svg class="icon-minus" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
+                                            <path d="M7 11H15M21 11C21 16.5228 16.5228 21 11 21C5.47715 21 1 16.5228 1 11C1 5.47715 5.47715 1 11 1C16.5228 1 21 5.47715 21 11Z" stroke="#F05D35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                        <svg class="icon-plus" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 22 22" fill="none">
+                                            <path d="M11 7V15M7 11H15M21 11C21 16.5228 16.5228 21 11 21C5.47715 21 1 16.5228 1 11C1 5.47715 5.47715 1 11 1C16.5228 1 21 5.47715 21 11Z" stroke="#F05D35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                    </span>
+                                </button>
+                            </h2>
+                            <div id="faq{{ forloop.counter }}" class="accordion-collapse collapse {% if forloop.first %}show{% endif %}" data-bs-parent="#faqAccordion">
+                                <div class="accordion-body">
+                                    {{ faq.answer }}
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
                     </div>
                 </div>
             </section>
@@ -236,8 +273,14 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content newsletter-modal">
         <!-- Illustration Area -->
-        <div class="newsletter-illustration">
-  
+        <div class="newsletter-illustration position-relative">
+            <a type="button" class="btn-close modal-close-btn" data-bs-dismiss="modal" aria-label="Close">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M15.692 17.6039C16.22 18.1319 17.076 18.1319 17.604 17.6039C18.132 17.076 18.132 16.2199 17.604 15.6919L10.912 8.99999L17.604 2.30806C18.132 1.78008 18.132 0.924049 17.604 0.396066C17.076 -0.131916 16.22 -0.131916 15.692 0.396066L9.00004 7.088L2.30801 0.395987C1.78002 -0.131996 0.923989 -0.131995 0.396004 0.395987C-0.13198 0.92397 -0.131981 1.78 0.396004 2.30798L7.08804 8.99999L0.395989 15.692C-0.131997 16.22 -0.131996 17.076 0.395989 17.604C0.923973 18.132 1.78 18.132 2.30799 17.604L9.00004 10.912L15.692 17.6039Z"
+                        fill="#F6F6F6" />
+            </svg>
+            </a>
          
   
           <!-- Balloons + Envelope -->
@@ -306,5 +349,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
+
 </script>
 {% endblock %}

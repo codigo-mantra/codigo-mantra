@@ -24,74 +24,41 @@
                                             <div class="cm-mega__grid cm-mega__grid-server">
                                                 <div class="cm-mega__col">
                                                     <div class="cm-mega__h">Services</div>
-                                                    <div class="cm-sub-menu">AUTOMATION</div>
-                                                    {% for service in services_nav|slice:":6" %}
-                                                        <a class="cm-mega__link" href="#">{{ service.name }}</a>
-
+                                                    {% for category in services_nav|slice:":2" %}
+                                                        <div class="cm-sub-menu {% if not forloop.first %}mt-4{% endif %}">{{ category.name|upper }}</div>
+                                                        {% for child in category.children.all %}
+                                                            <a class="cm-mega__link" href="#">{{ child.name }}</a>
+                                                        {% endfor %}
                                                     {% endfor %}
-                                                    <div class="cm-sub-menu mt-4">Product Design</div>
-                                                        <a class="cm-mega__link" href="#">UI/UX Design</a>
-                                                        <a class="cm-mega__link" href="#">Design Systems</a>
-                                                        <a class="cm-mega__link" href="#">Landing Page Design</a>
-                                                        <a class="cm-mega__link" href="#">Framer Website Design</a>
-                                                        <a class="cm-mega__link" href="#">Website & Interface Design</a>
-                                                    
-
-
                                                 </div>
 
                                                 <div class="cm-mega__col cm-mega__col--mid">
                                                     <div class="cm-mega__h">&nbsp;</div>
-                                                     <div class="cm-sub-menu ">ARTIFICIAL INTELLIGENCE</div>
-                                                        <a class="cm-mega__link" href="#">Generative AI Development</a>
-                                                        <a class="cm-mega__link" href="#">AI Consulting</a>
-                                                        <a class="cm-mega__link" href="#">AI Agent Development</a>
-                                                        <a class="cm-mega__link" href="#">AI Copilot Development</a>
-                                                        <a class="cm-mega__link" href="#">ChatGPT Integration</a>
-                                                        <a class="cm-mega__link" href="#">LLM Development</a>
-                                                        <a class="cm-mega__link" href="#">Data Annotation</a>
-                                                        <a class="cm-mega__link" href="#">Recommendation Systems</a>
-
-
-                                                    <div class="cm-sub-menu mt-4">MARKETING</div>
-                                                        <a class="cm-mega__link" href="#">UI/UX Design</a>
-                                                        <a class="cm-mega__link" href="#">SEO & Content Strategy</a>
-                                                        <a class="cm-mega__link" href="#">Social Media Marketing</a>
-                                                        <a class="cm-mega__link" href="#">Email Marketing</a>
-                                                        <a class="cm-mega__link" href="#">Performance Marketing</a>
-                                                    
+                                                    {% for category in services_nav|slice:"2:4" %}
+                                                        <div class="cm-sub-menu {% if not forloop.first %}mt-4{% endif %}">{{ category.name|upper }}</div>
+                                                        {% for child in category.children.all %}
+                                                            <a class="cm-mega__link" href="#">{{ child.name }}</a>
+                                                        {% endfor %}
+                                                    {% endfor %}
                                                 </div>
 
                                                 <div class="cm-mega__col cm-mega__col--product">
                                                     <div class="cm-mega__col cm-mega__col--mid-last">
-                                                        <div>
+                                                        {% for category in services_nav|slice:"4:6" %}
+                                                        <div class="{% if not forloop.first %}right-col-cm-app-development{% endif %}">
                                                             <div class="cm-mega__h mb-0">&nbsp;</div>
-                                                            <div class="cm-sub-menu ">ARTIFICIAL INTELLIGENCE</div>
-                                                                <a class="cm-mega__link" href="#">Generative AI Development</a>
-                                                                <a class="cm-mega__link" href="#">AI Consulting</a>
-                                                                <a class="cm-mega__link" href="#">AI Agent Development</a>
-                                                                <a class="cm-mega__link" href="#">AI Copilot Development</a>
-                                                                <a class="cm-mega__link" href="#">ChatGPT Integration</a>
-                                                                <a class="cm-mega__link" href="#">LLM Development</a>
-                                                                <a class="cm-mega__link" href="#">Data Annotation</a>
-                                                                <a class="cm-mega__link" href="#">Recommendation Systems</a>
+                                                            <div class="cm-sub-menu ">{{ category.name|upper }}</div>
+                                                            {% for child in category.children.all %}
+                                                                <a class="cm-mega__link" href="#">{{ child.name }}</a>
+                                                            {% endfor %}
                                                         </div>
-
-                                                        <div class="right-col-cm-app-development">
-                                                            <div class="cm-mega__h mb-0">&nbsp;</div>
-                                                            <div class="cm-sub-menu ">MARKETING</div>
-                                                            <a class="cm-mega__link" href="#">UI/UX Design</a>
-                                                            <a class="cm-mega__link" href="#">SEO & Content Strategy</a>
-                                                            <a class="cm-mega__link" href="#">Social Media Marketing</a>
-                                                            <a class="cm-mega__link" href="#">Email Marketing</a>
-                                                            <a class="cm-mega__link" href="#">Performance Marketing</a>
-                                                        </div>
+                                                        {% endfor %}
                                                     </div>
                                                     <div class="cm-mega__h">Our Product</div>
                                                         <span class="cm-mega__thumb" aria-hidden="true"></span>
                                                         <span class="cm-mega__productBody">
-                                                            <span class="cm-mega__productT">{{ case_study_nav.title }}</span>
-                                                            <span class="cm-mega__productD">{{ case_study_nav.content|truncatewords:18 }} <a href="{{ case_study_nav.url }}">View Product</a></span>
+                                                            <span class="cm-mega__productT">{{ bells_crm_nav.title|default:case_study_nav.title }}</span>
+                                                            <span class="cm-mega__productD">{{ bells_crm_nav.content|default:case_study_nav.content|truncatewords:18 }} <a href="{{ bells_crm_nav.url|default:case_study_nav.url }}">View Product</a></span>
                                                         </span>
                                                   
                                                 </div>
@@ -132,8 +99,8 @@
                                                             <!-- <img src="http://localhost:8000{{ case_study_nav.cover_image }}" alt="" loading="lazy"> -->
                                                         </span>
                                                         <span class="cm-mega__productBody">
-                                                            <span class="cm-mega__productT">{{ case_study_nav.title }}</span>
-                                                            <span class="cm-mega__productD">{{ case_study_nav.content|truncatewords:18 }} <a href="{{ case_study_nav.url }}">View Product</a></span>
+                                                            <span class="cm-mega__productT">{{ yurayi_nav.title|default:case_study_nav.title }}</span>
+                                                            <span class="cm-mega__productD">{{ yurayi_nav.content|default:case_study_nav.content|truncatewords:18 }} <a href="{{ yurayi_nav.url|default:case_study_nav.url }}">View Product</a></span>
                                                         </span>
                                                     
                                                 </div>
@@ -164,8 +131,8 @@
                                                             <!-- <img loading="lazy" src="http://localhost:8000{{ case_study_nav.cover_image.url }}" alt="{{ case_study_nav.title }}"> -->
                                                         </span>
                                                         <span class="cm-mega__productBody">
-                                                            <span class="cm-mega__productT">{{ bells_crm_nav.title }}</span>
-                                                            <span class="cm-mega__productD">{{ bells_crm_nav.content|truncatewords:18 }} <a href="{{ bells_crm_nav.url }}">View Product</a></span>
+                                                            <span class="cm-mega__productT">{{ bells_crm_nav.title|default:case_study_nav.title }}</span>
+                                                            <span class="cm-mega__productD">{{ bells_crm_nav.content|default:case_study_nav.content|truncatewords:18 }} <a href="{{ bells_crm_nav.url|default:case_study_nav.url }}">View Product</a></span>
                                                         </span>
                                                
                                                 </div>

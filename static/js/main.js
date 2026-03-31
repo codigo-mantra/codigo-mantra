@@ -240,33 +240,6 @@ if (applyForm) {
     });
 }
 
-
-document.getElementById("footer-form").addEventListener("submit", function(e) {
-    e.preventDefault();
-    console.log("Submitting newsletter form...");
-    const form = this;
-    const formData = new FormData(form);
-
-    fetch("/newsletter/subscribe/", {
-        method: "POST",
-        body: formData,
-        headers: {
-            "X-CSRFToken": document.querySelector('[name=csrfmiddlewaretoken]').value
-        }
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            alert("Subscribed!");
-            form.reset();
-        } else {
-            alert("Error: " + JSON.stringify(data.errors));
-        }
-    });
-});
-
-
-
 const toggle = document.getElementById("cs-toggle-input");
 const industriesList = document.getElementById("list-industries");
 const techList = document.getElementById("list-technologies");

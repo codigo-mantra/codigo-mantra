@@ -64,12 +64,12 @@
                             <div class="footer-news">
                                 <div class="footer-h">Subscribe our newsletter</div>
                                 <div class="footer-sub">Join our team in order to get more consultancy &amp; financial.</div>
-                                <form class="footer-form" action="{% url 'newsletter-subscribe' %}" method="post">
+                                <form class="footer-form" action="{% url 'newsletter-subscribe' %}" method="post" novalidate>
                                     {% csrf_token %}
                                     <label class="visually-hidden" for="footerEmail">Email</label>
                                     <div class="input-group-custom">
                                         <input id="footerEmail" class="form-control footer-input" name="email" type="email" placeholder="Email address" autocomplete="email" required>
-                                        <button class="btn btn-sm btn-cm-cta btn-pill custom-footer-btn" type="submit" data-bs-target="#newsletterModal" data-bs-toggle="modal">
+                                        <button class="btn btn-sm btn-cm-cta btn-pill custom-footer-btn" type="submit" >
                                             <span class="label-up">Subscribe</span>
                                             <span class="label-up">Subscribe</span>
                                         </button>
@@ -288,14 +288,20 @@
             </div>
         </footer>
 
-<div class="modal fade" id="newsletterModal" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="subscribeSuccessModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content newsletter-modal">
         <!-- Illustration Area -->
-        <div class="newsletter-illustration">
+        <div class="newsletter-illustration position-relative">
   
          
-  
+                <a type="button" class="btn-close modal-close-btn" data-bs-dismiss="modal" aria-label="Close">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                           d="M15.692 17.6039C16.22 18.1319 17.076 18.1319 17.604 17.6039C18.132 17.076 18.132 16.2199 17.604 15.6919L10.912 8.99999L17.604 2.30806C18.132 1.78008 18.132 0.924049 17.604 0.396066C17.076 -0.131916 16.22 -0.131916 15.692 0.396066L9.00004 7.088L2.30801 0.395987C1.78002 -0.131996 0.923989 -0.131995 0.396004 0.395987C-0.13198 0.92397 -0.131981 1.78 0.396004 2.30798L7.08804 8.99999L0.395989 15.692C-0.131997 16.22 -0.131996 17.076 0.395989 17.604C0.923973 18.132 1.78 18.132 2.30799 17.604L9.00004 10.912L15.692 17.6039Z"
+                            fill="#F6F6F6" />
+                   </svg>
+                </a>
           <!-- Balloons + Envelope -->
           <div class="balloon-envelope-wrap">
             <img src="{% static 'images/contact-us-modal.svg' %}" 
@@ -322,6 +328,11 @@ document.addEventListener('DOMContentLoaded', function () {
     footerForm.addEventListener('submit', function (e) {
         e.preventDefault();
 
+        const emailInput = footerForm.querySelector('#footerEmail');
+        if (!emailInput || !emailInput.value.trim()) {
+            return; 
+        }
+
         const formData = new FormData(footerForm);
         const actionUrl = footerForm.getAttribute('action');
         const csrfToken = footerForm.querySelector('[name=csrfmiddlewaretoken]').value;
@@ -329,7 +340,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Disable button to prevent double submit
         submitBtn.disabled = true;
-        submitBtn.textContent = 'Subscribing...';
+        const originalBtnText = submitBtn.innerHTML;
+        submitBtn.innerHTML = 'Subscribing...';
 
         fetch(actionUrl, {
             method: 'POST',
@@ -339,39 +351,43 @@ document.addEventListener('DOMContentLoaded', function () {
             },
             body: formData,
         })
-        .then(response => response.json())
+        .then(response => {
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.includes('application/json')) {
+                return response.json();
+            }
+            return { status: 'success' };
+        })
         .then(data => {
             if (data.status === 'success') {
                 footerForm.reset();
                 // Show success modal
-                const modal = new bootstrap.Modal(document.getElementById('newsletterModal'));
+                const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('subscribeSuccessModal'));
                 modal.show();
             } else {
-                // Show inline error
-                showFormError(footerForm, 'Please enter a valid email address.');
+                showFormError(footerForm, data.message || 'Please enter a valid email address.');
             }
         })
-        .catch(() => {
+        .catch((err) => {
+            console.error('Newsletter error:', err);
             showFormError(footerForm, 'Something went wrong. Please try again.');
         })
         .finally(() => {
             submitBtn.disabled = false;
-            submitBtn.textContent = 'Subscribe';
+            submitBtn.innerHTML = originalBtnText;
         });
     });
 
     function showFormError(form, message) {
-        // Remove existing error
         const existing = form.querySelector('.footer-form-error');
         if (existing) existing.remove();
 
         const err = document.createElement('p');
         err.className = 'footer-form-error';
-        err.style.cssText = 'color:#ff6b6b; font-size:0.8rem; margin-top:6px; margin-bottom:0;';
+        err.style.cssText = 'color:#ff6b6b;font-size:0.8rem;margin-top:6px;margin-bottom:0;text-align:left;';
         err.textContent = message;
         form.appendChild(err);
 
-        // Auto-remove after 4s
         setTimeout(() => err.remove(), 4000);
     }
 });

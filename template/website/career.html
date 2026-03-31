@@ -1,5 +1,6 @@
 {%extends 'base.html' %}
 {% block title %}Career - Codigo Mantra{% endblock %}
+{% load static %}
 {% block content %}
 
             <section class="hero career-hero h-100">
@@ -65,7 +66,7 @@
                                                             stroke-linecap="round" stroke-linejoin="round" />
                                                     </svg>
                                                 </button>
-                                                <a href="{% url 'career-apply' job.id %}" class="btn btn-cm-cta btn-pill open-position-btn">
+                                                <a href="{% url 'career-apply' job.id %}" class="btn btn-cm-cta btn-pill">
                                                     <span class="label-up">Submit Application
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="13" height="9"
                                                             viewBox="0 0 13 9" fill="none">
@@ -332,13 +333,13 @@
                 Our impact values
             </h2>
 
-            <!-- <div class="row g-4 text-start" style="margin-bottom: 30px;">
+            <div class="row g-4 text-start" style="margin-bottom: 30px;">
 
                 <div class="col-lg-4">
                     <div class="service-card-wrapper">
                         <div class="service-card-new">
                             <div class="career-job-img">
-                                <img src="../assets/images/career/job-1.png" alt="Product Design">
+                                <img src="{% static 'images/career/job-1.png' %}" alt="Product Design">
                             </div>
                             <div class="service-top">
                                 <h5 class="service-title">Product Design & UX</h5>
@@ -354,7 +355,7 @@
                     <div class="service-card-wrapper">
                         <div class="service-card-new">
                             <div class="career-job-img">
-                                <img src="../assets/images/career/job-1.png" alt="Product Design">
+                                <img src="{% static 'images/career/job-1.png' %}" alt="Product Design">
                             </div>
                             <div class="service-top">
                                 <h5 class="service-title">Product Design & UX</h5>
@@ -370,7 +371,7 @@
                     <div class="service-card-wrapper">
                         <div class="service-card-new">
                             <div class="career-job-img">
-                                <img src="../assets/images/career/job-1.png" alt="Product Design">
+                                <img src="{% static 'images/career/job-1.png' %}" alt="Product Design">
                             </div>
                             <div class="service-top">
                                 <h5 class="service-title">Product Design & UX</h5>
@@ -382,11 +383,11 @@
                         </div>
                     </div>
                 </div>
-            </div> -->
+            </div>
 
 
             
-            <div class="row g-4 text-start" style="margin-bottom: 30px;">
+            <!-- <div class="row g-4 text-start" style="margin-bottom: 30px;">
                 {% for service in services %}
                     <div class="col-lg-4">
                         <div class="service-card-wrapper">
@@ -401,16 +402,16 @@
                                     <p class="service-desc">
                                         {{ service.description }}
                                     </p>
-                                </div>
+                                </div> -->
 
                                 <!-- <div class="service-mockup">
                                     <img loading="lazy" src="{{service.svg_icon}}" alt="{{ service.name }}">
                                 </div> -->
-                            </div>
+                            <!-- </div>
                         </div>
                     </div>
                 {% endfor %}
-            </div>
+            </div> -->
         </div>
     </section>
 

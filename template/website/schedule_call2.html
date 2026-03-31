@@ -1,4 +1,5 @@
 {%extends 'base.html' %}
+{% load static %}
 {% block title %}Schedule a Call - Codigo Mantra{% endblock %}
 {% block content %}
       <section class="contact-page-hero">
@@ -19,7 +20,7 @@
                       <div class="d-flex align-items-center gap-2 mb-1">
                         <div class="navbar-brand d-flex align-items-center gap-2 m-0" href="#">
                             <span class="cm-logo" aria-hidden="true">
-                                <img src="../assets/images/codigo-mantra-logo.svg" alt="Logo">
+                                <img src="{% static 'images/codigo-mantra-logo.svg' %}" alt="Logo">
                             </span>
                             <span class="cm-brand-contact">Codigo Mantra</span>
                         </div>
@@ -51,7 +52,7 @@
                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                           <path d="M8.3125 20.751C7.15667 20.2517 6.14867 19.5718 5.2885 18.7115C4.42817 17.8513 3.74833 16.8433 3.249 15.6875C2.74967 14.5317 2.5 13.2999 2.5 11.9923C2.5 10.6846 2.74967 9.45542 3.249 8.30475C3.74833 7.15408 4.42817 6.14867 5.2885 5.2885C6.14867 4.42817 7.15667 3.74833 8.3125 3.249C9.46833 2.74967 10.7001 2.5 12.0078 2.5C13.3154 2.5 14.5446 2.74967 15.6953 3.249C16.8459 3.74833 17.8513 4.42817 18.7115 5.2885C19.5718 6.14867 20.2517 7.15408 20.751 8.30475C21.2503 9.45542 21.5 10.6846 21.5 11.9923C21.5 13.2999 21.2503 14.5317 20.751 15.6875C20.2517 16.8433 19.5718 17.8513 18.7115 18.7115C17.8513 19.5718 16.8459 20.2517 15.6953 20.751C14.5446 21.2503 13.3154 21.5 12.0078 21.5C10.7001 21.5 9.46833 21.2503 8.3125 20.751ZM12 19.9788C12.5103 19.3019 12.9398 18.6192 13.2885 17.9307C13.6372 17.2422 13.9212 16.4897 14.1405 15.673H9.8595C10.0917 16.5153 10.3789 17.2808 10.7213 17.9693C11.0634 18.6578 11.4897 19.3276 12 19.9788ZM10.0635 19.7038C9.68017 19.1538 9.33592 18.5285 9.03075 17.828C8.72558 17.1273 8.48842 16.409 8.31925 15.673H4.927C5.45517 16.7115 6.1635 17.584 7.052 18.2905C7.9405 18.9968 8.94433 19.4679 10.0635 19.7038ZM13.9365 19.7038C15.0557 19.4679 16.0595 18.9968 16.948 18.2905C17.8365 17.584 18.5448 16.7115 19.073 15.673H15.6807C15.4794 16.4153 15.2262 17.1368 14.921 17.8375C14.616 18.5382 14.2878 19.1603 13.9365 19.7038ZM4.298 14.173H8.0155C7.95267 13.8013 7.90708 13.4369 7.87875 13.0798C7.85058 12.7228 7.8365 12.3628 7.8365 12C7.8365 11.6372 7.85058 11.2773 7.87875 10.9202C7.90708 10.5631 7.95267 10.1987 8.0155 9.827H4.298C4.20183 10.1667 4.12817 10.5198 4.077 10.8865C4.02567 11.2532 4 11.6243 4 12C4 12.3757 4.02567 12.7468 4.077 13.1135C4.12817 13.4802 4.20183 13.8333 4.298 14.173ZM9.51525 14.173H14.4848C14.5474 13.8013 14.5929 13.4402 14.6212 13.0895C14.6494 12.7388 14.6635 12.3757 14.6635 12C14.6635 11.6243 14.6494 11.2612 14.6212 10.9105C14.5929 10.5598 14.5474 10.1987 14.4848 9.827H9.51525C9.45258 10.1987 9.40708 10.5598 9.37875 10.9105C9.35058 11.2612 9.3365 11.6243 9.3365 12C9.3365 12.3757 9.35058 12.7388 9.37875 13.0895C9.40708 13.4402 9.45258 13.8013 9.51525 14.173ZM15.9845 14.173H19.702C19.7982 13.8333 19.8718 13.4802 19.923 13.1135C19.9743 12.7468 20 12.3757 20 12C20 11.6243 19.9743 11.2532 19.923 10.8865C19.8718 10.5198 19.7982 10.1667 19.702 9.827H15.9845C16.0473 10.1987 16.0929 10.5631 16.1212 10.9202C16.1494 11.2773 16.1635 11.6372 16.1635 12C16.1635 12.3628 16.1494 12.7228 16.1212 13.0798C16.0929 13.4369 16.0473 13.8013 15.9845 14.173ZM15.6807 8.327H19.073C18.5385 7.27567 17.835 6.40317 16.9625 5.7095C16.09 5.016 15.0813 4.54167 13.9365 4.2865C14.3198 4.8685 14.6608 5.50508 14.9595 6.19625C15.2583 6.88725 15.4987 7.5975 15.6807 8.327ZM9.8595 8.327H14.1405C13.9083 7.491 13.6163 6.72075 13.2645 6.01625C12.9125 5.31175 12.491 4.64675 12 4.02125C11.509 4.64675 11.0875 5.31175 10.7355 6.01625C10.3837 6.72075 10.0917 7.491 9.8595 8.327ZM4.927 8.327H8.31925C8.50125 7.5975 8.74167 6.88725 9.0405 6.19625C9.33917 5.50508 9.68017 4.8685 10.0635 4.2865C8.91217 4.54167 7.90192 5.01767 7.03275 5.7145C6.16342 6.41117 5.4615 7.282 4.927 8.327Z" fill="#F6F6F6"/>
                         </svg>
-                          <select class="timezone-select">
+                          <select class="timezone-select" id="timezoneSelectStep2">
                             <option>Australia/Adelaide</option>
                             <option>Asia/Kolkata</option>
                             <option>America/New_York</option>
@@ -63,7 +64,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                             <path d="M5.30775 21.5C4.80258 21.5 4.375 21.325 4.025 20.975C3.675 20.625 3.5 20.1974 3.5 19.6923V6.30777C3.5 5.8026 3.675 5.37502 4.025 5.02502C4.375 4.67502 4.80258 4.50002 5.30775 4.50002H6.69225V3.15377C6.69225 2.9346 6.76567 2.7516 6.9125 2.60477C7.05933 2.4581 7.24233 2.38477 7.4615 2.38477C7.68083 2.38477 7.86383 2.4581 8.0105 2.60477C8.15733 2.7516 8.23075 2.9346 8.23075 3.15377V4.50002H15.8077V3.13477C15.8077 2.92193 15.8795 2.74368 16.023 2.60002C16.1667 2.45652 16.3449 2.38477 16.5577 2.38477C16.7706 2.38477 16.9488 2.45652 17.0922 2.60002C17.2359 2.74368 17.3077 2.92193 17.3077 3.13477V4.50002H18.6923C19.1974 4.50002 19.625 4.67502 19.975 5.02502C20.325 5.37502 20.5 5.8026 20.5 6.30777V19.6923C20.5 20.1974 20.325 20.625 19.975 20.975C19.625 21.325 19.1974 21.5 18.6923 21.5H5.30775ZM5.30775 20H18.6923C18.7692 20 18.8398 19.9679 18.9038 19.9038C18.9679 19.8398 19 19.7693 19 19.6923V10.3078H5V19.6923C5 19.7693 5.03208 19.8398 5.09625 19.9038C5.16025 19.9679 5.23075 20 5.30775 20ZM5 8.80777H19V6.30777C19 6.23077 18.9679 6.16026 18.9038 6.09626C18.8398 6.0321 18.7692 6.00002 18.6923 6.00002H5.30775C5.23075 6.00002 5.16025 6.0321 5.09625 6.09626C5.03208 6.16026 5 6.23077 5 6.30777V8.80777Z" fill="#F6F6F6"/>
                             </svg>
-                          Friday, February 6, 2026<br>7:15 – 7:30 pm
+                          <span id="selectedDateTimeLabel">Friday, February 6, 2026<br>7:15 – 7:30 pm</span>
                         </div>
                       </div>
                     </div>
@@ -71,46 +72,48 @@
 
                   <!-- MIDDLE: Calendar -->
                   <div class="col-lg-6 col-md-8">
-                    <div class="booking-card">
-
+                    <form id="bookingForm" class="booking-card" method="post" action="{% url 'schedule-call-2' %}">
+                        {% csrf_token %}
+                            <input type="hidden" name="booking_date" id="bookingDateInput">
+                            <input type="hidden" name="start_time" id="startTimeInput">
                             <div class="form-group form-group-schedule-call">
                                 <label>Name</label>
-                                <input type="text" placeholder="Full name">
+                                <input type="text" name="client_name" placeholder="Full name" required>
                             </div>
 
                             <div class="form-group form-group-schedule-call">
                                 <label>Email Address</label>
-                                <input type="email" placeholder="Email address">
+                                <input type="email" name="client_email" placeholder="Email address" required>
                             </div>
 
                             <div class="form-group form-group-schedule-call">
                                 <label>What service do you want?</label>
-                                <input type="text" placeholder="Mention service here">
+                                <input type="text" name="service_requested" placeholder="Mention service here" required>
                             </div>
 
                             <div class="form-group form-group-schedule-call">
                                 <label>Message</label>
-                                <textarea class="text-area-schedule-call" placeholder="Message"></textarea>
+                                <textarea name="project_brief" class="text-area-schedule-call" placeholder="Message" required></textarea>
                             </div>
                             <div class="privacy-consent">
-                                <p>By proceeding, you agree to our <a href="#terms">Terms</a>  and <a href="#privacy-policy">Privacy Policy</a>.</p>
-
-                        </div>
+                                <p>By proceeding, you agree to our <a href="{% url 'terms-conditions' %}">Terms</a>  and <a href="{% url 'privacy-policy' %}">Privacy Policy</a>.</p>
+                            </div>
+                    </form>
                   </div>
 
                 </div><!-- /row -->
 
                 <!-- Footer Buttons -->
                 <div class="schedule-call-footer">
-                  <a href="#" class="btn btn-secondary-cm">
+                  <a href="{% url 'schedule-call' %}" class="btn btn-secondary-cm">
                       <span class="label-up">Back</span>
                       <span class="label-up">Back</span>
                   </a>
                   <!-- <button class="btn-next">Next</button>  -->
-                  <a class="btn btn-cm-cta btn-pill" href="#contact">
+                  <button type="submit" form="bookingForm" class="btn btn-cm-cta btn-pill">
                       <span class="label-up">Schedule a Call</span>
                       <span class="label-up">Schedule a Call</span>
-                  </a>
+                  </button>
                  </div>
           
               </div>
@@ -253,4 +256,263 @@
                     </div>
                 </div>
             </section>
+
+
+            <div class="modal fade" id="bookingSuccessModal" tabindex="-1" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content newsletter-modal">
+                  <!-- Illustration Area -->
+                  <div class="newsletter-illustration position-relative">
+            
+                  
+                          <a type="button" class="btn-close modal-close-btn" data-bs-dismiss="modal" aria-label="Close">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                              <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M15.692 17.6039C16.22 18.1319 17.076 18.1319 17.604 17.6039C18.132 17.076 18.132 16.2199 17.604 15.6919L10.912 8.99999L17.604 2.30806C18.132 1.78008 18.132 0.924049 17.604 0.396066C17.076 -0.131916 16.22 -0.131916 15.692 0.396066L9.00004 7.088L2.30801 0.395987C1.78002 -0.131996 0.923989 -0.131995 0.396004 0.395987C-0.13198 0.92397 -0.131981 1.78 0.396004 2.30798L7.08804 8.99999L0.395989 15.692C-0.131997 16.22 -0.131996 17.076 0.395989 17.604C0.923973 18.132 1.78 18.132 2.30799 17.604L9.00004 10.912L15.692 17.6039Z"
+                                      fill="#F6F6F6" />
+                            </svg>
+                          </a>
+                    <!-- Balloons + Envelope -->
+                    <div class="balloon-envelope-wrap">
+                      <img src="{% static 'images/contact-us-modal.svg' %}" 
+                          alt="Contact Us Modal">
+                    </div>
+                  </div>
+            
+                  <!-- Text Content -->
+                  <div class="newsletter-body">
+                    <h2 class="newsletter-title">Your Call is Confirmed!</h2>
+                    <p class="newsletter-desc">Your meeting has been successfully scheduled. We look forward to speaking with you and learning more about your goals.</p>
+                  </div>
+            
+                </div>
+              </div>
+          </div>
+
+
+          <div class="modal fade" id="bookingConflictModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content newsletter-modal">
+                <!-- Illustration Area -->
+                <div class="newsletter-illustration position-relative">
+          
+                
+                        <a type="button" class="btn-close modal-close-btn" data-bs-dismiss="modal" aria-label="Close">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                  d="M15.692 17.6039C16.22 18.1319 17.076 18.1319 17.604 17.6039C18.132 17.076 18.132 16.2199 17.604 15.6919L10.912 8.99999L17.604 2.30806C18.132 1.78008 18.132 0.924049 17.604 0.396066C17.076 -0.131916 16.22 -0.131916 15.692 0.396066L9.00004 7.088L2.30801 0.395987C1.78002 -0.131996 0.923989 -0.131995 0.396004 0.395987C-0.13198 0.92397 -0.131981 1.78 0.396004 2.30798L7.08804 8.99999L0.395989 15.692C-0.131997 16.22 -0.131996 17.076 0.395989 17.604C0.923973 18.132 1.78 18.132 2.30799 17.604L9.00004 10.912L15.692 17.6039Z"
+                                    fill="#F6F6F6" />
+                          </svg>
+                        </a>
+                  <!-- Balloons + Envelope -->
+                  <div class="balloon-envelope-wrap">
+                    <img src="{% static 'images/contact-us-modal.svg' %}" 
+                        alt="Contact Us Modal">
+                  </div>
+                </div>
+          
+                <!-- Text Content (match booking success modal: no extra inline margins) -->
+                <div class="newsletter-body">
+                  <h2 class="newsletter-title">You already have a call scheduled</h2>
+                  <p class="newsletter-desc">It looks like you already have a call scheduled at <span class="existing-time-span">{{ existing_time }}</span>. Do you still want to book another one at <span class="selected-time-span">{{ selected_time }}</span>?</p>
+                  <div class="d-flex gap-4 w-100" style="margin-top: 30px !important;">
+                    <a href="#" class="btn btn-secondary-cm w-100" style="transform: none !important;">
+                        <span class="label-up">Cancel</span>
+                        <span class="label-up text-white fw-400">Cancel</span>
+                    </a>
+                    <a href="{% url 'schedule-call' %}" class="btn btn-cm-cta w-100" >
+                        <span class="label-up">Schedule Anyway →</span>
+                        <span class="label-up text-white fw-400">Schedule Anyway →</span>
+                    </a>
+                  </div>
+                </div>
+          
+              </div>
+            </div>
+        </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const params = new URLSearchParams(window.location.search);
+    const bookingDate = params.get('date') || localStorage.getItem('schedule_call_date') || '';
+    const startTime = params.get('time') || localStorage.getItem('schedule_call_time') || '';
+    const timezoneValue = params.get('tz') || localStorage.getItem('schedule_call_tz') || '';
+
+    const bookingDateInput = document.getElementById('bookingDateInput');
+    const startTimeInput = document.getElementById('startTimeInput');
+    if (bookingDateInput) bookingDateInput.value = bookingDate;
+    if (startTimeInput) startTimeInput.value = startTime;
+
+    // Update timezone select (left card)
+    const timezoneSelect = document.getElementById('timezoneSelectStep2');
+    if (timezoneSelect && timezoneValue) {
+        timezoneSelect.value = timezoneValue;
+    }
+
+    // Update left summary date/time text
+    const dateTimeLabel = document.getElementById('selectedDateTimeLabel');
+    if (dateTimeLabel && bookingDate && startTime) {
+        const [y, m, d] = bookingDate.split('-').map(Number);
+        const [hh, mm] = startTime.split(':').map(Number);
+        const start = new Date(y, (m || 1) - 1, d || 1, hh || 0, mm || 0, 0);
+        const end = new Date(start.getTime() + 15 * 60 * 1000);
+
+        const dateStr = new Intl.DateTimeFormat('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+        }).format(start);
+
+        const timeFmt = new Intl.DateTimeFormat('en-US', {
+            hour: 'numeric',
+            minute: '2-digit',
+        });
+
+        const startStr = timeFmt.format(start);
+        const endStr = timeFmt.format(end);
+
+        dateTimeLabel.innerHTML = `${dateStr}<br>${startStr}\u2009–\u2009${endStr}`;
+    }
+
+    // Handle Booking Form
+    const bookingForm = document.getElementById('bookingForm');
+    if (bookingForm) {
+        const submitBooking = (ignoreConflict = false) => {
+            const dateValue = bookingDateInput ? bookingDateInput.value : '';
+            const timeValue = startTimeInput ? startTimeInput.value : '';
+            if (!dateValue || !timeValue) {
+                alert('Please select date and time from step 1 before scheduling the call.');
+                return;
+            }
+
+            const formData = new FormData(bookingForm);
+            if (ignoreConflict) {
+                formData.append('ignore_conflict', 'true');
+            }
+            const actionUrl = bookingForm.getAttribute('action');
+            const csrfToken = bookingForm.querySelector('[name=csrfmiddlewaretoken]').value;
+            const submitBtn = document.querySelector('button[form="bookingForm"]');
+
+            // Disable button
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.querySelector('.label-up').textContent = 'Scheduling...';
+            }
+
+            fetch(actionUrl, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrfToken,
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                body: formData,
+            })
+            .then(async (response) => {
+                const text = await response.text();
+                let data;
+                try {
+                    data = JSON.parse(text);
+                } catch (e) {
+                    console.error('Non-JSON response', response.status, text.slice(0, 500));
+                    throw new Error(
+                        response.status >= 500
+                            ? 'Server error — check the terminal logs.'
+                            : 'Unexpected response from server.'
+                    );
+                }
+
+                const isAlreadyBooked = (response.status === 409) ||
+                                       (data.status === "duplicate") ||
+                                       (data.errors && data.errors.start_time && data.errors.start_time[0].message === "You already have a booking in this time slot.") ||
+                                       (data.start_time && data.start_time[0].message === "You already have a booking in this time slot.");
+
+                const showAlreadyScheduledModal = () => {
+                    const alreadyScheduledModalEl = document.getElementById('bookingConflictModal');
+
+                    if (alreadyScheduledModalEl) {
+                        const timeDesc = alreadyScheduledModalEl.querySelector('.newsletter-desc');
+                        if (timeDesc) {
+                            // Use times from server if available, otherwise fallback to local timeValue
+                            const exTime = data.existing_time || timeValue;
+                            const selTime = data.selected_time || timeValue;
+                            
+                            // Find specific spans for times
+                            const exTimeSpan = timeDesc.querySelector('.existing-time-span');
+                            const selTimeSpan = timeDesc.querySelector('.selected-time-span');
+                            
+                            if (exTimeSpan) exTimeSpan.textContent = exTime;
+                            if (selTimeSpan) selTimeSpan.textContent = selTime;
+
+                            // Fallback for direct replacement if spans not found
+                            if (!exTimeSpan || !selTimeSpan) {
+                                let html = timeDesc.innerHTML;
+                                html = html.replace(/\{\{\s*existing_time\s*\}\}/g, exTime);
+                                html = html.replace(/\{\{\s*selected_time\s*\}\}/g, selTime);
+                                html = html.replace(/\{\{time\}\}/g, selTime);
+                                timeDesc.innerHTML = html;
+                            }
+                        }
+
+                        // Hide cross icon
+                        const closeBtn = alreadyScheduledModalEl.querySelector('.modal-close-btn');
+                        if (closeBtn) closeBtn.style.display = 'none';
+
+                        // Setup Cancel button - WORKING
+                        const cancelBtn = alreadyScheduledModalEl.querySelector('.btn-secondary-cm');
+                        if (cancelBtn) {
+                            cancelBtn.onclick = (e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                bootstrap.Modal.getOrCreateInstance(alreadyScheduledModalEl).hide();
+                            };
+                        }
+
+                        const modal = bootstrap.Modal.getOrCreateInstance(alreadyScheduledModalEl);
+                        modal.show();
+                    } else {
+                        alert('You already have a booking in this time slot.');
+                    }
+                };
+
+                if (!response.ok) {
+                    if (isAlreadyBooked) {
+                        showAlreadyScheduledModal();
+                    } else if (data.errors) {
+                        alert('Error: ' + JSON.stringify(data.errors));
+                    } else {
+                        alert(data.message || ('Request failed (' + response.status + ')'));
+                    }
+                    return;
+                }
+
+                if (data.status === 'success') {
+                    bookingForm.reset();
+                    const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('bookingSuccessModal'));
+                    modal.show();
+                } else if (isAlreadyBooked) {
+                    showAlreadyScheduledModal();
+                } else if (data.errors) {
+                    alert('Error: ' + JSON.stringify(data.errors));
+                }
+            })
+            .catch((err) => {
+                console.error(err);
+                alert(err && err.message ? err.message : 'Something went wrong. Please try again.');
+            })
+            .finally(() => {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.querySelector('.label-up').textContent = 'Schedule a Call';
+                }
+            });
+        };
+
+        bookingForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            submitBooking(false);
+        });
+    }
+});
+</script>
 {% endblock %}

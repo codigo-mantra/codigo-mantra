@@ -89,6 +89,7 @@ class Service(TimeStamp):
     description = models.TextField(blank=True)
     icon = models.ImageField(upload_to="services/icons/", blank=True, null=True)
     cover_image = models.ImageField(upload_to="services/covers/", blank=True, null=True)
+    parent = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True, related_name='children')
     display_order = models.IntegerField(default=0)
 
     def save(self, *args, **kwargs):
@@ -282,21 +283,21 @@ class Application(TimeStamp):
         return f"{self.name} - {self.job.title}"
 
 
-class CallSchedule(TimeStamp):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+# class CallSchedule(TimeStamp):
+#     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
-    name = models.CharField(max_length=255)
-    email = models.EmailField()
-    company = models.CharField(max_length=255)
-    message = models.TextField()
+#     name = models.CharField(max_length=255)
+#     email = models.EmailField()
+#     company = models.CharField(max_length=255)
+#     message = models.TextField()
 
-    preferred_date = models.DateField()
+#     preferred_date = models.DateField()
 
-    contact_status = models.BooleanField(default=False)
-    notes = models.TextField(blank=True)
+#     contact_status = models.BooleanField(default=False)
+#     notes = models.TextField(blank=True)
 
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
 
 
 class FAQ(TimeStamp):
@@ -327,3 +328,50 @@ class TermsofService(TimeStamp):
 
     def __str__(self):
         return self.title
+
+
+class User(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=255)
+    email = models.EmailField(unique=True)
+    role = models.CharField(max_length=100)   # e.g., "client" or "consultant"
+    status = models.CharField(max_length=100) # e.g., "active", "inactive"
+
+    def __str__(self):
+        return self.name
+
+
+# ===========================
+# BOOKINGS TABLE
+# ===========================
+class Booking(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    client = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="client_bookings"
+    )
+    consultant = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name="consultant_bookings"
+    )
+
+    booking_date = models.DateField()
+    start_time = models.TimeField()
+    meet_link = models.URLField(blank=True, null=True)
+    status = models.CharField(max_length=100)
+    service_requested = models.CharField(max_length=255)
+    project_brief = models.TextField()
+
+    # NEW FIELDS
+    is_attended_by_admin = models.BooleanField(default=False)
+    remarks = models.TextField(blank=True, null=True)
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["client", "booking_date", "start_time"],
+                name="unique_client_booking"
+            ),
+        ]
+
+    def __str__(self):
+        return f"Booking - {self.client.name} with {self.consultant.name}"
