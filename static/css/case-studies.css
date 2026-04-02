@@ -783,9 +783,11 @@ p.job-meta-sub {
   display: flex;
   flex-direction: column;
   gap: 44px;
-  padding: 104px 0;
+  padding: 104px 0 0;
 }
-
+.image-row{
+  margin-top: 104px;
+}
 .project-image-section {
   border-radius: 20px;
   border: 1px solid #333232;

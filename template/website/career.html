@@ -3,7 +3,7 @@
 {% load static %}
 {% block content %}
 
-            <section class="hero career-hero h-100">
+            <section class="hero career-hero">
                 <div class="container">
                     <div class="hero-center">
                         <h1 class="hero-title service-hero-title">
@@ -13,7 +13,7 @@
                             Join a team where design, engineering, and growth come together to build meaningful digital
                             products. We value ownership, collaboration, and continuous learning.
                         </p>
-                        <a href="#" class="btn btn-cm-cta btn-pill">
+                        <a href="#open-roles" class="btn btn-cm-cta btn-pill">
                             <span class="label-up">Explore Open Roles</span>
                             <span class="label-up">Explore Open Roles</span>
                         </a>
@@ -21,7 +21,7 @@
                 </div>
             </section>
             {%if job_openings%}
-                <section class="open-roles">
+                <section class="open-roles" id="open-roles">
                     <div class="container">
                         <!-- Top: heading left + text right -->
                         <div class="row mb-5">
@@ -78,7 +78,7 @@
                                                         </svg>
                                                     </button>
 
-                                                    <a href="{% url 'career-apply' job.id %}" class="btn btn-cm-cta btn-pill">
+                                                    <a href="{% url 'career-apply' job.id %}#careerApplicationForm" class="btn btn-cm-cta btn-pill">
                                                         <span class="label-up">Submit Application
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="13" height="9"
                                                                 viewBox="0 0 13 9" fill="none">

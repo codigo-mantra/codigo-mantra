@@ -113,7 +113,7 @@
                     <div class="cs-filter-list active" id="list-industries">
                         {%for industry in industries%}
                         <label class="cs-radio-item"><input type="checkbox" name="cs-filter"
-                                value="{{ industry.name|lower }}"><span class="cs-radio-dot"></span>{{ industry.name }}</label>
+                                value="{{ industry.slug }}"><span class="cs-radio-dot"></span>{{ industry.name }}</label>
                         {%endfor%}
                     </div>
 
@@ -153,20 +153,12 @@
 
                     <!-- Technologies list -->
                     <div class="cs-filter-list" id="list-technologies">
-                        <label class="cs-radio-item"><input type="checkbox" name="cs-filter" value="react"><span
-                                class="cs-radio-dot"></span>React</label>
-                        <label class="cs-radio-item"><input type="checkbox" name="cs-filter" value="node"><span
-                                class="cs-radio-dot"></span>Node.js</label>
-                        <label class="cs-radio-item"><input type="checkbox" name="cs-filter" value="python"><span
-                                class="cs-radio-dot"></span>Python</label>
-                        <label class="cs-radio-item"><input type="checkbox" name="cs-filter" value="vue"><span
-                                class="cs-radio-dot"></span>Vue.js</label>
-                        <label class="cs-radio-item"><input type="checkbox" name="cs-filter" value="angular"><span
-                                class="cs-radio-dot"></span>Angular</label>
-                        <label class="cs-radio-item"><input type="checkbox" name="cs-filter" value="flutter"><span
-                                class="cs-radio-dot"></span>Flutter</label>
-                        <label class="cs-radio-item"><input type="checkbox" name="cs-filter" value="django"><span
-                                class="cs-radio-dot"></span>Django</label>
+                        {% for tech in technologies %}
+                        <label class="cs-radio-item">
+                            <input type="checkbox" name="cs-filter" value="{{ tech.slug }}">
+                            <span class="cs-radio-dot"></span>{{ tech.name }}
+                        </label>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
@@ -177,8 +169,8 @@
                     {% for case_study in case_studies %}
 
                     <div class="cs-card"
-                        data-industries="{% for industry in case_study.industries.all %}{{ industry.name|lower }} {% endfor %}"
-                        data-technologies="{% for tech in case_study.technologies.all %}{{ tech.name|lower }} {% endfor %}">
+                        data-industries="{% for industry in case_study.industries.all %}{{ industry.slug }} {% endfor %}"
+                        data-technologies="{% for tech in case_study.technologies.all %}{{ tech.slug }} {% endfor %}">
                         <div class="cs-card-img"><img src="{{ case_study.cover_image.url }}"
                                 alt="{{ case_study.title }}"></div>
                         <div class="cs-card-body">

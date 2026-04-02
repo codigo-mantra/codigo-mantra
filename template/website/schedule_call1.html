@@ -252,11 +252,8 @@
             
 <script>
 // ── STATE ─────────────────────────────────────────────────
-const TODAY      = new Date();
-TODAY.setHours(0, 0, 0, 0);
-
-let currentYear  = TODAY.getFullYear();
-let currentMonth = TODAY.getMonth();
+let currentYear  = new Date().getFullYear();
+let currentMonth = new Date().getMonth();
 let selectedDate = null;
 let selectedTime = null;
 let timeFormat   = '12h';
@@ -269,17 +266,45 @@ const MONTH_NAMES = [
   'July','August','September','October','November','December'
 ];
 
-// 12h mode: 7:00 AM → 6:45 PM  
+// 12h mode: 7:00 AM → 6:45 PM
 // 24h mode: 7:00 AM → 6:45 AM next day
 const RANGE = {
   '12h': { startHour: 7, endHour: 19 },
   '24h': { startHour: 7, endHour: 31 },
 };
 
-// ── HELPER: update time-panel header ─────────────────────
-function setDateLabel(dateObj) {
-  const dow = dateObj.getDay();
-  const d   = dateObj.getDate();
+/** Gregorian weekday 0=Sun … 6=Sat (Sakamoto, same convention as Date.getDay()). */
+function dayOfWeekSun0(y, m /* 1–12 */, d) {
+  const t = [0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4];
+  y -= m < 3 ? 1 : 0;
+  return (y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) + t[m - 1] + d) % 7;
+}
+
+function getSelectedTz() {
+  const el = document.getElementById('timezoneSelect');
+  return (el && el.value) ? el.value.trim() : 'Asia/Kolkata';
+}
+
+function getTodayKeyInZone(timeZone) {
+  try {
+    return new Intl.DateTimeFormat('en-CA', {
+      timeZone: timeZone,
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    }).format(new Date());
+  } catch (e) {
+    const n = new Date();
+    const y = n.getFullYear();
+    const m = String(n.getMonth() + 1).padStart(2, '0');
+    const day = String(n.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  }
+}
+
+function setDateLabelFromKey(dateStr) {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const dow = dayOfWeekSun0(y, m, d);
   document.getElementById('timeDateLabel').innerHTML =
     `${DAY_NAMES[dow]} <span>${String(d).padStart(2, '0')}</span>`;
 }
@@ -288,43 +313,41 @@ function setDateLabel(dateObj) {
 function renderCalendar() {
   const grid  = document.getElementById('calGrid');
   const label = document.getElementById('calMonthLabel');
+  const tz = getSelectedTz();
+  const todayKey = getTodayKeyInZone(tz);
 
   label.innerHTML = `${MONTH_NAMES[currentMonth]} <span>${currentYear}</span>`;
   grid.innerHTML  = '';
 
-  // Day-of-week headers
-  DAY_NAMES.forEach(d => {
+  DAY_NAMES.forEach(dn => {
     const h = document.createElement('div');
     h.className   = 'cal-day-header';
-    h.textContent = d;
+    h.textContent = dn;
     grid.appendChild(h);
   });
 
-  const firstDay    = new Date(currentYear, currentMonth, 1).getDay();
+  const firstDay    = dayOfWeekSun0(currentYear, currentMonth + 1, 1);
   const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
 
-  // Empty leading cells
   for (let i = 0; i < firstDay; i++) {
     const empty = document.createElement('div');
     empty.className = 'cal-day empty';
     grid.appendChild(empty);
   }
 
-  // Day cells
   for (let d = 1; d <= daysInMonth; d++) {
-    const dateObj   = new Date(currentYear, currentMonth, d);
-    const dateStr   = `${currentYear}-${String(currentMonth + 1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const dateStr = `${currentYear}-${String(currentMonth + 1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
 
-    const isPast    = dateObj < TODAY;
-    const isToday   = dateObj.toDateString() === TODAY.toDateString();
+    const isPast  = dateStr < todayKey;
+    const isToday = dateStr === todayKey;
 
     const cell = document.createElement('div');
     cell.textContent  = d;
     cell.dataset.date = dateStr;
 
     let classes = 'cal-day';
-    if (isPast) classes += ' disabled';    // Only past dates disabled
-    if (isToday) classes += ' today';      // highlight today
+    if (isPast) classes += ' disabled';
+    if (isToday) classes += ' today';
     if (selectedDate === dateStr) classes += ' selected';
     cell.className = classes;
 
@@ -337,21 +360,13 @@ function renderCalendar() {
         selectedDate = dateStr;
         selectedTime = null;
 
-        setDateLabel(dateObj);
+        setDateLabelFromKey(dateStr);
         renderTimeSlots();
       });
     }
 
     grid.appendChild(cell);
   }
-}
-
-// ── CHANGE MONTH ──────────────────────────────────────────
-function changeMonth(dir) {
-  currentMonth += dir;
-  if (currentMonth < 0)  { currentMonth = 11; currentYear--; }
-  if (currentMonth > 11) { currentMonth = 0;  currentYear++; }
-  renderCalendar();
 }
 
 // ── RENDER TIME SLOTS ─────────────────────────────────────
@@ -428,102 +443,65 @@ function goToStep2() {
 }
 
 // ── INIT ─────────────────────────────────────────────────
-renderCalendar();
-renderTimeSlots();
-setDateLabel(TODAY);
-
-// timezone persistence
 const tzSelect = document.getElementById('timezoneSelect');
 if (tzSelect) {
   const savedTz = localStorage.getItem('schedule_call_tz');
   if (savedTz) tzSelect.value = savedTz;
   selectedTimezone = tzSelect.value;
+  const k = getTodayKeyInZone(getSelectedTz());
+  const [iy, im] = k.split('-').map(Number);
+  currentYear = iy;
+  currentMonth = im - 1;
+}
+
+renderCalendar();
+renderTimeSlots();
+setDateLabelFromKey(getTodayKeyInZone(getSelectedTz()));
+
+if (tzSelect) {
   tzSelect.addEventListener('change', () => {
     selectedTimezone = tzSelect.value;
     localStorage.setItem('schedule_call_tz', selectedTimezone);
+    renderCalendar();
+    updateNavButtons();
+    const tk = getTodayKeyInZone(selectedTimezone);
+    if (selectedDate && selectedDate < tk) {
+      selectedDate = null;
+      selectedTime = null;
+    }
+    setDateLabelFromKey(selectedDate || tk);
+    renderTimeSlots();
   });
 }
-
-
-// function updateNavButtons() {
-//   const prevBtn = document.getElementById('prevMonthBtn');
-//   const nextBtn = document.getElementById('nextMonthBtn');
-
-//   // Disable prev button if previous month is fully past
-//   const firstDayOfCurrentMonth = new Date(currentYear, currentMonth, 1);
-//   if (firstDayOfCurrentMonth.getMonth() === TODAY.getMonth() &&
-//       firstDayOfCurrentMonth.getFullYear() === TODAY.getFullYear()) {
-//     // current month = today month → can't go back
-//     prevBtn.disabled = true;
-//     prevBtn.classList.remove('bold');
-//   } else {
-//     prevBtn.disabled = false;
-//     prevBtn.classList.add('bold');
-//   }
-
-//   // Always bold next button
-//   nextBtn.classList.add('bold');
-// }
-
-// // Call this after rendering calendar or changing month
-// function changeMonth(dir) {
-//   let newMonth = currentMonth + dir;
-//   let newYear  = currentYear;
-
-//   if (newMonth < 0) {
-//     newMonth = 11;
-//     newYear--;
-//   } else if (newMonth > 11) {
-//     newMonth = 0;
-//     newYear++;
-//   }
-
-//   // Prevent going to fully past months
-//   const firstDayOfNewMonth = new Date(newYear, newMonth, 1);
-//   const lastDayOfNewMonth  = new Date(newYear, newMonth + 1, 0);
-
-//   // If last day of new month < today → fully past → block
-//   if (lastDayOfNewMonth < TODAY) {
-//     return; // do nothing
-//   }
-
-//   currentMonth = newMonth;
-//   currentYear  = newYear;
-
-//   renderCalendar();
-//   updateNavButtons(); // update button styles
-// }
-
-// // Initial call
-// updateNavButtons();
 
 function updateNavButtons() {
   const prevBtn = document.getElementById('prevMonthBtn');
   const nextBtn = document.getElementById('nextMonthBtn');
+  const tz = getSelectedTz();
+  const todayKey = getTodayKeyInZone(tz);
 
-  // Disable prev button if previous month is fully past
-  const firstDayOfCurrentMonth = new Date(currentYear, currentMonth, 1);
+  let pm = currentMonth - 1;
+  let py = currentYear;
+  if (pm < 0) {
+    pm = 11;
+    py--;
+  }
+  const dim = new Date(py, pm + 1, 0).getDate();
+  const lastKey = `${py}-${String(pm + 1).padStart(2, '0')}-${String(dim).padStart(2, '0')}`;
 
-  if (
-    firstDayOfCurrentMonth.getMonth() === TODAY.getMonth() &&
-    firstDayOfCurrentMonth.getFullYear() === TODAY.getFullYear()
-  ) {
-    // current month = today month → can't go back
+  if (lastKey < todayKey) {
     prevBtn.disabled = true;
-    prevBtn.classList.add('disabled');   // add disabled class
+    prevBtn.classList.add('disabled');
     prevBtn.classList.remove('bold');
   } else {
     prevBtn.disabled = false;
-    prevBtn.classList.remove('disabled'); // remove disabled class
+    prevBtn.classList.remove('disabled');
     prevBtn.classList.add('bold');
   }
 
-  // Always bold next button
   nextBtn.classList.add('bold');
 }
 
-
-// Call this after rendering calendar or changing month
 function changeMonth(dir) {
   let newMonth = currentMonth + dir;
   let newYear  = currentYear;
@@ -536,12 +514,13 @@ function changeMonth(dir) {
     newYear++;
   }
 
-  // Prevent going to fully past months
-  const firstDayOfNewMonth = new Date(newYear, newMonth, 1);
-  const lastDayOfNewMonth  = new Date(newYear, newMonth + 1, 0);
+  const tz = getSelectedTz();
+  const todayKey = getTodayKeyInZone(tz);
+  const lastDim = new Date(newYear, newMonth + 1, 0).getDate();
+  const lastKey = `${newYear}-${String(newMonth + 1).padStart(2, '0')}-${String(lastDim).padStart(2, '0')}`;
 
-  if (lastDayOfNewMonth < TODAY) {
-    return; // do nothing
+  if (lastKey < todayKey) {
+    return;
   }
 
   currentMonth = newMonth;
@@ -551,7 +530,6 @@ function changeMonth(dir) {
   updateNavButtons();
 }
 
-// Initial call
 updateNavButtons();
 
 </script>

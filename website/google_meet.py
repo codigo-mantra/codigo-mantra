@@ -113,8 +113,8 @@ def generate_google_meet_link(booking, client_email=None):
             attendees.append({'email': booking.consultant.email})
 
         event_body = {
-            "summary": f"Discovery Call: {booking.client.name if hasattr(booking, 'client') and booking.client else 'Client'}",
-            "description": booking.project_brief or "Scheduled from website booking form.",
+            "summary": f"Call Scheduled With Codigo Mantra: {booking.client.name if hasattr(booking, 'client') and booking.client else 'Client'}",
+            "description": booking.project_brief or "Call scheduled—our team will connect with you soon.",
             "start": {
                 "dateTime": start_dt.isoformat(),
                 "timeZone": tz_name,

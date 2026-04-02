@@ -71,7 +71,7 @@
                   </div>
 
                   <!-- MIDDLE: Calendar -->
-                  <div class="col-lg-6 col-md-8">
+                  <!-- <div class="col-lg-6 col-md-8">
                     <form id="bookingForm" class="booking-card" method="post" action="{% url 'schedule-call-2' %}">
                         {% csrf_token %}
                             <input type="hidden" name="booking_date" id="bookingDateInput">
@@ -99,8 +99,63 @@
                                 <p>By proceeding, you agree to our <a href="{% url 'terms-conditions' %}">Terms</a>  and <a href="{% url 'privacy-policy' %}">Privacy Policy</a>.</p>
                             </div>
                     </form>
-                  </div>
+                  </div> -->
+                  <div class="col-lg-6 col-md-8">
+                    <form id="bookingForm" class="booking-card" method="post" action="{% url 'schedule-call-2' %}" novalidate>
+                        {% csrf_token %}
+                        <p id="bookingFormGlobalError" class="text-danger" style="display:none;"></p>
 
+                        <input type="hidden" name="booking_date" id="bookingDateInput">
+                        <input type="hidden" name="start_time" id="startTimeInput">
+
+                        <!-- NAME -->
+                        <div class="form-group form-group-schedule-call">
+                            <label>Name</label>
+                            <input type="text" name="client_name" placeholder="Full name"
+                                   value="{{ form.client_name.value|default:'' }}">
+                            {% if form.client_name.errors %}
+                                <div class="text-danger">{{ form.client_name.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- EMAIL -->
+                        <div class="form-group form-group-schedule-call">
+                            <label>Email Address</label>
+                            <input type="email" name="client_email" placeholder="Email address"
+                                   value="{{ form.client_email.value|default:'' }}">
+                            {% if form.client_email.errors %}
+                                <div class="text-danger">{{ form.client_email.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- SERVICE -->
+                        <div class="form-group form-group-schedule-call">
+                            <label>What service do you want?</label>
+                            <input type="text" name="service_requested" placeholder="Mention service here"
+                                   value="{{ form.service_requested.value|default:'' }}">
+                            {% if form.service_requested.errors %}
+                                <div class="text-danger">{{ form.service_requested.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <!-- MESSAGE -->
+                        <div class="form-group form-group-schedule-call">
+                            <label>Message</label>
+                            <textarea name="project_brief" class="text-area-schedule-call" placeholder="Message" style="resize: none;">{{ form.project_brief.value|default:'' }}</textarea>
+                            {% if form.project_brief.errors %}
+                                <div class="text-danger">{{ form.project_brief.errors }}</div>
+                            {% endif %}
+                        </div>
+                
+                        <div class="privacy-consent">
+                            <p>By proceeding, you agree to our 
+                                <a href="{% url 'terms-conditions' %}">Terms</a> 
+                                and 
+                                <a href="{% url 'privacy-policy' %}">Privacy Policy</a>.
+                            </p>
+                        </div>
+                    </form>
+                </div>
                 </div><!-- /row -->
 
                 <!-- Footer Buttons -->
@@ -342,51 +397,136 @@
       </div>
 
 <script>
+/** Map civil wall (Y-M-D H:M) in IANA zone to UTC ms for Intl formatting. */
+function zonedWallToUtcMs(y, mon, d, hh, mm, tz) {
+    const fmt = new Intl.DateTimeFormat('en-US', {
+        timeZone: tz,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        hourCycle: 'h23',
+        hour12: false,
+    });
+    const read = (ms) => {
+        const p = fmt.formatToParts(new Date(ms));
+        const g = (t) => Number(p.find((x) => x.type === t).value);
+        return { y: g('year'), m: g('month'), d: g('day'), h: g('hour'), min: g('minute') };
+    };
+    let ms = Date.UTC(y, mon - 1, d, hh, mm, 0);
+    for (let i = 0; i < 48; i++) {
+        const r = read(ms);
+        if (r.y === y && r.m === mon && r.d === d && r.h === hh && r.min === mm) return ms;
+        const dayDiff = d - r.d + (mon - r.m) * 31 + (y - r.y) * 366;
+        const minDiff = (hh - r.h) * 60 + (mm - r.min);
+        ms += (dayDiff * 24 * 60 + minDiff) * 60 * 1000;
+    }
+    return ms;
+}
+
 document.addEventListener('DOMContentLoaded', function () {
     const params = new URLSearchParams(window.location.search);
-    const bookingDate = params.get('date') || localStorage.getItem('schedule_call_date') || '';
-    const startTime = params.get('time') || localStorage.getItem('schedule_call_time') || '';
-    const timezoneValue = params.get('tz') || localStorage.getItem('schedule_call_tz') || '';
+    let bookingDate = params.get('date') || localStorage.getItem('schedule_call_date') || '';
+    let startTime = params.get('time') || localStorage.getItem('schedule_call_time') || '';
+    let timezoneValue = params.get('tz') || localStorage.getItem('schedule_call_tz') || '';
 
     const bookingDateInput = document.getElementById('bookingDateInput');
     const startTimeInput = document.getElementById('startTimeInput');
     if (bookingDateInput) bookingDateInput.value = bookingDate;
     if (startTimeInput) startTimeInput.value = startTime;
 
-    // Update timezone select (left card)
     const timezoneSelect = document.getElementById('timezoneSelectStep2');
     if (timezoneSelect && timezoneValue) {
         timezoneSelect.value = timezoneValue;
     }
 
-    // Update left summary date/time text
     const dateTimeLabel = document.getElementById('selectedDateTimeLabel');
-    if (dateTimeLabel && bookingDate && startTime) {
-        const [y, m, d] = bookingDate.split('-').map(Number);
-        const [hh, mm] = startTime.split(':').map(Number);
-        const start = new Date(y, (m || 1) - 1, d || 1, hh || 0, mm || 0, 0);
-        const end = new Date(start.getTime() + 15 * 60 * 1000);
+
+    function refreshSummaryLabel() {
+        const bd = bookingDateInput ? bookingDateInput.value : bookingDate;
+        const st = startTimeInput ? startTimeInput.value : startTime;
+        const tzRaw = timezoneSelect ? timezoneSelect.value.trim() : timezoneValue;
+        const tz = tzRaw || 'Asia/Kolkata';
+        if (!dateTimeLabel || !bd || !st) return;
+        const [y, m, d] = bd.split('-').map(Number);
+        const [hh, mm] = st.split(':').map(Number);
+        const startMs = zonedWallToUtcMs(y, m, d, hh, mm, tz);
+        const endMs = startMs + 15 * 60 * 1000;
 
         const dateStr = new Intl.DateTimeFormat('en-US', {
+            timeZone: tz,
             weekday: 'long',
             year: 'numeric',
             month: 'long',
             day: 'numeric',
-        }).format(start);
+        }).format(new Date(startMs));
 
         const timeFmt = new Intl.DateTimeFormat('en-US', {
+            timeZone: tz,
             hour: 'numeric',
             minute: '2-digit',
         });
 
-        const startStr = timeFmt.format(start);
-        const endStr = timeFmt.format(end);
-
-        dateTimeLabel.innerHTML = `${dateStr}<br>${startStr}\u2009–\u2009${endStr}`;
+        dateTimeLabel.innerHTML = `${dateStr}<br>${timeFmt.format(new Date(startMs))}\u2009–\u2009${timeFmt.format(new Date(endMs))}`;
     }
 
-    // Handle Booking Form
+    refreshSummaryLabel();
+
+    if (timezoneSelect) {
+        timezoneSelect.addEventListener('change', () => {
+            timezoneValue = timezoneSelect.value.trim();
+            localStorage.setItem('schedule_call_tz', timezoneValue);
+            refreshSummaryLabel();
+        });
+    }
+
+    // Handle Booking Form (AJAX errors match contact.html: .ajax-error under .form-group)
     const bookingForm = document.getElementById('bookingForm');
+    const bookingFormGlobalError = document.getElementById('bookingFormGlobalError');
+
+    function clearBookingAjaxErrors() {
+        if (!bookingForm) return;
+        bookingForm.querySelectorAll('.ajax-error').forEach(function (el) {
+            el.remove();
+        });
+        if (bookingFormGlobalError) {
+            bookingFormGlobalError.textContent = '';
+            bookingFormGlobalError.style.display = 'none';
+        }
+    }
+
+    function applyBookingErrorsFromResponse(errors) {
+        if (!bookingForm || !errors) return;
+        clearBookingAjaxErrors();
+        Object.keys(errors).forEach(function (field) {
+            const list = errors[field];
+            if (!list || !list.length) return;
+            const msg = list[0].message;
+            if (field === '__all__') {
+                if (bookingFormGlobalError) {
+                    bookingFormGlobalError.textContent = msg;
+                    bookingFormGlobalError.style.display = '';
+                }
+                return;
+            }
+            const input = bookingForm.querySelector('[name="' + field + '"]');
+            const err = document.createElement('p');
+            err.className = 'ajax-error';
+            err.style.cssText = 'color:#ff6b6b;font-size:0.8rem;margin-top:4px;';
+            err.textContent = msg;
+            const container = input ? input.closest('.form-group') : null;
+            if (container) {
+                container.appendChild(err);
+            } else if (bookingFormGlobalError) {
+                bookingFormGlobalError.textContent = bookingFormGlobalError.textContent
+                    ? bookingFormGlobalError.textContent + ' ' + msg
+                    : msg;
+                bookingFormGlobalError.style.display = '';
+            }
+        });
+    }
+
     if (bookingForm) {
         const submitBooking = (ignoreConflict = false) => {
             const dateValue = bookingDateInput ? bookingDateInput.value : '';
@@ -397,6 +537,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             const formData = new FormData(bookingForm);
+            const tzPost = (timezoneSelect && timezoneSelect.value.trim()) ? timezoneSelect.value.trim() : (timezoneValue || 'Asia/Kolkata');
+            formData.set('client_timezone', tzPost);
             if (ignoreConflict) {
                 formData.append('ignore_conflict', 'true');
             }
@@ -409,6 +551,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 submitBtn.disabled = true;
                 submitBtn.querySelector('.label-up').textContent = 'Scheduling...';
             }
+
+            clearBookingAjaxErrors();
 
             fetch(actionUrl, {
                 method: 'POST',
@@ -489,7 +633,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (isAlreadyBooked) {
                         showAlreadyScheduledModal();
                     } else if (data.errors) {
-                        alert('Error: ' + JSON.stringify(data.errors));
+                        applyBookingErrorsFromResponse(data.errors);
+                    } else if (data.message && bookingFormGlobalError) {
+                        bookingFormGlobalError.textContent = data.message;
+                        bookingFormGlobalError.style.display = '';
                     } else {
                         alert(data.message || ('Request failed (' + response.status + ')'));
                     }
@@ -497,18 +644,28 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
 
                 if (data.status === 'success') {
+                    clearBookingAjaxErrors();
                     bookingForm.reset();
                     const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('bookingSuccessModal'));
                     modal.show();
                 } else if (isAlreadyBooked) {
                     showAlreadyScheduledModal();
                 } else if (data.errors) {
-                    alert('Error: ' + JSON.stringify(data.errors));
+                    applyBookingErrorsFromResponse(data.errors);
+                } else if (data.message && bookingFormGlobalError) {
+                    bookingFormGlobalError.textContent = data.message;
+                    bookingFormGlobalError.style.display = '';
                 }
             })
             .catch((err) => {
                 console.error(err);
-                alert(err && err.message ? err.message : 'Something went wrong. Please try again.');
+                const fallback = err && err.message ? err.message : 'Something went wrong. Please try again.';
+                if (bookingFormGlobalError) {
+                    bookingFormGlobalError.textContent = fallback;
+                    bookingFormGlobalError.style.display = '';
+                } else {
+                    alert(fallback);
+                }
             })
             .finally(() => {
                 if (submitBtn) {

@@ -109,7 +109,7 @@
                         
                     </div>
                     {% if case_study.images.all %}
-                        <div class="row">
+                        <div class="row image-row">
                             {% for project_image in case_study.images.all|slice:":3" %}
                             
                             <div class="{% if forloop.last %}col-12{% else %}col-lg-6 col-md-6{% endif %} mb-4">

@@ -7,7 +7,7 @@
 <!-- ── HERO TITLE ── -->
 <tr>
   <td style="background-color:#171717;padding:30px 32px 0;text-align:center;">
-    <h1 style="margin:0 0 28px;font-size:24px;font-weight:400;color:#F6F6F6;line-height:140%;font-family:poppins;">Your Call Has Been Scheduled!</h1>
+    <h1 style="margin:0 0 28px;font-size:24px;font-weight:400;color:#F6F6F6;line-height:140%;font-family:poppins;">{% if meet_link_failed %}Your call is booked{% else %}Your Call Has Been Scheduled!{% endif %}</h1>
   </td>
 </tr>
 
@@ -39,9 +39,13 @@
 <!-- ── BODY ── -->
 <tr>
   <td style="padding:32px 32px 28px;background-color:#171717;">
-    <p style="margin:0 0 12px;font-size:16px;font-weight:400;color:#F6F6F6;font-family:poppins;">Hello User,</p>
+    <p style="margin:0 0 12px;font-size:16px;font-weight:400;color:#F6F6F6;font-family:poppins;">Hello {{ name }},</p>
+    {% if meet_link_failed %}
+    <p style="margin:0 0 24px;font-size:12px;font-weight:400;color:rgba(246,246,246,0.75);line-height:1.6;font-family:poppins;">Thank you for scheduling a call with us. Your slot is confirmed for {{date}} at {{time}}. We couldn’t generate the video link automatically due to a technical issue — our team will email you the meeting link shortly.</p>
+    {% else %}
     <p style="margin:0 0 24px;font-size:12px;font-weight:400;color:rgba(246,246,246,0.75);line-height:1.6;font-family:poppins;">Thank you for scheduling a call with us! Your meeting has been confirmed for {{date}} at {{time}}.</p>
     <a href="{{ meet_link }}" style="border: 2px solid #D83903;box-shadow: 0 4px 9.6px 0 rgba(241, 101, 53, 0.23), 0 6px 4px 0 rgba(255, 242, 242, 0.25) inset, 0 4px 4px 0 rgba(0, 0, 0, 0.25);display:inline-block;background-color:#F05D35;color:#ffffff;font-size:14px;font-weight:600;text-decoration:none;padding:13px 28px;border-radius:8px;letter-spacing:0.01em;font-family:poppins;">Join Call</a>
+    {% endif %}
   </td>
 </tr>
 
@@ -69,7 +73,11 @@
               <li style="margin-bottom:8px;"><strong>Time:</strong> {{ time }}</li>
           </ul>
           
-          <p style="margin:0 0 24px;font-size:12px;font-weight:400;color:rgba(246,246,246,0.75);line-height:1.6;font-family:poppins;">Meeting link: {{meet_link}}</p>
+          {% if meet_link_failed %}
+          <p style="margin:0 0 24px;font-size:12px;font-weight:400;color:rgba(246,246,246,0.75);line-height:1.6;font-family:poppins;">Meeting link: not available yet — you will receive it in a follow-up email.{% if support_email %} If you need help, reply to this email or write to {{ support_email }}.{% endif %}</p>
+          {% else %}
+          <p style="margin:0 0 24px;font-size:12px;font-weight:400;color:rgba(246,246,246,0.75);line-height:1.6;font-family:poppins;">Meeting link: {{ meet_link }}</p>
+          {% endif %}
           <p style="margin:0 0 24px;font-size:12px;font-weight:400;color:rgba(246,246,246,0.75);line-height:1.6;font-family:poppins;">Please be ready for the call or assign it to the appropriate team member.</p>
           
           <p style="margin:20px 0 4px;font-size:12px;color:rgba(246,246,246,0.80);font-family:poppins;">Best regards,</p>

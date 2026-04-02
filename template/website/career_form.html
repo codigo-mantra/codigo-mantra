@@ -12,7 +12,7 @@
                         <div class="job-hero-meta">
                             <span>{{ job.job_type }}</span>
                             <span>{{job.package}} LPA</span>
-                            <span>{{job.years_of_experience}} Years of experience</span>
+                            <span>{{ job.experience }} Years of experience</span>
                         </div>
                     </div>
 
@@ -75,53 +75,80 @@
                             </a>
                         </div> -->
                         
-                        <form id="careerApplicationForm" method="POST" enctype="multipart/form-data" action="">
-    {% csrf_token %}
+                        
 
-    <div class="apply-card">
-        <h2>Apply for this job</h2>
-        <p id="careerFormGlobalError" class="text-danger small mb-2" style="display:none;"></p>
+                        <form id="careerApplicationForm" method="POST" enctype="multipart/form-data" novalidate>
+                            {% csrf_token %}
 
-        <div class="form-row">
-            <div class="form-group mb-0">
-                <label>First Name</label>
-                <input type="text" name="name" placeholder="First name"
-                    value="{{ form.name.value|default:'' }}">
-            </div>
+                            <div class="apply-card">
+                                <h2>Apply for this job</h2>
 
-            <div class="form-group mb-0">
-                <label>Last Name</label>
-                <input type="text" name="last_name" placeholder="Last name">
-            </div>
-        </div>
+                                <p id="careerFormGlobalError" class="text-danger small mb-2" style="display:none;"></p>
 
-        <div class="form-group">
-            <label>Email Address</label>
-            <input type="email" name="email" placeholder="Email address"
-                value="{{ form.email.value|default:'' }}">
-        </div>
+                                <div class="form-row">
 
-        <div class="form-group">
-            <label>Phone Number</label>
-            <input type="tel" name="phone" placeholder="Phone number"
-                value="{{ form.phone.value|default:'' }}">
-        </div>
+                                    <!-- FIRST NAME -->
+                                    <div class="form-group mb-0">
+                                        <label>First Name</label>
+                                        <input type="text" name="name" placeholder="First name" autocomplete="given-name"
+                                            value="{{ form.name.value|default:'' }}">
+                                        {% if form.name.errors %}
+                                            <div class="text-danger">{{ form.name.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
 
-        <div class="form-group">
-            <label>Upload Resume</label>
+                                    <!-- LAST NAME -->
+                                    <div class="form-group mb-0">
+                                        <label>Last Name</label>
+                                        <input type="text" name="last_name" placeholder="Last name" autocomplete="family-name"
+                                            value="{{ form.last_name.value|default:'' }}">
+                                        {% if form.last_name.errors %}
+                                            <div class="text-danger">{{ form.last_name.errors.0 }}</div>
+                                        {% endif %}
+                                    </div>
 
-            <label class="upload-area" for="resume-upload">
-                Upload resume
-                <input type="file" name="resume" id="resume-upload" accept=".pdf,.doc,.docx">
-            </label>
-        </div>
+                                </div>
 
-        <button type="submit" class="btn btn-cm-cta btn-pill w-100">
-            Submit Application
-        </button>
+                                <!-- EMAIL -->
+                                <div class="form-group">
+                                    <label>Email Address</label>
+                                    <input type="email" name="email" placeholder="Email address"
+                                        value="{{ form.email.value|default:'' }}">
+                                    {% if form.email.errors %}
+                                        <div class="text-danger">{{ form.email.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
 
-    </div>
-</form>
+                                <!-- PHONE -->
+                                <div class="form-group">
+                                    <label>Phone Number</label>
+                                    <input type="tel" name="phone" placeholder="Phone number"
+                                        value="{{ form.phone.value|default:'' }}">
+                                    {% if form.phone.errors %}
+                                        <div class="text-danger">{{ form.phone.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+
+                                <!-- RESUME -->
+                                <div class="form-group">
+                                    <label>Upload Resume</label>
+
+                                    <label class="upload-area" for="resume-upload">
+                                        Upload resume
+                                        <input type="file" name="resume" id="resume-upload" accept=".pdf,.doc,.docx">
+                                    </label>
+
+                                    {% if form.resume.errors %}
+                                        <div class="text-danger">{{ form.resume.errors.0 }}</div>
+                                    {% endif %}
+                                </div>
+
+                                <button type="submit" class="btn btn-cm-cta btn-pill w-100">
+                                    Submit Application
+                                </button>
+
+                            </div>
+                        </form>
 
                         <!-- RIGHT: Job Details -->
                         <div class="job-details">
@@ -270,7 +297,7 @@
                                                     </svg>
                                                 </button>
 
-                                                <a href="#" class="btn btn-cm-cta btn-pill">
+                                                <a href="{% url 'career-apply' job.id %}#careerApplicationForm" class="btn btn-cm-cta btn-pill">
                                                     <span class="label-up">Submit Application
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="13" height="9"
                                                             viewBox="0 0 13 9" fill="none">
@@ -447,8 +474,37 @@ document.addEventListener('DOMContentLoaded', function () {
   var careerForm = document.getElementById('careerApplicationForm');
   if (!careerForm) return;
 
+  /** If browser autofill puts full name in First name only, keep first token here and move the rest to Last name. */
+  function splitFullNameFromFirstField() {
+    var firstInput = careerForm.querySelector('[name="name"]');
+    var lastInput = careerForm.querySelector('[name="last_name"]');
+    if (!firstInput) return;
+    var raw = (firstInput.value || '').trim();
+    if (!raw || !/\s/.test(raw)) return;
+    var parts = raw.split(/\s+/).filter(Boolean);
+    if (parts.length < 2) return;
+    firstInput.value = parts[0];
+    if (lastInput) {
+      var rest = parts.slice(1).join(' ');
+      var lastVal = (lastInput.value || '').trim();
+      if (!lastVal) {
+        lastInput.value = rest;
+      }
+    }
+  }
+
+  var firstNameInput = careerForm.querySelector('[name="name"]');
+  if (firstNameInput) {
+    firstNameInput.addEventListener('blur', splitFullNameFromFirstField);
+    firstNameInput.addEventListener('change', splitFullNameFromFirstField);
+  }
+  [100, 400, 1000].forEach(function (ms) {
+    setTimeout(splitFullNameFromFirstField, ms);
+  });
+
   careerForm.addEventListener('submit', function (e) {
     e.preventDefault();
+    splitFullNameFromFirstField();
     var submitBtn = careerForm.querySelector('[type="submit"]');
     var globalErr = document.getElementById('careerFormGlobalError');
     if (globalErr) {
@@ -456,6 +512,9 @@ document.addEventListener('DOMContentLoaded', function () {
       globalErr.textContent = '';
     }
     careerForm.querySelectorAll('.ajax-error').forEach(function (node) {
+      if (node.id !== 'careerFormGlobalError') node.remove();
+    });
+    careerForm.querySelectorAll('.text-danger').forEach(function (node) {
       if (node.id !== 'careerFormGlobalError') node.remove();
     });
 

@@ -14,94 +14,116 @@ from django.utils.decorators import method_decorator
 from django.db import IntegrityError, close_old_connections, transaction
 from .zoom_meet import generate_zoom_meet_link
 
-# Google Meet (Calendar API): uncomment import and the fallback block in
-# `_booking_followup_zoom_and_emails` to try Meet when Zoom returns no URL.
 from .google_meet import generate_google_meet_link
 import logging
 import threading
-import datetime
-from datetime import timedelta
+from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 
 logger = logging.getLogger(__name__)
 
+# Bookings are stored as calendar date + wall clock in this zone (matches Django TIME_ZONE / Zoom).
+ADMIN_BOOKING_TZ = "Asia/Kolkata"
 
-def _booking_followup_zoom_and_emails(booking_id, client_name, client_email):
-    """Zoom + emails after commit — runs in a background thread so HTTP returns fast."""
+
+def _safe_zone(tz_name: str) -> ZoneInfo:
+    name = (tz_name or "").strip() or ADMIN_BOOKING_TZ
+    try:
+        return ZoneInfo(name)
+    except Exception:
+        return ZoneInfo(ADMIN_BOOKING_TZ)
+
+
+def _client_local_to_ist(booking_date, start_time, client_tz: str) -> datetime:
+    """Interpret date + time in the client's IANA zone; return aware datetime in Asia/Kolkata."""
+    z_client = _safe_zone(client_tz)
+    dt_client = datetime.combine(booking_date, start_time, tzinfo=z_client)
+    return dt_client.astimezone(ZoneInfo(ADMIN_BOOKING_TZ))
+
+
+def _booking_to_aware_ist(booking) -> datetime:
+    naive = datetime.combine(booking.booking_date, booking.start_time)
+    return naive.replace(tzinfo=ZoneInfo(ADMIN_BOOKING_TZ))
+
+
+def _format_date_time_in_zone(dt_ist: datetime, tz_name: str):
+    """dt_ist must be timezone-aware (IST). Returns (date_str, time_str) in tz_name."""
+    z = _safe_zone(tz_name)
+    local = dt_ist.astimezone(z)
+    date_str = local.strftime("%A, %B %d, %Y")
+    time_str = local.strftime("%I:%M %p").lstrip("0")
+    return date_str, time_str
+
+
+def _booking_followup_zoom_and_emails(booking_id, client_name, client_email, client_tz=None):
+    """Zoom + emails after commit — runs in a background thread.
+
+    client_tz: IANA name from the booking form (not stored on Booking); used only for
+    formatting the client-facing email in their wall time.
+    """
     close_old_connections()
     try:
         booking = Booking.objects.select_related("consultant").get(pk=booking_id)
         consultant = booking.consultant
 
+        # Generate meeting link if not exists
         if not booking.meet_link:
-            # Try Google Meet first (user preference)
-            meet_link = generate_google_meet_link(
-                booking=booking,
-                client_email=client_email,
-            )
-            # Fallback to Zoom if Google Meet fails
+            meet_link = generate_google_meet_link(booking=booking, client_email=client_email)
             if not meet_link:
-                meet_link = generate_zoom_meet_link(
-                    booking=booking,
-                    client_email=client_email,
-                )
+                meet_link = generate_zoom_meet_link(booking=booking, client_email=client_email)
             if meet_link:
                 booking.meet_link = meet_link
                 booking.save(update_fields=["meet_link"])
             else:
                 logger.warning(
-                    "Booking %s: meet_link not saved — both Google Meet and Zoom failed. "
-                    "Check client_secret JSON and token.pickle for Meet, "
-                    "or ZOOM_* credentials for Zoom fallback.",
+                    "Booking %s: meet_link not saved — both Google Meet and Zoom failed.",
                     booking.pk,
                 )
 
-        try:
-            booking_date_str = booking.booking_date.strftime("%A, %B %d, %Y")
-        except Exception:
-            booking_date_str = str(booking.booking_date)
+        dt_ist = _booking_to_aware_ist(booking)
+        client_tz = (client_tz or "").strip() or ADMIN_BOOKING_TZ
 
-        try:
-            booking_time_str = datetime.datetime.strptime(
-                str(booking.start_time), "%H:%M:%S"
-            ).strftime("%I:%M %p").lstrip("0")
-        except Exception:
-            booking_time_str = str(booking.start_time)
+        client_date_str, client_time_str = _format_date_time_in_zone(dt_ist, client_tz)
+        admin_date_str, admin_time_str = _format_date_time_in_zone(dt_ist, ADMIN_BOOKING_TZ)
 
+        # Render emails (client: their zone; admin: IST)
         client_html = render_to_string("call-email.html", {
             "name": client_name,
             "email": client_email,
-            "date": booking_date_str,
-            "time": booking_time_str,
-            "meet_link": booking.meet_link,
-        })
-        admin_html = render_to_string("call-email-admin.html", {
-            "name": client_name,
-            "admin_name": consultant.name if consultant and consultant.name else "Admin",
-            "email": client_email,
-            "number": "N/A",
-            "date": booking_date_str,
-            "time": booking_time_str,
+            "date": client_date_str,
+            "time": f"{client_time_str} ({client_tz})",
             "meet_link": booking.meet_link,
         })
 
-        admin_recipients = list(getattr(settings, "BOOKING_ADMIN_EMAILS", None) or [])
+        admin_html = render_to_string("call-email-admin.html", {
+            "name": client_name,
+            "admin_name": consultant.name if consultant else "Admin",
+            "email": client_email,
+            "number": "N/A",
+            "date": admin_date_str,
+            "time": f"{admin_time_str} ({ADMIN_BOOKING_TZ})",
+            "meet_link": booking.meet_link,
+        })
+
+        # Admin recipients
+        admin_recipients = list(getattr(settings, "BOOKING_ADMIN_EMAILS", []) or [])
         if not admin_recipients:
-            host_user = getattr(settings, "EMAIL_HOST_USER", "") or ""
+            host_user = getattr(settings, "EMAIL_HOST_USER", "")
             if host_user:
                 admin_recipients = [host_user]
+
         if not getattr(settings, "BOOKING_SINGLE_ADMIN_INBOX", True):
-            if consultant and getattr(consultant, "email", None):
+            if consultant and consultant.email:
                 ce = consultant.email.strip()
                 if ce and ce not in admin_recipients:
                     admin_recipients.append(ce)
+
         admin_recipients = [e for e in admin_recipients if e]
 
-        inbox = (getattr(settings, "EMAIL_HOST_USER", "") or "").strip().lower()
-        client_lower = (client_email or "").strip().lower()
-
+        # Send client email (only to the address they entered on the form)
         try:
             client_msg = EmailMessage(
-                "Your call is scheduled — Codigo Mantra",
+                "Your Upcoming Call with Codigo Mantra",
                 client_html,
                 settings.DEFAULT_FROM_EMAIL,
                 [client_email],
@@ -111,20 +133,9 @@ def _booking_followup_zoom_and_emails(booking_id, client_name, client_email):
         except Exception as e:
             logger.warning("Booking: failed to email client %s: %s", client_email, e)
 
-        # Same inbox as SMTP user: also receive the client-style mail when booker used another address
-        if getattr(settings, "BOOKING_SINGLE_ADMIN_INBOX", True) and inbox and client_lower != inbox:
-            try:
-                copy_msg = EmailMessage(
-                    "[Copy] Your call is scheduled — Codigo Mantra",
-                    client_html,
-                    settings.DEFAULT_FROM_EMAIL,
-                    [getattr(settings, "EMAIL_HOST_USER", "")],
-                )
-                copy_msg.content_subtype = "html"
-                copy_msg.send(fail_silently=False)
-            except Exception as e:
-                logger.warning("Booking: failed to copy client mail to admin %s: %s", inbox, e)
-
+        # Admin notification (call-email-admin.html) — do not also BCC/copy the client template
+        # to EMAIL_HOST_USER or admins get two messages for one booking.
+        # Send admin email
         if admin_recipients:
             try:
                 admin_msg = EmailMessage(
@@ -138,11 +149,7 @@ def _booking_followup_zoom_and_emails(booking_id, client_name, client_email):
                 admin_msg.send(fail_silently=False)
             except Exception as e:
                 logger.warning("Booking: failed to email admins %s: %s", admin_recipients, e)
-        else:
-            logger.warning(
-                "Booking %s: no admin email recipients (set EMAIL_HOST_USER or BOOKING_ADMIN_EMAILS).",
-                booking.pk,
-            )
+
     except Booking.DoesNotExist:
         logger.warning("Booking follow-up: booking %s not found", booking_id)
     except Exception as e:
@@ -208,7 +215,13 @@ def _career_application_send_emails(application_id):
         applicant_email = application.email
         phone = application.phone
 
-        user_html = render_to_string("email-application.html", {})
+        user_html = render_to_string(
+            "email-application.html",
+            {
+                "name": name,
+                "job_title": job_title,
+            }
+        )
         admin_html = render_to_string(
             "email-application-admin.html",
             {
@@ -321,7 +334,6 @@ class TermsConditionsView(views.View):
             {'terms': terms, 'pdf_absolute_url': pdf_absolute_url},
         )
 
-
 class ScheduleCallPage(views.View):
     def get(self, request):
         form = BookingForm()
@@ -333,18 +345,17 @@ class ScheduleCallStep2Page(views.View):
     def get(self, request):
         form = BookingForm()
         faqs = FAQ.objects.all()
-        return render(request, 'website/schedule_call2.html', {
-            'form': form,
-            'faqs': faqs
-        })
+
+        now_ist = datetime.now(ZoneInfo(ADMIN_BOOKING_TZ))
+        form.fields['start_time'].widget.attrs['min'] = now_ist.strftime("%H:%M")
+
+        return render(request, 'website/schedule_call2.html', {'form': form, 'faqs': faqs})
 
     def post(self, request):
         is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
         form = BookingForm(request.POST)
 
         if form.is_valid():
-
-            # Extract client info
             client_name = form.cleaned_data.get('client_name')
             client_email = form.cleaned_data.get('client_email')
 
@@ -370,68 +381,74 @@ class ScheduleCallStep2Page(views.View):
             booking.consultant = consultant
             booking.status = 'pending'
 
-            # -------------------------------
-            # CHECK EXISTING BOOKING
-            # -------------------------------
-            new_start = datetime.datetime.combine(
-                booking.booking_date,
-                booking.start_time
-            )
+            client_timezone = (request.POST.get("client_timezone") or "").strip() or ADMIN_BOOKING_TZ
 
-            window_start = (new_start - timedelta(minutes=14, seconds=59)).time()
-            window_end = (new_start + timedelta(minutes=14, seconds=59)).time()
+            # Client's date/time (from step 1) are in client_timezone → convert to IST for storage
+            client_date = booking.booking_date
+            client_time = booking.start_time
+            try:
+                dt_ist = _client_local_to_ist(client_date, client_time, client_timezone)
+            except Exception:
+                if is_ajax:
+                    return JsonResponse(
+                        {"status": "error", "message": "Invalid timezone. Please choose a valid region."},
+                        status=400,
+                    )
+                messages.error(request, "Invalid timezone. Please choose a valid region.")
+                return render(request, 'website/schedule_call2.html', {'form': form, 'faqs': FAQ.objects.all()})
 
-            existing_qs = Booking.objects.filter(
-                client=client,
-                booking_date=booking.booking_date,
-            )
+            booking.booking_date = dt_ist.date()
+            booking.start_time = dt_ist.time()
 
+            # ------------------- Real-time validation (IST) -------------------
+            now_ist = datetime.now(ZoneInfo(ADMIN_BOOKING_TZ))
+            if dt_ist <= now_ist:
+                msg = "Please select a future time for your meeting."
+                if is_ajax:
+                    return JsonResponse({'status': 'error', 'message': msg}, status=400)
+                messages.error(request, msg)
+                return render(request, 'website/schedule_call2.html', {'form': form, 'faqs': FAQ.objects.all()})
+
+            # ------------------- Check duplicate bookings (IST wall time) -------------------
+            selected_datetime_naive = datetime.combine(booking.booking_date, booking.start_time)
+            window_start = (selected_datetime_naive - timedelta(minutes=14, seconds=59)).time()
+            window_end = (selected_datetime_naive + timedelta(minutes=14, seconds=59)).time()
+
+            existing_qs = Booking.objects.filter(client=client, booking_date=booking.booking_date)
             if window_start <= window_end:
                 existing_qs = existing_qs.filter(start_time__range=(window_start, window_end))
             else:
                 existing_qs = existing_qs.filter(start_time=booking.start_time)
 
-            # If an existing booking is found
             if existing_qs.exists():
-                existing_time = existing_qs.first().start_time
-                selected_time = booking.start_time
-
+                ex_booking = existing_qs.first()
+                ex_dt_ist = _booking_to_aware_ist(ex_booking)
                 if is_ajax:
+                    ex_d, ex_t = _format_date_time_in_zone(ex_dt_ist, client_timezone)
+                    sel_d, sel_t = _format_date_time_in_zone(dt_ist, client_timezone)
                     return JsonResponse({
                         "status": "duplicate",
-                        "existing_time": existing_time.strftime("%I:%M %p"),
-                        "selected_time": selected_time.strftime("%I:%M %p"),
+                        "existing_time": f"{ex_d} {ex_t}",
+                        "selected_time": f"{sel_d} {sel_t}",
                     }, status=409)
+                ex_d, ex_t = _format_date_time_in_zone(ex_dt_ist, client_timezone)
+                messages.error(request, f"A booking already exists on {ex_d} at {ex_t} (your time).")
+                return render(request, 'website/schedule_call2.html', {'form': form, 'faqs': FAQ.objects.all()})
 
-                # Non-AJAX
-                faqs = FAQ.objects.all()
-                return render(request, 'website/schedule_call2.html', {
-                    'form': form,
-                    'faqs': faqs,
-                    'existing_time': existing_time.strftime("%I:%M %p"),
-                    'selected_time': selected_time.strftime("%I:%M %p"),
-                    'duplicate': True,
-                })
-
-            # -------------------------------
-            # SAVE BOOKING
-            # -------------------------------
+            # ------------------- Save booking & trigger follow-up -------------------
             booking.save()
-
             _bid = booking.pk
+            _ctz = client_timezone
             transaction.on_commit(
-                lambda: threading.Thread(
+                lambda bid=_bid, n=client_name, e=client_email, tz=_ctz: threading.Thread(
                     target=_booking_followup_zoom_and_emails,
-                    args=(_bid, client_name, client_email),
+                    args=(bid, n, e, tz),
                     daemon=True,
                 ).start()
             )
 
             if is_ajax:
-                return JsonResponse({
-                    'status': 'success',
-                    'message': 'Your call has been scheduled successfully!',
-                })
+                return JsonResponse({'status': 'success', 'message': 'Your call has been scheduled successfully!'})
 
             messages.success(request, 'Your call has been scheduled successfully!')
             return redirect('index')
@@ -441,8 +458,7 @@ class ScheduleCallStep2Page(views.View):
             errors = {field: [{'message': str(e)} for e in errs] for field, errs in form.errors.items()}
             return JsonResponse({'status': 'error', 'errors': errors}, status=400)
 
-        faqs = FAQ.objects.all()
-        return render(request, 'website/schedule_call2.html', {'form': form, 'faqs': faqs})
+        return render(request, 'website/schedule_call2.html', {'form': form, 'faqs': FAQ.objects.all()})
 
 
 # @method_decorator(cache_page(60 * 5), name='dispatch')
@@ -613,7 +629,7 @@ class PortfolioPage(views.View):
     def get(self,request):
         case_studies = CaseStudy.objects.all().order_by('-created_at').prefetch_related(
             "services", "industries", "technologies", "images"
-        )
+        )[:6]
         industries = Industry.objects.all()
         technologies = Technology.objects.all()
         featured_projects = case_studies.all()[:3]

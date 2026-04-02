@@ -78,7 +78,7 @@
               <div class="legal-text-content">
                   <h1 class="legal-title">{{ policy.title }}</h1>
                   <div class="content-body">
-                    {{ policy.content|linebreaks }}
+                    {{ policy.content|safe }}
                   </div>
               </div>
             {% endif %}
