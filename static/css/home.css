@@ -508,6 +508,7 @@ body {
     width: 100%;
     display: block;
     transition: transform 0.5s ease;
+    height: 177px;
 }
 
 .service-card-new:hover .service-mockup img {
