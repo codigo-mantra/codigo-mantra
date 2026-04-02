@@ -1,49 +1,59 @@
-@media screen and (max-width: 991px ) {
+@media screen and (max-width: 991px) {
     .hero-title {
         font-size: clamp(34px, 34px, 56px);
     }
+
     .hero-sub {
         font-size: 16px;
     }
+
     .marquee-track {
         margin-top: 48px;
         gap: 12px;
     }
+
     .hero-floating-card {
         width: 102.663px;
         height: 54.761px;
         display: inline-flex;
         flex-direction: column;
     }
+
     .hero-floating-card img {
         border-radius: 8px;
         display: block;
         width: auto;
-    }   
+    }
+
     .hero {
         position: relative;
         min-height: auto;
     }
+
     .badge-text {
         font-size: 8px;
         font-weight: 400;
     }
+
     .card-tl {
         top: 13%;
         left: -12%;
         transform: rotate(-7deg);
         animation-delay: 0s;
     }
+
     .card-tr {
         top: 12%;
         right: -12%;
         transform: rotate(-1deg);
     }
+
     .card-bl {
         top: 68%;
         left: -10%;
         animation-delay: 2.5s;
     }
+
     .card-br {
         top: 60%;
         right: -10%;
@@ -54,387 +64,496 @@
     .hero {
         padding: 80px 0 60px;
     }
+
     .hero-floating-elements {
         display: block !important;
     }
+
     .services-section {
         padding: 10px 0 70px;
     }
+
     .display-heading {
         font-size: 34px;
     }
+
     .result-card h3 {
         font-size: 36px;
     }
+
     .result-card h5 {
         font-size: 14px;
         margin-bottom: 6px;
     }
+
     .result-card p {
         font-size: 12px;
     }
+
     .service-title {
         font-size: 14px;
         margin-bottom: 8.39px;
     }
+
     .service-desc {
         font-size: 12px;
     }
+
     .service-icon-box {
         width: 30px;
         height: 30px;
     }
+
     .portfolio-section {
         padding: 45px 0;
     }
+
     .portfolio-card-refined {
         padding: 10px;
         border-radius: 20px;
     }
+
     .project-mockup-side {
         border-radius: 12px;
         padding: 0;
     }
+
     .project-title {
         font-size: 14px;
     }
+
     .project-description {
         font-size: 12px;
     }
+
     .meta-item h4 {
         font-size: 14px;
     }
+
     .meta-item li {
         font-size: 12px;
     }
-    .meta-value{
+
+    .meta-value {
         font-size: 12px;
     }
+
     a.btn.btn-secondary-cm {
         width: 100%;
         height: 48px;
         line-height: 48px;
     }
+
     .project-mockup-side img {
         border-radius: 12px;
         height: 151px;
     }
+
     .portfolio-list {
         gap: 10px;
     }
+
     .hero-sub {
         font-size: 14px;
         margin-bottom: 40px;
     }
+
     .service-hero {
         padding: 57px 0 0px;
     }
+
     .why-left-title {
         font-size: 20px;
     }
+
     .why-left-desc {
         font-size: 12px;
         margin-bottom: 20px;
     }
+
     .why-right-card {
         border-radius: 12px;
         padding: 14px 10px 20px;
     }
+
     .why-feature-title {
         font-size: 14px;
     }
+
     .why-feature-desc {
         font-size: 12px;
     }
+
     .why-feature-item {
         display: flex;
         align-items: flex-start;
         gap: 32px;
         padding: 12px 0;
     }
+
     .why-choose-section {
         padding: 0;
     }
+
     .why-feature-icon {
         width: 30px;
         height: 30px;
         margin-left: -105px;
         border-radius: 6.818px;
     }
+
     .t-quote {
         font-size: 12px;
     }
+
     .t-name {
         font-size: 14px;
     }
+
     .t-role {
         font-size: 12px;
     }
-    .testimonial-card-v2{
+
+    .testimonial-card-v2 {
         height: auto !important;
     }
+
     .t-avatar {
         width: 52px;
         height: 52px;
         border-radius: 6px;
     }
+
     .testimonial-video-card {
         display: none;
     }
+
     .insight-title {
         font-size: 14px;
     }
-    .insight-desc { 
+
+    .insight-desc {
         font-size: 12px;
     }
+
     .testimonials-section {
         padding: 30px 0;
     }
+
     .insights-section {
         padding: 30px 0;
     }
+
     .cta-title-refined {
         font-size: 36px;
     }
+
     .cta-refined-box {
         border-radius: 20px;
         padding: 10px;
         text-align: center;
     }
+
     .cta-refined-section {
         padding: 50px 0 20px;
     }
+
     .btn-cta-refined {
         width: 100%;
     }
+
     .cta-refined-box .row {
         flex-direction: column-reverse;
     }
+
     .tech-stack-container img {
         width: 100%;
         margin: 40px 0;
     }
+
     .cta-refined-box::after {
         background-position: top;
     }
+
     .navbar-collapse {
         flex-grow: 1 !important;
         flex-basis: 100% !important;
         align-items: center;
     }
+
     .top-col-abou-css {
         display: flex;
         gap: 7px;
         flex-direction: column;
     }
+
     .about-cap-card {
         padding: 20px 12px;
     }
+
     .about-capabilities-section {
         padding: 70px 20px;
     }
+
     .about-cap-title {
         font-size: 14px;
     }
+
     .about-cap-desc {
         font-size: 12px;
     }
+
     .service-card-new {
         padding: 11px 9px 14px 9px;
         display: flex;
         gap: 8px;
         align-items: center;
     }
+
     .about-services-cm {
         padding: 0;
         margin-bottom: 0;
     }
+
     .about-services-cm img {
         border-radius: 3.199px;
         background: rgba(12, 12, 12, 0.20);
         width: 95px;
         height: 52.458px;
     }
+
     .about-team-section {
         padding: 0 20px 75px;
     }
+
     .display-heading {
         margin-bottom: 30px;
     }
+
     .about-badge {
         display: flex;
         justify-content: center;
     }
+
     .ws-heading {
         font-size: 32px;
         text-align: center;
-        
+
     }
+
     .ws-desc {
         font-size: 12px;
         text-align: center;
     }
+
     .about-hero {
         margin-bottom: 75px;
     }
+
     .job-tag {
         font-size: 12px;
     }
+
     .job-title {
         font-size: 14px;
     }
+
     .job-desc {
         font-size: 12px;
     }
+
     .job-meta {
         font-size: 12px;
         margin-bottom: 30px;
     }
+
     .job-meta {
         font-size: 12px;
         flex-wrap: wrap;
         gap: 20px;
     }
+
     .open-position-btn {
         height: 50px !important;
         line-height: 50px !important;
     }
+
     .btn-cm-cta {
         height: 48px;
         line-height: 48px;
     }
+
     .btn-toggle {
         padding: 16px 20px;
     }
+
     .open-roles .about-badge {
         justify-content: flex-start;
     }
+
     .open-roles .ws-heading {
         font-size: 32px;
         text-align: left;
     }
+
     .open-roles {
         padding: 21px 20px 70px;
     }
+
     .career-job-img img {
         width: 108px;
         height: 91px;
     }
+
     .hr-mail-address {
         padding-bottom: 30px !important;
     }
+
     .jobs-list1 {
         display: grid;
         gap: 12px;
         grid-template-columns: 1fr;
     }
+
     .job-page {
         margin-top: 24px;
         padding: 0px 20px;
     }
+
     .job-location {
         font-size: 12px;
     }
+
     .job-hero-meta {
         font-size: 12px;
     }
+
     .apply-card {
         padding: 18px 12px;
     }
+
     .apply-card h2 {
         font-size: 18px;
     }
+
     .form-row {
         grid-template-columns: 1fr;
         gap: 16px;
         margin-bottom: 16px;
     }
+
     .form-group label {
         font-size: 12px;
     }
+
     .form-group {
         margin-bottom: 16px;
         gap: 10px;
     }
+
     .detail-section h3 {
         font-size: 14px;
     }
-    .detail-section p, .detail-section ul {
+
+    .detail-section p,
+    .detail-section ul {
         font-size: 12px;
         padding-left: 0 !important;
     }
+
     .contact-page-hero {
         padding: 55px 0 50px;
     }
+
     .apply-card-contact h6 {
         font-size: 12px;
     }
+
     .contact-info-text p {
         font-size: 10px;
     }
+
     .contact-info-text span {
         font-size: 12px;
     }
+
     .contact-body {
         grid-template-columns: 1fr;
         gap: 16px;
     }
+
     .contact-info-item {
         display: grid;
         padding: 12px 14px;
         grid-template-columns: 0.1fr 1fr;
     }
+
     .contact-info-icon {
         border-radius: 7px;
         width: 33px;
         height: 33px;
     }
+
     .contact-info-icon svg {
         width: 18.857px;
         height: 18.857px;
     }
+
     .pera-contact {
         font-size: 12px;
         margin-bottom: 34px;
     }
+
     .faq-section {
         padding: 0 20px;
     }
+
     .faq-header p {
         font-size: 12px;
     }
+
     .faq-accordion .accordion-button {
         font-size: 14px;
     }
+
     .faq-accordion .accordion-body {
         font-size: 12px;
     }
+
     .faq-accordion .accordion-item {
         padding: 24px 0 20px;
     }
+
     span.faq-icon svg {
         height: 20px;
         width: 20px;
     }
+
     .info-desc {
         font-size: 12px;
     }
+
     .info-thank {
         font-size: 12px;
     }
+
     .info-meta-item {
         font-size: 14px;
     }
+
     .info-meta-item svg {
         height: 20px;
         width: 20px;
     }
+
     .cal-month {
         font-size: 14px;
     }
+
     a.btn.btn-cm-cta.btn-pill {
         width: 100%;
     }
+
     .schedule-call-footer {
         display: flex;
         flex-direction: column-reverse;
@@ -442,86 +561,106 @@
         margin-top: 30px;
         width: 100%;
     }
+
     .booking-card {
         border-radius: 12px;
         padding: 21px 10px 21.42px 10px;
     }
+
     .cs-toggle-label {
         font-size: 14px;
     }
+
     .cs-toggle-wrap {
         display: flex;
         align-items: center;
         gap: 11px;
         /* margin-bottom: 50px; */
     }
+
     .cs-slider::before {
         width: 15.98px;
         height: 15.98px;
         flex-shrink: 0;
         top: 2.3px;
     }
+
     .cs-switch {
         width: 34px;
         height: 20.4px;
         padding: 1.998px;
     }
+
     h1.display-heading-project {
         font-size: 32px;
         letter-spacing: -0.64px;
     }
+
     p.hero-desc-project {
         font-size: 14px;
-        
+
     }
+
     .project-img img {
         border-radius: 10px;
         height: 259px;
     }
+
     .project-specsfications {
         display: flex;
         justify-content: space-between;
         gap: 30px;
         flex-direction: column;
     }
+
     p.job-meta-sub {
         font-size: 14px;
     }
+
     .project-meta span {
         align-items: stretch;
     }
+
     .project-meta span:nth-child(3),
     .project-meta span:nth-child(4) {
-    border-left: none;
-    padding-left: 0;
+        border-left: none;
+        padding-left: 0;
     }
+
     .project-overview-heading {
         font-size: 18px;
     }
+
     .project-overview-desc {
         font-size: 12px;
     }
+
     .project-overview {
         gap: 20px;
         padding: 30px 0 43px;
     }
+
     .project-image-section {
         border-radius: 11px;
         padding: 9.415px 9.415px 9.414px 9.414px;
     }
+
     .project-image-section img {
         border-radius: 5px;
         height: 237.579px;
     }
+
     .cs-grid--2 {
         display: grid;
         grid-template-columns: repeat(1, 1fr);
         gap: 22px;
         text-align: left;
     }
+
     .case-study-content {
         padding: 70px 0 0;
     }
+
     .mobile-view {
         display: grid;
         align-items: flex-start;
@@ -529,48 +668,65 @@
         align-self: stretch;
         grid-template-columns: 0.1fr 1fr;
     }
+
     .service-card-new-home {
         flex-direction: column;
     }
+
     .cm-footer {
-    padding: 20px;
-    border-radius: 20px;
+        padding: 20px;
+        border-radius: 20px;
     }
+
     .footer-h {
         font-size: 14px;
     }
+
     .footer-a {
         font-size: 12px;
     }
+
     span.reserved-rights {
         font-size: 14px;
     }
+
     .cm-footer__bottom svg {
         width: 25px;
         height: 25.325px;
     }
+
     .footer-sub {
         font-size: 10px;
     }
+
     .footer-row {
         gap: 30px;
         flex-direction: column-reverse;
     }
+
     .cm-mega__col.cm-mega__col--mid-last {
         grid-template-columns: 1fr;
         padding: 0;
     }
+
     .cm-mega__col--product {
         border-left: none;
     }
+
     .right-col-cm-app-development {
         border-left: none;
         padding-left: 0;
     }
+
     .cm-mega__grid-2 {
         grid-template-columns: 1fr;
     }
-   .cm-mega__panel-2 {
+
+    .cm-mega__panel-2 {
         margin: 0 !important;
+    }
+
+    .grid-container {
+        grid-template-columns: repeat(2, 1fr);
     }
 }

@@ -1316,3 +1316,8 @@ body {
     opacity: 1;
     transform: translateY(0);
 }
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 13px;
+}

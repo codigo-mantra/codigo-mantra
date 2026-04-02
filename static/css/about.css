@@ -89,7 +89,7 @@
 
 /* ─── CAPABILITIES SECTION ─── */
 .about-capabilities-section {
-    padding: 80px 0;
+    padding: 130px 0 0;
 }
 
 /* Left image card */
@@ -126,6 +126,8 @@
     justify-content: center;
     align-items: flex-start;
     flex: 1;
+    position: relative;
+    overflow: hidden;
 }
 
 .about-cap-title {
@@ -292,4 +294,16 @@
 .slick-prev:before {
     color: #000;
     font-size: 26px;
+}
+.about-cap-card-last::after {
+    width: 604.684px;
+    height: 595.851px;
+    transform: rotate(-156.1deg);
+    content: '';
+    position: absolute;
+    opacity: 0.6;
+    filter: blur(237px);
+    right: -100%;
+    background: radial-gradient(50% 50% at 50% 50%, #E0CA34 0%, #F16535 100%);
+    top: 14%;
 }
