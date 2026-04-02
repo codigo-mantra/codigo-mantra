@@ -143,7 +143,7 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
                                     <path fill-rule="evenodd" clip-rule="evenodd" d="M10 20C15.5228 20 20 15.5228 20 10C20 4.47715 15.5228 0 10 0C4.47715 0 0 4.47715 0 10C0 15.5228 4.47715 20 10 20ZM14.592 7.46049C14.8463 7.13353 14.7874 6.66232 14.4605 6.40802C14.1335 6.15372 13.6623 6.21262 13.408 6.53958L9.40099 11.6914C9.31189 11.806 9.14429 11.8209 9.03641 11.7238L6.50173 9.44256C6.19385 9.16547 5.71963 9.19043 5.44254 9.49831C5.16544 9.80619 5.1904 10.2804 5.49828 10.5575L8.03296 12.8387C8.78809 13.5183 9.9613 13.4143 10.585 12.6123L14.592 7.46049Z" fill="#00CC00"/>
                                 </svg>
-                                <span id="resume-file-name" class="file-name">Amandeep_resume.pdf</span>
+                                <span id="resume-file-name" class="resume-file-name">Amandeep_resume.pdf</span>
                             </div>
                             <button type="button" class="btn-delete-resume" id="btn-delete-resume">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -581,6 +581,17 @@
                     var data = result.data;
                     if (result.ok && data.status === 'success') {
                         careerForm.reset();
+
+                        // Restoring the resume upload UI
+                        var _uploadLabel = document.getElementById('upload-area-label');
+                        var _previewDiv = document.getElementById('resume-uploaded-preview');
+                        var _fileNameSp = document.getElementById('resume-file-name');
+                        if (_uploadLabel && _previewDiv && _fileNameSp) {
+                            _uploadLabel.style.display = 'flex';
+                            _previewDiv.style.display = 'none';
+                            _fileNameSp.textContent = '';
+                        }
+
                         var modalEl = document.getElementById('contactModal');
                         if (modalEl && window.bootstrap && bootstrap.Modal) {
                             bootstrap.Modal.getOrCreateInstance(modalEl).show();

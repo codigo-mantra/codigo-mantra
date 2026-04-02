@@ -482,6 +482,10 @@ a.open-position-btn::after {
     font-style: normal;
     font-weight: 400;
     line-height: 140%;
+    min-width: 0;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    white-space: normal;
 }
 .file-info-left {
     display: flex;
