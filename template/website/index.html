@@ -39,8 +39,8 @@
 
             <div class="hero-cta-wrap">
                 <a class="btn btn-cm-cta btn-pill" href="{% url 'schedule-call' %}">
-                    <span class="label-up">Book a 15 min call</span>
-                    <span class="label-up">Book a 15 min call</span>
+                    <span class="label-up">Talk to Our Tech Architects</span>
+                    <span class="label-up">Talk to Our Tech Architects</span>
                 </a>
             </div>
         </div>
@@ -103,7 +103,9 @@
                         </div>
 
                         <div class="service-mockup">
-                            <img loading="lazy" src="{% static 'images/services-cm-1.png' %}" alt="{{ service.name }}">
+                            {% if service.cover_image %}
+                            <img loading="lazy" src="{{ service.cover_image.url }}" alt="{{ service.name }}">
+                            {% endif %}
                         </div>
                     </div>
                 </div>

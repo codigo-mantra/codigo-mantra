@@ -86,9 +86,10 @@ def _booking_followup_zoom_and_emails(booking_id, client_name, client_email, cli
         client_date_str, client_time_str = _format_date_time_in_zone(dt_ist, client_tz)
         admin_date_str, admin_time_str = _format_date_time_in_zone(dt_ist, ADMIN_BOOKING_TZ)
 
+        client_first_name = (client_name or "").split(" ")[0]
         # Render emails (client: their zone; admin: IST)
         client_html = render_to_string("call-email.html", {
-            "name": client_name,
+            "name": client_first_name,
             "email": client_email,
             "date": client_date_str,
             "time": f"{client_time_str} ({client_tz})",
@@ -215,10 +216,11 @@ def _career_application_send_emails(application_id):
         applicant_email = application.email
         phone = application.phone
 
+        applicant_first_name = (name or "").split(" ")[0]
         user_html = render_to_string(
             "email-application.html",
             {
-                "name": name,
+                "name": applicant_first_name,
                 "job_title": job_title,
             }
         )
@@ -465,7 +467,7 @@ class ScheduleCallStep2Page(views.View):
 class LandingPage(views.View):
     def get(self,request):
         form = ContactUsForm()
-        services = Service.objects.all().order_by('display_order')[:6].values("name", "description", "icon")  # last 6 services
+        services = Service.objects.all().order_by('display_order')[:6]  # last 6 services
         insights = Insight.objects.all().order_by('-created_at')[:3]  # last 3 insights
         testimonials_qs = list(Testimonial.objects.all().order_by('-created_at')[:6])  # last 6 testimonials
         # Ensure image testimonials appear before video testimonials (preserve recency within each group)
