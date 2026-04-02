@@ -902,6 +902,7 @@ body {
     display: flex;
     align-items: flex-end;
     padding: 30px;
+    justify-content: center;
 }
 
 .btn-video-review {
@@ -1029,6 +1030,7 @@ body {
     font-family: Poppins;
     font-size: 11px;
     opacity: 0.9;
+    box-shadow: 0.5rem 1rem 1rem rgb(0 0 0 / 40%), -1px -1px 0px rgb(179 179 179), 1px 1px 0px rgb(234 234 234);
 }
 
 /* ─── CTA REFINED SECTION ─── */
