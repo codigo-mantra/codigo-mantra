@@ -310,3 +310,10 @@
     margin: 0;
     opacity: 0.7;
 }
+.marquee-track-service {
+    display: inline-flex;
+    /* animation: marqueeScroll 30s linear infinite; */
+    align-items: center;
+    gap: 34.241px;
+    margin-top: 65px;
+}

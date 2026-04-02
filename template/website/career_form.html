@@ -2,25 +2,25 @@
 {% load static %}
 {% block title %}Career - Codigo Mantra{% endblock %}
 {% block content %}
-    <section class="job-page">
-                <div class="container">
-                    <!-- Hero Header -->
-                    <div class="job-hero">
+<section class="job-page">
+    <div class="container">
+        <!-- Hero Header -->
+        <div class="job-hero">
 
-                        <h1>{{ job.title }}</h1>
-                        <p class="job-location">{{job.location}}</p>
-                        <div class="job-hero-meta">
-                            <span>{{ job.job_type }}</span>
-                            <span>{{job.package}} LPA</span>
-                            <span>{{ job.experience }} Years of experience</span>
-                        </div>
-                    </div>
+            <h1>{{ job.title }}</h1>
+            <p class="job-location">{{job.location}}</p>
+            <div class="job-hero-meta">
+                <span>{{ job.job_type }}</span>
+                <span>{{job.package}} LPA</span>
+                <span>{{ job.experience }} Years of experience</span>
+            </div>
+        </div>
 
-                    <!-- Two-column body -->
-                    <div class="job-body">
+        <!-- Two-column body -->
+        <div class="job-body">
 
-                        <!-- LEFT: Application Form -->
-                        <!-- <div class="apply-card">
+            <!-- LEFT: Application Form -->
+            <!-- <div class="apply-card">
                             {%csrf_token%}
                             <h2>Apply for this job</h2>
 
@@ -74,88 +74,102 @@
                                 </span>
                             </a>
                         </div> -->
-                        
-                        
 
-                        <form id="careerApplicationForm" method="POST" enctype="multipart/form-data" novalidate>
-                            {% csrf_token %}
 
-                            <div class="apply-card">
-                                <h2>Apply for this job</h2>
 
-                                <p id="careerFormGlobalError" class="text-danger small mb-2" style="display:none;"></p>
+            <form id="careerApplicationForm" method="POST" enctype="multipart/form-data" novalidate>
+                {% csrf_token %}
 
-                                <div class="form-row">
+                <div class="apply-card">
+                    <h2>Apply for this job</h2>
 
-                                    <!-- FIRST NAME -->
-                                    <div class="form-group mb-0">
-                                        <label>First Name</label>
-                                        <input type="text" name="name" placeholder="First name" autocomplete="given-name"
-                                            value="{{ form.name.value|default:'' }}">
-                                        {% if form.name.errors %}
-                                            <div class="text-danger">{{ form.name.errors.0 }}</div>
-                                        {% endif %}
-                                    </div>
+                    <p id="careerFormGlobalError" class="text-danger small mb-2" style="display:none;"></p>
 
-                                    <!-- LAST NAME -->
-                                    <div class="form-group mb-0">
-                                        <label>Last Name</label>
-                                        <input type="text" name="last_name" placeholder="Last name" autocomplete="family-name"
-                                            value="{{ form.last_name.value|default:'' }}">
-                                        {% if form.last_name.errors %}
-                                            <div class="text-danger">{{ form.last_name.errors.0 }}</div>
-                                        {% endif %}
-                                    </div>
+                    <div class="form-row">
 
-                                </div>
+                        <!-- FIRST NAME -->
+                        <div class="form-group mb-0">
+                            <label>First Name</label>
+                            <input type="text" name="name" placeholder="First name" autocomplete="given-name"
+                                value="{{ form.name.value|default:'' }}">
+                            {% if form.name.errors %}
+                            <div class="text-danger">{{ form.name.errors.0 }}</div>
+                            {% endif %}
+                        </div>
 
-                                <!-- EMAIL -->
-                                <div class="form-group">
-                                    <label>Email Address</label>
-                                    <input type="email" name="email" placeholder="Email address"
-                                        value="{{ form.email.value|default:'' }}">
-                                    {% if form.email.errors %}
-                                        <div class="text-danger">{{ form.email.errors.0 }}</div>
-                                    {% endif %}
-                                </div>
+                        <!-- LAST NAME -->
+                        <div class="form-group mb-0">
+                            <label>Last Name</label>
+                            <input type="text" name="last_name" placeholder="Last name" autocomplete="family-name"
+                                value="{{ form.last_name.value|default:'' }}">
+                            {% if form.last_name.errors %}
+                            <div class="text-danger">{{ form.last_name.errors.0 }}</div>
+                            {% endif %}
+                        </div>
 
-                                <!-- PHONE -->
-                                <div class="form-group">
-                                    <label>Phone Number</label>
-                                    <input type="tel" name="phone" placeholder="Phone number"
-                                        value="{{ form.phone.value|default:'' }}">
-                                    {% if form.phone.errors %}
-                                        <div class="text-danger">{{ form.phone.errors.0 }}</div>
-                                    {% endif %}
-                                </div>
+                    </div>
 
-                                <!-- RESUME -->
-                                <div class="form-group">
-                                    <label>Upload Resume</label>
+                    <!-- EMAIL -->
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" name="email" placeholder="Email address"
+                            value="{{ form.email.value|default:'' }}">
+                        {% if form.email.errors %}
+                        <div class="text-danger">{{ form.email.errors.0 }}</div>
+                        {% endif %}
+                    </div>
 
-                                    <label class="upload-area" for="resume-upload">
-                                        Upload resume
-                                        <input type="file" name="resume" id="resume-upload" accept=".pdf,.doc,.docx">
-                                    </label>
+                    <!-- PHONE -->
+                    <div class="form-group">
+                        <label>Phone Number</label>
+                        <input type="tel" name="phone" placeholder="Phone number"
+                            value="{{ form.phone.value|default:'' }}">
+                        {% if form.phone.errors %}
+                        <div class="text-danger">{{ form.phone.errors.0 }}</div>
+                        {% endif %}
+                    </div>
 
-                                    {% if form.resume.errors %}
-                                        <div class="text-danger">{{ form.resume.errors.0 }}</div>
-                                    {% endif %}
-                                </div>
+                    <!-- RESUME -->
+                    <div class="form-group">
+                        <label>Upload Resume</label>
 
-                                <button type="submit" class="btn btn-cm-cta btn-pill w-100">
-                                    Submit Application
-                                </button>
+                        <label class="upload-area" for="resume-upload" id="upload-area-label">
+                            Upload resume
+                            <input type="file" name="resume" id="resume-upload" accept=".pdf,.doc,.docx">
+                        </label>
 
+                        <div class="resume-uploaded-preview" id="resume-uploaded-preview" style="display: none;">
+                            <div class="file-info-left">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M10 20C15.5228 20 20 15.5228 20 10C20 4.47715 15.5228 0 10 0C4.47715 0 0 4.47715 0 10C0 15.5228 4.47715 20 10 20ZM14.592 7.46049C14.8463 7.13353 14.7874 6.66232 14.4605 6.40802C14.1335 6.15372 13.6623 6.21262 13.408 6.53958L9.40099 11.6914C9.31189 11.806 9.14429 11.8209 9.03641 11.7238L6.50173 9.44256C6.19385 9.16547 5.71963 9.19043 5.44254 9.49831C5.16544 9.80619 5.1904 10.2804 5.49828 10.5575L8.03296 12.8387C8.78809 13.5183 9.9613 13.4143 10.585 12.6123L14.592 7.46049Z" fill="#00CC00"/>
+                                </svg>
+                                <span id="resume-file-name" class="file-name">Amandeep_resume.pdf</span>
                             </div>
-                        </form>
+                            <button type="button" class="btn-delete-resume" id="btn-delete-resume">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M9.75052 5.49805C12.2316 5.49808 14.5865 5.90925 16.7036 6.64746L16.0152 16.2832C15.8656 18.3763 14.1243 19.998 12.0259 19.998H7.47513C5.37663 19.998 3.63449 18.3763 3.48489 16.2832L2.79642 6.64746C4.91374 5.90915 7.26925 5.49805 9.75052 5.49805ZM7.75052 8.24805C7.33631 8.24805 7.00052 8.58383 7.00052 8.99805V14.998C7.00052 15.4123 7.33631 15.748 7.75052 15.748C8.1646 15.7479 8.50052 15.4122 8.50052 14.998V8.99805C8.50052 8.58393 8.1646 8.2482 7.75052 8.24805ZM11.7505 8.24805C11.3363 8.24805 11.0005 8.58383 11.0005 8.99805V14.998C11.0005 15.4123 11.3363 15.748 11.7505 15.748C12.1646 15.7479 12.5005 15.4122 12.5005 14.998V8.99805C12.5005 8.58393 12.1646 8.2482 11.7505 8.24805ZM9.75052 0C11.2692 0.000171178 12.5005 1.23132 12.5005 2.75V2.91602C14.8854 3.20629 17.1133 3.8684 19.0786 4.82617C19.4508 5.0076 19.6055 5.45586 19.4243 5.82812C19.2429 6.20048 18.7938 6.35528 18.4214 6.17383C15.9299 4.95974 12.9545 4.25005 9.75052 4.25C6.54629 4.25 3.57027 4.95962 1.07864 6.17383C0.706291 6.35528 0.25717 6.20048 0.075714 5.82812C-0.105343 5.45597 0.0494495 5.00766 0.421417 4.82617C2.3869 3.86835 4.61554 3.20626 7.00052 2.91602V2.75C7.00052 1.23122 8.23174 0 9.75052 0Z" fill="white"/>
+                                </svg>
+                            </button>
+                        </div>
 
-                        <!-- RIGHT: Job Details -->
-                        <div class="job-details">
+                        {% if form.resume.errors %}
+                        <div class="text-danger">{{ form.resume.errors.0 }}</div>
+                        {% endif %}
+                    </div>
 
-                            <div class="detail-section">
-                                {{ job.description|safe }}
-                                <!-- <h3>About the Role</h3>
+                    <button type="submit" class="btn btn-cm-cta btn-pill w-100">
+                        Submit Application
+                    </button>
+
+                </div>
+            </form>
+
+            <!-- RIGHT: Job Details -->
+            <div class="job-details">
+
+                <div class="detail-section">
+                    {{ job.description|safe }}
+                    <!-- <h3>About the Role</h3>
                                 <p>We are seeking a talented and passionate Full Stack Engineer to join our dynamic
                                     team. In
                                     this role, you will be responsible for developing and maintaining high-quality web
@@ -194,36 +208,35 @@
                                     Excellent communication and teamwork skills are also necessary.</p>
                             </div> -->
 
-                        </div>
-                    </div>
                 </div>
-            </section>
+            </div>
+        </div>
+</section>
 
-            <section class="open-roles career-page-form">
-                <div class="container">
-                    <div class="hero-badge-wrap">
-                        <div class="primary-badge">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" viewBox="0 0 18 20"
-                                fill="none">
-                                <path
-                                    d="M11.5 6.5C11.5 6.5 11.1317 10.3846 12.67 11.895C14.1868 13.3843 18 13 18 13C18 13 14.0968 13.0922 12.67 14.7556C11.4276 16.204 11.5 19.5 11.5 19.5C11.5 19.5 11.3338 16.1726 10.005 14.7556C8.58811 13.2447 5 13 5 13C5 13 8.51659 13.2334 10.005 11.895C11.6307 10.4332 11.5 6.5 11.5 6.5Z"
-                                    fill="#F05D35" />
-                                <path
-                                    d="M5 0C5 0 4.7167 2.98814 5.9 4.15C7.06678 5.29564 10 5 10 5C10 5 6.99755 5.07093 5.9 6.35045C4.94427 7.46464 5 10 5 10C5 10 4.87219 7.44047 3.85 6.35045C2.76008 5.18822 0 5 0 5C0 5 2.70507 5.17951 3.85 4.15C5.10054 3.02553 5 0 5 0Z"
-                                    fill="#F16535" />
-                            </svg>
-                            We’re hiring
-                        </div>
-                    </div>
-                    <h2 class="display-heading">
-                        Check other openings
-                    </h2>
-                    <!-- Top: heading left + text right -->
-                    <div class="row mb-5">
-                        <div class="col-md-12">
-                            <div class="jobs-list1">
-                                {% if similar_jobs %}
-                                    <!-- {% for job in similar_jobs|slice:":2" %}
+<section class="open-roles career-page-form">
+    <div class="container">
+        <div class="hero-badge-wrap">
+            <div class="primary-badge">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" viewBox="0 0 18 20" fill="none">
+                    <path
+                        d="M11.5 6.5C11.5 6.5 11.1317 10.3846 12.67 11.895C14.1868 13.3843 18 13 18 13C18 13 14.0968 13.0922 12.67 14.7556C11.4276 16.204 11.5 19.5 11.5 19.5C11.5 19.5 11.3338 16.1726 10.005 14.7556C8.58811 13.2447 5 13 5 13C5 13 8.51659 13.2334 10.005 11.895C11.6307 10.4332 11.5 6.5 11.5 6.5Z"
+                        fill="#F05D35" />
+                    <path
+                        d="M5 0C5 0 4.7167 2.98814 5.9 4.15C7.06678 5.29564 10 5 10 5C10 5 6.99755 5.07093 5.9 6.35045C4.94427 7.46464 5 10 5 10C5 10 4.87219 7.44047 3.85 6.35045C2.76008 5.18822 0 5 0 5C0 5 2.70507 5.17951 3.85 4.15C5.10054 3.02553 5 0 5 0Z"
+                        fill="#F16535" />
+                </svg>
+                We’re hiring
+            </div>
+        </div>
+        <h2 class="display-heading">
+            Check other openings
+        </h2>
+        <!-- Top: heading left + text right -->
+        <div class="row mb-5">
+            <div class="col-md-12">
+                <div class="jobs-list1">
+                    {% if similar_jobs %}
+                    <!-- {% for job in similar_jobs|slice:":2" %}
                                         <div class="job-item">
                                         <div class="job-tag">Open Position</div>
                                         <div class="job-title">{{ job.title }}</div>
@@ -267,64 +280,64 @@
                                         </div>
                                         </div>
                                     {% endfor %} -->
-                                    {% for job in similar_jobs|slice:":2" %}
-                                        {% with job_id=forloop.counter %}
-                                        <div class="job-item">
-                                            <div class="job-tag">Open Position</div>
-                                            <div class="job-title">{{ job.title }}</div>
+                    {% for job in similar_jobs|slice:":2" %}
+                    {% with job_id=forloop.counter %}
+                    <div class="job-item">
+                        <div class="job-tag">Open Position</div>
+                        <div class="job-title">{{ job.title }}</div>
 
-                                            <div class="job-desc" id="desc-{{ job_id }}">
-                                                {{ job.short_description|safe }}
-                                            </div>
+                        <div class="job-desc" id="desc-{{ job_id }}">
+                            {{ job.short_description|safe }}
+                        </div>
 
-                                            <div class="job-meta">
-                                                <span>{{ job.job_type }}</span>
-                                                <span>{{ job.package }} LPA</span>
-                                                <span>{{ job.experience }} Years of experience</span>
-                                                <span>{{ job.location }}</span>
-                                            </div>
+                        <div class="job-meta">
+                            <span>{{ job.job_type }}</span>
+                            <span>{{ job.package }} LPA</span>
+                            <span>{{ job.experience }} Years of experience</span>
+                            <span>{{ job.location }}</span>
+                        </div>
 
-                                            <div class="job-actions">
+                        <div class="job-actions">
 
-                                                <!-- FIXED: Unique toggle button id and index -->
+                            <!-- FIXED: Unique toggle button id and index -->
                                                 <button class="btn-toggle"
                                                     id="toggle-{{ job_id }}"
                                                     onclick="toggleDesc({{ job_id }})"
-                                                    aria-label="Toggle description">
-                                                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                                aria-label="Toggle description">
+                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                                                         <path d="M2 5L7 10L12 5" stroke="white" stroke-width="1.8"
                                                             stroke-linecap="round" stroke-linejoin="round" />
-                                                    </svg>
-                                                </button>
+                                </svg>
+                            </button>
 
                                                 <a href="{% url 'career-apply' job.id %}#careerApplicationForm" class="btn btn-cm-cta btn-pill">
-                                                    <span class="label-up">Submit Application
+                                <span class="label-up">Submit Application
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="13" height="9"
                                                             viewBox="0 0 13 9" fill="none">
                                                             <path d="M9.69443 7.91307L11.4945 2.55027M11.4945 2.55027L6.13172 0.750171M11.4945 2.55027L0.750178 7.89433"
-                                                                stroke="#F6F6F6" stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round" />
-                                                        </svg>
-                                                    </span>
-                                                    <span class="label-up">Submit Application
+                                            stroke="#F6F6F6" stroke-width="1.5" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                    </svg>
+                                </span>
+                                <span class="label-up">Submit Application
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="13" height="9"
                                                             viewBox="0 0 13 9" fill="none">
                                                             <path d="M9.69443 7.91307L11.4945 2.55027M11.4945 2.55027L6.13172 0.750171M11.4945 2.55027L0.750178 7.89433"
-                                                                stroke="#F6F6F6" stroke-width="1.5" stroke-linecap="round"
-                                                                stroke-linejoin="round" />
-                                                        </svg>
-                                                    </span>
-                                                </a>
-                                            </div>
-                                        </div>
-                                        {% endwith %}
-                                    {% endfor %}
-                                {% else %}
-                                <!-- need code here for no simiar jobs  -->
-                                    <p>No similar job openings available at the moment. Please check back later.</p>
-                                {% endif %}
-                                <!-- Job 1 -->
-                                <!-- <div class="job-item">
+                                            stroke="#F6F6F6" stroke-width="1.5" stroke-linecap="round"
+                                            stroke-linejoin="round" />
+                                    </svg>
+                                </span>
+                            </a>
+                        </div>
+                    </div>
+                    {% endwith %}
+                    {% endfor %}
+                    {% else %}
+                    <!-- need code here for no simiar jobs  -->
+                    <p>No similar job openings available at the moment. Please check back later.</p>
+                    {% endif %}
+                    <!-- Job 1 -->
+                    <!-- <div class="job-item">
                                     <div class="job-tag">Open Position</div>
                                     <div class="job-title">Sr. Full Stack Engineer</div>
                                     <div class="job-desc" id="desc-1">
@@ -371,8 +384,8 @@
                                     </div>
                                 </div> -->
 
-                                <!-- Job 2 -->
-                                <!-- <div class="job-item">
+                    <!-- Job 2 -->
+                    <!-- <div class="job-item">
                                     <div class="job-tag">Open Position</div>
                                     <div class="job-title">Data Scientist</div>
                                     <div class="job-desc" id="desc-2">
@@ -417,195 +430,220 @@
                                     </div>
                                 </div> -->
 
-                            </div>
-
-                        </div>
-
-                    </div>
                 </div>
 
-            </section>
+            </div>
+
+        </div>
+    </div>
+
+</section>
 
 
-            <div class="modal fade" id="contactModal" tabindex="-1" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                  <div class="modal-content newsletter-modal">
-                    <!-- Illustration Area -->
-                    <div class="newsletter-illustration position-relative">
-                        <a type="button" class="btn-close modal-close-btn" data-bs-dismiss="modal" aria-label="Close">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
-                            <path fill-rule="evenodd" clip-rule="evenodd"
-                                d="M15.692 17.6039C16.22 18.1319 17.076 18.1319 17.604 17.6039C18.132 17.076 18.132 16.2199 17.604 15.6919L10.912 8.99999L17.604 2.30806C18.132 1.78008 18.132 0.924049 17.604 0.396066C17.076 -0.131916 16.22 -0.131916 15.692 0.396066L9.00004 7.088L2.30801 0.395987C1.78002 -0.131996 0.923989 -0.131995 0.396004 0.395987C-0.13198 0.92397 -0.131981 1.78 0.396004 2.30798L7.08804 8.99999L0.395989 15.692C-0.131997 16.22 -0.131996 17.076 0.395989 17.604C0.923973 18.132 1.78 18.132 2.30799 17.604L9.00004 10.912L15.692 17.6039Z"
-                                    fill="#F6F6F6" />
-                        </svg>
-                        </a>
-                     
-              
-                      <!-- Balloons + Envelope -->
-                      <div class="balloon-envelope-wrap">
+<div class="modal fade" id="contactModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content newsletter-modal">
+            <!-- Illustration Area -->
+            <div class="newsletter-illustration position-relative">
+                <a type="button" class="btn-close modal-close-btn" data-bs-dismiss="modal" aria-label="Close">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M15.692 17.6039C16.22 18.1319 17.076 18.1319 17.604 17.6039C18.132 17.076 18.132 16.2199 17.604 15.6919L10.912 8.99999L17.604 2.30806C18.132 1.78008 18.132 0.924049 17.604 0.396066C17.076 -0.131916 16.22 -0.131916 15.692 0.396066L9.00004 7.088L2.30801 0.395987C1.78002 -0.131996 0.923989 -0.131995 0.396004 0.395987C-0.13198 0.92397 -0.131981 1.78 0.396004 2.30798L7.08804 8.99999L0.395989 15.692C-0.131997 16.22 -0.131996 17.076 0.395989 17.604C0.923973 18.132 1.78 18.132 2.30799 17.604L9.00004 10.912L15.692 17.6039Z"
+                            fill="#F6F6F6" />
+                    </svg>
+                </a>
+
+
+                <!-- Balloons + Envelope -->
+                <div class="balloon-envelope-wrap">
                         <img src="{% static 'images/application-success.png' %}"
                             alt="Application received">
-                      </div>
-                    </div>
-              
-                    <!-- Text Content -->
-                    <div class="newsletter-body">
-                      <h2 class="newsletter-title">Application Received!</h2>
-                      <p class="newsletter-desc">Thank you for applying to Codigo Mantra. Our team will review your application and reach out if your profile is a good match.</p>
-                    </div>
-              
-                  </div>
                 </div>
             </div>
-            
+
+            <!-- Text Content -->
+            <div class="newsletter-body">
+                <h2 class="newsletter-title">Application Received!</h2>
+                      <p class="newsletter-desc">Thank you for applying to Codigo Mantra. Our team will review your application and reach out if your profile is a good match.</p>
+            </div>
+
+        </div>
+    </div>
+</div>
+
 
 {% endblock %}
 
 {% block JavaScript %}
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-  {% if show_application_success %}
-  var elOk = document.getElementById('contactModal');
-  if (elOk && window.bootstrap && bootstrap.Modal) {
-    bootstrap.Modal.getOrCreateInstance(elOk).show();
-  }
-  {% endif %}
+    document.addEventListener('DOMContentLoaded', function () {
+        {% if show_application_success %}
+        var elOk = document.getElementById('contactModal');
+        if (elOk && window.bootstrap && bootstrap.Modal) {
+            bootstrap.Modal.getOrCreateInstance(elOk).show();
+        }
+        {% endif %}
 
-  var careerForm = document.getElementById('careerApplicationForm');
-  if (!careerForm) return;
+        var careerForm = document.getElementById('careerApplicationForm');
+        if (!careerForm) return;
 
-  /** If browser autofill puts full name in First name only, keep first token here and move the rest to Last name. */
-  function splitFullNameFromFirstField() {
-    var firstInput = careerForm.querySelector('[name="name"]');
-    var lastInput = careerForm.querySelector('[name="last_name"]');
-    if (!firstInput) return;
-    var raw = (firstInput.value || '').trim();
-    if (!raw || !/\s/.test(raw)) return;
-    var parts = raw.split(/\s+/).filter(Boolean);
-    if (parts.length < 2) return;
-    firstInput.value = parts[0];
-    if (lastInput) {
-      var rest = parts.slice(1).join(' ');
-      var lastVal = (lastInput.value || '').trim();
-      if (!lastVal) {
-        lastInput.value = rest;
-      }
-    }
-  }
+        // Resume upload logic
+        var resumeInput = document.getElementById('resume-upload');
+        var uploadAreaLabel = document.getElementById('upload-area-label');
+        var resumePreview = document.getElementById('resume-uploaded-preview');
+        var resumeFileName = document.getElementById('resume-file-name');
+        var btnDeleteResume = document.getElementById('btn-delete-resume');
 
-  var firstNameInput = careerForm.querySelector('[name="name"]');
-  if (firstNameInput) {
-    firstNameInput.addEventListener('blur', splitFullNameFromFirstField);
-    firstNameInput.addEventListener('change', splitFullNameFromFirstField);
-  }
-  [100, 400, 1000].forEach(function (ms) {
-    setTimeout(splitFullNameFromFirstField, ms);
-  });
+        if (resumeInput && uploadAreaLabel && resumePreview && btnDeleteResume) {
+            resumeInput.addEventListener('change', function () {
+                if (this.files && this.files.length > 0) {
+                    var fileName = this.files[0].name;
+                    resumeFileName.textContent = fileName;
+                    uploadAreaLabel.style.display = 'none';
+                    resumePreview.style.display = 'flex';
+                }
+            });
 
-  careerForm.addEventListener('submit', function (e) {
-    e.preventDefault();
-    splitFullNameFromFirstField();
-    var submitBtn = careerForm.querySelector('[type="submit"]');
-    var globalErr = document.getElementById('careerFormGlobalError');
-    if (globalErr) {
-      globalErr.style.display = 'none';
-      globalErr.textContent = '';
-    }
-    careerForm.querySelectorAll('.ajax-error').forEach(function (node) {
-      if (node.id !== 'careerFormGlobalError') node.remove();
-    });
-    careerForm.querySelectorAll('.text-danger').forEach(function (node) {
-      if (node.id !== 'careerFormGlobalError') node.remove();
-    });
+            btnDeleteResume.addEventListener('click', function () {
+                resumeInput.value = '';
+                uploadAreaLabel.style.display = 'flex';
+                resumePreview.style.display = 'none';
+                resumeFileName.textContent = '';
+            });
+        }
 
-    if (submitBtn) {
-      submitBtn.disabled = true;
-    }
+        /** If browser autofill puts full name in First name only, keep first token here and move the rest to Last name. */
+        function splitFullNameFromFirstField() {
+            var firstInput = careerForm.querySelector('[name="name"]');
+            var lastInput = careerForm.querySelector('[name="last_name"]');
+            if (!firstInput) return;
+            var raw = (firstInput.value || '').trim();
+            if (!raw || !/\s/.test(raw)) return;
+            var parts = raw.split(/\s+/).filter(Boolean);
+            if (parts.length < 2) return;
+            firstInput.value = parts[0];
+            if (lastInput) {
+                var rest = parts.slice(1).join(' ');
+                var lastVal = (lastInput.value || '').trim();
+                if (!lastVal) {
+                    lastInput.value = rest;
+                }
+            }
+        }
 
-    var formData = new FormData(careerForm);
-    var csrfInput = careerForm.querySelector('[name="csrfmiddlewaretoken"]');
-
-    fetch(window.location.href, {
-      method: 'POST',
-      body: formData,
-      headers: {
-        'X-Requested-With': 'XMLHttpRequest',
-        'X-CSRFToken': csrfInput ? csrfInput.value : ''
-      },
-      credentials: 'same-origin'
-    })
-      .then(function (res) {
-        return res.json().then(function (data) {
-          return { ok: res.ok, status: res.status, data: data };
+        var firstNameInput = careerForm.querySelector('[name="name"]');
+        if (firstNameInput) {
+            firstNameInput.addEventListener('blur', splitFullNameFromFirstField);
+            firstNameInput.addEventListener('change', splitFullNameFromFirstField);
+        }
+        [100, 400, 1000].forEach(function (ms) {
+            setTimeout(splitFullNameFromFirstField, ms);
         });
-      })
-      .then(function (result) {
-        var data = result.data;
-        if (result.ok && data.status === 'success') {
-          careerForm.reset();
-          var modalEl = document.getElementById('contactModal');
-          if (modalEl && window.bootstrap && bootstrap.Modal) {
-            bootstrap.Modal.getOrCreateInstance(modalEl).show();
-          }
-          if (data.email_warning && globalErr) {
-            globalErr.textContent =
-              'Your application was saved, but we could not send the confirmation emails. Our team will still review it.';
-            globalErr.style.display = 'block';
-          }
-          return;
-        }
-        if (data.errors) {
-          Object.keys(data.errors).forEach(function (field) {
-            var msgs = data.errors[field];
-            var msgText = msgs && msgs[0] && msgs[0].message ? msgs[0].message : (msgs && msgs[0]) || '';
-            if (field === '__all__') {
-              if (globalErr) {
-                globalErr.textContent = msgText;
-                globalErr.style.display = 'block';
-              }
-              return;
+
+        careerForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            splitFullNameFromFirstField();
+            var submitBtn = careerForm.querySelector('[type="submit"]');
+            var globalErr = document.getElementById('careerFormGlobalError');
+            if (globalErr) {
+                globalErr.style.display = 'none';
+                globalErr.textContent = '';
             }
-            var input = careerForm.querySelector('[name="' + field + '"]');
-            if (input) {
-              var err = document.createElement('p');
-              err.className = 'ajax-error';
-              err.style.cssText = 'color:#ff6b6b;font-size:0.8rem;margin-top:4px;';
-              err.textContent = msgText;
-              var group = input.closest('.form-group');
-              if (group) group.appendChild(err);
+            careerForm.querySelectorAll('.ajax-error').forEach(function (node) {
+                if (node.id !== 'careerFormGlobalError') node.remove();
+            });
+            careerForm.querySelectorAll('.text-danger').forEach(function (node) {
+                if (node.id !== 'careerFormGlobalError') node.remove();
+            });
+
+            if (submitBtn) {
+                submitBtn.disabled = true;
             }
-          });
-          return;
-        }
-        if (data.message && globalErr) {
-          globalErr.textContent = data.message;
-          globalErr.style.display = 'block';
-        }
-      })
-      .catch(function () {
-        if (globalErr) {
-          globalErr.textContent = 'Something went wrong. Please try again.';
-          globalErr.style.display = 'block';
-        }
-      })
-      .finally(function () {
-        if (submitBtn) submitBtn.disabled = false;
-      });
-  });
-});
+
+            var formData = new FormData(careerForm);
+            var csrfInput = careerForm.querySelector('[name="csrfmiddlewaretoken"]');
+
+            fetch(window.location.href, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRFToken': csrfInput ? csrfInput.value : ''
+                },
+                credentials: 'same-origin'
+            })
+                .then(function (res) {
+                    return res.json().then(function (data) {
+                        return { ok: res.ok, status: res.status, data: data };
+                    });
+                })
+                .then(function (result) {
+                    var data = result.data;
+                    if (result.ok && data.status === 'success') {
+                        careerForm.reset();
+                        var modalEl = document.getElementById('contactModal');
+                        if (modalEl && window.bootstrap && bootstrap.Modal) {
+                            bootstrap.Modal.getOrCreateInstance(modalEl).show();
+                        }
+                        if (data.email_warning && globalErr) {
+                            globalErr.textContent =
+                                'Your application was saved, but we could not send the confirmation emails. Our team will still review it.';
+                            globalErr.style.display = 'block';
+                        }
+                        return;
+                    }
+                    if (data.errors) {
+                        Object.keys(data.errors).forEach(function (field) {
+                            var msgs = data.errors[field];
+                            var msgText = msgs && msgs[0] && msgs[0].message ? msgs[0].message : (msgs && msgs[0]) || '';
+                            if (field === '__all__') {
+                                if (globalErr) {
+                                    globalErr.textContent = msgText;
+                                    globalErr.style.display = 'block';
+                                }
+                                return;
+                            }
+                            var input = careerForm.querySelector('[name="' + field + '"]');
+                            if (input) {
+                                var err = document.createElement('p');
+                                err.className = 'ajax-error';
+                                err.style.cssText = 'color:#ff6b6b;font-size:0.8rem;margin-top:4px;';
+                                err.textContent = msgText;
+                                var group = input.closest('.form-group');
+                                if (group) group.appendChild(err);
+                            }
+                        });
+                        return;
+                    }
+                    if (data.message && globalErr) {
+                        globalErr.textContent = data.message;
+                        globalErr.style.display = 'block';
+                    }
+                })
+                .catch(function () {
+                    if (globalErr) {
+                        globalErr.textContent = 'Something went wrong. Please try again.';
+                        globalErr.style.display = 'block';
+                    }
+                })
+                .finally(function () {
+                    if (submitBtn) submitBtn.disabled = false;
+                });
+        });
+    });
 
 
-function toggleDesc(id) {
-    var desc = document.getElementById("desc-" + id);
-    var btn = document.getElementById("toggle-" + id);
+    function toggleDesc(id) {
+        var desc = document.getElementById("desc-" + id);
+        var btn = document.getElementById("toggle-" + id);
 
-    if (!desc || !btn) return;
+        if (!desc || !btn) return;
 
-    const isHidden = desc.style.display === "none";
-    desc.style.display = isHidden ? "block" : "none";
+        const isHidden = desc.style.display === "none";
+        desc.style.display = isHidden ? "block" : "none";
 
-    // rotate arrow
-    btn.querySelector("svg").style.transform = isHidden ? "rotate(180deg)" : "rotate(0deg)";
-}
+        // rotate arrow
+        btn.querySelector("svg").style.transform = isHidden ? "rotate(180deg)" : "rotate(0deg)";
+    }
 </script>
 {% endblock %}

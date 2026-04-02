@@ -61,6 +61,7 @@
     margin-bottom: 14px;
     text-transform: none;
 }
+
 a.open-position-btn {
     color: var(--Orange, #F05D35);
     text-align: center;
@@ -106,7 +107,7 @@ a.open-position-btn {
     max-height: 24px;
     overflow: hidden;
     transition: height 0.45s cubic-bezier(0.4, 0, 0.2, 1),
-              opacity 0.35s ease;
+        opacity 0.35s ease;
 
     opacity: 0.7;
 }
@@ -220,7 +221,8 @@ a.open-position-btn {
 .job-hero {
     margin-bottom: 40px;
 }
-.job-page{
+
+.job-page {
     margin-top: 60px;
 }
 
@@ -421,14 +423,17 @@ a.open-position-btn {
 .detail-section ul li::before {
     content: '- ';
 }
+
 .jobs-list1 {
     display: grid;
     gap: 30px;
     grid-template-columns: 1fr 1fr;
 }
-.career-page-form{
+
+.career-page-form {
     padding-top: 134px;
 }
+
 a.open-position-btn::after {
     content: '';
     background-image: url(../images/career/Union.svg);
@@ -454,4 +459,32 @@ a.open-position-btn::after {
     font-weight: 400;
     line-height: 150%;
     margin-bottom: 48px;
+}
+
+.resume-uploaded-preview {
+    border-radius: 10px;
+    border: 1px solid #363636;
+    background: rgba(54, 54, 54, 0.37);
+    padding: 12px;
+    min-height: 82px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.btn-delete-resume {
+    background: transparent;
+    border: none;
+}
+.resume-file-name {
+    color: var(--white, #F6F6F6);
+    font-family: Poppins;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 140%;
+}
+.file-info-left {
+    display: flex;
+    align-items: center;
+    gap: 7px;
 }
