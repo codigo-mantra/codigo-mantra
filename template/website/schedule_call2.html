@@ -55,7 +55,7 @@
                           <select class="timezone-select" id="timezoneSelectStep2">
                             <option>Australia/Adelaide</option>
                             <option>Asia/Kolkata</option>
-                            <option>America/New_York</option>
+                            <option>America/NewYork</option>
                             <option>Europe/London</option>
                             <option>Asia/Dubai</option>
                           </select>
@@ -385,7 +385,7 @@
                               <span class="label-up">Cancel</span>
                               <span class="label-up text-white fw-400">Cancel</span>
                           </a>
-                          <a href="{% url 'schedule-call' %}" class="btn btn-cm-cta w-100">
+                          <a href="#" class="btn btn-cm-cta w-100">
                               <span class="label-up">Schedule Anyway →</span>
                               <span class="label-up text-white fw-400">Schedule Anyway →</span>
                           </a>
@@ -589,21 +589,21 @@ document.addEventListener('DOMContentLoaded', function () {
                         if (timeDesc) {
                             // Use times from server if available, otherwise fallback to local timeValue
                             const exTime = data.existing_time || timeValue;
-                            const selTime = data.selected_time || timeValue;
+                            const sugTime = data.suggested_time || timeValue; // Use suggested_time from server
                             
                             // Find specific spans for times
                             const exTimeSpan = timeDesc.querySelector('.existing-time-span');
                             const selTimeSpan = timeDesc.querySelector('.selected-time-span');
                             
                             if (exTimeSpan) exTimeSpan.textContent = exTime;
-                            if (selTimeSpan) selTimeSpan.textContent = selTime;
+                            if (selTimeSpan) selTimeSpan.textContent = sugTime;
 
                             // Fallback for direct replacement if spans not found
                             if (!exTimeSpan || !selTimeSpan) {
                                 let html = timeDesc.innerHTML;
                                 html = html.replace(/\{\{\s*existing_time\s*\}\}/g, exTime);
-                                html = html.replace(/\{\{\s*selected_time\s*\}\}/g, selTime);
-                                html = html.replace(/\{\{time\}\}/g, selTime);
+                                html = html.replace(/\{\{\s*selected_time\s*\}\}/g, sugTime);
+                                html = html.replace(/\{\{time\}\}/g, sugTime);
                                 timeDesc.innerHTML = html;
                             }
                         }
@@ -619,6 +619,23 @@ document.addEventListener('DOMContentLoaded', function () {
                                 e.preventDefault();
                                 e.stopPropagation();
                                 bootstrap.Modal.getOrCreateInstance(alreadyScheduledModalEl).hide();
+                            };
+                        }
+
+                        // Setup Schedule Anyway button - NEW
+                        const anywayBtn = alreadyScheduledModalEl.querySelector('.btn-cm-cta');
+                        if (anywayBtn) {
+                            anywayBtn.onclick = (e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                bootstrap.Modal.getOrCreateInstance(alreadyScheduledModalEl).hide();
+                                
+                                // Update hidden input with suggested time before re-submitting
+                                if (data.suggested_raw_time && startTimeInput) {
+                                    startTimeInput.value = data.suggested_raw_time;
+                                }
+                                
+                                submitBooking(true); // ignoreConflict = true
                             };
                         }
 

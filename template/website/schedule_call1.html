@@ -55,7 +55,7 @@
                           <select class="timezone-select" id="timezoneSelect">
                             <option>Australia/Adelaide</option>
                             <option>Asia/Kolkata</option>
-                            <option>America/New_York</option>
+                            <option>America/NewYork</option>
                             <option>Europe/London</option>
                             <option>Asia/Dubai</option>
                           </select>
@@ -285,21 +285,25 @@ function getSelectedTz() {
   return (el && el.value) ? el.value.trim() : 'Asia/Kolkata';
 }
 
-function getTodayKeyInZone(timeZone) {
+function getDayKeyInZone(timeZone, baseDate = new Date()) {
   try {
     return new Intl.DateTimeFormat('en-CA', {
       timeZone: timeZone,
       year: 'numeric',
       month: '2-digit',
       day: '2-digit',
-    }).format(new Date());
+    }).format(baseDate);
   } catch (e) {
-    const n = new Date();
+    const n = baseDate;
     const y = n.getFullYear();
     const m = String(n.getMonth() + 1).padStart(2, '0');
     const day = String(n.getDate()).padStart(2, '0');
     return `${y}-${m}-${day}`;
   }
+}
+
+function getTodayKeyInZone(timeZone) {
+  return getDayKeyInZone(timeZone, new Date());
 }
 
 function setDateLabelFromKey(dateStr) {
@@ -340,18 +344,19 @@ function renderCalendar() {
 
     const isPast  = dateStr < todayKey;
     const isToday = dateStr === todayKey;
+    const isBookingDisabled = isPast || isToday; // Restrict same-day bookings
 
     const cell = document.createElement('div');
     cell.textContent  = d;
     cell.dataset.date = dateStr;
 
     let classes = 'cal-day';
-    if (isPast) classes += ' disabled';
+    if (isBookingDisabled) classes += ' disabled';
     if (isToday) classes += ' today';
     if (selectedDate === dateStr) classes += ' selected';
     cell.className = classes;
 
-    if (!isPast) {
+    if (!isBookingDisabled) {
       cell.addEventListener('click', () => {
         document.querySelectorAll('.cal-day.selected')
                 .forEach(el => el.classList.remove('selected'));
@@ -456,7 +461,11 @@ if (tzSelect) {
 
 renderCalendar();
 renderTimeSlots();
-setDateLabelFromKey(getTodayKeyInZone(getSelectedTz()));
+
+// Initial right panel label: tomorrow (since today is not bookable)
+const tomorrow = new Date();
+tomorrow.setDate(tomorrow.getDate() + 1);
+setDateLabelFromKey(getDayKeyInZone(getSelectedTz(), tomorrow));
 
 if (tzSelect) {
   tzSelect.addEventListener('change', () => {
@@ -465,11 +474,15 @@ if (tzSelect) {
     renderCalendar();
     updateNavButtons();
     const tk = getTodayKeyInZone(selectedTimezone);
-    if (selectedDate && selectedDate < tk) {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const tomorrowKey = getDayKeyInZone(selectedTimezone, tomorrow);
+
+    if (selectedDate && selectedDate <= tk) {
       selectedDate = null;
       selectedTime = null;
     }
-    setDateLabelFromKey(selectedDate || tk);
+    setDateLabelFromKey(selectedDate || tomorrowKey);
     renderTimeSlots();
   });
 }

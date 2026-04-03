@@ -356,6 +356,7 @@ class ScheduleCallStep2Page(views.View):
     def post(self, request):
         is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
         form = BookingForm(request.POST)
+        ignore_conflict = request.POST.get('ignore_conflict') == 'true'
 
         if form.is_valid():
             client_name = form.cleaned_data.get('client_name')
@@ -404,40 +405,70 @@ class ScheduleCallStep2Page(views.View):
 
             # ------------------- Real-time validation (IST) -------------------
             now_ist = datetime.now(ZoneInfo(ADMIN_BOOKING_TZ))
-            if dt_ist <= now_ist:
-                msg = "Please select a future time for your meeting."
+            # Restrict same-day bookings: booking must be tomorrow onwards (IST)
+            if dt_ist.date() <= now_ist.date():
+                msg = "Please select a date from tomorrow onwards for your meeting."
                 if is_ajax:
                     return JsonResponse({'status': 'error', 'message': msg}, status=400)
                 messages.error(request, msg)
                 return render(request, 'website/schedule_call2.html', {'form': form, 'faqs': FAQ.objects.all()})
 
             # ------------------- Check duplicate bookings (IST wall time) -------------------
-            selected_datetime_naive = datetime.combine(booking.booking_date, booking.start_time)
-            window_start = (selected_datetime_naive - timedelta(minutes=14, seconds=59)).time()
-            window_end = (selected_datetime_naive + timedelta(minutes=14, seconds=59)).time()
+            if not ignore_conflict:
+                selected_datetime_naive = datetime.combine(booking.booking_date, booking.start_time)
+                window_start = (selected_datetime_naive - timedelta(minutes=14, seconds=59)).time()
+                window_end = (selected_datetime_naive + timedelta(minutes=14, seconds=59)).time()
 
-            existing_qs = Booking.objects.filter(client=client, booking_date=booking.booking_date)
-            if window_start <= window_end:
-                existing_qs = existing_qs.filter(start_time__range=(window_start, window_end))
-            else:
-                existing_qs = existing_qs.filter(start_time=booking.start_time)
+                existing_qs = Booking.objects.filter(client=client, booking_date=booking.booking_date)
+                if window_start <= window_end:
+                    existing_qs = existing_qs.filter(start_time__range=(window_start, window_end))
+                else:
+                    existing_qs = existing_qs.filter(start_time=booking.start_time)
 
-            if existing_qs.exists():
-                ex_booking = existing_qs.first()
-                ex_dt_ist = _booking_to_aware_ist(ex_booking)
-                if is_ajax:
+                if existing_qs.exists():
+                    ex_booking = existing_qs.first()
+                    ex_dt_ist = _booking_to_aware_ist(ex_booking)
+
+                    # Suggest next available slot (15 mins increments)
+                    suggested_dt = dt_ist + timedelta(minutes=15)
+                    while True:
+                        s_naive = suggested_dt.replace(tzinfo=None)
+                        s_start = (s_naive - timedelta(minutes=14, seconds=59)).time()
+                        s_end = (s_naive + timedelta(minutes=14, seconds=59)).time()
+                        
+                        s_qs = Booking.objects.filter(client=client, booking_date=suggested_dt.date())
+                        if s_start <= s_end:
+                            s_qs = s_qs.filter(start_time__range=(s_start, s_end))
+                        else:
+                            s_qs = s_qs.filter(start_time=suggested_dt.time())
+                        
+                        if not s_qs.exists():
+                            break
+                        suggested_dt += timedelta(minutes=15)
+
+                    if is_ajax:
+                        ex_d, ex_t = _format_date_time_in_zone(ex_dt_ist, client_timezone)
+                        sel_d, sel_t = _format_date_time_in_zone(dt_ist, client_timezone)
+                        sug_d, sug_t = _format_date_time_in_zone(suggested_dt, client_timezone)
+                        return JsonResponse({
+                            "status": "duplicate",
+                            "existing_time": f"{ex_d} at {ex_t}",
+                            "selected_time": f"{sel_d} at {sel_t}",
+                            "suggested_time": f"{sug_d} at {sug_t}",
+                            "suggested_raw_time": suggested_dt.astimezone(_safe_zone(client_timezone)).strftime("%H:%M")
+                        }, status=409)
                     ex_d, ex_t = _format_date_time_in_zone(ex_dt_ist, client_timezone)
-                    sel_d, sel_t = _format_date_time_in_zone(dt_ist, client_timezone)
-                    return JsonResponse({
-                        "status": "duplicate",
-                        "existing_time": f"{ex_d} {ex_t}",
-                        "selected_time": f"{sel_d} {sel_t}",
-                    }, status=409)
-                ex_d, ex_t = _format_date_time_in_zone(ex_dt_ist, client_timezone)
-                messages.error(request, f"A booking already exists on {ex_d} at {ex_t} (your time).")
-                return render(request, 'website/schedule_call2.html', {'form': form, 'faqs': FAQ.objects.all()})
+                    messages.error(request, f"A booking already exists on {ex_d} at {ex_t} (your time).")
+                    return render(request, 'website/schedule_call2.html', {'form': form, 'faqs': FAQ.objects.all()})
 
             # ------------------- Save booking & trigger follow-up -------------------
+            if ignore_conflict:
+                Booking.objects.filter(
+                    client=client, 
+                    booking_date=booking.booking_date, 
+                    start_time=booking.start_time
+                ).delete()
+
             booking.save()
             _bid = booking.pk
             _ctz = client_timezone
