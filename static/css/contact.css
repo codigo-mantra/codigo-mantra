@@ -404,7 +404,7 @@ span.cm-brand-contact {
   .cal-day.today {
     border-radius: 6px;
     background: rgba(255, 255, 255, 0.21);
-    color: var(--Orange, #F05D35);
+    color: var(--Orange, #F05D35) !important;
     font-family: Poppins;
     font-size: 18px;
     font-style: normal;
