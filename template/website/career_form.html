@@ -19,64 +19,6 @@
         <!-- Two-column body -->
         <div class="job-body">
 
-            <!-- LEFT: Application Form -->
-            <!-- <div class="apply-card">
-                            {%csrf_token%}
-                            <h2>Apply for this job</h2>
-
-                            <div class="form-row ">
-                                <div class="form-group mb-0">
-                                    <label>First Name</label>
-                                    <input type="text" placeholder="First name"
-                                        value="{{ form.first_name|default:'' }}">
-                                </div>
-                                <div class="form-group mb-0">
-                                    <label>Last Name</label>
-                                    <input type="text" placeholder="Last name"
-                                        value="{{ form.last_name|default:'' }}">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label>Email Address</label>
-                                <input type="email" placeholder="Email address"
-                                    value="{{ form.email|default:'' }}">
-                            </div>
-
-                            <div class="form-group">
-                                <label>Phone Number</label>
-                                <input type="tel" placeholder="Phone number"
-                                    value="{{ form.phone|default:'' }}">
-                            </div>
-
-                            <div class="form-group">
-                                <label>Upload Resume</label>
-                                <label class="upload-area" for="resume-upload">
-                                    <svg class="upload-icon" viewBox="0 0 24 24" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15"
-                                            stroke="#F6F6F6" stroke-width="1.5" stroke-linecap="round"
-                                            stroke-linejoin="round" />
-                                        <path d="M17 8L12 3L7 8" stroke="#F6F6F6" stroke-width="1.5"
-                                            stroke-linecap="round" stroke-linejoin="round" />
-                                        <path d="M12 3V15" stroke="#F6F6F6" stroke-width="1.5" stroke-linecap="round"
-                                            stroke-linejoin="round" />
-                                    </svg>
-                                    Upload resume
-                                    <input type="file" id="resume-upload" accept=".pdf,.doc,.docx">
-                                </label>
-                            </div>
-                            <a href="#" class="btn btn-cm-cta btn-pill open-position-btn w-100">
-                                <span class="label-up">Submit Application
-                                </span>
-                                <span class="label-up">Submit Application
-                                </span>
-                            </a>
-                        </div> -->
-
-
-
             <form id="careerApplicationForm" method="POST" enctype="multipart/form-data" novalidate>
                 {% csrf_token %}
 
@@ -310,7 +252,7 @@
                                 </svg>
                             </button>
 
-                                                <a href="{% url 'career-apply' job.id %}#careerApplicationForm" class="btn btn-cm-cta btn-pill">
+                                                <a href="{% url 'career-apply' job.id %}" class="btn btn-cm-cta btn-pill">
                                 <span class="label-up">Submit Application
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="13" height="9"
                                                             viewBox="0 0 13 9" fill="none">

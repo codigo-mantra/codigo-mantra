@@ -582,15 +582,19 @@ class ServicePage(views.View):
 
 class CareerPage(views.View):
     def get(self,request):
-        job_openings = JobOpening.objects.all().order_by('-created_at')
+        job_openings = JobOpening.objects.filter(is_active=True).order_by('-created_at')
         services = Service.objects.all()[:3].values("name", "description", "icon")
         return render(request,'website/career.html',{'job_openings':job_openings, 'services':services})
 
 class CareerFormPage(views.View):
     def get(self,request, job_id):
         try:
-            job = JobOpening.objects.get(id=job_id)
-            similar_jobs = JobOpening.objects.filter(job_type=job.job_type, department = job.department).exclude(id=job_id)[:2]
+            job = JobOpening.objects.get(id=job_id, is_active=True)
+            similar_jobs = JobOpening.objects.filter(
+                job_type=job.job_type,
+                department=job.department,
+                is_active=True,
+            ).exclude(id=job_id)[:2]
         except JobOpening.DoesNotExist:
             # messages.error(request, 'Job opening not found.')
             return redirect('career')
@@ -613,7 +617,7 @@ class CareerFormPage(views.View):
         is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
 
         try:
-            job = JobOpening.objects.get(id=job_id)
+            job = JobOpening.objects.get(id=job_id, is_active=True)
         except JobOpening.DoesNotExist:
             if is_ajax:
                 return JsonResponse(
@@ -633,7 +637,7 @@ class CareerFormPage(views.View):
                 return JsonResponse({'status': 'error', 'errors': errors}, status=400)
 
             similar_jobs = JobOpening.objects.filter(
-                job_type=job.job_type, department=job.department
+                job_type=job.job_type, department=job.department, is_active=True
             ).exclude(id=job_id)[:2]
             return render(
                 request,

@@ -492,3 +492,7 @@ a.open-position-btn::after {
     align-items: center;
     gap: 7px;
 }
+
+section.no-openings {
+    padding-top: 24px;
+}
