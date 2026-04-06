@@ -95,7 +95,7 @@ class ContactUsForm(forms.ModelForm):
             'first_name': forms.TextInput(attrs={'placeholder': 'First name'}),
             'last_name': forms.TextInput(attrs={'placeholder': 'Last name'}),
             'email': forms.EmailInput(attrs={'placeholder': 'Email address'}),
-            'phone': forms.TextInput(attrs={'placeholder': 'Phone number(+91XXXXXXXXXX)'}),
+            'phone': forms.TextInput(attrs={'placeholder': 'Phone Number'}),
             'message': forms.Textarea(attrs={'placeholder': 'Message', 'style': 'resize: none;'}),
         }
 
@@ -127,23 +127,18 @@ class ContactUsForm(forms.ModelForm):
         return last_name
 
     def clean_phone(self):
-        phone = self.cleaned_data.get('phone')
+        phone = self.cleaned_data.get("phone")
 
         if not phone:
             raise forms.ValidationError("Phone number is required.")
 
-        # Remove spaces
-        phone = phone.replace(" ", "")
+        digits = "".join(c for c in phone if c.isdigit())
+        if len(digits) != 10:
+            raise forms.ValidationError("Phone number must be exactly 10 digits.")
+        if digits == "0" * 10:
+            raise forms.ValidationError("Phone number cannot be all zeros.")
 
-        # Must be digits only
-        if not phone.isdigit():
-            raise forms.ValidationError("Phone number must contain digits only.")
-
-        # Must be exactly 11 digits
-        if len(phone) != 11:
-            raise forms.ValidationError("Phone number must be exactly 11 digits.")
-
-        return phone
+        return digits
 
     def clean_message(self):
         message = self.cleaned_data.get('message')
@@ -171,7 +166,7 @@ class CareerApplicationForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={'placeholder': 'First name', 'required': 'required'}),
             'email': forms.EmailInput(attrs={'placeholder': 'Email address', 'required': 'required'}),
-            'phone': forms.TextInput(attrs={'placeholder': 'Phone number(+91XXXXXXXXXX)', 'required': 'required'}),
+            'phone': forms.TextInput(attrs={'placeholder': 'Phone Number', 'required': 'required'}),
             'resume': forms.FileInput(attrs={'required': 'required'}),
         }
         error_messages = {
@@ -206,23 +201,18 @@ class CareerApplicationForm(forms.ModelForm):
 
     # PHONE VALIDATION
     def clean_phone(self):
-        phone = self.cleaned_data.get('phone')
+        phone = self.cleaned_data.get("phone")
 
         if not phone:
             raise forms.ValidationError("Phone number is required.")
 
-        # Remove spaces
-        phone = phone.replace(" ", "")
+        digits = "".join(c for c in phone if c.isdigit())
+        if len(digits) != 10:
+            raise forms.ValidationError("Phone number must be exactly 10 digits.")
+        if digits == "0" * 10:
+            raise forms.ValidationError("Phone number cannot be all zeros.")
 
-        # Must be digits only
-        if not phone.isdigit():
-            raise forms.ValidationError("Phone number must contain digits only.")
-
-        # Must be exactly 11 digits
-        if len(phone) != 11:
-            raise forms.ValidationError("Phone number must be exactly 11 digits.")
-
-        return phone
+        return digits
 
     # RESUME VALIDATION
     def clean_resume(self):

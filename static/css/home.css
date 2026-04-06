@@ -504,14 +504,21 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.service-mockup img {
+.service-mockup img,
+.service-mockup svg,
+.service-mockup .svg-image,
+.service-mockup .svg-placeholder {
     width: 100%;
     display: block;
     transition: transform 0.5s ease;
     height: 177px;
+    object-fit: contain;
 }
 
-.service-card-new:hover .service-mockup img {
+.service-card-new:hover .service-mockup img,
+.service-card-new:hover .service-mockup svg,
+.service-card-new:hover .service-mockup .svg-image,
+.service-card-new:hover .service-mockup .svg-placeholder {
     transform: scale(1.05);
 }
 

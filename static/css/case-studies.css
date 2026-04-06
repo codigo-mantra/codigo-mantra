@@ -462,7 +462,7 @@ section.case-study-hero {
 .cs-grid--2 {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 22px;
+  gap: 21px;
   text-align: left;
 }
 
@@ -528,6 +528,10 @@ section.case-study-hero {
   /* 20.65px */
   opacity: 0.8;
   margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 /* Arrow button — orange fill in Figma */

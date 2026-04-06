@@ -87,8 +87,8 @@ class Service(TimeStamp):
     name = models.CharField(max_length=255)
     slug = models.SlugField(unique=True)
     description = models.TextField(blank=True)
-    icon = models.ImageField(upload_to="services/icons/", blank=True, null=True)
-    cover_image = models.ImageField(upload_to="services/covers/", blank=True, null=True)
+    icon = models.FileField(upload_to="services/icons/", blank=True, null=True)
+    cover_image = models.FileField(upload_to="services/covers/", blank=True, null=True)
     parent = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True, related_name='children')
     display_order = models.IntegerField(default=0)
 

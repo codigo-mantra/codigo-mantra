@@ -167,8 +167,10 @@ function validateEmail(email) {
 }
 
 function validatePhone(phone) {
-    const re = /^[0-9\s\-\(\)\+]+$/;
-    return re.test(String(phone));
+    const digits = String(phone).replace(/\D/g, "");
+    if (digits.length !== 10) return false;
+    if (/^0{10}$/.test(digits)) return false;
+    return true;
 }
 
 function showMessage(form, type, message) {
