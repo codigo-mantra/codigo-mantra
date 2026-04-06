@@ -24,10 +24,14 @@ logger = logging.getLogger(__name__)
 
 # Bookings are stored as calendar date + wall clock in this zone (matches Django TIME_ZONE / Zoom).
 ADMIN_BOOKING_TZ = "Asia/Kolkata"
+TZ_ALIASES = {
+    "America/NewYork": "America/New_York",
+}
 
 
 def _safe_zone(tz_name: str) -> ZoneInfo:
     name = (tz_name or "").strip() or ADMIN_BOOKING_TZ
+    name = TZ_ALIASES.get(name, name)
     try:
         return ZoneInfo(name)
     except Exception:
@@ -347,14 +351,22 @@ class ScheduleCallStep2Page(views.View):
     def get(self, request):
         form = BookingForm()
         faqs = FAQ.objects.all()
+        show_success_modal = request.GET.get('success') == '1'
 
         now_ist = datetime.now(ZoneInfo(ADMIN_BOOKING_TZ))
         form.fields['start_time'].widget.attrs['min'] = now_ist.strftime("%H:%M")
 
-        return render(request, 'website/schedule_call2.html', {'form': form, 'faqs': faqs})
+        return render(request, 'website/schedule_call2.html', {
+            'form': form, 
+            'faqs': faqs,
+            'show_success_modal': show_success_modal
+        })
 
     def post(self, request):
-        is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
+        is_ajax = (
+            request.headers.get('X-Requested-With') == 'XMLHttpRequest' or 
+            request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest'
+        )
         form = BookingForm(request.POST)
         ignore_conflict = request.POST.get('ignore_conflict') == 'true'
 
@@ -484,7 +496,7 @@ class ScheduleCallStep2Page(views.View):
                 return JsonResponse({'status': 'success', 'message': 'Your call has been scheduled successfully!'})
 
             messages.success(request, 'Your call has been scheduled successfully!')
-            return redirect('index')
+            return redirect(reverse('schedule-call-2') + '?success=1')
 
         # Form invalid
         if is_ajax:
