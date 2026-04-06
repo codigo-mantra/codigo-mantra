@@ -157,140 +157,126 @@
             </nav>
         </header>
         <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const megaMenus = document.querySelectorAll('.nav-item.dropdown');
-        const DESKTOP_WIDTH = 991;
-        const OPEN_DELAY = 200;
-        const CLOSE_DELAY = 250;
+document.addEventListener('DOMContentLoaded', function () {
+    const megaMenus = document.querySelectorAll('.nav-item.dropdown');
+    const DESKTOP_WIDTH = 991;
+    const OPEN_DELAY = 200;
+    const CLOSE_DELAY = 250;
+
+    megaMenus.forEach(menu => {
+        const toggle = menu.querySelector('.dropdown-toggle');
+        const dropdown = menu.querySelector('.dropdown-menu');
+
+        if (!toggle || !dropdown) return;
+
+        let openTimer;
+        let closeTimer;
+
+        function isDesktop() {
+            return window.innerWidth > DESKTOP_WIDTH;
+        }
+
+        function openMenu() {
+            megaMenus.forEach(otherMenu => {
+                const otherDropdown = otherMenu.querySelector('.dropdown-menu');
+                if (otherDropdown && otherDropdown !== dropdown) {
+                    closeDropdown(otherDropdown);
+                }
+            });
+
+            clearTimeout(closeTimer);
+            dropdown.style.display = 'block';
+
+            requestAnimationFrame(() => {
+                dropdown.classList.add('show');
+                dropdown.style.opacity = '1';
+                dropdown.style.transform = 'translateY(0)';
+                dropdown.style.pointerEvents = 'auto';
+            });
+        }
+
+        function closeDropdown(target) {
+            target.style.opacity = '0';
+            target.style.transform = 'translateY(8px)';
+            target.style.pointerEvents = 'none';
+            target.classList.remove('show');
+
+            setTimeout(() => {
+                if (!target.classList.contains('show')) {
+                    target.style.display = 'none';
+                }
+            }, 250);
+        }
+
+        function closeMenu() {
+            closeDropdown(dropdown);
+        }
+
+        function scheduleOpen() {
+            clearTimeout(closeTimer);
+            clearTimeout(openTimer);
+            openTimer = setTimeout(openMenu, OPEN_DELAY);
+        }
+
+        function scheduleClose() {
+            clearTimeout(openTimer);
+            clearTimeout(closeTimer);
+            closeTimer = setTimeout(closeMenu, CLOSE_DELAY);
+        }
+
+        // Hover open on desktop
+        menu.addEventListener('mouseenter', function () {
+            if (!isDesktop()) return;
+            scheduleOpen();
+        });
+
+        menu.addEventListener('mouseleave', function () {
+            if (!isDesktop()) return;
+            scheduleClose();
+        });
+
+        dropdown.addEventListener('mouseenter', function () {
+            if (!isDesktop()) return;
+            clearTimeout(closeTimer);
+        });
+
+        dropdown.addEventListener('mouseleave', function () {
+            if (!isDesktop()) return;
+            scheduleClose();
+        });
+    });
+
+    document.addEventListener('click', function (e) {
+        if (window.innerWidth <= 991) return;
 
         megaMenus.forEach(menu => {
-            const toggle = menu.querySelector('.dropdown-toggle');
             const dropdown = menu.querySelector('.dropdown-menu');
-
-            if (!toggle || !dropdown) return;
-
-            let openTimer;
-            let closeTimer;
-
-            function isDesktop() {
-                return window.innerWidth > DESKTOP_WIDTH;
-            }
-
-            function openMenu() {
-                megaMenus.forEach(otherMenu => {
-                    const otherDropdown = otherMenu.querySelector('.dropdown-menu');
-                    if (otherDropdown && otherDropdown !== dropdown) {
-                        closeDropdown(otherDropdown);
-                    }
-                });
-
-                clearTimeout(closeTimer);
-                dropdown.style.display = 'block';
-
-                requestAnimationFrame(() => {
-                    dropdown.classList.add('show');
-                    dropdown.style.opacity = '1';
-                    dropdown.style.transform = 'translateY(0)';
-                    dropdown.style.pointerEvents = 'auto';
-                });
-            }
-
-            function closeDropdown(target) {
-                target.style.opacity = '0';
-                target.style.transform = 'translateY(8px)';
-                target.style.pointerEvents = 'none';
-                target.classList.remove('show');
+            if (dropdown && !menu.contains(e.target)) {
+                dropdown.classList.remove('show');
+                dropdown.style.opacity = '0';
+                dropdown.style.transform = 'translateY(8px)';
+                dropdown.style.pointerEvents = 'none';
 
                 setTimeout(() => {
-                    if (!target.classList.contains('show')) {
-                        target.style.display = 'none';
+                    if (!dropdown.classList.contains('show')) {
+                        dropdown.style.display = 'none';
                     }
                 }, 250);
             }
-
-            function closeMenu() {
-                closeDropdown(dropdown);
-            }
-
-            function scheduleOpen() {
-                clearTimeout(closeTimer);
-                clearTimeout(openTimer);
-                openTimer = setTimeout(openMenu, OPEN_DELAY);
-            }
-
-            function scheduleClose() {
-                clearTimeout(openTimer);
-                clearTimeout(closeTimer);
-                closeTimer = setTimeout(closeMenu, CLOSE_DELAY);
-            }
-
-            // Entire nav item acts as hover zone
-            menu.addEventListener('mouseenter', function () {
-                if (!isDesktop()) return;
-                scheduleOpen();
-            });
-
-            menu.addEventListener('mouseleave', function () {
-                if (!isDesktop()) return;
-                scheduleClose();
-            });
-
-            // Keep open when pointer is inside dropdown
-            dropdown.addEventListener('mouseenter', function () {
-                if (!isDesktop()) return;
-                clearTimeout(closeTimer);
-            });
-
-            dropdown.addEventListener('mouseleave', function () {
-                if (!isDesktop()) return;
-                scheduleClose();
-            });
-
-            // Optional click support for desktop
-            toggle.addEventListener('click', function (e) {
-                if (!isDesktop()) return;
-                e.preventDefault();
-                e.stopPropagation();
-
-                if (dropdown.classList.contains('show')) {
-                    closeMenu();
-                } else {
-                    openMenu();
-                }
-            });
-        });
-
-        document.addEventListener('click', function (e) {
-            if (window.innerWidth <= 991) return;
-
-            megaMenus.forEach(menu => {
-                const dropdown = menu.querySelector('.dropdown-menu');
-                if (dropdown && !menu.contains(e.target)) {
-                    dropdown.classList.remove('show');
-                    dropdown.style.opacity = '0';
-                    dropdown.style.transform = 'translateY(8px)';
-                    dropdown.style.pointerEvents = 'none';
-
-                    setTimeout(() => {
-                        if (!dropdown.classList.contains('show')) {
-                            dropdown.style.display = 'none';
-                        }
-                    }, 250);
-                }
-            });
-        });
-
-        window.addEventListener('resize', function () {
-            megaMenus.forEach(menu => {
-                const dropdown = menu.querySelector('.dropdown-menu');
-                if (!dropdown) return;
-
-                dropdown.classList.remove('show');
-                dropdown.style.display = '';
-                dropdown.style.opacity = '';
-                dropdown.style.transform = '';
-                dropdown.style.pointerEvents = '';
-            });
         });
     });
+
+    window.addEventListener('resize', function () {
+        megaMenus.forEach(menu => {
+            const dropdown = menu.querySelector('.dropdown-menu');
+            if (!dropdown) return;
+
+            dropdown.classList.remove('show');
+            dropdown.style.display = '';
+            dropdown.style.opacity = '';
+            dropdown.style.transform = '';
+            dropdown.style.pointerEvents = '';
+        });
+    });
+});
 </script>

@@ -157,17 +157,17 @@ body {
     display: inline-block;
 }
 
-.hero-sub {
-    color: #F6F6F6;
-    text-align: center;
-    font-family: Poppins;
-    font-size: 26px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 150%;
-    max-width: 700px;
-    margin: 0 auto 3.5rem;
-}
+    .hero-sub {
+        color: #F6F6F6;
+        text-align: center;
+        font-family: Poppins;
+        font-size: 26px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 150%;
+        max-width: 700px;
+        margin: 0 auto 3.5rem;
+    }
 
 .hero-cta-wrap {
     display: flex;
@@ -630,7 +630,7 @@ body {
 .portfolio-list {
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 17px;
 }
 
 .portfolio-card-refined {
@@ -931,7 +931,7 @@ body {
 
 /* ─── INSIGHTS SECTION ─── */
 .insights-section {
-    padding: 100px 0;
+    padding: 130px 0 0;
 }
 
 .insight-card {
@@ -1036,7 +1036,7 @@ body {
 
 /* ─── CTA REFINED SECTION ─── */
 .cta-refined-section {
-    padding: 100px 0 0;
+    padding: 130px 0 0;
 }
 
 .cta-refined-box {
