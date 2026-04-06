@@ -46,15 +46,17 @@
     color: #F05D35 !important;
 }
 
-.right-server-col {
-    background-image: url(../images/service-side-banner.svg);
+.right-server-col-img {
+    background-image: url(../images/service-banner-img.png);
     background-size: auto;
     background-position: center;
     background-repeat: no-repeat;
 }
 
-.right-server-col img {
+.right-server-col-img img {
     width: 100%;
+    z-index: 1;
+    position: relative;
 }
 
 .count-services {
@@ -316,4 +318,15 @@
     align-items: center;
     gap: 34.241px;
     margin-top: 65px;
+}
+.right-server-col-img::after {
+    border-radius: 832px;
+    opacity: 0.92;
+    background: #171717;
+    filter: blur(67px);
+    width: 832px;
+    height: 832px;
+    content: '';
+    position: absolute;
+    left: 36%;
 }

@@ -353,6 +353,8 @@ a:hover {
   background: transparent;
   border: 0;
   box-shadow: none;
+  margin: auto;
+  width: fit-content;
 }
 
 .cm-mega__panel {
