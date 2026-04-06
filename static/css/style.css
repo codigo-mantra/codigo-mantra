@@ -625,8 +625,9 @@ span.cm-mega__thumb img {
 
 /* Hero */
 .site-header {
-  position: relative;
+  position: sticky;
   z-index: 9999;
+  top: 8px;
 }
 
 .hero {
