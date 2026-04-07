@@ -690,7 +690,7 @@ span.cm-mega__thumb img {
 
 .hero-sub {
   margin: 0 auto;
-  max-width: 62ch;
+  /* max-width: 62ch; */
   color: rgba(234, 240, 255, .70);
   line-height: 1.75;
   font-weight: 600;
@@ -1769,4 +1769,11 @@ a.btn-close.modal-close-btn {
   fill: #f6f6f6;
   background: none !important;
   opacity: 1;
+}
+
+.hero-sub-empty{
+  font-size: 18px !important;
+  opacity: 0.8;
+  max-width: 73% !important;
+  margin: 0 auto 1.5rem !important;
 }

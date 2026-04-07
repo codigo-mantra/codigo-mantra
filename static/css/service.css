@@ -322,7 +322,7 @@
 .right-server-col-img::after {
     border-radius: 832px;
     opacity: 0.92;
-    background: #171717;
+    background: #171717c7;
     filter: blur(67px);
     width: 832px;
     height: 832px;
