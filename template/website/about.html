@@ -10,11 +10,10 @@
     <div class="container">
         <div class="hero-center">
             <h1 class="hero-title service-hero-title">
-                Building <span class="text-orange">Digital Products</span> with <span class="text-orange">Purpose</span>
+                Building <span class="text-orange">Digital Products</span><br> with <span class="text-orange">Purpose</span>
                 and Precision
-                drive real
             </h1>
-            <p class="hero-sub service-hero-sub hero-sub--about">
+            <p class="hero-sub service-hero-sub hero-sub--about text-center">
                 Helping businesses turn ideas into scalable, high-impact digital solutions with our expert team and
                 cutting-edge technology.
             </p>
@@ -136,7 +135,7 @@
         <h2 class="display-heading mb-5">What We Do Best</h2>
         <div class="row g-4 align-items-stretch">
             <!-- Left: image card -->
-            <div class="col-lg-6" style="padding-right: 7px;">
+            <div class="col-lg-6 left-card-about-cm" style="padding-right: 7px;">
                 <div class="about-cap-img-card">
                     <img src="{% static 'images/about/business-cm.jpg' %}" alt="Our Team at Work" class="about-cap-img">
                 </div>
@@ -387,5 +386,32 @@ industry standards.</p>
         </div>
     </div>
 </section>
-
+<script>
+    $(document).ready(function () {
+        $('.ws-track').slick({
+            slidesToShow: 5.4,
+            slidesToScroll: 1,
+            arrows: false,
+            dots: false,
+            speed: 1000,
+            infinite: true,
+            autoplaySpeed: 1000,
+            autoplay: true,
+            responsive: [
+                {
+                    breakpoint: 991,
+                    settings: {
+                        slidesToShow: 3,
+                    }
+                },
+                {
+                    breakpoint: 450,
+                    settings: {
+                        slidesToShow: 3,
+                    }
+                }
+            ]
+        });
+    });
+</script>
 {% endblock %}

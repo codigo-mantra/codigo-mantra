@@ -3,10 +3,6 @@
         font-size: clamp(34px, 34px, 56px);
     }
 
-    .hero-sub {
-        font-size: 16px;
-    }
-
     .marquee-track {
         margin-top: 48px;
         gap: 12px;
@@ -154,7 +150,7 @@
     }
 
     .hero-sub {
-        font-size: 14px;
+        font-size: 16px;
         margin-bottom: 40px;
     }
 
@@ -728,5 +724,66 @@
 
     .grid-container {
         grid-template-columns: repeat(2, 1fr);
+    }
+    body.cm-headerbar #primaryNav{
+    overflow: hidden;
+}
+    .navbar-collapse {
+        height: 80vh;
+        overflow-y: auto;
+    }
+    .testimonials-v2-grid .col-lg-4 {
+    gap: 10px !important;
+    }
+    .insights-section-cm-row {
+        margin-top: 2px;
+    }
+    .slick-initialized .slick-slide {
+    margin: 0 12px 0 0;
+    }
+    .right-server-col-img {
+        background-size: contain;
+    }
+    .hero-sub {
+        margin: 0 !important;
+    }
+    .label-up {
+        padding: 0px 15px;
+    }
+    .ws-slide img {
+    width: 150px;
+    border-radius: 10px;
+    }
+    .ws-slide.slick-slide {
+        width: 150px !important;
+    }
+    .left-card-about-cm{
+        padding: 0 !important;
+    }
+    .about-cap-img-card {
+        border-radius: 10.938px;
+        border: 0.547px solid #333232;
+    }
+    .about-cap-img-card img {
+        border-radius: 10.938px;
+        border: 0.53px solid #727272;
+        }
+    .cm-social {
+        margin-top: 16px;
+    }
+    .right-server-col-img img {
+        width: 100%;
+    }
+    .hero-right {
+        height: auto;
+    }
+    .project-meta span {
+        padding: 0 76px;
+    }
+}
+@media (max-width: 450px) {
+    .about-hero {
+        background-image: url('../images/about/for-mobile-bg-cm-about.svg');
+        background-size: auto;
     }
 }

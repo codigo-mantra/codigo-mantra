@@ -493,5 +493,46 @@
         
 
     });
+
+
+
+    $(document).ready(function () {
+    $('.case-study-slider').slick({
+        slidesToShow: 1,
+        centerMode: true,
+        centerPadding: '33.333%',
+        slidesToScroll: 1,
+        arrows: false,
+        dots: true,
+        speed: 1000,
+        infinite: true,
+        autoplaySpeed: 1000,
+        autoplay: true,
+        responsive: [
+            {
+                breakpoint: 1199,
+                settings: {
+                    centerPadding: '28%',
+                }
+            },
+            {
+                breakpoint: 991,
+                settings: {
+                    slidesToShow: 1,
+                    centerMode: true,
+                    centerPadding: '15%',
+                }
+            },
+            {
+                breakpoint: 767,
+                settings: {
+                    slidesToShow: 1,
+                    centerMode: false,
+                    centerPadding: '0',
+                }
+            }
+        ]
+    });
+});
 </script>
 {% endblock JavaScript %}

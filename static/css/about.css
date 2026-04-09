@@ -3,7 +3,7 @@
 .about-hero {
     padding: 21% 0 15%;
     position: relative;
-    background-image: url('../images/about/hero-baout-cm.svg');
+    background-image: url('../images/about/about-bg-img.svg');
     background-size: cover;
     background-position: center;
     overflow: hidden;
@@ -11,7 +11,7 @@
     margin-bottom: 129px;
 }
 
-.about-hero::after {
+/* .about-hero::after {
     content: "";
     position: absolute;
     top: 0;
@@ -20,7 +20,7 @@
     height: 100%;
     opacity: 0.3;
     background-color: #292828;
-}
+} */
 
 .hero-sub--about {
     margin-bottom: 33px !important;
@@ -222,6 +222,7 @@
 }
 .about-services-cm img {
     height: 206px;
+    width: 100%;
 }
 .about-badge {
     display: flex;

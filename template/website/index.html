@@ -29,7 +29,7 @@
             </div>
 
             <h1 class="hero-title">
-                <span class="text-orange">Transform</span> Your <span class="text-orange">Business</span> with
+                <span class="text-orange">Transform</span> Your <span class="text-orange">Business</span> with<br>
                 Custom <span class="text-orange"> Digital Solutions</span>
             </h1>
             <p class="hero-sub">
@@ -44,7 +44,7 @@
                 </a>
             </div>
         </div>
-        <div class="marquee-track" dir="rtl">
+        <div class="marquee-track" dir="ltr">
             <!-- Set 1 -->
             {%for industry in industries%}
             <span class="marquee-item">
@@ -259,7 +259,7 @@
 
 <section class="testimonials-section">
     <div class="container">
-        <div class="text-center mb-5">
+        <div class="text-center">
             <div class="hero-badge-wrap">
                 <div class="primary-badge">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" viewBox="0 0 18 20" fill="none">
@@ -273,8 +273,8 @@
                     Testimonials
                 </div>
             </div>
-            <h2 class="display-heading mt-3">The Trusted Partner for High-Growth<br> Startups and Enterprises</h2>
-            <p class="section-subtext mx-auto" style="max-width: 600px; color: rgba(255,255,255,0.6);">
+            <h2 class="display-heading mt-3 testimonials-section-cm-heading">The Trusted Partner for High-Growth<br> Startups and Enterprises</h2>
+            <p class="section-subtext mx-auto mb-0" style="max-width: 600px; color: rgba(255,255,255,0.6);">
                 What our clients say about working with us and the results we help them achieve.
             </p>
         </div>
@@ -402,7 +402,7 @@
             ══════════════════════════════════ -->
 <section class="insights-section">
     <div class="container">
-        <div class="text-center mb-5">
+        <div class="text-center">
             <div class="hero-badge-wrap">
                 <div class="primary-badge">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" viewBox="0 0 18 20" fill="none">
@@ -416,12 +416,12 @@
                     Insights
                 </div>
             </div>
-            <h2 class="display-heading mt-3">Trusted by Teams We Work With</h2>
-            <p class="section-subtext mx-auto" style="max-width: 600px; color: rgba(255,255,255,0.6);">
+            <h2 class="display-heading mt-3 testimonials-section-cm-heading">Trusted by Teams We Work With</h2>
+            <p class="section-subtext mx-auto mb-0" style="max-width: 600px; color: rgba(255,255,255,0.6);">
                 What our clients say about working with us and the results we help them achieve.
             </p>
         </div>
-        <div class="row g-4">
+        <div class="row g-4 insights-section-cm-row">
             {% for insight in insights %}
             <div class="col-lg-4">
                 <div class="insight-card">
@@ -488,7 +488,7 @@
             cssEase: 'linear',
             pauseOnFocus: false,
             pauseOnHover: false,
-            rtl: true,
+            ltr: true,
             responsive: [
                 {
                     breakpoint: 768,

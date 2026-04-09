@@ -716,6 +716,7 @@ p.job-meta-sub {
   font-weight: 500;
   line-height: 150%;
   margin: 0;
+  opacity: 1 !important;
 }
 
 .project-meta {

@@ -19,8 +19,8 @@
                             <ul class="navbar-nav ms-auto align-items-lg-center cm-nav">
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle active" href="{% url 'services' %}" role="button" aria-expanded="false">What we do</a>
-                                    <div class="dropdown-menu cm-mega" aria-label="What we do menu">
-                                        <div class="cm-mega__panel">
+                                    <div class="dropdown-menu cm-mega " aria-label="What we do menu">
+                                        <div class="cm-mega__panel first-sub-menu-cm">
                                             <div class="cm-mega__grid cm-mega__grid-server">
                                                 <div class="cm-mega__col">
                                                     <div class="cm-mega__h">Solutions</div>
@@ -156,7 +156,7 @@
                 </div>
             </nav>
         </header>
-        <script>
+       <script>
 document.addEventListener('DOMContentLoaded', function () {
     const megaMenus = document.querySelectorAll('.nav-item.dropdown');
     const DESKTOP_WIDTH = 991;
@@ -176,6 +176,17 @@ document.addEventListener('DOMContentLoaded', function () {
             return window.innerWidth > DESKTOP_WIDTH;
         }
 
+        function lockScroll() {
+            document.body.classList.add('menu-open');
+        }
+
+        function unlockScroll() {
+            const anyOpen = document.querySelector('.dropdown-menu.show');
+            if (!anyOpen) {
+                document.body.classList.remove('menu-open');
+            }
+        }
+
         function openMenu() {
             megaMenus.forEach(otherMenu => {
                 const otherDropdown = otherMenu.querySelector('.dropdown-menu');
@@ -192,6 +203,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 dropdown.style.opacity = '1';
                 dropdown.style.transform = 'translateY(0)';
                 dropdown.style.pointerEvents = 'auto';
+                lockScroll();
             });
         }
 
@@ -204,6 +216,7 @@ document.addEventListener('DOMContentLoaded', function () {
             setTimeout(() => {
                 if (!target.classList.contains('show')) {
                     target.style.display = 'none';
+                    unlockScroll();
                 }
             }, 250);
         }
@@ -224,7 +237,6 @@ document.addEventListener('DOMContentLoaded', function () {
             closeTimer = setTimeout(closeMenu, CLOSE_DELAY);
         }
 
-        // Hover open on desktop
         menu.addEventListener('mouseenter', function () {
             if (!isDesktop()) return;
             scheduleOpen();
@@ -260,6 +272,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 setTimeout(() => {
                     if (!dropdown.classList.contains('show')) {
                         dropdown.style.display = 'none';
+                        document.body.classList.remove('menu-open');
                     }
                 }, 250);
             }
@@ -277,6 +290,80 @@ document.addEventListener('DOMContentLoaded', function () {
             dropdown.style.transform = '';
             dropdown.style.pointerEvents = '';
         });
+
+        document.body.classList.remove('menu-open');
+    });
+});
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const dropdownItems = document.querySelectorAll('.nav-item.dropdown');
+    const MOBILE_WIDTH = 991;
+
+    function isMobile() {
+        return window.innerWidth <= MOBILE_WIDTH;
+    }
+
+    dropdownItems.forEach(item => {
+        const toggle = item.querySelector('.dropdown-toggle');
+        const dropdown = item.querySelector('.dropdown-menu');
+
+        if (!toggle || !dropdown) return;
+
+        toggle.addEventListener('click', function (e) {
+            if (!isMobile()) return;
+
+            const isOpen = dropdown.classList.contains('show');
+
+            if (!isOpen) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                dropdownItems.forEach(otherItem => {
+                    const otherDropdown = otherItem.querySelector('.dropdown-menu');
+                    if (otherDropdown && otherDropdown !== dropdown) {
+                        otherDropdown.classList.remove('show');
+                        otherItem.classList.remove('mobile-open');
+                    }
+                });
+
+                dropdown.classList.add('show');
+                item.classList.add('mobile-open');
+            }
+        });
+    });
+
+    document.addEventListener('click', function (e) {
+        if (!isMobile()) return;
+
+        dropdownItems.forEach(item => {
+            const dropdown = item.querySelector('.dropdown-menu');
+            if (!item.contains(e.target)) {
+                dropdown.classList.remove('show');
+                item.classList.remove('mobile-open');
+            }
+        });
+    });
+
+    window.addEventListener('resize', function () {
+        dropdownItems.forEach(item => {
+            const dropdown = item.querySelector('.dropdown-menu');
+            dropdown.classList.remove('show');
+            item.classList.remove('mobile-open');
+        });
+    });
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const navCollapse = document.getElementById("primaryNav");
+
+    navCollapse.addEventListener("shown.bs.collapse", function () {
+        document.body.style.overflow = "hidden";
+    });
+
+    navCollapse.addEventListener("hidden.bs.collapse", function () {
+        document.body.style.overflow = "";
     });
 });
 </script>
