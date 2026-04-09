@@ -309,7 +309,7 @@ body {
     border-radius: 15.926px !important;
     border: 0.796px solid rgba(110, 110, 110, 0.11);
     background: rgba(0, 0, 0, 0.12);
-    flex-direction:row-reverse;
+    /* flex-direction:row-reverse; */
 }
 
 .marquee-item svg {

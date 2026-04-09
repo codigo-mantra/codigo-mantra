@@ -212,17 +212,33 @@
 }
 
 .about-services-cm {
-    /* background: url(../images/about/about-goal-bg-cm.svg); */
-    background-size: cover;
+    background: url(../images/about/about-goal-bg-cm.svg);
+    background-size: contain;
     background-position: center;
     padding: 37px 23px;
     /* margin-bottom: 26px; */
     display: flex;
     justify-content: center;
+    background-repeat: no-repeat;
 }
 .about-services-cm img {
-    height: 206px;
+    height: 164px;
     width: 100%;
+    border-radius: 10px;
+    background: rgba(29, 29, 29, 0.20);
+    box-shadow: 0.5rem 1rem 1rem rgb(0 0 0 / 40%), -1px -1px 0px rgb(179 179 179), 1px 1px 0px rgb(234 234 234);
+    backdrop-filter: blur(4px);
+}
+.about-services-cm-last {
+    padding: 16px 23px;
+    /* margin-bottom: 26px; */
+    display: flex;
+    justify-content: center;
+}
+.about-services-cm-last img {
+    width: 100%;
+    border-radius: 10px;
+    height: 206px;
 }
 .about-badge {
     display: flex;
