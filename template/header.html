@@ -17,9 +17,9 @@
 
                         <div class="collapse navbar-collapse" id="primaryNav">
                             <ul class="navbar-nav ms-auto align-items-lg-center cm-nav">
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle active" href="{% url 'services' %}" role="button" aria-expanded="false">What we do</a>
-                                    <div class="dropdown-menu cm-mega " aria-label="What we do menu">
+                                <li class="nav-item dropdown" data-cm-nav="services">
+                                    <a class="nav-link dropdown-toggle" href="{% url 'services' %}" role="button" aria-expanded="false">What we do</a>
+                                    <div class="dropdown-menu cm-mega" aria-label="What we do menu">
                                         <div class="cm-mega__panel first-sub-menu-cm">
                                             <div class="cm-mega__grid cm-mega__grid-server">
                                                 <div class="cm-mega__col">
@@ -71,7 +71,7 @@
                                         </div>
                                     </div>
                                 </li>
-                                <li class="nav-item dropdown">
+                                <li class="nav-item dropdown" data-cm-nav="industries">
                                     <a class="nav-link dropdown-toggle" href="{% url 'portfolio' %}" role="button" data-bs-toggle="dropdown" aria-expanded="false">Industries</a>
                                     <div class="dropdown-menu cm-mega" aria-label="Industries menu">
                                         <div class="cm-mega__panel">
@@ -112,8 +112,8 @@
                                         </div>
                                     </div>
                                 </li>
-                                <li class="nav-item"><a class="nav-link" href="{% url 'portfolio' %}">Case Studies</a></li>
-                                <li class="nav-item dropdown">
+                                <li class="nav-item" data-cm-nav="case-studies"><a class="nav-link" href="{% url 'portfolio' %}">Case Studies</a></li>
+                                <li class="nav-item dropdown" data-cm-nav="about">
                                     <a class="nav-link dropdown-toggle" href="{% url 'about-us' %}" role="button"  aria-expanded="false">Who We Are</a>
                                     <div class="dropdown-menu cm-mega" aria-label="Who we are menu">
                                         <div class="cm-mega__panel-2">
@@ -293,6 +293,58 @@ document.addEventListener('DOMContentLoaded', function () {
 
         document.body.classList.remove('menu-open');
     });
+
+    (function initCmNavActive() {
+        const navRoot = document.querySelector('#primaryNav');
+        if (!navRoot) return;
+        const STORAGE_KEY = 'cmActiveNavKey';
+        const items = Array.from(navRoot.querySelectorAll(':scope > ul > li.nav-item[data-cm-nav]'));
+        const allTopLinks = items.map(function (li) { return li.querySelector(':scope > a.nav-link'); }).filter(Boolean);
+
+        function clearActive() {
+            allTopLinks.forEach(function (a) { a.classList.remove('active'); });
+        }
+
+        function setActiveByKey(key) {
+            clearActive();
+            const li = navRoot.querySelector('li.nav-item[data-cm-nav="' + key + '"]');
+            const link = li && li.querySelector(':scope > a.nav-link');
+            if (link) link.classList.add('active');
+        }
+
+        function pathToActiveKey() {
+            var path = (window.location.pathname || '/').replace(/\/+$/, '') || '/';
+            if (path === '/services' || path.indexOf('/services/') === 0) return 'services';
+            if (path === '/about-us' || path.indexOf('/about-us/') === 0 || path === '/career' || path.indexOf('/career/') === 0) return 'about';
+            if (path === '/portfolio' || path.indexOf('/portfolio/') === 0) {
+                var s = sessionStorage.getItem(STORAGE_KEY);
+                if (s === 'industries' || s === 'case-studies') return s;
+                return null;
+            }
+            return null;
+        }
+
+        items.forEach(function (li) {
+            var key = li.dataset.cmNav;
+            var link = li.querySelector(':scope > a.nav-link');
+            if (!link || !key) return;
+            link.addEventListener('click', function () {
+                sessionStorage.setItem(STORAGE_KEY, key);
+                clearActive();
+                link.classList.add('active');
+            });
+        });
+
+        var initialKey = pathToActiveKey();
+        if (initialKey) {
+            if (initialKey === 'services' || initialKey === 'about') {
+                sessionStorage.setItem(STORAGE_KEY, initialKey);
+            }
+            setActiveByKey(initialKey);
+        } else {
+            clearActive();
+        }
+    })();
 });
 </script>
 <script>

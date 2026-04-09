@@ -76,7 +76,7 @@ def generate_zoom_meet_link(booking, client_email=None):
         start_dt = timezone.make_aware(start_naive, timezone.get_current_timezone())
     else:
         start_dt = start_naive
-    end_dt = start_dt + timedelta(minutes=15)
+    end_dt = start_dt + timedelta(minutes=30)
     tz_name = timezone.get_current_timezone_name()
     start_str = start_dt.strftime("%Y-%m-%dT%H:%M:%S")
 

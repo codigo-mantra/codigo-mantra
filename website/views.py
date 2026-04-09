@@ -26,12 +26,23 @@ logger = logging.getLogger(__name__)
 ADMIN_BOOKING_TZ = "Asia/Kolkata"
 TZ_ALIASES = {
     "America/NewYork": "America/New_York",
+    # Not a real IANA id; India uses Asia/Kolkata
+    "Asia/India": "Asia/Kolkata",
 }
 
 
 def _safe_zone(tz_name: str) -> ZoneInfo:
-    name = (tz_name or "").strip() or ADMIN_BOOKING_TZ
+    raw = (tz_name or "").strip()
+    if not raw:
+        return ZoneInfo(ADMIN_BOOKING_TZ)
+    # Fix "Asia / India" → "Asia/India" (then alias → Asia/Kolkata)
+    name = "".join(raw.split())
     name = TZ_ALIASES.get(name, name)
+    lower = name.lower()
+    for alias, canonical in TZ_ALIASES.items():
+        if alias.lower() == lower:
+            name = canonical
+            break
     try:
         return ZoneInfo(name)
     except Exception:
@@ -91,12 +102,14 @@ def _booking_followup_zoom_and_emails(booking_id, client_name, client_email, cli
         admin_date_str, admin_time_str = _format_date_time_in_zone(dt_ist, ADMIN_BOOKING_TZ)
 
         client_first_name = (client_name or "").split(" ")[0]
-        # Render emails (client: their zone; admin: IST)
+        # Client email: wall time in the zone they chose when booking (e.g. America/New_York).
+        # Admin email: same instant, shown in Asia/Kolkata for the team.
         client_html = render_to_string("call-email.html", {
             "name": client_first_name,
             "email": client_email,
             "date": client_date_str,
             "time": f"{client_time_str} ({client_tz})",
+            "client_tz": client_tz,
             "meet_link": booking.meet_link,
         })
 
@@ -107,6 +120,8 @@ def _booking_followup_zoom_and_emails(booking_id, client_name, client_email, cli
             "number": "N/A",
             "date": admin_date_str,
             "time": f"{admin_time_str} ({ADMIN_BOOKING_TZ})",
+            "admin_tz": ADMIN_BOOKING_TZ,
+            "client_tz": client_tz,
             "meet_link": booking.meet_link,
         })
 
@@ -441,8 +456,8 @@ class ScheduleCallStep2Page(views.View):
                     ex_booking = existing_qs.first()
                     ex_dt_ist = _booking_to_aware_ist(ex_booking)
 
-                    # Suggest next available slot (15 mins increments)
-                    suggested_dt = dt_ist + timedelta(minutes=15)
+                    # Suggest next available slot (30-minute grid, same as schedule UI)
+                    suggested_dt = dt_ist + timedelta(minutes=30)
                     while True:
                         s_naive = suggested_dt.replace(tzinfo=None)
                         s_start = (s_naive - timedelta(minutes=14, seconds=59)).time()
@@ -456,7 +471,7 @@ class ScheduleCallStep2Page(views.View):
                         
                         if not s_qs.exists():
                             break
-                        suggested_dt += timedelta(minutes=15)
+                        suggested_dt += timedelta(minutes=30)
 
                     if is_ajax:
                         ex_d, ex_t = _format_date_time_in_zone(ex_dt_ist, client_timezone)
@@ -472,6 +487,22 @@ class ScheduleCallStep2Page(views.View):
                     ex_d, ex_t = _format_date_time_in_zone(ex_dt_ist, client_timezone)
                     messages.error(request, f"A booking already exists on {ex_d} at {ex_t} (your time).")
                     return render(request, 'website/schedule_call2.html', {'form': form, 'faqs': FAQ.objects.all()})
+
+            # Create meeting link before persisting booking so meet_link is saved with booking.
+            meet_link = generate_google_meet_link(booking=booking, client_email=client_email)
+            if not meet_link:
+                meet_link = generate_zoom_meet_link(booking=booking, client_email=client_email)
+            if not meet_link:
+                msg = (
+                    "We could not create a meeting link right now. Please try again in a few minutes "
+                    "or contact us directly."
+                )
+                if is_ajax:
+                    return JsonResponse({"status": "error", "message": msg}, status=503)
+                messages.error(request, msg)
+                return render(request, 'website/schedule_call2.html', {'form': form, 'faqs': FAQ.objects.all()})
+
+            booking.meet_link = meet_link
 
             # ------------------- Save booking & trigger follow-up -------------------
             if ignore_conflict:
@@ -761,17 +792,6 @@ class ContactPage(views.View):
 
 from django.contrib import messages
 from django.shortcuts import redirect
-
-# def newsletter_subscribe(request):
-#     if request.method == "POST":
-#         form = NewsletterForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request, "Subscribed!")
-#         else:
-#             messages.error(request, "Invalid email")
-
-#     return redirect(request.META.get('HTTP_REFERER', '/'))
 
 def newsletter_subscribe(request):
     if request.method == "POST":

@@ -54,7 +54,7 @@
                         </svg>
                           <select class="timezone-select" id="timezoneSelect">
                             <option value="Australia/Adelaide">Australia/Adelaide</option>
-                            <option value="Asia/Kolkata">Asia/Kolkata</option>
+                            <option value="Asia/Kolkata">Asia/Kolkata (India)</option>
                             <option value="America/New_York">America/New_York</option>
                             <option value="Europe/London">Europe/London</option>
                             <option value="Asia/Dubai">Asia/Dubai</option>
@@ -260,15 +260,18 @@ let selectedTimezone = null;
 
 // ── CONSTANTS ─────────────────────────────────────────────
 const DAY_NAMES   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+const DAY_NAMES_LONG = [
+  'Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'
+];
 const MONTH_NAMES = [
   'January','February','March','April','May','June',
   'July','August','September','October','November','December'
 ];
 
-// 12h mode: 7:00 AM → 6:45 PM
-// 24h mode: 7:00 AM → 6:45 AM next day
+// 12h mode: 07:00 AM → 06:30 AM (next day, 30-minute slots)
+// 24h mode: 07:00 → 06:30 (next day)
 const RANGE = {
-  '12h': { startHour: 7, endHour: 19 },
+  '12h': { startHour: 7, endHour: 31 },
   '24h': { startHour: 7, endHour: 31 },
 };
 
@@ -281,15 +284,24 @@ function dayOfWeekSun0(y, m /* 1–12 */, d) {
 
 function getSelectedTz() {
   const el = document.getElementById('timezoneSelect');
-  return normalizeTimezone((el && el.value) ? el.value.trim() : 'Asia/Kolkata');
+  const v = el && el.value ? el.value.trim() : '';
+  if (v) return normalizeTimezone(v);
+  return normalizeTimezone(localStorage.getItem('schedule_call_tz') || 'Asia/Kolkata');
 }
 
 function normalizeTimezone(tz) {
   const aliases = {
     'America/NewYork': 'America/New_York',
+    'Asia/India': 'Asia/Kolkata',
   };
   const key = (tz || '').trim();
-  return aliases[key] || key || 'Asia/Kolkata';
+  if (aliases[key]) return aliases[key];
+  const lower = key.toLowerCase();
+  for (const a of Object.keys(aliases)) {
+    if (a.toLowerCase() === lower) return aliases[a];
+  }
+  if (key.replace(/\s+/g, '').toLowerCase() === 'asia/india') return 'Asia/Kolkata';
+  return key || 'Asia/Kolkata';
 }
 
 function getDayKeyInZone(timeZone, baseDate = new Date()) {
@@ -370,7 +382,8 @@ function renderCalendar() {
         cell.classList.add('selected');
 
         selectedDate = dateStr;
-        selectedTime = null;
+        // Do not reset selectedTime here so it's not lost when clicking date
+        // selectedTime = null; 
 
         setDateLabelFromKey(dateStr);
         renderTimeSlots();
@@ -391,7 +404,7 @@ function renderTimeSlots() {
   for (let i = startHour; i < endHour; i++) {
     const actualHour = i % 24;
 
-    [0, 15, 30, 45].forEach(m => {
+    [0, 30].forEach(m => {
       const value = `${String(actualHour).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
 
       const slot = document.createElement('button');
@@ -414,12 +427,34 @@ function renderTimeSlots() {
   }
 }
 
-// ── FORMAT TIME (12h display) ─────────────────────────────
+// ── FORMAT TIME (12h: 1:30 PM; 24h: 13:30 PM style) ─────────
 function formatTime(h, m) {
-  const mm     = String(m).padStart(2, '0');
+  const mm = String(m).padStart(2, '0');
   const period = h >= 12 ? 'PM' : 'AM';
+  if (timeFormat === '24h') {
+    return `${h}:${mm} ${period}`;
+  }
   const hour12 = h % 12 || 12;
   return `${hour12}:${mm} ${period}`;
+}
+
+/** Long date line to mirror on step 2 (e.g. Wednesday, April 22, 2026). */
+function formatLongDateLine(dateStr) {
+  const [y, m, d] = dateStr.split('-').map(Number);
+  const dow = dayOfWeekSun0(y, m, d);
+  return `${DAY_NAMES_LONG[dow]}, ${MONTH_NAMES[m - 1]} ${d}, ${y}`;
+}
+
+/** 30-minute range using same rules as slot labels (matches schedule_call2 summary). */
+function formatSelectedTimeRange(timeStr) {
+  const parts = String(timeStr).trim().split(':');
+  const h = parseInt(parts[0], 10) || 0;
+  const m = parseInt(parts[1] !== undefined ? parts[1] : '0', 10) || 0;
+  const startTotal = h * 60 + m;
+  const endTotal = startTotal + 30;
+  const eh = Math.floor(endTotal / 60) % 24;
+  const em = endTotal % 60;
+  return `${formatTime(h, m)}\u2009–\u2009${formatTime(eh, em)}`;
 }
 
 // ── TOGGLE FORMAT ─────────────────────────────────────────
@@ -443,57 +478,102 @@ function goToStep2() {
     alert('Please select a time slot.');
     return;
   }
-  if (!selectedTimezone) {
-    const tzEl = document.getElementById('timezoneSelect');
-    selectedTimezone = tzEl ? tzEl.value : '';
+  const tzEl = document.getElementById('timezoneSelect');
+  if (!selectedTimezone && tzEl) {
+    selectedTimezone = tzEl.value;
   }
+  const tzFinal = (selectedTimezone || (tzEl && tzEl.value) || 'Asia/Kolkata').trim();
   localStorage.setItem('schedule_call_date', selectedDate);
   localStorage.setItem('schedule_call_time', selectedTime);
-  localStorage.setItem('schedule_call_tz', selectedTimezone || '');
-  const params = new URLSearchParams({ date: selectedDate, time: selectedTime, tz: selectedTimezone || '' });
+  localStorage.setItem('schedule_call_tz', tzFinal);
+  localStorage.setItem('schedule_call_display_date', formatLongDateLine(selectedDate));
+  localStorage.setItem('schedule_call_display_time_range', formatSelectedTimeRange(selectedTime));
+  const params = new URLSearchParams({ date: selectedDate, time: selectedTime, tz: tzFinal });
   window.location.href = `{% url 'schedule-call-2' %}?${params}`;
 }
 
-// ── INIT ─────────────────────────────────────────────────
-const tzSelect = document.getElementById('timezoneSelect');
-if (tzSelect) {
-  const savedTz = normalizeTimezone(localStorage.getItem('schedule_call_tz'));
-  if (savedTz) tzSelect.value = savedTz;
-  selectedTimezone = tzSelect.value;
-  const k = getTodayKeyInZone(getSelectedTz());
-  const [iy, im] = k.split('-').map(Number);
-  currentYear = iy;
-  currentMonth = im - 1;
+/** Visible label; value stays IANA (India for Asia/Kolkata). */
+function timezoneOptionLabel(ianaId) {
+  if (ianaId === 'Asia/Kolkata') return 'Asia/Kolkata (India)';
+  return ianaId;
 }
 
-renderCalendar();
-renderTimeSlots();
+/** All IANA zones (e.g. Asia/Kolkata); shown as-is in the dropdown. */
+function getAllTimeZoneIds() {
+  if (typeof Intl.supportedValuesOf === 'function') {
+    return Intl.supportedValuesOf('timeZone').slice();
+  }
+  return ['UTC', 'Asia/Kolkata'];
+}
 
-// Initial right panel label: tomorrow (since today is not bookable)
-const tomorrow = new Date();
-tomorrow.setDate(tomorrow.getDate() + 1);
-setDateLabelFromKey(getDayKeyInZone(getSelectedTz(), tomorrow));
+function populateTimezones(onReady) {
+  const el = document.getElementById('timezoneSelect');
+  if (!el) {
+    if (typeof onReady === 'function') onReady();
+    return;
+  }
+  const currentTz = localStorage.getItem('schedule_call_tz') || 'Asia/Kolkata';
+  let ids = getAllTimeZoneIds();
+  if (!ids.includes(currentTz)) ids.push(currentTz);
+  ids.sort();
 
-if (tzSelect) {
-  tzSelect.addEventListener('change', () => {
-    selectedTimezone = normalizeTimezone(tzSelect.value);
-    tzSelect.value = selectedTimezone;
-    localStorage.setItem('schedule_call_tz', selectedTimezone);
-    renderCalendar();
-    updateNavButtons();
-    const tk = getTodayKeyInZone(selectedTimezone);
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const tomorrowKey = getDayKeyInZone(selectedTimezone, tomorrow);
+  el.innerHTML = '';
+  const loading = document.createElement('option');
+  loading.disabled = true;
+  loading.value = '';
+  loading.textContent = 'Loading timezones…';
+  el.appendChild(loading);
 
-    if (selectedDate && selectedDate <= tk) {
-      selectedDate = null;
-      selectedTime = null;
+  let i = 0;
+  const BATCH = 120;
+  function addBatch() {
+    if (i === 0) {
+      el.innerHTML = '';
     }
-    setDateLabelFromKey(selectedDate || tomorrowKey);
-    renderTimeSlots();
-  });
+    const end = Math.min(i + BATCH, ids.length);
+    const frag = document.createDocumentFragment();
+    for (; i < end; i++) {
+      const id = ids[i];
+      const opt = document.createElement('option');
+      opt.value = id;
+      opt.textContent = timezoneOptionLabel(id);
+      frag.appendChild(opt);
+    }
+    el.appendChild(frag);
+    if (i < ids.length) {
+      requestAnimationFrame(addBatch);
+    } else {
+      el.value = currentTz;
+      if (typeof onReady === 'function') onReady();
+    }
+  }
+  requestAnimationFrame(addBatch);
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  populateTimezones(function () {
+    const savedTz = localStorage.getItem('schedule_call_tz');
+    const el = document.getElementById('timezoneSelect');
+    if (savedTz && el) el.value = savedTz;
+
+    renderCalendar();
+    renderTimeSlots();
+    setDateLabelFromKey(getTodayKeyInZone(getSelectedTz()));
+
+    const tzEl = document.getElementById('timezoneSelect');
+    if (tzEl) {
+      tzEl.addEventListener('change', () => {
+        const newTz = getSelectedTz();
+        localStorage.setItem('schedule_call_tz', newTz);
+        renderCalendar();
+        renderTimeSlots();
+        if (selectedDate) setDateLabelFromKey(selectedDate);
+        else setDateLabelFromKey(getTodayKeyInZone(newTz));
+      });
+    }
+    updateNavButtons();
+  });
+});
 
 function updateNavButtons() {
   const prevBtn = document.getElementById('prevMonthBtn');
@@ -551,7 +631,6 @@ function changeMonth(dir) {
   updateNavButtons();
 }
 
-updateNavButtons();
-
 </script>
+
 {% endblock %}

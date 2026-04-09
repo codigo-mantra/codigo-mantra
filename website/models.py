@@ -283,23 +283,6 @@ class Application(TimeStamp):
         return f"{self.name} - {self.job.title}"
 
 
-# class CallSchedule(TimeStamp):
-#     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-
-#     name = models.CharField(max_length=255)
-#     email = models.EmailField()
-#     company = models.CharField(max_length=255)
-#     message = models.TextField()
-
-#     preferred_date = models.DateField()
-
-#     contact_status = models.BooleanField(default=False)
-#     notes = models.TextField(blank=True)
-
-#     def __str__(self):
-#         return self.name
-
-
 class FAQ(TimeStamp):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 

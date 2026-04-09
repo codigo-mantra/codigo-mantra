@@ -54,7 +54,7 @@
                         </svg>
                           <select class="timezone-select" id="timezoneSelectStep2">
                             <option value="Australia/Adelaide">Australia/Adelaide</option>
-                            <option value="Asia/Kolkata">Asia/Kolkata</option>
+                            <option value="Asia/Kolkata">Asia/Kolkata (India)</option>
                             <option value="America/New_York">America/New_York</option>
                             <option value="Europe/London">Europe/London</option>
                             <option value="Asia/Dubai">Asia/Dubai</option>
@@ -64,7 +64,7 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                             <path d="M5.30775 21.5C4.80258 21.5 4.375 21.325 4.025 20.975C3.675 20.625 3.5 20.1974 3.5 19.6923V6.30777C3.5 5.8026 3.675 5.37502 4.025 5.02502C4.375 4.67502 4.80258 4.50002 5.30775 4.50002H6.69225V3.15377C6.69225 2.9346 6.76567 2.7516 6.9125 2.60477C7.05933 2.4581 7.24233 2.38477 7.4615 2.38477C7.68083 2.38477 7.86383 2.4581 8.0105 2.60477C8.15733 2.7516 8.23075 2.9346 8.23075 3.15377V4.50002H15.8077V3.13477C15.8077 2.92193 15.8795 2.74368 16.023 2.60002C16.1667 2.45652 16.3449 2.38477 16.5577 2.38477C16.7706 2.38477 16.9488 2.45652 17.0922 2.60002C17.2359 2.74368 17.3077 2.92193 17.3077 3.13477V4.50002H18.6923C19.1974 4.50002 19.625 4.67502 19.975 5.02502C20.325 5.37502 20.5 5.8026 20.5 6.30777V19.6923C20.5 20.1974 20.325 20.625 19.975 20.975C19.625 21.325 19.1974 21.5 18.6923 21.5H5.30775ZM5.30775 20H18.6923C18.7692 20 18.8398 19.9679 18.9038 19.9038C18.9679 19.8398 19 19.7693 19 19.6923V10.3078H5V19.6923C5 19.7693 5.03208 19.8398 5.09625 19.9038C5.16025 19.9679 5.23075 20 5.30775 20ZM5 8.80777H19V6.30777C19 6.23077 18.9679 6.16026 18.9038 6.09626C18.8398 6.0321 18.7692 6.00002 18.6923 6.00002H5.30775C5.23075 6.00002 5.16025 6.0321 5.09625 6.09626C5.03208 6.16026 5 6.23077 5 6.30777V8.80777Z" fill="#F6F6F6"/>
                             </svg>
-                          <span id="selectedDateTimeLabel">Friday, February 6, 2026<br>7:15 – 7:30 pm</span>
+                          <span id="selectedDateTimeLabel">Friday, February 6, 2026<br>7:00 – 7:30 pm</span>
                         </div>
                       </div>
                     </div>
@@ -107,6 +107,7 @@
 
                         <input type="hidden" name="booking_date" id="bookingDateInput">
                         <input type="hidden" name="start_time" id="startTimeInput">
+                        <input type="hidden" name="client_timezone" id="clientTimezoneInput" value="">
 
                         <!-- NAME -->
                         <div class="form-group form-group-schedule-call">
@@ -396,32 +397,134 @@
       </div>
 
 <script>
-/** Map civil wall (Y-M-D H:M) in IANA zone to UTC ms for Intl formatting. */
+/**
+ * Civil date/time (Y-M-D H:M) interpreted in IANA `tz` → UTC epoch ms.
+ * Uses binary search so conversion stays correct across offsets/DST (replaces broken day*31 math).
+ */
 function zonedWallToUtcMs(y, mon, d, hh, mm, tz) {
-    const fmt = new Intl.DateTimeFormat('en-US', {
-        timeZone: tz,
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        hourCycle: 'h23',
-        hour12: false,
-    });
-    const read = (ms) => {
-        const p = fmt.formatToParts(new Date(ms));
-        const g = (t) => Number(p.find((x) => x.type === t).value);
-        return { y: g('year'), m: g('month'), d: g('day'), h: g('hour'), min: g('minute') };
-    };
-    let ms = Date.UTC(y, mon - 1, d, hh, mm, 0);
-    for (let i = 0; i < 48; i++) {
-        const r = read(ms);
-        if (r.y === y && r.m === mon && r.d === d && r.h === hh && r.min === mm) return ms;
-        const dayDiff = d - r.d + (mon - r.m) * 31 + (y - r.y) * 366;
-        const minDiff = (hh - r.h) * 60 + (mm - r.min);
-        ms += (dayDiff * 24 * 60 + minDiff) * 60 * 1000;
+    let fmt;
+    try {
+        fmt = new Intl.DateTimeFormat('en-US', {
+            timeZone: tz,
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: 'numeric',
+            hourCycle: 'h23',
+            hour12: false,
+        });
+    } catch (e) {
+        return Date.UTC(y, mon - 1, d, hh, mm, 0);
     }
-    return ms;
+    function wallParts(ms) {
+        const parts = fmt.formatToParts(new Date(ms));
+        const get = (type) => {
+            const p = parts.find((x) => x.type === type);
+            return p ? Number(p.value) : NaN;
+        };
+        return {
+            y: get('year'),
+            m: get('month'),
+            day: get('day'),
+            h: get('hour'),
+            min: get('minute'),
+            sec: get('second') || 0,
+        };
+    }
+    function cmpTarget(ms) {
+        const w = wallParts(ms);
+        if (w.y !== y) return w.y - y;
+        if (w.m !== mon) return w.m - mon;
+        if (w.day !== d) return w.day - d;
+        if (w.h !== hh) return w.h - hh;
+        return w.min - mm;
+    }
+    let lo = Date.UTC(y, mon - 1, d, hh, mm, 0) - 48 * 60 * 60 * 1000;
+    let hi = Date.UTC(y, mon - 1, d, hh, mm, 0) + 48 * 60 * 60 * 1000;
+    let g = 0;
+    while (cmpTarget(lo) > 0 && g < 64) {
+        lo -= 24 * 60 * 60 * 1000;
+        g++;
+    }
+    g = 0;
+    while (cmpTarget(hi) < 0 && g < 64) {
+        hi += 24 * 60 * 60 * 1000;
+        g++;
+    }
+    let best = null;
+    let bin = 0;
+    while (lo <= hi && bin < 96) {
+        bin++;
+        const mid = (lo + hi) >> 1;
+        const c = cmpTarget(mid);
+        if (c === 0) {
+            best = mid;
+            break;
+        }
+        if (c < 0) lo = mid + 1;
+        else hi = mid - 1;
+    }
+    if (best === null) {
+        return Date.UTC(y, mon - 1, d, hh, mm, 0);
+    }
+    let t = best;
+    for (let i = 0; i < 120 && wallParts(t).sec > 0; i++) {
+        t -= 1000;
+    }
+    return t;
+}
+
+function timezoneOptionLabel(ianaId) {
+    if (ianaId === 'Asia/Kolkata') return 'Asia/Kolkata (India)';
+    return ianaId;
+}
+
+/** Full IANA list (Asia/Kolkata, Asia/Dubai, …); batched via rAF so the page stays responsive. */
+function populateTimezoneSelectFull(selectEl, currentTz, onReady) {
+    if (!selectEl) {
+        if (typeof onReady === 'function') onReady();
+        return;
+    }
+    const tz = (currentTz || 'Asia/Kolkata').trim();
+    let ids = typeof Intl.supportedValuesOf === 'function'
+        ? Intl.supportedValuesOf('timeZone').slice()
+        : ['UTC', 'Asia/Kolkata'];
+    if (!ids.includes(tz)) ids.push(tz);
+    ids.sort();
+
+    selectEl.innerHTML = '';
+    const loading = document.createElement('option');
+    loading.disabled = true;
+    loading.value = '';
+    loading.textContent = 'Loading timezones…';
+    selectEl.appendChild(loading);
+
+    let i = 0;
+    const BATCH = 120;
+    function addBatch() {
+        if (i === 0) {
+            selectEl.innerHTML = '';
+        }
+        const end = Math.min(i + BATCH, ids.length);
+        const frag = document.createDocumentFragment();
+        for (; i < end; i++) {
+            const id = ids[i];
+            const opt = document.createElement('option');
+            opt.value = id;
+            opt.textContent = timezoneOptionLabel(id);
+            frag.appendChild(opt);
+        }
+        selectEl.appendChild(frag);
+        if (i < ids.length) {
+            requestAnimationFrame(addBatch);
+        } else {
+            selectEl.value = tz;
+            if (typeof onReady === 'function') onReady();
+        }
+    }
+    requestAnimationFrame(addBatch);
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -436,41 +539,71 @@ document.addEventListener('DOMContentLoaded', function () {
     const params = new URLSearchParams(window.location.search);
     let bookingDate = params.get('date') || localStorage.getItem('schedule_call_date') || '';
     let startTime = params.get('time') || localStorage.getItem('schedule_call_time') || '';
-    let timezoneValue = normalizeTimezone(params.get('tz') || localStorage.getItem('schedule_call_tz') || '');
+    let timeFormatPreference = params.get('fmt') || localStorage.getItem('schedule_call_format') || '12h';
+    const tzParam = params.get('tz');
+    const tzStored = localStorage.getItem('schedule_call_tz') || '';
+    const tzResolvedFromQuery =
+        tzParam !== null && String(tzParam).trim() !== '' ? String(tzParam).trim() : tzStored;
+    let timezoneValue = normalizeTimezone(tzResolvedFromQuery || 'Asia/Kolkata');
 
     const bookingDateInput = document.getElementById('bookingDateInput');
     const startTimeInput = document.getElementById('startTimeInput');
+    const clientTimezoneInput = document.getElementById('clientTimezoneInput');
     if (bookingDateInput) bookingDateInput.value = bookingDate;
     if (startTimeInput) startTimeInput.value = startTime;
-
-    const timezoneSelect = document.getElementById('timezoneSelectStep2');
-    if (timezoneSelect && timezoneValue) {
-        timezoneSelect.value = timezoneValue;
-    }
+    if (clientTimezoneInput) clientTimezoneInput.value = timezoneValue || 'Asia/Kolkata';
 
     const dateTimeLabel = document.getElementById('selectedDateTimeLabel');
-
     let initialSelectionMs = null;
+    /** After step 1, show exact same strings as the picker; Intl only if user changes timezone here. */
+    let userChangedTzOnStep2 = false;
 
     function refreshSummaryLabel() {
         const bd = (bookingDateInput && bookingDateInput.value) ? bookingDateInput.value : bookingDate;
         const st = (startTimeInput && startTimeInput.value) ? startTimeInput.value : startTime;
-        const tzRaw = timezoneSelect ? timezoneSelect.value.trim() : timezoneValue;
+        const tzSel = document.getElementById('timezoneSelectStep2');
+        const tzRaw = (tzSel && tzSel.value.trim())
+            ? tzSel.value.trim()
+            : timezoneValue;
         const clientTz = normalizeTimezone(tzRaw || 'Asia/Kolkata');
 
         if (!dateTimeLabel || !bd || !st) {
             console.warn('Missing data for refreshSummaryLabel:', { bd, st, clientTz });
+            if (dateTimeLabel && (bd || st)) {
+                dateTimeLabel.innerHTML = `${bd || ''} ${st || ''}`;
+            }
+            return;
+        }
+
+        const lsDate = localStorage.getItem('schedule_call_date');
+        const lsTime = localStorage.getItem('schedule_call_time');
+        const frozenDateLine = localStorage.getItem('schedule_call_display_date');
+        const frozenTimeRange = localStorage.getItem('schedule_call_display_time_range');
+        if (!userChangedTzOnStep2 && frozenDateLine && frozenTimeRange &&
+            bd === lsDate && st === lsTime) {
+            dateTimeLabel.innerHTML = `${frozenDateLine}<br>${frozenTimeRange}`;
             return;
         }
 
         try {
-            const [y, m, d] = bd.split('-').map(Number);
-            const [hh, mm] = st.split(':').map(Number);
+            const dateParts = bd.split('-');
+            if (dateParts.length !== 3) throw new Error('Invalid date format: ' + bd);
+            const y = parseInt(dateParts[0], 10);
+            const m = parseInt(dateParts[1], 10);
+            const d = parseInt(dateParts[2], 10);
+
+            const timeSeg = String(st).trim().split(':');
+            const hh = parseInt(timeSeg[0], 10);
+            const mm = parseInt(timeSeg[1] !== undefined ? timeSeg[1] : '0', 10);
+
+            if (isNaN(y) || isNaN(m) || isNaN(d) || isNaN(hh) || isNaN(mm)) {
+                throw new Error('Non-finite numeric parts: ' + bd + ' ' + st);
+            }
 
             // Use client wall clock + timezone to format a simple range for the user
             const utcMs = zonedWallToUtcMs(y, m, d, hh, mm, clientTz);
             const startDate = new Date(utcMs);
-            const endDate = new Date(utcMs + 15 * 60 * 1000);
+            const endDate = new Date(utcMs + 30 * 60 * 1000);
 
             const dateStr = new Intl.DateTimeFormat('en-US', {
                 timeZone: clientTz,
@@ -480,28 +613,31 @@ document.addEventListener('DOMContentLoaded', function () {
                 day: 'numeric',
             }).format(startDate);
 
-            function getFmtParts(dateObj) {
+            // Custom format: 7:00 AM or 19:00 PM (respecting timezone and user preference)
+            function fmtTimeWithFormat(dt, tz, formatPref) {
                 const parts = new Intl.DateTimeFormat('en-US', {
-                    timeZone: clientTz,
+                    timeZone: tz,
                     hour: 'numeric',
                     minute: '2-digit',
-                    hour12: true
-                }).formatToParts(dateObj);
-                const h = parts.find(p => p.type === 'hour').value;
-                const min = parts.find(p => p.type === 'minute').value;
-                const ampm = parts.find(p => p.type === 'dayPeriod').value.toLowerCase();
-                return { h, min, ampm };
-            }
+                    hour12: true,
+                }).formatToParts(dt);
+                const m = parts.find(p => p.type === 'minute').value;
+                const p = parts.find(p => p.type === 'dayPeriod').value;
 
-            const startParts = getFmtParts(startDate);
-            const endParts = getFmtParts(endDate);
+                if (formatPref === '24h') {
+                    const parts24 = new Intl.DateTimeFormat('en-US', {
+                        timeZone: tz,
+                        hour: 'numeric',
+                        hour12: false,
+                    }).formatToParts(dt);
+                    const h24 = parts24.find(p => p.type === 'hour').value;
+                    return `${h24}:${m} ${p}`;
+                }
 
-            let timeRangeStr;
-            if (startParts.ampm === endParts.ampm) {
-                timeRangeStr = `${startParts.h}:${startParts.min}\u2009–\u2009${endParts.h}:${endParts.min} ${endParts.ampm}`;
-            } else {
-                timeRangeStr = `${startParts.h}:${startParts.min} ${startParts.ampm}\u2009–\u2009${endParts.h}:${endParts.min} ${endParts.ampm}`;
+                const h12 = parts.find(p => p.type === 'hour').value;
+                return `${h12}:${m} ${p}`;
             }
+            const timeRangeStr = `${fmtTimeWithFormat(startDate, clientTz, timeFormatPreference)}\u2009–\u2009${fmtTimeWithFormat(endDate, clientTz, timeFormatPreference)}`;
 
             dateTimeLabel.innerHTML = `${dateStr}<br>${timeRangeStr}`;
         } catch (e) {
@@ -510,25 +646,53 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    refreshSummaryLabel();
+    function finishTimezoneSelectInit() {
+        const timezoneSelect = document.getElementById('timezoneSelectStep2');
+        const tzForSelect = timezoneValue || 'Asia/Kolkata';
+        if (timezoneSelect) {
+            if (!Array.from(timezoneSelect.options).some(function (o) { return o.value === tzForSelect; })) {
+                const opt = document.createElement('option');
+                opt.value = tzForSelect;
+                opt.textContent = timezoneOptionLabel(tzForSelect);
+                timezoneSelect.appendChild(opt);
+            }
+            timezoneSelect.value = tzForSelect;
+        }
+        if (bookingDateInput) bookingDateInput.value = bookingDate;
+        if (startTimeInput) startTimeInput.value = startTime;
+        if (clientTimezoneInput) {
+            clientTimezoneInput.value = timezoneSelect
+                ? timezoneSelect.value.trim()
+                : (timezoneValue || 'Asia/Kolkata');
+        }
 
-    // Show success modal if coming from a non-AJAX fallback redirect
-    const showSuccess = "{{ show_success_modal|yesno:'true,false' }}" === "true";
-    if (showSuccess) {
-        const successModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('bookingSuccessModal'));
-        if (successModal) {
-            successModal.show();
+        refreshSummaryLabel();
+
+        const showSuccess = "{{ show_success_modal|yesno:'true,false' }}" === "true";
+        if (showSuccess) {
+            const successModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('bookingSuccessModal'));
+            if (successModal) {
+                successModal.show();
+            }
+        }
+
+        if (timezoneSelect) {
+            timezoneSelect.addEventListener('change', () => {
+                userChangedTzOnStep2 = true;
+                timezoneValue = normalizeTimezone(timezoneSelect.value.trim());
+                timezoneSelect.value = timezoneValue;
+                localStorage.setItem('schedule_call_tz', timezoneValue);
+                if (clientTimezoneInput) clientTimezoneInput.value = timezoneValue;
+                refreshSummaryLabel();
+            });
         }
     }
 
-    if (timezoneSelect) {
-        timezoneSelect.addEventListener('change', () => {
-            timezoneValue = normalizeTimezone(timezoneSelect.value.trim());
-            timezoneSelect.value = timezoneValue;
-            localStorage.setItem('schedule_call_tz', timezoneValue);
-            refreshSummaryLabel();
-        });
-    }
+    populateTimezoneSelectFull(
+        document.getElementById('timezoneSelectStep2'),
+        timezoneValue || 'Asia/Kolkata',
+        finishTimezoneSelectInit
+    );
 
     // Handle Booking Form (AJAX errors match contact.html: .ajax-error under .form-group)
     const bookingForm = document.getElementById('bookingForm');
@@ -586,7 +750,8 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             const formData = new FormData(bookingForm);
-            const tzPost = normalizeTimezone((timezoneSelect && timezoneSelect.value.trim()) ? timezoneSelect.value.trim() : (timezoneValue || 'Asia/Kolkata'));
+            const tzElSubmit = document.getElementById('timezoneSelectStep2');
+            const tzPost = normalizeTimezone((tzElSubmit && tzElSubmit.value.trim()) ? tzElSubmit.value.trim() : (timezoneValue || 'Asia/Kolkata'));
             formData.set('client_timezone', tzPost);
             if (ignoreConflict) {
                 formData.append('ignore_conflict', 'true');
