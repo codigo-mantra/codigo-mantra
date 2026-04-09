@@ -16,7 +16,7 @@
                         </button>
 
                         <div class="collapse navbar-collapse" id="primaryNav">
-                            <ul class="navbar-nav ms-auto align-items-lg-center cm-nav">
+                            <ul class="navbar-nav m-auto align-items-lg-center cm-nav">
                                 <li class="nav-item dropdown" data-cm-nav="services">
                                     <a class="nav-link dropdown-toggle" href="{% url 'services' %}" role="button" aria-expanded="false">What we do</a>
                                     <div class="dropdown-menu cm-mega" aria-label="What we do menu">
@@ -144,13 +144,17 @@
                                         </div>
                                     </div>
                                 </li>
-                                <li class="nav-item ms-lg-3">
-                                     <a class="btn btn-cm-cta btn-pill" href="{% url 'contact' %}">
+                                <!-- <li class="nav-item ms-lg-3">
+                                     <a class="btn-cm-cta btn-pill" href="{% url 'contact' %}">
                                         <span class="label-up">Request a Quote</span>
                                         <span class="label-up">Request a Quote</span>
                                     </a>
-                                </li>
+                                </li> -->
                             </ul>
+                             <a class="btn-cm-cta btn-pill" href="{% url 'contact' %}">
+                                <span class="label-up">Request a Quote</span>
+                                <span class="label-up">Request a Quote</span>
+                             </a>
                         </div>
                     </div>
                 </div>

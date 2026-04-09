@@ -175,7 +175,7 @@ class Testimonial(TimeStamp):
 
     review_image = models.ImageField(upload_to="testimonials/reviews/", blank=True, null=True)
     video_url = models.URLField(blank=True, null=True)
-    platform_image = models.ImageField(upload_to="testimonials/platform/", blank=True, null=True)
+    platform_image = models.FileField(upload_to="testimonials/platform/", blank=True, null=True)
 
     def __str__(self):
         return self.client_name
