@@ -641,7 +641,7 @@ span.cm-mega__thumb img {
 }
 
 .hero-center {
-  width: min(1128px, 100%);
+  width: min(1280px, 100%);
   margin: 0 auto;
   text-align: center;
 }
@@ -1787,4 +1787,7 @@ a.btn-close.modal-close-btn {
 }
 .contact-hero-title {
   margin-bottom: 40px !important;
+}
+.tech-stack-container img {
+    width: 100%;
 }

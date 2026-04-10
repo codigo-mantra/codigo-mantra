@@ -2,7 +2,7 @@
 
 /* ─── SERVICES HERO SECTION ─── */
 .service-hero {
-    padding: 120px 0 80px;
+    padding: 120px 0 9px;
     background-color: #171717;
     position: relative;
     overflow: hidden;
@@ -318,7 +318,7 @@
     /* animation: marqueeScroll 30s linear infinite; */
     align-items: center;
     gap: 34.241px;
-    margin-top: 65px;
+    margin-top: 0px;
 }
 /* .right-server-col-img::after {
     border-radius: 832px;
