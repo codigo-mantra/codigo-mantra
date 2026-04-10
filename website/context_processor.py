@@ -8,17 +8,36 @@ def navbar_context(request):
     services = Service.objects.filter(parent__isnull=True).order_by("display_order").prefetch_related('children')
     
     # Specific case studies for navbar sections
-    bells_crm = CaseStudy.objects.filter(title__icontains='BellsCRM').values(
-        "title", "slug", "content", "cover_image", "url"
-    ).first()
+    bells_crm = CaseStudy.objects.filter(title__icontains='BellsCRM').first()
+
+    if bells_crm:
+        bells_crm = {
+            "title": bells_crm.title,
+            "slug": bells_crm.slug,
+            "content": bells_crm.content,
+            "url": bells_crm.url,
+            "cover_image": bells_crm.cover_image, 
+            "product_image": request.build_absolute_uri(bells_crm.product_image.url) if bells_crm.product_image else None,
+        }
     
-    yurayi = CaseStudy.objects.filter(title__icontains='Yurayi').values(
-        "title", "slug", "content", "cover_image", "url"
-    ).first()
+    yurayi = CaseStudy.objects.filter(title__icontains='Yurayi').first()
+    # .values(
+    #     "title", "slug", "content", "cover_image","product_image", "url"
+    # ).first()
+
+    if yurayi:
+        yurayi = {
+            "title": yurayi.title,
+            "slug": yurayi.slug,
+            "content": yurayi.content,
+            "url": yurayi.url,
+            "cover_image": yurayi.cover_image, 
+            "product_image": request.build_absolute_uri(yurayi.product_image.url) if yurayi.product_image else None,
+        }
 
     # Default fallback
     case_study = bells_crm or yurayi or CaseStudy.objects.values(
-        "title", "slug", "content", "cover_image", "url"
+        "title", "slug", "content", "cover_image","product_image", "url"
     ).first()
 
     contact = CompanyContact.objects.first()

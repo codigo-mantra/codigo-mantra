@@ -264,9 +264,8 @@
                     </div>
                 </div>
             </section>
-            
 <script>
-// ── STATE ─────────────────────────────────────────────────
+  // ── STATE ─────────────────────────────────────────────────
 let currentYear  = new Date().getFullYear();
 let currentMonth = new Date().getMonth();
 let selectedDate = null;
@@ -284,15 +283,12 @@ const MONTH_NAMES = [
   'July','August','September','October','November','December'
 ];
 
-// 12h mode: 07:00 AM → 06:30 AM (next day, 30-minute slots)
-// 24h mode: 07:00 → 06:30 (next day)
 const RANGE = {
   '12h': { startHour: 7, endHour: 31 },
   '24h': { startHour: 7, endHour: 31 },
 };
 
-/** Gregorian weekday 0=Sun … 6=Sat (Sakamoto, same convention as Date.getDay()). */
-function dayOfWeekSun0(y, m /* 1–12 */, d) {
+function dayOfWeekSun0(y, m, d) {
   const t = [0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4];
   y -= m < 3 ? 1 : 0;
   return (y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) + t[m - 1] + d) % 7;
@@ -341,6 +337,12 @@ function getTodayKeyInZone(timeZone) {
   return getDayKeyInZone(timeZone, new Date());
 }
 
+function getTomorrowKeyInZone(timeZone) {
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  return getDayKeyInZone(timeZone, tomorrow);
+}
+
 function setDateLabelFromKey(dateStr) {
   const [y, m, d] = dateStr.split('-').map(Number);
   const dow = dayOfWeekSun0(y, m, d);
@@ -379,7 +381,7 @@ function renderCalendar() {
 
     const isPast  = dateStr < todayKey;
     const isToday = dateStr === todayKey;
-    const isBookingDisabled = isPast || isToday; // Restrict same-day bookings
+    const isBookingDisabled = isPast || isToday;
 
     const cell = document.createElement('div');
     cell.textContent  = d;
@@ -398,9 +400,6 @@ function renderCalendar() {
         cell.classList.add('selected');
 
         selectedDate = dateStr;
-        // Do not reset selectedTime here so it's not lost when clicking date
-        // selectedTime = null; 
-
         setDateLabelFromKey(dateStr);
         renderTimeSlots();
       });
@@ -443,7 +442,7 @@ function renderTimeSlots() {
   }
 }
 
-// ── FORMAT TIME (12h: 1:30 PM; 24h: 13:30 PM style) ─────────
+// ── FORMAT TIME ───────────────────────────────────────────
 function formatTime(h, m) {
   const mm = String(m).padStart(2, '0');
   const period = h >= 12 ? 'PM' : 'AM';
@@ -454,14 +453,12 @@ function formatTime(h, m) {
   return `${hour12}:${mm} ${period}`;
 }
 
-/** Long date line to mirror on step 2 (e.g. Wednesday, April 22, 2026). */
 function formatLongDateLine(dateStr) {
   const [y, m, d] = dateStr.split('-').map(Number);
   const dow = dayOfWeekSun0(y, m, d);
   return `${DAY_NAMES_LONG[dow]}, ${MONTH_NAMES[m - 1]} ${d}, ${y}`;
 }
 
-/** 30-minute range using same rules as slot labels (matches schedule_call2 summary). */
 function formatSelectedTimeRange(timeStr) {
   const parts = String(timeStr).trim().split(':');
   const h = parseInt(parts[0], 10) || 0;
@@ -508,13 +505,11 @@ function goToStep2() {
   window.location.href = `{% url 'schedule-call-2' %}?${params}`;
 }
 
-/** Visible label; value stays IANA (India for Asia/Kolkata). */
 function timezoneOptionLabel(ianaId) {
   if (ianaId === 'Asia/Kolkata') return 'Asia/Kolkata (India)';
   return ianaId;
 }
 
-/** All IANA zones (e.g. Asia/Kolkata); shown as-is in the dropdown. */
 function getAllTimeZoneIds() {
   if (typeof Intl.supportedValuesOf === 'function') {
     return Intl.supportedValuesOf('timeZone').slice();
@@ -566,6 +561,7 @@ function populateTimezones(onReady) {
   requestAnimationFrame(addBatch);
 }
 
+// ── INIT ──────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
   populateTimezones(function () {
     const savedTz = localStorage.getItem('schedule_call_tz');
@@ -574,7 +570,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderCalendar();
     renderTimeSlots();
-    setDateLabelFromKey(getTodayKeyInZone(getSelectedTz()));
+
+    // ✅ Show tomorrow as default (today is disabled)
+    const tz = getSelectedTz();
+    const tomorrowKey = getTomorrowKeyInZone(tz);
+    setDateLabelFromKey(tomorrowKey);
 
     const tzEl = document.getElementById('timezoneSelect');
     if (tzEl) {
@@ -584,7 +584,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderCalendar();
         renderTimeSlots();
         if (selectedDate) setDateLabelFromKey(selectedDate);
-        else setDateLabelFromKey(getTodayKeyInZone(newTz));
+        else setDateLabelFromKey(getTomorrowKeyInZone(newTz)); // ✅ also updated here
       });
     }
     updateNavButtons();
@@ -646,7 +646,6 @@ function changeMonth(dir) {
   renderCalendar();
   updateNavButtons();
 }
-
 </script>
 <script>
 function setupCustomTimezoneDropdown() {

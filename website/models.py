@@ -84,6 +84,9 @@ class Department(TimeStamp):
 
 class Service(TimeStamp):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    # index_card_title=models.CharField(max_length=255,null=True,blank=True)
+    # service_card_title=models.CharField(max_length=255,null=True,blank=True)
+
     name = models.CharField(max_length=255)
     slug = models.SlugField(unique=True)
     description = models.TextField(blank=True)
@@ -91,6 +94,7 @@ class Service(TimeStamp):
     cover_image = models.FileField(upload_to="services/covers/", blank=True, null=True)
     parent = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True, related_name='children')
     display_order = models.IntegerField(default=0)
+    # index_card_order= models.PositiveIntegerField(default=0)
 
     def save(self, *args, **kwargs):
         if not self.display_order:
@@ -114,6 +118,7 @@ class CaseStudy(TimeStamp):
     team = models.CharField(max_length=255, blank=True)
     url = models.URLField(blank=True, null=True)
     cover_image = models.ImageField(upload_to="case_studies/", blank=True, null=True)
+    product_image = models.ImageField(upload_to="case_studies/", blank=True, null=True)
 
     services = models.ManyToManyField(Service, through="CaseStudyService")
     industries = models.ManyToManyField(Industry, through="CaseStudyIndustry")
