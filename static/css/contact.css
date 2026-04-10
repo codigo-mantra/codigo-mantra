@@ -395,7 +395,7 @@ span.cm-brand-contact {
     user-select: none;
   }
 
-  .cal-day:hover:not(.disabled):not(.selected) {
+  .cal-day:hover {
     background: rgba(255, 255, 255, 0.21);
     color: var(--Orange, #F05D35);
   }
@@ -412,8 +412,9 @@ span.cm-brand-contact {
   }
 
   .cal-day.selected {
-    background: rgba(255, 255, 255, 0.21);
-    color: var(--Orange, #F05D35);
+    background: #F05D35;
+    color: var(--Orange, #F6F6F6);
+    font-weight: 600;
   }
 
   .cal-day.disabled {
@@ -425,9 +426,13 @@ span.cm-brand-contact {
     font-style: normal;
     font-weight: 400;
     line-height: normal;
-    /* opacity: 0.18; */
+    opacity: 0.3;
     cursor: default;
   }
+  .cal-day.empty {
+    opacity: 0.3;
+    pointer-events: none;
+}
 
   .cal-day.other-month {
     background: transparent;
