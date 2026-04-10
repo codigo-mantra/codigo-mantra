@@ -55,7 +55,11 @@
                                                         {% endfor %}
                                                     </div>
                                                     <div class="cm-mega__h">Our Product</div>
-                                                        <span class="cm-mega__thumb" aria-hidden="true"></span>
+                                                        <span class="cm-mega__thumb" aria-hidden="true">
+                                                            {% if case_study_nav.cover_image %}
+                                                            <!-- <img loading="lazy" src="{{ case_study_nav.cover_image.url }}" alt="{{ case_study_nav.title }}"> -->
+                                                            {% endif %}
+                                                        </span>
                                                         <span class="cm-mega__productBody">
                                                             <span class="cm-mega__productT">{{ bells_crm_nav.title|default:case_study_nav.title }}</span>
                                                             <span class="cm-mega__productD">{{ bells_crm_nav.content|default:case_study_nav.content|truncatewords:18 }} <a href="{{ bells_crm_nav.url|default:case_study_nav.url }}" target="_blank">View Product</a></span>
@@ -96,7 +100,9 @@
                                                     <div class="cm-mega__h">Our Product</div>
                                                     
                                                         <span class="cm-mega__thumb" aria-hidden="true">
-                                                            <!-- <img src="http://localhost:8000{{ case_study_nav.cover_image }}" alt="" loading="lazy"> -->
+                                                            {% if case_study_nav.cover_image %}
+                                                            /c="{{ case_study_nav.cover_image.url }}" alt="{{ case_study_nav.title }}" loading="lazy">
+                                                            {% endif %}
                                                         </span>
                                                         <span class="cm-mega__productBody">
                                                             <span class="cm-mega__productT">{{ yurayi_nav.title|default:case_study_nav.title }}</span>
@@ -128,7 +134,9 @@
                                                  <div class="cm-mega__col cm-mega__col--product">
                                                     <div class="cm-mega__h">Our Product</div>
                                                         <span class="cm-mega__thumb" aria-hidden="true">
-                                                            <!-- <img loading="lazy" src="http://localhost:8000{{ case_study_nav.cover_image.url }}" alt="{{ case_study_nav.title }}"> -->
+                                                            {% if case_study_nav.cover_image %}
+                                                            <!-- <img loading="lazy" src="{{ case_study_nav.cover_image.url }}" alt="{{ case_study_nav.title }}"> -->
+                                                            {% endif %}
                                                         </span>
                                                         <span class="cm-mega__productBody">
                                                             <span class="cm-mega__productT">{{ bells_crm_nav.title|default:case_study_nav.title }}</span>

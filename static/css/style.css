@@ -1785,3 +1785,6 @@ a.btn-close.modal-close-btn {
     height: 87vh;
     overflow-y: scroll;
 }
+.contact-hero-title {
+  margin-bottom: 40px !important;
+}

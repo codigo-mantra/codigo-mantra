@@ -777,9 +777,6 @@
     .hero-right {
         height: auto;
     }
-    .project-meta span {
-        padding: 0 76px;
-    }
 }
 @media (max-width: 450px) {
     .about-hero {
