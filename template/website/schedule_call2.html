@@ -101,12 +101,6 @@
                         <input type="hidden" name="start_time" id="startTimeInput">
                         <input type="hidden" name="client_timezone" id="clientTimezoneInput" value="">
 
-                        <div id="scheduleCall2Errors" style="text-align: right; margin-bottom: 15px;">
-                            <p id="err-schedule-general" style="display:none; color: #FF0000; font-size: 14px; margin-bottom: 5px;">We could not schedule your call, please try again</p>
-                            <p id="err-schedule-network" style="display:none; color: #FF0000; font-size: 14px; margin-bottom: 5px;">Unable to connect, please check your internet connection and try again</p>
-                            <p id="err-schedule-fields" style="display:none; color: #FF0000; font-size: 14px; margin-bottom: 5px;">Please complete all required fields correctly to submit the form</p>
-                        </div>
-
                         <!-- NAME -->
                         <div class="form-group form-group-schedule-call">
                             <label>Name<span style="color: #FF0000;">*</span></label>
@@ -146,10 +140,10 @@
                             {% endif %}
                         </div>
                 
-                        <div id="scheduleCall2Errors" style="text-align: right; margin-bottom: 15px;">
-                            <p id="err-schedule-general" style="display:none; color: #FF0000; font-size: 14px; margin-bottom: 5px;">We could not schedule your call, please try again</p>
-                            <p id="err-schedule-network" style="display:none; color: #FF0000; font-size: 14px; margin-bottom: 5px;">Unable to connect, please check your internet connection and try again</p>
-                            <p id="err-schedule-fields" style="display:none; color: #FF0000; font-size: 14px; margin-bottom: 5px;">Please complete all required fields correctly to submit the form</p>
+                        <div id="scheduleCall2Errors" style="text-align: right;">
+                            <p id="err-schedule-general" style="display:none; " class="contact-form-error error-schedule-call">We could not schedule your call, please try again</p>
+                            <p id="err-schedule-network" style="display:none;" class="contact-form-error error-schedule-call">Unable to connect, please check your internet connection and try again</p>
+                            <p id="err-schedule-fields" style="display:none;" class="contact-form-error error-schedule-call">Please complete all required fields correctly to submit the form</p>
                         </div>
 
                         <div class="privacy-consent">

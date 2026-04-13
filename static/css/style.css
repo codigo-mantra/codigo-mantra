@@ -185,7 +185,7 @@ a:hover {
 }
 
 /* Footer subscribe button sizing (matches design) */
-.footer-form .btn-cm-cta {
+.footer-form-2 .btn-cm-cta {
   height: 44px;
   padding: 0 22px;
   border-radius: 14px;
@@ -1312,7 +1312,7 @@ span.cm-mega__thumb img {
   /* 18px */
 }
 
-.footer-form {
+.footer-form-2 {
   margin-top: 12px;
   display: flex;
   gap: 10px;
@@ -1490,7 +1490,7 @@ span.reserved-rights {
     padding: 22px;
   }
 
-  .footer-form {
+  .footer-form-2 {
     flex-direction: column;
     align-items: stretch;
   }
@@ -1791,3 +1791,22 @@ a.btn-close.modal-close-btn {
 .tech-stack-container img {
     width: 100%;
 }
+.contact-form-error {
+    color: var(--color-icon-error-default, #F00);
+    /* text-align: right; */
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 150%;
+    margin: -5px 0px 30px;
+}
+.schedule-call-error {
+    margin: 50px 0px -36px;
+}
+.error-schedule-call {
+    margin: -3px 0px 10px;
+}
+.error-newsletter-email {
+    margin: 23px 0px 14px;
+} 
