@@ -118,7 +118,7 @@ class CaseStudy(TimeStamp):
     team = models.CharField(max_length=255, blank=True)
     url = models.URLField(blank=True, null=True)
     cover_image = models.ImageField(upload_to="case_studies/", blank=True, null=True)
-    product_image = models.ImageField(upload_to="case_studies/", blank=True, null=True)
+    # product_image = models.ImageField(upload_to="case_studies/", blank=True, null=True)
 
     services = models.ManyToManyField(Service, through="CaseStudyService")
     industries = models.ManyToManyField(Industry, through="CaseStudyIndustry")
