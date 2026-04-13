@@ -22,7 +22,7 @@ section.case-study-hero {
   box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.15);
 }
 
-#project .slick-dots li button:before {
+.case-study-slider .slick-dots li button:before {
   font-family: 'slick';
   font-size: 13px;
   line-height: 20px;
@@ -39,12 +39,12 @@ section.case-study-hero {
   -moz-osx-font-smoothing: grayscale;
 }
 
-#project .slick-dots li.slick-active button:before {
+.case-study-slider .slick-dots li.slick-active button:before {
   opacity: .75;
   color: #F05D35;
 }
 
-#project .slick-dots {
+.case-study-slider .slick-dots {
   bottom: -57px;
 }
 
