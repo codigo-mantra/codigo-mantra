@@ -71,7 +71,7 @@ next steps.</h6>
 
                             <div class="form-row ">
                                 <div class="form-group mb-0">
-                                    <label>First Name</label>
+                                    <label>First Name<span style="color: #FF0000;">*</span></label>
                                     <!-- <input type="text" placeholder="First name"> -->
                                      {{form.first_name}}
                                 </div>
@@ -94,7 +94,7 @@ next steps.</h6>
                             </div>
 
                             <div class="form-group">
-                                <label>Email Address</label>
+                                <label>Email Address<span style="color: #FF0000;">*</span></label>
                                 {{form.email}}
                             </div>
                                 {% if form.email.errors %}
@@ -104,7 +104,7 @@ next steps.</h6>
                                     {% endif %}
 
                             <div class="form-group">
-                                <label>Phone Number</label>
+                                <label>Phone Number<span style="color: #FF0000;">*</span></label>
                                 {{form.phone}}
                             </div>
                                 {% if form.phone.errors %}
@@ -114,7 +114,7 @@ next steps.</h6>
                                     {% endif %}
 
                             <div class="form-group">
-                                <label>Message</label>
+                                <label>Message<span style="color: #FF0000;">*</span></label>
                                 {{form.message}}
                             </div>
                             {% if form.message.errors %}
@@ -122,6 +122,13 @@ next steps.</h6>
                                     {{ form.message.errors }}
                                 </div>
                             {% endif %}
+
+                            <!-- ERROR MESSAGES -->
+                            <div id="contactFormErrors" style="text-align: right; margin-bottom: 15px;">
+                                <p id="err-general" style="display:none; color: #FF0000; font-size: 14px; margin-bottom: 5px;">We could not submit your request, please try again later</p>
+                                <p id="err-fields" style="display:none; color: #FF0000; font-size: 14px; margin-bottom: 5px;">Please complete all required fields correctly to submit the form</p>
+                                <p id="err-network" style="display:none; color: #FF0000; font-size: 14px; margin-bottom: 5px;">Unable to connect, please check your internet connection and try again</p>
+                            </div>
                             <button type="submit" class="btn btn-cm-cta btn-pill open-position-btn w-100" >
                                 <span class="label-up">Contact Us
                                 </span>
@@ -306,11 +313,34 @@ document.addEventListener('DOMContentLoaded', function () {
     const contactForm = document.getElementById('contactForm');
     if (!contactForm) return;
 
+    function hideAllErrors() {
+        const errorIds = ['err-general', 'err-fields', 'err-network'];
+        errorIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.style.display = 'none';
+        });
+        contactForm.querySelectorAll('.ajax-error').forEach(e => e.remove());
+    }
+
     contactForm.addEventListener('submit', function (e) {
         e.preventDefault();
+        hideAllErrors();
 
         const submitBtn = contactForm.querySelector('[type=submit]');
-        submitBtn.disabled  = true;
+
+        // Basic client-side validation
+        const firstName = contactForm.querySelector('[name=first_name]').value.trim();
+        const email = contactForm.querySelector('[name=email]').value.trim();
+        const phone = contactForm.querySelector('[name=phone]').value.trim();
+        const message = contactForm.querySelector('[name=message]').value.trim();
+
+        if (!firstName || !email || !phone || !message) {
+            const fieldsErr = document.getElementById('err-fields');
+            if (fieldsErr) fieldsErr.style.display = 'block';
+            return;
+        }
+
+        if (submitBtn) submitBtn.disabled = true;
 
         fetch(window.location.href, {
             method : 'POST',
@@ -324,33 +354,45 @@ document.addEventListener('DOMContentLoaded', function () {
         .then(data => {
             if (data.status === 'success') {
                 contactForm.reset();
-                new bootstrap.Modal(document.getElementById('contactModal')).show();
+                const modalEl = document.getElementById('contactModal');
+                if (modalEl && window.bootstrap && bootstrap.Modal) {
+                    bootstrap.Modal.getOrCreateInstance(modalEl).show();
+                }
             } else {
                 // Show field errors
                 if (data.errors) {
-                    // Clear old errors
-                    contactForm.querySelectorAll('.ajax-error').forEach(e => e.remove());
-
                     Object.keys(data.errors).forEach(field => {
+                        if (field === '__all__') {
+                            const genErr = document.getElementById('err-general');
+                            if (genErr) genErr.style.display = 'block';
+                            return;
+                        }
                         const input = contactForm.querySelector(`[name=${field}]`);
                         if (input) {
                             const err       = document.createElement('p');
                             err.className   = 'ajax-error';
-                            err.style.cssText = 'color:#ff6b6b;font-size:0.8rem;margin-top:4px;';
-                            err.textContent = data.errors[field][0].message;
+                            err.style.cssText = 'color:#FF0000;font-size:0.8rem;margin-top:4px;';
+                            const msgs = data.errors[field];
+                            const msgText = msgs && msgs[0] && msgs[0].message ? msgs[0].message : (msgs && msgs[0]) || '';
+                            err.textContent = msgText;
                             input.closest('.form-group')?.appendChild(err);
                         }
                     });
+                } else if (data.message) {
+                    const genErr = document.getElementById('err-general');
+                    if (genErr) genErr.style.display = 'block';
                 }
             }
         })
-        .catch(err => console.error('Contact error:', err))
+        .catch(err => {
+            console.error('Contact error:', err);
+            const netErr = document.getElementById('err-network');
+            if (netErr) netErr.style.display = 'block';
+        })
         .finally(() => {
-            submitBtn.disabled  = false;
+            if (submitBtn) submitBtn.disabled = false;
         });
     });
 });
-
-
 </script>
 {% endblock %}

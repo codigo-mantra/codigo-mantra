@@ -110,15 +110,17 @@
                     </div>
                   </div>
 
-                </div><!-- /row -->
+                </div><!-- /row -->       
 
                 <!-- Footer Buttons -->
                 <div class="schedule-call-footer">
+                  <div id="scheduleCall1Errors" style="text-align: center; margin-bottom: 10px;">
+                    <p id="err-date-time-selection" style="display:none; color: #FF0000; font-size: 14px; margin-bottom: 5px;">Please select both date and time to continue</p>
+                  </div>
                   <a href="javascript:history.back()" class="btn-secondary-cm">
                     <span class="label-up">Back</span>
                     <span class="label-up">Back</span>
                   </a>
-                  <!-- <button class="btn-next">Next</button>  -->
                   <a class="btn-cm-cta btn-pill" href="#" onclick="goToStep2(); return false;">
                       <span class="label-up">Next</span>
                       <span class="label-up">Next</span>
@@ -411,12 +413,11 @@ function setFormat(fmt) {
 
 // ── NAVIGATE TO STEP 2 ────────────────────────────────────
 function goToStep2() {
-  if (!selectedDate) {
-    alert('Please select a date.');
-    return;
-  }
-  if (!selectedTime) {
-    alert('Please select a time slot.');
+  const errorEl = document.getElementById('err-date-time-selection');
+  if (errorEl) errorEl.style.display = 'none';
+
+  if (!selectedDate || !selectedTime) {
+    if (errorEl) errorEl.style.display = 'block';
     return;
   }
   const tzEl = document.getElementById('timezoneSelect');

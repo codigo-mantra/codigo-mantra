@@ -97,15 +97,19 @@
                   <div class="col-lg-6 col-md-8">
                     <form id="bookingForm" class="booking-card" method="post" action="{% url 'schedule-call-2' %}" novalidate>
                         {% csrf_token %}
-                        <p id="bookingFormGlobalError" class="text-danger" style="display:none;"></p>
-
                         <input type="hidden" name="booking_date" id="bookingDateInput">
                         <input type="hidden" name="start_time" id="startTimeInput">
                         <input type="hidden" name="client_timezone" id="clientTimezoneInput" value="">
 
+                        <div id="scheduleCall2Errors" style="text-align: right; margin-bottom: 15px;">
+                            <p id="err-schedule-general" style="display:none; color: #FF0000; font-size: 14px; margin-bottom: 5px;">We could not schedule your call, please try again</p>
+                            <p id="err-schedule-network" style="display:none; color: #FF0000; font-size: 14px; margin-bottom: 5px;">Unable to connect, please check your internet connection and try again</p>
+                            <p id="err-schedule-fields" style="display:none; color: #FF0000; font-size: 14px; margin-bottom: 5px;">Please complete all required fields correctly to submit the form</p>
+                        </div>
+
                         <!-- NAME -->
                         <div class="form-group form-group-schedule-call">
-                            <label>Name</label>
+                            <label>Name<span style="color: #FF0000;">*</span></label>
                             <input type="text" name="client_name" placeholder="Full name"
                                    value="{{ form.client_name.value|default:'' }}">
                             {% if form.client_name.errors %}
@@ -115,7 +119,7 @@
 
                         <!-- EMAIL -->
                         <div class="form-group form-group-schedule-call">
-                            <label>Email Address</label>
+                            <label>Email Address<span style="color: #FF0000;">*</span></label>
                             <input type="email" name="client_email" placeholder="Email address"
                                    value="{{ form.client_email.value|default:'' }}">
                             {% if form.client_email.errors %}
@@ -125,7 +129,7 @@
 
                         <!-- SERVICE -->
                         <div class="form-group form-group-schedule-call">
-                            <label>What service do you want?</label>
+                            <label>What service do you want?<span style="color: #FF0000;">*</span></label>
                             <input type="text" name="service_requested" placeholder="Mention service here"
                                    value="{{ form.service_requested.value|default:'' }}">
                             {% if form.service_requested.errors %}
@@ -135,13 +139,19 @@
 
                         <!-- MESSAGE -->
                         <div class="form-group form-group-schedule-call">
-                            <label>Message</label>
+                            <label>Message<span style="color: #FF0000;">*</span></label>
                             <textarea name="project_brief" class="text-area-schedule-call" placeholder="Message" style="resize: none;">{{ form.project_brief.value|default:'' }}</textarea>
                             {% if form.project_brief.errors %}
                                 <div class="text-danger">{{ form.project_brief.errors }}</div>
                             {% endif %}
                         </div>
                 
+                        <div id="scheduleCall2Errors" style="text-align: right; margin-bottom: 15px;">
+                            <p id="err-schedule-general" style="display:none; color: #FF0000; font-size: 14px; margin-bottom: 5px;">We could not schedule your call, please try again</p>
+                            <p id="err-schedule-network" style="display:none; color: #FF0000; font-size: 14px; margin-bottom: 5px;">Unable to connect, please check your internet connection and try again</p>
+                            <p id="err-schedule-fields" style="display:none; color: #FF0000; font-size: 14px; margin-bottom: 5px;">Please complete all required fields correctly to submit the form</p>
+                        </div>
+
                         <div class="privacy-consent">
                             <p>By proceeding, you agree to our 
                                 <a href="{% url 'terms-conditions' %}">Terms</a> 
@@ -480,6 +490,15 @@ document.addEventListener('DOMContentLoaded', function () {
     /** After step 1, show exact same strings as the picker; Intl only if user changes timezone here. */
     let userChangedTzOnStep2 = false;
 
+    function hideAllErrors() {
+        const errorIds = ['err-schedule-general', 'err-schedule-network', 'err-schedule-fields'];
+        errorIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.style.display = 'none';
+        });
+        document.querySelectorAll('.ajax-error').forEach(e => e.remove());
+    }
+
     function refreshSummaryLabel() {
         const bd = (bookingDateInput && bookingDateInput.value) ? bookingDateInput.value : bookingDate;
         const st = (startTimeInput && startTimeInput.value) ? startTimeInput.value : startTime;
@@ -595,219 +614,84 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Handle Booking Form (AJAX errors match contact.html: .ajax-error under .form-group)
     const bookingForm = document.getElementById('bookingForm');
-    const bookingFormGlobalError = document.getElementById('bookingFormGlobalError');
-
-    function clearBookingAjaxErrors() {
-        if (!bookingForm) return;
-        bookingForm.querySelectorAll('.ajax-error').forEach(function (el) {
-            el.remove();
-        });
-        if (bookingFormGlobalError) {
-            bookingFormGlobalError.textContent = '';
-            bookingFormGlobalError.style.display = 'none';
-        }
-    }
-
-    function applyBookingErrorsFromResponse(errors) {
-        if (!bookingForm || !errors) return;
-        clearBookingAjaxErrors();
-        Object.keys(errors).forEach(function (field) {
-            const list = errors[field];
-            if (!list || !list.length) return;
-            const msg = list[0].message;
-            if (field === '__all__') {
-                if (bookingFormGlobalError) {
-                    bookingFormGlobalError.textContent = msg;
-                    bookingFormGlobalError.style.display = '';
-                }
-                return;
-            }
-            const input = bookingForm.querySelector('[name="' + field + '"]');
-            const err = document.createElement('p');
-            err.className = 'ajax-error';
-            err.style.cssText = 'color:#ff6b6b;font-size:0.8rem;margin-top:4px;';
-            err.textContent = msg;
-            const container = input ? input.closest('.form-group') : null;
-            if (container) {
-                container.appendChild(err);
-            } else if (bookingFormGlobalError) {
-                bookingFormGlobalError.textContent = bookingFormGlobalError.textContent
-                    ? bookingFormGlobalError.textContent + ' ' + msg
-                    : msg;
-                bookingFormGlobalError.style.display = '';
-            }
-        });
-    }
+    // The bookingFormGlobalError, clearBookingAjaxErrors, applyBookingErrorsFromResponse are removed by this replacement.
+    // The new logic uses direct error IDs.
 
     if (bookingForm) {
-        const submitBooking = (ignoreConflict = false) => {
-            const dateValue = bookingDateInput ? bookingDateInput.value : '';
-            const timeValue = startTimeInput ? startTimeInput.value : '';
-            if (!dateValue || !timeValue) {
-                alert('Please select date and time from step 1 before scheduling the call.');
+        bookingForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            hideAllErrors();
+
+            const submitBtn = bookingForm.querySelector('[type=submit]');
+
+            // Client-side validation
+            const clientName = bookingForm.querySelector('[name=client_name]').value.trim();
+            const clientEmail = bookingForm.querySelector('[name=client_email]').value.trim();
+            const serviceRequested = bookingForm.querySelector('[name=service_requested]').value.trim();
+            const projectBrief = bookingForm.querySelector('[name=project_brief]').value.trim();
+
+            if (!clientName || !clientEmail || !serviceRequested || !projectBrief) {
+                document.getElementById('err-schedule-fields').style.display = 'block';
                 return;
             }
 
-            const formData = new FormData(bookingForm);
-            const tzElSubmit = document.getElementById('timezoneSelectStep2');
-            const tzPost = normalizeTimezone((tzElSubmit && tzElSubmit.value.trim()) ? tzElSubmit.value.trim() : (timezoneValue || 'Asia/Kolkata'));
-            formData.set('client_timezone', tzPost);
-            if (ignoreConflict) {
-                formData.append('ignore_conflict', 'true');
-            }
-            const actionUrl = bookingForm.getAttribute('action');
-            const csrfToken = bookingForm.querySelector('[name=csrfmiddlewaretoken]').value;
-            const submitBtn = document.querySelector('button[form="bookingForm"]');
+            if (submitBtn) submitBtn.disabled = true;
 
-            // Disable button
-            if (submitBtn) {
-                submitBtn.disabled = true;
-                submitBtn.querySelector('.label-up').textContent = 'Scheduling...';
-            }
-
-            clearBookingAjaxErrors();
-
-            fetch(actionUrl, {
+            fetch(bookingForm.action, {
                 method: 'POST',
                 headers: {
-                    'X-CSRFToken': csrfToken,
+                    'X-CSRFToken': bookingForm.querySelector('[name=csrfmiddlewaretoken]').value,
                     'X-Requested-With': 'XMLHttpRequest',
                 },
-                body: formData,
+                body: new FormData(bookingForm),
             })
-            .then(async (response) => {
-                const text = await response.text();
-                let data;
-                try {
-                    data = JSON.parse(text);
-                } catch (e) {
-                    console.error('Non-JSON response', response.status, text.slice(0, 500));
-                    throw new Error(
-                        response.status >= 500
-                            ? 'Server error — check the terminal logs.'
-                            : 'Unexpected response from server.'
-                    );
-                }
-
-                const isAlreadyBooked = (response.status === 409) ||
-                                       (data.status === "duplicate") ||
-                                       (data.errors && data.errors.start_time && data.errors.start_time[0].message === "You already have a booking in this time slot.") ||
-                                       (data.start_time && data.start_time[0].message === "You already have a booking in this time slot.");
-
-                const showAlreadyScheduledModal = () => {
-                    const alreadyScheduledModalEl = document.getElementById('bookingConflictModal');
-
-                    if (alreadyScheduledModalEl) {
-                        const timeDesc = alreadyScheduledModalEl.querySelector('.newsletter-desc');
-                        if (timeDesc) {
-                            // Use times from server if available, otherwise fallback to local timeValue
-                            const exTime = data.existing_time || timeValue;
-                            const sugTime = data.suggested_time || timeValue; // Use suggested_time from server
-                            
-                            // Find specific spans for times
-                            const exTimeSpan = timeDesc.querySelector('.existing-time-span');
-                            const selTimeSpan = timeDesc.querySelector('.selected-time-span');
-                            
-                            if (exTimeSpan) exTimeSpan.textContent = exTime;
-                            if (selTimeSpan) selTimeSpan.textContent = sugTime;
-
-                            // Fallback for direct replacement if spans not found
-                            if (!exTimeSpan || !selTimeSpan) {
-                                let html = timeDesc.innerHTML;
-                                html = html.replace(/\{\{\s*existing_time\s*\}\}/g, exTime);
-                                html = html.replace(/\{\{\s*selected_time\s*\}\}/g, sugTime);
-                                html = html.replace(/\{\{time\}\}/g, sugTime);
-                                timeDesc.innerHTML = html;
-                            }
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        const modalEl = document.getElementById('bookingSuccessModal');
+                        if (modalEl && window.bootstrap && bootstrap.Modal) {
+                            bootstrap.Modal.getOrCreateInstance(modalEl).show();
                         }
-
-                        // Hide cross icon
-                        const closeBtn = alreadyScheduledModalEl.querySelector('.modal-close-btn');
-                        if (closeBtn) closeBtn.style.display = 'none';
-
-                        // Setup Cancel button - WORKING
-                        const cancelBtn = alreadyScheduledModalEl.querySelector('.btn-secondary-cm');
-                        if (cancelBtn) {
-                            cancelBtn.onclick = (e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                bootstrap.Modal.getOrCreateInstance(alreadyScheduledModalEl).hide();
-                            };
+                    } else if (data.status === 'conflict') {
+                        const modalEl = document.getElementById('bookingConflictModal');
+                        if (modalEl && window.bootstrap && bootstrap.Modal) {
+                            const existingTimeSpan = modalEl.querySelector('.existing-time-span');
+                            const selectedTimeSpan = modalEl.querySelector('.selected-time-span');
+                            if (existingTimeSpan) existingTimeSpan.textContent = data.existing_time;
+                            if (selectedTimeSpan) selectedTimeSpan.textContent = data.selected_time;
+                            bootstrap.Modal.getOrCreateInstance(modalEl).show();
                         }
-
-                        // Setup Schedule Anyway button - NEW
-                        const anywayBtn = alreadyScheduledModalEl.querySelector('.btn-cm-cta');
-                        if (anywayBtn) {
-                            anywayBtn.onclick = (e) => {
-                                e.preventDefault();
-                                e.stopPropagation();
-                                bootstrap.Modal.getOrCreateInstance(alreadyScheduledModalEl).hide();
-                                
-                                // Update hidden input with suggested time before re-submitting
-                                if (data.suggested_raw_time && startTimeInput) {
-                                    startTimeInput.value = data.suggested_raw_time;
+                    } else {
+                        // General error or field-specific errors
+                        if (data.errors) {
+                            Object.keys(data.errors).forEach(field => {
+                                const msgs = data.errors[field];
+                                const msgText = msgs && msgs[0] && msgs[0].message ? msgs[0].message : (msgs && msgs[0]) || '';
+                                if (field === '__all__') {
+                                    document.getElementById('err-schedule-general').style.display = 'block';
+                                    return;
                                 }
-                                
-                                submitBooking(true); // ignoreConflict = true
-                            };
+                                const input = bookingForm.querySelector(`[name=${field}]`);
+                                if (input) {
+                                    const err = document.createElement('p');
+                                    err.className = 'ajax-error';
+                                    err.style.cssText = 'color:#FF0000;font-size:0.8rem;margin-top:4px;';
+                                    err.textContent = msgText;
+                                    input.closest('.form-group')?.appendChild(err);
+                                }
+                            });
+                        } else {
+                            document.getElementById('err-schedule-general').style.display = 'block';
                         }
-
-                        const modal = bootstrap.Modal.getOrCreateInstance(alreadyScheduledModalEl);
-                        modal.show();
-                    } else {
-                        alert('You already have a booking in this time slot.');
                     }
-                };
-
-                if (!response.ok) {
-                    if (isAlreadyBooked) {
-                        showAlreadyScheduledModal();
-                    } else if (data.errors) {
-                        applyBookingErrorsFromResponse(data.errors);
-                    } else if (data.message && bookingFormGlobalError) {
-                        bookingFormGlobalError.textContent = data.message;
-                        bookingFormGlobalError.style.display = '';
-                    } else {
-                        alert(data.message || ('Request failed (' + response.status + ')'));
-                    }
-                    return;
-                }
-
-                if (data.status === 'success') {
-                    clearBookingAjaxErrors();
-                    bookingForm.reset();
-                    const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('bookingSuccessModal'));
-                    modal.show();
-                } else if (isAlreadyBooked) {
-                    showAlreadyScheduledModal();
-                } else if (data.errors) {
-                    applyBookingErrorsFromResponse(data.errors);
-                } else if (data.message && bookingFormGlobalError) {
-                    bookingFormGlobalError.textContent = data.message;
-                    bookingFormGlobalError.style.display = '';
-                }
-            })
-            .catch((err) => {
-                console.error(err);
-                const fallback = err && err.message ? err.message : 'Something went wrong. Please try again.';
-                if (bookingFormGlobalError) {
-                    bookingFormGlobalError.textContent = fallback;
-                    bookingFormGlobalError.style.display = '';
-                } else {
-                    alert(fallback);
-                }
-            })
-            .finally(() => {
-                if (submitBtn) {
-                    submitBtn.disabled = false;
-                    submitBtn.querySelector('.label-up').textContent = 'Schedule a Call';
-                }
-            });
-        };
-
-        bookingForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-            submitBooking(false);
+                })
+                .catch(err => {
+                    console.error('Booking form error:', err);
+                    document.getElementById('err-schedule-network').style.display = 'block';
+                })
+                .finally(() => {
+                    if (submitBtn) submitBtn.disabled = false;
+                });
         });
     }
 });

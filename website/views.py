@@ -494,8 +494,7 @@ class ScheduleCallStep2Page(views.View):
                 meet_link = generate_zoom_meet_link(booking=booking, client_email=client_email)
             if not meet_link:
                 msg = (
-                    "We could not create a meeting link right now. Please try again in a few minutes "
-                    "or contact us directly."
+                    "We could not schedule your call, please try again"
                 )
                 if is_ajax:
                     return JsonResponse({"status": "error", "message": msg}, status=503)

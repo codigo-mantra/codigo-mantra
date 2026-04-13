@@ -31,7 +31,7 @@
 
                         <!-- FIRST NAME -->
                         <div class="form-group mb-0">
-                            <label>First Name</label>
+                            <label>First Name<span style="color: #FF0000;">*</span></label>
                             <input type="text" name="name" placeholder="First name" autocomplete="given-name"
                                 value="{{ form.name.value|default:'' }}">
                             {% if form.name.errors %}
@@ -53,7 +53,7 @@
 
                     <!-- EMAIL -->
                     <div class="form-group">
-                        <label>Email Address</label>
+                        <label>Email Address<span style="color: #FF0000;">*</span></label>
                         <input type="email" name="email" placeholder="Email address"
                             value="{{ form.email.value|default:'' }}">
                         {% if form.email.errors %}
@@ -63,7 +63,7 @@
 
                     <!-- PHONE -->
                     <div class="form-group">
-                        <label>Phone Number</label>
+                        <label>Phone Number<span style="color: #FF0000;">*</span></label>
                         <input type="tel" name="phone" placeholder="Phone number"
                             value="{{ form.phone.value|default:'' }}">
                         {% if form.phone.errors %}
@@ -73,7 +73,7 @@
 
                     <!-- RESUME -->
                     <div class="form-group">
-                        <label>Upload Resume</label>
+                        <label>Upload Resume<span style="color: #FF0000;">*</span></label>
 
                         <label class="upload-area" for="resume-upload" id="upload-area-label">
                             Upload resume
@@ -97,6 +97,15 @@
                         {% if form.resume.errors %}
                         <div class="text-danger">{{ form.resume.errors.0 }}</div>
                         {% endif %}
+                    </div>
+
+                    <!-- ERROR MESSAGES -->
+                    <div id="careerFormErrors" style="text-align: right; margin-bottom: 15px;">
+                        <p id="err-general" style="display:none; color: #FF0000; font-size: 14px; margin-bottom: 5px;">We could not submit your application, please try again later</p>
+                        <p id="err-format" style="display:none; color: #FF0000; font-size: 14px; margin-bottom: 5px;">Please upload your resume in PDF, DOC or DOCX format</p>
+                        <p id="err-fields" style="display:none; color: #FF0000; font-size: 14px; margin-bottom: 5px;">Please complete all required fields correctly to submit the form</p>
+                        <p id="err-network" style="display:none; color: #FF0000; font-size: 14px; margin-bottom: 5px;">Unable to connect, please check your internet connection and try again</p>
+                        <p id="err-size" style="display:none; color: #FF0000; font-size: 14px; margin-bottom: 5px;">The uploaded file must be less than 5 MB in size</p>
                     </div>
 
                     <button type="submit" class="btn btn-cm-cta btn-pill w-100">
@@ -482,21 +491,52 @@
             setTimeout(splitFullNameFromFirstField, ms);
         });
 
-        careerForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-            splitFullNameFromFirstField();
-            var submitBtn = careerForm.querySelector('[type="submit"]');
+        function hideAllErrors() {
+            var errorIds = ['err-general', 'err-format', 'err-fields', 'err-network', 'err-size'];
+            errorIds.forEach(function (id) {
+                var el = document.getElementById(id);
+                if (el) el.style.display = 'none';
+            });
             var globalErr = document.getElementById('careerFormGlobalError');
             if (globalErr) {
                 globalErr.style.display = 'none';
                 globalErr.textContent = '';
             }
             careerForm.querySelectorAll('.ajax-error').forEach(function (node) {
-                if (node.id !== 'careerFormGlobalError') node.remove();
+                node.remove();
             });
-            careerForm.querySelectorAll('.text-danger').forEach(function (node) {
-                if (node.id !== 'careerFormGlobalError') node.remove();
-            });
+        }
+
+        careerForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            hideAllErrors();
+            splitFullNameFromFirstField();
+
+            var submitBtn = careerForm.querySelector('[type="submit"]');
+
+            // Client-side validation
+            var name = careerForm.querySelector('[name="name"]').value.trim();
+            var email = careerForm.querySelector('[name="email"]').value.trim();
+            var phone = careerForm.querySelector('[name="phone"]').value.trim();
+            var resume = document.getElementById('resume-upload').files[0];
+
+            if (!name || !email || !phone || !resume) {
+                document.getElementById('err-fields').style.display = 'block';
+                return;
+            }
+
+            // Resume format check
+            var allowedExtensions = /(\.pdf|\.doc|\.docx)$/i;
+            if (!allowedExtensions.exec(resume.name)) {
+                document.getElementById('err-format').style.display = 'block';
+                return;
+            }
+
+            // Resume size check (5MB = 5 * 1024 * 1024 bytes)
+            if (resume.size > 5 * 1024 * 1024) {
+                document.getElementById('err-size').style.display = 'block';
+                return;
+            }
 
             if (submitBtn) {
                 submitBtn.disabled = true;
@@ -538,11 +578,6 @@
                         if (modalEl && window.bootstrap && bootstrap.Modal) {
                             bootstrap.Modal.getOrCreateInstance(modalEl).show();
                         }
-                        if (data.email_warning && globalErr) {
-                            globalErr.textContent =
-                                'Your application was saved, but we could not send the confirmation emails. Our team will still review it.';
-                            globalErr.style.display = 'block';
-                        }
                         return;
                     }
                     if (data.errors) {
@@ -550,17 +585,14 @@
                             var msgs = data.errors[field];
                             var msgText = msgs && msgs[0] && msgs[0].message ? msgs[0].message : (msgs && msgs[0]) || '';
                             if (field === '__all__') {
-                                if (globalErr) {
-                                    globalErr.textContent = msgText;
-                                    globalErr.style.display = 'block';
-                                }
+                                document.getElementById('err-general').style.display = 'block';
                                 return;
                             }
                             var input = careerForm.querySelector('[name="' + field + '"]');
                             if (input) {
                                 var err = document.createElement('p');
                                 err.className = 'ajax-error';
-                                err.style.cssText = 'color:#ff6b6b;font-size:0.8rem;margin-top:4px;';
+                                err.style.cssText = 'color:#FF0000;font-size:0.8rem;margin-top:4px;';
                                 err.textContent = msgText;
                                 var group = input.closest('.form-group');
                                 if (group) group.appendChild(err);
@@ -568,16 +600,12 @@
                         });
                         return;
                     }
-                    if (data.message && globalErr) {
-                        globalErr.textContent = data.message;
-                        globalErr.style.display = 'block';
+                    if (data.message) {
+                        document.getElementById('err-general').style.display = 'block';
                     }
                 })
                 .catch(function () {
-                    if (globalErr) {
-                        globalErr.textContent = 'Something went wrong. Please try again.';
-                        globalErr.style.display = 'block';
-                    }
+                    document.getElementById('err-network').style.display = 'block';
                 })
                 .finally(function () {
                     if (submitBtn) submitBtn.disabled = false;

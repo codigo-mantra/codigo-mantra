@@ -66,8 +66,13 @@
                                 <div class="footer-sub">Join our team in order to get more consultancy &amp; financial.</div>
                                 <form class="footer-form" action="{% url 'newsletter-subscribe' %}" method="post" novalidate>
                                     {% csrf_token %}
+                                    <div id="newsletterErrors" style="text-align: right; max-width: 200px;">
+                                        <p id="err-email-format" style="display:none; color: #FF0000; font-size: 13px; margin-bottom: 0;">Please enter a valid email address in the format</p>
+                                        <p id="err-sub-failed" style="display:none; color: #FF0000; font-size: 13px; margin-bottom: 0;">Subscription failed, please try again later</p>
+                                        <p id="err-sub-network" style="display:none; color: #FF0000; font-size: 13px; margin-bottom: 0;">Unable to connect, please check your internet connection and try again</p>
+                                    </div>
                                     <label class="visually-hidden" for="footerEmail">Email</label>
-                                    <div class="input-group-custom">
+                                    <div class="input-group-custom" style="flex-shrink: 0;">
                                         <input id="footerEmail" class="form-control footer-input" name="email" type="email" placeholder="Email address" autocomplete="email" required>
                                         <button class="btn btn-sm btn-cm-cta btn-pill custom-footer-btn" type="submit" >
                                             <span class="label-up">Subscribe</span>
@@ -327,12 +332,34 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (!footerForm) return;
 
+    function hideNewsletterErrors() {
+        const errorIds = ['err-email-format', 'err-sub-failed', 'err-sub-network'];
+        errorIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.style.display = 'none';
+        });
+        const dynamicErr = footerForm.querySelector('.footer-form-error');
+        if (dynamicErr) dynamicErr.remove();
+    }
+
     footerForm.addEventListener('submit', function (e) {
         e.preventDefault();
+        hideNewsletterErrors();
 
         const emailInput = footerForm.querySelector('#footerEmail');
-        if (!emailInput || !emailInput.value.trim()) {
-            return; 
+        if (!emailInput) return;
+        
+        const emailValue = emailInput.value.trim();
+        if (!emailValue) {
+            document.getElementById('err-email-format').style.display = 'block';
+            return;
+        }
+
+        // Simple email format check
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(emailValue)) {
+            document.getElementById('err-email-format').style.display = 'block';
+            return;
         }
 
         const formData = new FormData(footerForm);
@@ -354,6 +381,7 @@ document.addEventListener('DOMContentLoaded', function () {
             body: formData,
         })
         .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
             const contentType = response.headers.get('content-type');
             if (contentType && contentType.includes('application/json')) {
                 return response.json();
@@ -367,12 +395,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 const modal = bootstrap.Modal.getOrCreateInstance(document.getElementById('subscribeSuccessModal'));
                 modal.show();
             } else {
-                showFormError(footerForm, data.message || 'Please enter a valid email address.');
+                document.getElementById('err-sub-failed').style.display = 'block';
             }
         })
         .catch((err) => {
             console.error('Newsletter error:', err);
-            showFormError(footerForm, 'Something went wrong. Please try again.');
+            document.getElementById('err-sub-network').style.display = 'block';
         })
         .finally(() => {
             submitBtn.disabled = false;
