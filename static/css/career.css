@@ -496,3 +496,12 @@ a.open-position-btn::after {
 section.no-openings {
     padding-top: 24px;
 }
+.hero-sub-career{
+    color: var(--white, #F6F6F6);
+    font-family: Poppins;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
+    opacity: 0.8;
+}

@@ -372,6 +372,7 @@
     .open-position-btn {
         height: 50px !important;
         line-height: 50px !important;
+        font-size: 18px !important;
     }
 
     .btn-cm-cta {
@@ -730,8 +731,12 @@
     overflow: hidden;
 }
     .navbar-collapse {
-        height: 80vh;
-        overflow-y: auto;
+        max-height: 80vh; 
+        min-height: 300px;
+        overflow-y: scroll;
+    }
+    .why-features-track {
+        gap: 58px;
     }
     .testimonials-v2-grid .col-lg-4 {
     gap: 10px !important;
@@ -781,6 +786,43 @@
     .project-meta span+span{
         border: none !important;
     }
+    .hero-sub-empty {
+    max-width: 100% !important;
+}
+a.open-position-btn::after {
+    width: 67px;
+    height: 40px;
+    right: -35%;
+}
+.mobile-spacing{
+    margin-bottom: 48px !important;
+}
+.service-card-new-mobile{
+    
+    flex-direction: column;
+}
+.portfolio-section::before {
+    display: none;
+}
+.portfolio-section::after{
+    display: none;
+}
+.career-hero-sub.text-center {
+    font-size: 14px;
+}
+.job-meta span+span::before {
+    display: none;
+}
+.services-section-career{
+    padding: 10px 0 50px;
+}
+.about-services-cm-last img {
+    height: 78px;
+    width: 108px;
+}
+.about-services-cm-last {
+    padding: 0px;
+}
 }
 @media (max-width: 450px) {
     .about-hero {
