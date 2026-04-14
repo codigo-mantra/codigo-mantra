@@ -511,7 +511,9 @@ span.cm-mega__thumb img {
 }
 
 .cm-mega__thumb {
-  display: block;
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: space-between;
   height: 150px;
   border-radius: 14px;
   border: 1px solid rgba(255, 255, 255, .10);

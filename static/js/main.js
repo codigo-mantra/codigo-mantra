@@ -37,44 +37,7 @@ $(document).ready(function () {
         ]
     });
 });
-$(document).ready(function () {
-    $('.case-study-slider').slick({
-        slidesToShow: 1,
-        centerMode: true,
-        centerPadding: '33.333%',
-        slidesToScroll: 1,
-        arrows: false,
-        dots: true,
-        speed: 300,
-        infinite: true,
-        autoplaySpeed: 5000,
-        autoplay: true,
-        responsive: [
-            {
-                breakpoint: 1199,
-                settings: {
-                    centerPadding: '28%',
-                }
-            },
-            {
-                breakpoint: 991,
-                settings: {
-                    slidesToShow: 1,
-                    centerMode: true,
-                    centerPadding: '15%',
-                }
-            },
-            {
-                breakpoint: 767,
-                settings: {
-                    slidesToShow: 1,
-                    centerMode: false,
-                    centerPadding: '0',
-                }
-            }
-        ]
-    });
-});
+
 function toggleDesc(id) {
   const desc = document.getElementById('desc-' + id);
   const toggle = document.getElementById('toggle-' + id);
