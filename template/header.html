@@ -13,6 +13,11 @@
 
                         <button class="navbar-toggler cm-navtoggle" type="button" data-bs-toggle="collapse" data-bs-target="#primaryNav" aria-controls="primaryNav" aria-expanded="false" aria-label="Toggle navigation">
                             <span class="navbar-toggler-icon"></span>
+                            <span class="close-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M4.25 17.6342C4.0375 17.6342 3.85942 17.5623 3.71575 17.4185C3.57192 17.2748 3.5 17.0967 3.5 16.884C3.5 16.6715 3.57192 16.4934 3.71575 16.3497C3.85942 16.2062 4.0375 16.1345 4.25 16.1345L19.5343 6.36523C19.7467 6.36523 19.9248 6.43707 20.0685 6.58073C20.2123 6.72457 20.2843 6.90282 20.2843 7.11548C20.2843 7.32798 20.2123 7.50607 20.0685 7.64973C19.9248 7.79323 19.7467 7.86498 19.5343 7.86498L4.25 17.6342ZM4.25 7.86498C4.0375 7.86498 3.85942 7.79315 3.71575 7.64948C3.57192 7.50565 3.5 7.3274 3.5 7.11473C3.5 6.90223 3.57192 6.72415 3.71575 6.58048C3.85942 6.43698 4.0375 6.36523 4.25 6.36523L19.5343 16.3497C19.7467 16.3497 19.9248 16.4217 20.0685 16.5655C20.2123 16.7092 20.2843 16.8873 20.2843 17.1C20.2843 17.3125 20.2123 17.4906 20.0685 17.6342C19.9248 17.7777 19.7467 17.8495 19.5343 17.8495L4.25 7.86498Z" fill="#1F1F1F"/>
+                            </svg>
+                            </span>
                         </button>
 
                         <div class="collapse navbar-collapse" id="primaryNav">
@@ -153,7 +158,7 @@
                                     </a>
                                 </li> -->
                             </ul>
-                            <a class="btn-cm-cta btn-pill" href="{% url 'contact' %}">
+                            <a class="btn-cm-cta btn-pill btn-mobile-cm" href="{% url 'contact' %}">
                                 <span class="label-up">Request a Quote</span>
                                 <span class="label-up">Request a Quote</span>
                             </a>
@@ -422,6 +427,35 @@ document.addEventListener("DOMContentLoaded", function () {
 
     navCollapse.addEventListener("hidden.bs.collapse", function () {
         document.body.style.overflow = "";
+    });
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    const navCollapse = document.getElementById("primaryNav");
+    const togglerIcon = document.querySelector(".navbar-toggler-icon");
+    const closeIcon = document.querySelector(".close-icon");
+
+    function updateIcons(isOpen) {
+        if (isOpen) {
+            togglerIcon.style.display = "none";
+            closeIcon.style.display = "block";
+        } else {
+            togglerIcon.style.display = "block";
+            closeIcon.style.display = "none";
+        }
+    }
+
+    // Set initial state
+    updateIcons(false);
+
+    navCollapse.addEventListener("shown.bs.collapse", function () {
+        document.body.style.overflow = "hidden";
+        updateIcons(true);
+    });
+
+    navCollapse.addEventListener("hidden.bs.collapse", function () {
+        document.body.style.overflow = "";
+        updateIcons(false);
     });
 });
 </script>

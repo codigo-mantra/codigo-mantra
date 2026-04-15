@@ -257,11 +257,14 @@ a:hover {
 }
 
 .cm-navtoggle {
-  border: 1px solid rgba(0, 0, 0, .18);
+  border: none !important;
   border-radius: 999px;
   padding: 6px 10px;
 }
-
+.cm-navtoggle:focus:not(:focus-visible) {
+    outline: 0;
+    box-shadow: none !important;
+}
 .cm-navtoggle .navbar-toggler-icon {
   filter: invert(0);
 }
@@ -1477,9 +1480,22 @@ span.reserved-rights {
   }
 
   .cm-nav .nav-link {
-    padding: 10px 10px;
+    padding: 10px 5px !important;
+    border-radius: 4px;
+    background: #F8F8F8;
+    gap: 10px;
+    align-items: center;
   }
-
+  .cm-nav .nav-link.active {
+    color: #333;
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    background: #F8F8F8;
+    box-shadow: none !important;
+}
   .hero {
     padding-top: 22px;
   }
