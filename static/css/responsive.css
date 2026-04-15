@@ -888,6 +888,9 @@ p.count-services {
 .service-row-cm .service-card-wrapper {
     padding: 0px !important;
 }
+.cm-mega__thumb {
+    height: auto;
+}
 }
 
 @media (max-width: 450px) {
