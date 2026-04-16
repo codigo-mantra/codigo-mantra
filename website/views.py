@@ -118,7 +118,7 @@ def _booking_followup_zoom_and_emails(booking_id, client_name, client_email, cli
             "name": client_name,
             "admin_name": consultant.name if consultant else "Admin",
             "email": client_email,
-            "number": "N/A",
+            "phone_number": booking.phone_number or "N/A",
             "date": admin_date_str,
             "time": f"{admin_time_str} ({ADMIN_BOOKING_TZ})",
             "admin_tz": ADMIN_BOOKING_TZ,

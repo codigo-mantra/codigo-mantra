@@ -589,12 +589,35 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function finishTimezoneSelectInit() {
+    // ── WORLDTIMEAPI INTEGRATION ──────────────────────────────
+    const WORLDTIME_API = 'https://worldtimeapi.org/api';
+    const tzOffsetCache = {};
+
+    async function fetchTimezoneOffset(zone) {
+        if (tzOffsetCache[zone]) return tzOffsetCache[zone];
+        try {
+            const res = await fetch(`${WORLDTIME_API}/timezone/${zone}`);
+            if (!res.ok) throw new Error(`Failed for ${zone}`);
+            const data = await res.json();
+            const offset = data.utc_offset || '+00:00';
+            const label = `(GMT${offset}) ${zone}`;
+            tzOffsetCache[zone] = { offset, label };
+            return tzOffsetCache[zone];
+        } catch (e) {
+            return { offset: '+00:00', label: zone };
+        }
+    }
+
+    async function finishTimezoneSelectInit() {
         const timezoneDisplay = document.getElementById('timezoneDisplayStep2');
         const tzForDisplay = timezoneValue || 'Asia/Kolkata';
+        
+        // Fetch GMT label for display
+        const info = await fetchTimezoneOffset(tzForDisplay);
         if (timezoneDisplay) {
-            timezoneDisplay.textContent = timezoneOptionLabel(tzForDisplay);
+            timezoneDisplay.textContent = info.label;
         }
+
         if (bookingDateInput) bookingDateInput.value = bookingDate;
         if (startTimeInput) startTimeInput.value = startTime;
         if (clientTimezoneInput) {

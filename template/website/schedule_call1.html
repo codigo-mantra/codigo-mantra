@@ -577,99 +577,267 @@ function changeMonth(dir) {
 }
 </script>
 <script>
-function setupCustomTimezoneDropdown() {
+// ── WORLDTIMEAPI INTEGRATION ──────────────────────────────
+
+const WORLDTIME_API = 'https://worldtimeapi.org/api';
+
+// Cache to avoid repeated API calls
+const tzOffsetCache = {};
+
+// Get all timezones from WorldTimeAPI
+async function fetchAllTimezones() {
+    try {
+        const res = await fetch(`${WORLDTIME_API}/timezone`);
+        if (!res.ok) throw new Error('Failed to fetch timezones');
+        let zones = await res.json();
+        
+        // Map Asia/Calcutta to Asia/Kolkata and remove duplicates
+        zones = zones.map(z => z === 'Asia/Calcutta' ? 'Asia/Kolkata' : z);
+        return [...new Set(zones)]; // returns unique array
+    } catch (e) {
+        console.error('WorldTimeAPI fetch error:', e);
+        // Fallback to Intl if API fails
+        let fallback = [];
+        if (typeof Intl.supportedValuesOf === 'function') {
+            fallback = Intl.supportedValuesOf('timeZone').slice();
+        } else {
+            fallback = ['Asia/Kolkata', 'UTC', 'America/New_York', 'Europe/London'];
+        }
+        return [...new Set(fallback.map(z => z === 'Asia/Calcutta' ? 'Asia/Kolkata' : z))];
+    }
+}
+
+// Get offset info for a single timezone
+async function fetchTimezoneOffset(zone) {
+    // Standardize input
+    const normalizedZone = zone === 'Asia/Calcutta' ? 'Asia/Kolkata' : zone;
+    if (tzOffsetCache[normalizedZone]) return tzOffsetCache[normalizedZone];
+
+    try {
+        const res = await fetch(`${WORLDTIME_API}/timezone/${normalizedZone}`);
+        if (!res.ok) throw new Error(`Failed for ${normalizedZone}`);
+        const data = await res.json();
+
+        // data.utc_offset looks like "+05:30" or "-05:00"
+        const offset = data.utc_offset || '+00:00';
+        let label = `(GMT${offset}) ${normalizedZone}`;
+        
+        // Add friendly country names for common zones
+        if (normalizedZone === 'Asia/Kolkata') label += ' (India)';
+        if (normalizedZone === 'Asia/Dubai') label += ' (UAE)';
+        if (normalizedZone === 'Europe/London') label += ' (UK)';
+
+        if (indianOceanMap[normalizedZone]) label += indianOceanMap[normalizedZone];
+        
+        tzOffsetCache[normalizedZone] = { offset, label, abbreviation: data.abbreviation };
+        return tzOffsetCache[normalizedZone];
+    } catch (e) {
+        let label = normalizedZone;
+        if (normalizedZone === 'Asia/Kolkata') label = 'Asia/Kolkata (India)';
+        tzOffsetCache[normalizedZone] = { offset: '+00:00', label: label, abbreviation: '' };
+        return tzOffsetCache[normalizedZone];
+    }
+}
+
+// Auto-detect user timezone via WorldTimeAPI IP detection
+async function detectUserTimezoneViaWorldTime() {
+    try {
+        const res = await fetch(`${WORLDTIME_API}/ip`);
+        if (!res.ok) throw new Error('IP detection failed');
+        const data = await res.json();
+
+        const zone = data.timezone;       // e.g. "Asia/Kolkata"
+        const offset = data.utc_offset;   // e.g. "+05:30"
+
+        localStorage.setItem('schedule_call_tz', zone);
+
+        const hiddenInput = document.getElementById('timezoneSelect');
+        if (hiddenInput) hiddenInput.value = zone;
+
+        const selectedText = document.getElementById('timezoneSelectedText');
+        if (selectedText) selectedText.textContent = `(GMT${offset}) ${zone}`;
+
+        console.log(`✅ Detected timezone: ${zone} (GMT${offset})`);
+        return { zone, offset };
+    } catch (e) {
+        console.error('WorldTimeAPI IP detect error:', e);
+        const fallback = localStorage.getItem('schedule_call_tz') || 'Asia/Kolkata';
+        return { zone: fallback, offset: '+00:00' };
+    }
+}
+
+// Build timezone dropdown using WorldTimeAPI
+async function buildTimezoneDropdownWorldTime() {
     const dropdown = document.getElementById('timezoneDropdown');
     const toggle = document.getElementById('timezoneToggle');
-    const search = document.getElementById('timezoneSearch');
+    const searchEl = document.getElementById('timezoneSearch');
     const optionsWrap = document.getElementById('timezoneOptions');
     const hiddenInput = document.getElementById('timezoneSelect');
     const selectedText = document.getElementById('timezoneSelectedText');
 
     if (!dropdown || !toggle || !optionsWrap || !hiddenInput || !selectedText) return;
 
-    let allZones = [];
-    if (typeof Intl.supportedValuesOf === 'function') {
-        allZones = Intl.supportedValuesOf('timeZone').slice();
-    } else {
-        allZones = ['Asia/Kolkata', 'Australia/Adelaide', 'America/New_York', 'Europe/London', 'Asia/Dubai'];
-    }
+    // Show loading state
+    optionsWrap.innerHTML = '<div class="tz-option tz-loading">⏳ Loading timezones...</div>';
 
-    let currentValue = localStorage.getItem('schedule_call_tz') || hiddenInput.value || 'Asia/Kolkata';
+    // Step 1: Fetch all timezone IDs
+    const allZones = await fetchAllTimezones();
+    const currentValue = localStorage.getItem('schedule_call_tz') || hiddenInput.value || 'Asia/Kolkata';
 
-    if (!allZones.includes(currentValue)) {
-        allZones.push(currentValue);
-    }
+    // Step 2: Fetch offset only for current timezone first (fast render)
+    const currentInfo = await fetchTimezoneOffset(currentValue);
+    if (selectedText) selectedText.textContent = currentInfo.label;
+    hiddenInput.value = currentValue;
 
+    // Step 3: Render all zones (with offset fetched lazily)
+    optionsWrap.innerHTML = '';
+
+    // Sort zones alphabetically first
     allZones.sort();
 
-    function formatLabel(zone) {
-        return zone === 'Asia/Kolkata' ? 'Asia/Kolkata (India)' : zone;
-    }
+    allZones.forEach(zone => {
+        const item = document.createElement('div');
+        item.className = 'tz-option' + (zone === currentValue ? ' selected' : '');
+        item.dataset.zone = zone;
 
-    function renderOptions(filter = '') {
-        const q = filter.toLowerCase().trim();
-        optionsWrap.innerHTML = '';
+        // Show zone name immediately, offset loads lazily
+        const cached = tzOffsetCache[zone];
+        item.textContent = cached ? cached.label : zone;
 
-        allZones
-            .filter(zone => zone.toLowerCase().includes(q) || formatLabel(zone).toLowerCase().includes(q))
-            .forEach(zone => {
-                const item = document.createElement('div');
-                item.className = 'tz-option' + (zone === currentValue ? ' selected' : '');
-                item.textContent = formatLabel(zone);
+        item.addEventListener('click', async function () {
+            // Fetch offset on click if not cached
+            const info = await fetchTimezoneOffset(zone);
 
-                item.addEventListener('click', function () {
-                    currentValue = zone;
-                    hiddenInput.value = zone;
-                    selectedText.textContent = formatLabel(zone);
-                    localStorage.setItem('schedule_call_tz', zone);
+            hiddenInput.value = zone;
+            localStorage.setItem('schedule_call_tz', zone);
 
-                    dropdown.classList.remove('open');
+            if (selectedText) selectedText.textContent = info.label;
 
-                    if (typeof renderCalendar === 'function') {
-                        renderCalendar();
-                    }
-                    if (typeof renderTimeSlots === 'function') {
-                        renderTimeSlots();
-                    }
-                    if (typeof updateNavButtons === 'function') {
-                        updateNavButtons();
-                    }
-                    if (typeof selectedDate !== 'undefined' && selectedDate && typeof setDateLabelFromKey === 'function') {
-                        setDateLabelFromKey(selectedDate);
-                    } else if (typeof getTodayKeyInZone === 'function' && typeof setDateLabelFromKey === 'function') {
-                        setDateLabelFromKey(getTodayKeyInZone(zone));
-                    }
-                });
+            document.querySelectorAll('.tz-option.selected')
+                .forEach(el => el.classList.remove('selected'));
+            item.classList.add('selected');
 
-                optionsWrap.appendChild(item);
-            });
-    }
+            dropdown.classList.remove('open');
 
-    hiddenInput.value = currentValue;
-    selectedText.textContent = formatLabel(currentValue);
-    renderOptions();
+            if (typeof renderCalendar === 'function') renderCalendar();
+            if (typeof renderTimeSlots === 'function') renderTimeSlots();
+            if (typeof updateNavButtons === 'function') updateNavButtons();
+            if (typeof selectedDate !== 'undefined' && selectedDate) {
+                setDateLabelFromKey(selectedDate);
+            } else if (typeof getTomorrowKeyInZone === 'function') {
+                setDateLabelFromKey(getTomorrowKeyInZone(zone));
+            }
+        });
 
+        optionsWrap.appendChild(item);
+    });
+
+    // Toggle behavior
     toggle.addEventListener('click', function (e) {
         e.stopPropagation();
         dropdown.classList.toggle('open');
     });
 
-    if (search) {
-        search.addEventListener('input', function () {
-            renderOptions(this.value);
+    // Search filter
+    if (searchEl) {
+        searchEl.addEventListener('input', function () {
+            const query = this.value.toLowerCase().trim();
+            const items = optionsWrap.querySelectorAll('.tz-option');
+            
+            items.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                const zoneId = item.dataset.zone.toLowerCase();
+                
+                // Smarter search: 
+                // 1. Check if query matches a distinct part of the zone ID (e.g., "India" shouldn't match "Indiana")
+                // 2. We use a regex that looks for the query as a complete word or at the start of a component
+                const parts = zoneId.split(/[\/_]/);
+                const isPartMatch = parts.some(p => p === query || p.startsWith(query));
+                
+                // Also allow matching the full label (which includes GMT and friendly names like "(India)")
+                const isLabelMatch = text.includes(query);
+
+                // Special case: if query is "india", prioritize Asia/Kolkata and exclude Indiana unless exact match
+                if (query === 'india') {
+                    if (zoneId.includes('indiana')) {
+                        item.style.display = 'none';
+                        return;
+                    }
+                }
+
+                item.style.display = (isPartMatch || isLabelMatch) ? '' : 'none';
+            });
         });
     }
 
+    // Close on click outside
     document.addEventListener('click', function (e) {
         if (!dropdown.contains(e.target)) {
             dropdown.classList.remove('open');
         }
     });
+
+    // Step 4: Lazily load offsets in background and update labels
+    loadOffsetsInBackground(allZones, optionsWrap);
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-    setupCustomTimezoneDropdown();
+// Load offsets in background without blocking UI
+async function loadOffsetsInBackground(zones, container) {
+    const BATCH_SIZE = 5; // WorldTimeAPI rate limit friendly
+
+    for (let i = 0; i < zones.length; i += BATCH_SIZE) {
+        const batch = zones.slice(i, i + BATCH_SIZE);
+
+        await Promise.all(
+            batch.map(async zone => {
+                const info = await fetchTimezoneOffset(zone);
+                const el = container.querySelector(`[data-zone="${zone}"]`);
+                if (el) el.textContent = info.label;
+            })
+        );
+
+        // Small delay to respect WorldTimeAPI rate limits
+        await new Promise(r => setTimeout(r, 200));
+    }
+
+    // Re-sort options by UTC offset after all offsets loaded
+    sortOptionsByOffset(container);
+}
+
+// Sort dropdown options by UTC offset value
+function sortOptionsByOffset(container) {
+    const items = Array.from(container.querySelectorAll('.tz-option'));
+
+    items.sort((a, b) => {
+        const getMinutes = el => {
+            const match = el.textContent.match(/GMT([+-])(\d+):(\d+)/);
+            if (!match) return 0;
+            const sign = match[1] === '+' ? 1 : -1;
+            return sign * (parseInt(match[2]) * 60 + parseInt(match[3]));
+        };
+        return getMinutes(a) - getMinutes(b);
+    });
+
+    items.forEach(item => container.appendChild(item));
+}
+
+// ── INIT ──────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', async () => {
+    // Step 1: Auto-detect user timezone
+    await detectUserTimezoneViaWorldTime();
+
+    // Step 2: Build dropdown with WorldTimeAPI data
+    await buildTimezoneDropdownWorldTime();
+
+    // Step 3: Render initial calendar & slots
+    renderCalendar();
+    renderTimeSlots();
+
+    const tz = getSelectedTz();
+    const tomorrowKey = getTomorrowKeyInZone(tz);
+    setDateLabelFromKey(tomorrowKey);
+
+    updateNavButtons();
 });
 </script>
-
 {% endblock %}
