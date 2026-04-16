@@ -731,7 +731,6 @@
     body.cm-headerbar #primaryNav{
     overflow: hidden;
 }
-<<<<<<< HEAD
     .navbar-collapse {
         max-height: 80vh;
         height: 70vh;
@@ -742,13 +741,6 @@
         justify-content: space-between;
         transition: all 0.3s ease-in-out;
     }
-=======
-    /* .navbar-collapse {
-        max-height: 80vh; 
-        min-height: 300px;
-        overflow-y: scroll;
-    } */
->>>>>>> ba1cf02 (update schedule call and design)
     .why-features-track {
         gap: 58px;
     }
@@ -882,18 +874,9 @@ p.count-services {
     gap: 10px;
     margin-bottom: 20px ;
 }
-<<<<<<< HEAD
 .navbar-nav.cm-nav {
     margin: 30px 0 !important;
     width: 100%;
-=======
-nav.navbar.navbar-expand-lg {
-    padding-top: 2px !important;
-}
-.cm-headerbar .navbar-nav {
-    margin-bottom: 20px !important;
-}
->>>>>>> ba1cf02 (update schedule call and design)
 }
 .service-row-cm {
     border-radius: 16px;

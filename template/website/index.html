@@ -464,13 +464,15 @@
         <div class="row g-4 insights-section-cm-row case-study-slider">
             {% for insight in insights %}
             <div class="col-lg-4">
-                <div class="insight-card">
+                <div class="insight-card h-100" style="max-height: 100%;">
                     <div class="insight-img">
                         <img loading="lazy" src="{{ insight.image.url }}" alt="{{ insight.title }}" class="img-fluid">
                     </div>
                     <div class="insight-body">
-                        <h3 class="insight-title">{{ insight.title }}</h3>
-                        <p class="insight-desc">{{ insight.content|truncatechars:150 }}</p>
+                        <div>
+                            <h3 class="insight-title">{{ insight.title }}</h3>
+                            <p class="insight-desc">{{ insight.content|truncatechars:150 }}</p>
+                        </div>
                         <div class="insight-footer">
                             <div class="insight-author">
                                 <img loading="lazy" src="{{ insight.author.image.url }}" alt="{{ insight.author.name }}"
@@ -540,34 +542,34 @@
         });
     });
 
-    $(document).ready(function () {
-    $('.case-study-slider').slick({
-        slidesToShow: 1,
-        centerMode: true,
-        centerPadding: '33.333%',
-        slidesToScroll: 1,
-        arrows: false,
-        dots: false,
-        speed: false,
-        infinite: true,
-        autoplaySpeed: false,
-        autoplay: false,
-        responsive: [
-            {
-                breakpoint: 767,
-                settings: {
+   $(document).ready(function () {
+    function initCaseStudySlider() {
+        if ($(window).width() <= 767) {
+            if (!$('.case-study-slider').hasClass('slick-initialized')) {
+                $('.case-study-slider').slick({
                     slidesToShow: 1,
-                    centerMode: false,
-                    centerPadding: '0px',
-                    autoplay: true,
+                    slidesToScroll: 1,
+                    arrows: false,
                     dots: true,
-                    infinite: true,
                     speed: 600,
                     infinite: true,
+                    autoplay: true,
                     autoplaySpeed: 1500,
-                }
+                    centerMode: false,
+                    centerPadding: '0px'
+                });
             }
-        ]
+        } else {
+            if ($('.case-study-slider').hasClass('slick-initialized')) {
+                $('.case-study-slider').slick('unslick');
+            }
+        }
+    }
+
+    initCaseStudySlider();
+
+    $(window).on('resize', function () {
+        initCaseStudySlider();
     });
 });
 </script>

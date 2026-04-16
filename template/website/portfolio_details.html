@@ -25,10 +25,10 @@
                             </div>
                             <div class="project-specsfications">
                                     <div class="job-meta project-meta">
-                                        <span>Timeline
+                                        <span><p class="job-meta-head">Timeline</p>
                                             <p class="job-meta-sub">{{ case_study.timeline|default:"4 Weeks" }}</p>
                                         </span>
-                                        <span>Industry 
+                                        <span><p class="job-meta-head">Industry </p>
                                             <p class="job-meta-sub">
                                                 {% for industry in case_study.industries.all %}
                                                     {{ industry.name }}{% if not forloop.last %}, {% endif %}
@@ -37,7 +37,7 @@
                                                 {% endfor %}
                                             </p>
                                         </span>
-                                        <span>Services
+                                        <span><p class="job-meta-head">Services</p>
                                             <p class="job-meta-sub">
                                                 {% for service in case_study.services.all %}
                                                     {{ service.name }}{% if not forloop.last %} , {% endif %}
@@ -46,7 +46,7 @@
                                                 {% endfor %}
                                             </p>
                                         </span>
-                                        <span>Team Setup
+                                        <span><p class="job-meta-head">Team Setup</p>
                                             <p class="job-meta-sub">{{ case_study.team|default:"1 Designer + 4 Developers" }}</p>
                                         </span>
                                     </div>

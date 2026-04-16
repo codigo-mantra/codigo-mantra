@@ -724,6 +724,7 @@ p.job-meta-sub {
   align-items: stretch;
   gap: 0;
   margin-bottom: 0;
+  opacity: 1;
 }
 
 .project-meta span {
@@ -767,7 +768,7 @@ p.job-meta-sub {
   line-height: 150%;
 }
 
-.project-overview-desc {
+.project-overview-desc p{
   color: #F6F6F6;
   font-family: Poppins;
   font-size: 16px;
@@ -776,6 +777,33 @@ p.job-meta-sub {
   line-height: 150%;
   margin: 0;
   opacity: 0.7;
+}
+.project-overview-desc h3 {
+    color: #F6F6F6;
+    font-family: "Cabinet Grotesk";
+    font-size: 42px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 150%;
+    margin: 0;
+}
+.project-overview-desc h4 {
+    color: #F6F6F6;
+    font-family: Poppins;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 33px */
+    opacity: 0.9;
+    margin: 0;
+}
+.project-overview-desc ul {
+    color: rgba(246, 246, 246, 0.70);
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 150%;
 }
 
 .project-overview-img {
@@ -917,4 +945,14 @@ p.job-meta-sub {
 
 .info-meta-item {
     align-items: flex-start;
+}
+.job-meta-head {
+    color: var(--white, #F6F6F6);
+    font-family: Poppins;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
+    opacity: 0.8;
+    margin: 0;
 }
