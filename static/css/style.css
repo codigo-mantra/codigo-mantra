@@ -561,6 +561,7 @@ span.cm-mega__thumb img {
   gap: 8px;
   align-items: center;
   width: 100%;
+  flex-wrap: wrap;
 }
 
 .cm-mega__bottomText {
@@ -620,6 +621,7 @@ span.cm-mega__thumb img {
   .cm-mega__panel {
     width: 100%;
     margin-top: 10px;
+    height: 50vh;
   }
 
   .cm-mega__grid {
@@ -1477,6 +1479,10 @@ span.reserved-rights {
     border-radius: 26px;
     padding: 12px 14px;
     flex-wrap: wrap;
+    min-height: 20px;
+    max-height: 80vh;
+    overflow-y: scroll;
+    
   }
 
   .cm-nav .nav-link {

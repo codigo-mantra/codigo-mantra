@@ -478,11 +478,12 @@ class ScheduleCallStep2Page(views.View):
                         sel_d, sel_t = _format_date_time_in_zone(dt_ist, client_timezone)
                         sug_d, sug_t = _format_date_time_in_zone(suggested_dt, client_timezone)
                         return JsonResponse({
-                            "status": "duplicate",
+                            "status": "conflict",
                             "existing_time": f"{ex_d} at {ex_t}",
                             "selected_time": f"{sel_d} at {sel_t}",
                             "suggested_time": f"{sug_d} at {sug_t}",
-                            "suggested_raw_time": suggested_dt.astimezone(_safe_zone(client_timezone)).strftime("%H:%M")
+                            "suggested_raw_time": suggested_dt.astimezone(_safe_zone(client_timezone)).strftime("%H:%M"),
+                            # "suggested_raw_date": suggested_dt.astimezone(_safe_zone(client_timezone)).strftime("%Y-%m-%d")
                         }, status=409)
                     ex_d, ex_t = _format_date_time_in_zone(ex_dt_ist, client_timezone)
                     messages.error(request, f"A booking already exists on {ex_d} at {ex_t} (your time).")
@@ -504,13 +505,7 @@ class ScheduleCallStep2Page(views.View):
             booking.meet_link = meet_link
 
             # ------------------- Save booking & trigger follow-up -------------------
-            if ignore_conflict:
-                Booking.objects.filter(
-                    client=client, 
-                    booking_date=booking.booking_date, 
-                    start_time=booking.start_time
-                ).delete()
-
+            # Removed duplicate delete logic to allow multiple bookings
             booking.save()
             _bid = booking.pk
             _ctz = client_timezone

@@ -100,6 +100,7 @@
                         <input type="hidden" name="booking_date" id="bookingDateInput">
                         <input type="hidden" name="start_time" id="startTimeInput">
                         <input type="hidden" name="client_timezone" id="clientTimezoneInput" value="">
+                        <input type="hidden" name="ignore_conflict" id="ignoreConflictInput" value="false">
 
                         <!-- NAME -->
                         <div class="form-group form-group-schedule-call">
@@ -311,7 +312,7 @@
                               <span class="label-up">Cancel</span>
                               <span class="label-up text-white fw-400">Cancel</span>
                           </a>
-                          <a href="#" class="btn btn-cm-cta w-100">
+                          <a href="#" id="confirmScheduleAnyway" class="btn btn-cm-cta w-100">
                               <span class="label-up">Schedule Anyway →</span>
                               <span class="label-up text-white fw-400">Schedule Anyway →</span>
                           </a>
@@ -499,13 +500,14 @@ document.addEventListener('DOMContentLoaded', function () {
         const clientTz = normalizeTimezone(timezoneValue || 'Asia/Kolkata');
 
         if (!dateTimeLabel || !bd || !st) {
+            debugger
             console.warn('Missing data for refreshSummaryLabel:', { bd, st, clientTz });
             if (dateTimeLabel && (bd || st)) {
                 dateTimeLabel.innerHTML = `${bd || ''} ${st || ''}`;
             }
             return;
         }
-
+       debugger
         const lsDate = localStorage.getItem('schedule_call_date');
         const lsTime = localStorage.getItem('schedule_call_time');
         const frozenDateLine = localStorage.getItem('schedule_call_display_date');
@@ -610,23 +612,84 @@ document.addEventListener('DOMContentLoaded', function () {
     const bookingForm = document.getElementById('bookingForm');
     // The bookingFormGlobalError, clearBookingAjaxErrors, applyBookingErrorsFromResponse are removed by this replacement.
     // The new logic uses direct error IDs.
+    
 
     if (bookingForm) {
+        debugger
+        let currentSuggestedRawTime = null;
+
+        // Handle "Schedule Anyway" button in the conflict modal
+        // const confirmScheduleAnyway = document.getElementById('confirmScheduleAnyway');
+        // if (confirmScheduleAnyway) {
+        //     confirmScheduleAnyway.addEventListener('click', function() {
+        //         const modalEl = document.getElementById('bookingConflictModal');
+        //         if (modalEl && window.bootstrap && bootstrap.Modal) {
+        //             bootstrap.Modal.getInstance(modalEl).hide();
+        //         }
+                
+        //         // Update form inputs with suggested time (next slot)
+        //         if (currentSuggestedRawTime) {
+                    
+        //             const startTimeInput = document.getElementById('startTimeInput');
+        //             if (startTimeInput) startTimeInput.value = currentSuggestedRawTime;
+                    
+        //             // Trigger label refresh if exists
+        //             if (typeof refreshSummaryLabel === 'function') refreshSummaryLabel();
+        //         }
+
+        //         const ignoreInput = document.getElementById('ignoreConflictInput');
+        //         if (ignoreInput) ignoreInput.value = 'true';
+                
+        //         // Programmatically trigger form submit
+        //         bookingForm.requestSubmit ? bookingForm.requestSubmit() : bookingForm.submit();
+        //     });
+        // }
+        confirmScheduleAnyway.addEventListener('click', function () {
+            const modalEl = document.getElementById('bookingConflictModal');
+            if (modalEl && window.bootstrap && bootstrap.Modal) {
+                bootstrap.Modal.getInstance(modalEl).hide();
+            }
+            // Step 1: Freeze the label FIRST before anything changes
+            const dateTimeLabel = document.getElementById('selectedDateTimeLabel');
+            const frozenHTML = dateTimeLabel ? dateTimeLabel.innerHTML : '';
+            // Step 2: Update startTimeInput for the backend (required)
+            if (currentSuggestedRawTime) {
+                const startTimeInput = document.getElementById('startTimeInput');
+                if (startTimeInput) startTimeInput.value = currentSuggestedRawTime;
+            }
+            // Step 3: Restore frozen label immediately (before any re-render)
+            if (dateTimeLabel && frozenHTML) {
+                dateTimeLabel.innerHTML = frozenHTML;
+            }
+            const ignoreInput = document.getElementById('ignoreConflictInput');
+            if (ignoreInput) ignoreInput.value = 'true';
+            setTimeout(function () {
+                // Step 4: Restore again after timeout just in case
+                if (dateTimeLabel && frozenHTML) {
+                    dateTimeLabel.innerHTML = frozenHTML;
+                }
+                bookingForm.requestSubmit ? bookingForm.requestSubmit() : bookingForm.submit();
+            }, 300);
+        });
+
         bookingForm.addEventListener('submit', function (e) {
             e.preventDefault();
             hideAllErrors();
 
             const submitBtn = bookingForm.querySelector('[type=submit]');
+            const ignoreInput = document.getElementById('ignoreConflictInput');
 
-            // Client-side validation
-            const clientName = bookingForm.querySelector('[name=client_name]').value.trim();
-            const clientEmail = bookingForm.querySelector('[name=client_email]').value.trim();
-            const serviceRequested = bookingForm.querySelector('[name=service_requested]').value.trim();
-            const projectBrief = bookingForm.querySelector('[name=project_brief]').value.trim();
+            // Client-side validation (only if not a "Schedule Anyway" resubmission)
+            if (!ignoreInput || ignoreInput.value !== 'true') {
+                const clientName = bookingForm.querySelector('[name=client_name]').value.trim();
+                const clientEmail = bookingForm.querySelector('[name=client_email]').value.trim();
+                const serviceRequested = bookingForm.querySelector('[name=service_requested]').value.trim();
+                const projectBrief = bookingForm.querySelector('[name=project_brief]').value.trim();
 
-            if (!clientName || !clientEmail || !serviceRequested || !projectBrief) {
-                document.getElementById('err-schedule-fields').style.display = 'block';
-                return;
+                if (!clientName || !clientEmail || !serviceRequested || !projectBrief) {
+                    document.getElementById('err-schedule-fields').style.display = 'block';
+                    return;
+                }
             }
 
             if (submitBtn) submitBtn.disabled = true;
@@ -641,6 +704,9 @@ document.addEventListener('DOMContentLoaded', function () {
             })
                 .then(res => res.json())
                 .then(data => {
+                    // Reset ignore_conflict for the next attempt if it fails or succeeds
+                    if (ignoreInput) ignoreInput.value = 'false';
+
                     if (data.status === 'success') {
                         const modalEl = document.getElementById('bookingSuccessModal');
                         if (modalEl && window.bootstrap && bootstrap.Modal) {
@@ -652,7 +718,12 @@ document.addEventListener('DOMContentLoaded', function () {
                             const existingTimeSpan = modalEl.querySelector('.existing-time-span');
                             const selectedTimeSpan = modalEl.querySelector('.selected-time-span');
                             if (existingTimeSpan) existingTimeSpan.textContent = data.existing_time;
-                            if (selectedTimeSpan) selectedTimeSpan.textContent = data.selected_time;
+                            if (selectedTimeSpan) selectedTimeSpan.textContent = data.suggested_time; // Show suggested time
+                            
+                            // Store suggested values for the button click
+                            currentSuggestedRawTime = data.suggested_raw_time;
+                            currentSuggestedRawDate = data.suggested_raw_date;
+
                             bootstrap.Modal.getOrCreateInstance(modalEl).show();
                         }
                     } else {
