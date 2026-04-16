@@ -1,4 +1,5 @@
-from django.shortcuts import render, redirect
+from django.db.models import Q, Count
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.core.mail import send_mail, EmailMessage
 from django.template.loader import render_to_string
@@ -446,7 +447,12 @@ class ScheduleCallStep2Page(views.View):
                 window_start = (selected_datetime_naive - timedelta(minutes=14, seconds=59)).time()
                 window_end = (selected_datetime_naive + timedelta(minutes=14, seconds=59)).time()
 
-                existing_qs = Booking.objects.filter(client=client, booking_date=booking.booking_date)
+                # Check if this consultant or this client is already booked in this window
+                existing_qs = Booking.objects.filter(
+                    Q(client=client) | Q(consultant=consultant),
+                    booking_date=booking.booking_date
+                )
+                
                 if window_start <= window_end:
                     existing_qs = existing_qs.filter(start_time__range=(window_start, window_end))
                 else:
@@ -456,14 +462,17 @@ class ScheduleCallStep2Page(views.View):
                     ex_booking = existing_qs.first()
                     ex_dt_ist = _booking_to_aware_ist(ex_booking)
 
-                    # Suggest next available slot (30-minute grid, same as schedule UI)
+                    # Suggest next available slot (30-minute grid)
                     suggested_dt = dt_ist + timedelta(minutes=30)
                     while True:
                         s_naive = suggested_dt.replace(tzinfo=None)
                         s_start = (s_naive - timedelta(minutes=14, seconds=59)).time()
                         s_end = (s_naive + timedelta(minutes=14, seconds=59)).time()
                         
-                        s_qs = Booking.objects.filter(client=client, booking_date=suggested_dt.date())
+                        s_qs = Booking.objects.filter(
+                            Q(client=client) | Q(consultant=consultant),
+                            booking_date=suggested_dt.date()
+                        )
                         if s_start <= s_end:
                             s_qs = s_qs.filter(start_time__range=(s_start, s_end))
                         else:

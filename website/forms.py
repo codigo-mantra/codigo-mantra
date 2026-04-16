@@ -24,6 +24,67 @@ import re
 #     #     return captcha
 
 
+# class BookingForm(forms.ModelForm):
+
+#     client_name = forms.CharField(
+#         max_length=255,
+#         label="Full name",
+#         error_messages={"required": "Full name is required."}
+#     )
+
+#     client_email = forms.EmailField(
+#         label="Email address",
+#         error_messages={
+#             "required": "Email address is required.",
+#             "invalid": "Please enter a valid email address.",
+#         },
+#     )
+
+#     class Meta:
+#         model = Booking
+#         fields = ['booking_date', 'start_time', 'service_requested', 'project_brief']
+#         widgets = {
+#             'booking_date': forms.DateInput(attrs={'type': 'date'}),
+#             'start_time': forms.TimeInput(attrs={'type': 'time'}),
+#             'service_requested': forms.TextInput(attrs={'placeholder': 'Mention service here'}),
+#             'project_brief': forms.Textarea(
+#                 attrs={'placeholder': 'Please describe your project', 'style': 'resize: none;'}
+#             ),
+#         }
+#         error_messages = {
+#             'service_requested': {
+#                 'required': 'Please mention the service you want.'
+#             },
+#             'project_brief': {
+#                 'required': 'Please provide a message.'
+#             }
+#         }
+
+#     # -------------------------------
+#     # CUSTOM VALIDATION METHODS
+#     # -------------------------------
+
+#     def clean_client_name(self):
+#         name = self.cleaned_data.get('client_name')
+
+#         if not re.match(r'^[A-Za-z ]+$', name):
+#             raise forms.ValidationError("Name must contain letters only.")
+
+#         return name
+
+#     def clean_service_requested(self):
+#         service = self.cleaned_data.get('service_requested')
+#         if len(service) < 3:
+#             raise forms.ValidationError("Service name is too short.")
+#         return service
+
+#     def clean_project_brief(self):
+#         message = self.cleaned_data.get('project_brief')
+#         if len(message.strip()) < 5:
+#             raise forms.ValidationError("Message is too short.")
+#         return message
+
+
 class BookingForm(forms.ModelForm):
 
     client_name = forms.CharField(
@@ -40,23 +101,44 @@ class BookingForm(forms.ModelForm):
         },
     )
 
+    phone_number = forms.CharField(
+        max_length=10,
+        label="Phone Number",
+        widget=forms.TextInput(attrs={
+            'placeholder': 'Enter 10-digit phone number',
+            'maxlength': '10'
+        }),
+        error_messages={
+            "required": "Phone number is required."
+        }
+    )
+
+    project_brief = forms.CharField(
+        required=False,     # <-- OPTIONAL
+        widget=forms.Textarea(
+            attrs={
+                'placeholder': 'Please describe your project',
+                'style': 'resize: none;'
+            }
+        )
+    )
+
     class Meta:
         model = Booking
-        fields = ['booking_date', 'start_time', 'service_requested', 'project_brief']
+        fields = ['booking_date', 'start_time', 'phone_number', 'project_brief']
         widgets = {
             'booking_date': forms.DateInput(attrs={'type': 'date'}),
             'start_time': forms.TimeInput(attrs={'type': 'time'}),
-            'service_requested': forms.TextInput(attrs={'placeholder': 'Mention service here'}),
-            'project_brief': forms.Textarea(
-                attrs={'placeholder': 'Please describe your project', 'style': 'resize: none;'}
-            ),
         }
         error_messages = {
-            'service_requested': {
-                'required': 'Please mention the service you want.'
+            'booking_date': {
+                'required': 'Please select a date.'
             },
-            'project_brief': {
-                'required': 'Please provide a message.'
+            'start_time': {
+                'required': 'Please select a time.'
+            },
+            'phone_number': {
+                'required': 'Phone number is required.'
             }
         }
 
@@ -72,18 +154,24 @@ class BookingForm(forms.ModelForm):
 
         return name
 
-    def clean_service_requested(self):
-        service = self.cleaned_data.get('service_requested')
-        if len(service) < 3:
-            raise forms.ValidationError("Service name is too short.")
-        return service
+    def clean_phone_number(self):
+        phone = self.cleaned_data.get('phone_number')
+
+        # Only EXACT 10 digits allowed
+        if not re.match(r'^[0-9]{10}$', phone):
+            raise forms.ValidationError("Phone number must be exactly 10 digits.")
+
+        return phone
+
 
     def clean_project_brief(self):
-        message = self.cleaned_data.get('project_brief')
-        if len(message.strip()) < 5:
-            raise forms.ValidationError("Message is too short.")
-        return message
+        message = self.cleaned_data.get('project_brief', '')
 
+        # Validate only if not empty (it's optional)
+        if message and len(message.strip()) < 5:
+            raise forms.ValidationError("Message is too short.")
+
+        return message
 
 class ContactUsForm(forms.ModelForm):
 

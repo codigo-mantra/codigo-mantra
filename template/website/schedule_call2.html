@@ -123,18 +123,28 @@
                         </div>
 
                         <!-- SERVICE -->
-                        <div class="form-group form-group-schedule-call">
+                        <!-- <div class="form-group form-group-schedule-call">
                             <label>What service do you want?<span style="color: #FF0000;">*</span></label>
                             <input type="text" name="service_requested" placeholder="Mention service here"
                                    value="{{ form.service_requested.value|default:'' }}">
                             {% if form.service_requested.errors %}
                                 <div class="text-danger">{{ form.service_requested.errors }}</div>
                             {% endif %}
+                        </div> -->
+
+                        <div class="form-group form-group-schedule-call">
+                            <label>Phone Number<span style="color: #FF0000;">*</span></label>
+                            <input type="text" name="phone_number" placeholder="Enter 10-digit phone number"
+                                value="{{ form.phone_number.value|default:'' }}" maxlength="10">
+                            
+                            {% if form.phone_number.errors %}
+                            <div class="text-danger">{{ form.phone_number.errors }}</div>
+                            {% endif %}
                         </div>
 
                         <!-- MESSAGE -->
                         <div class="form-group form-group-schedule-call">
-                            <label>Message<span style="color: #FF0000;">*</span></label>
+                            <label>Message<span style="color: #FF0000;"></span></label>
                             <textarea name="project_brief" class="text-area-schedule-call" placeholder="Message" style="resize: none;">{{ form.project_brief.value|default:'' }}</textarea>
                             {% if form.project_brief.errors %}
                                 <div class="text-danger">{{ form.project_brief.errors }}</div>
@@ -308,7 +318,7 @@
                       </p>
 
                       <div class="d-flex gap-4 w-100" style="margin-top: 30px !important;">
-                          <a href="#" class="btn btn-secondary-cm w-100" style="transform: none !important;">
+                          <a href="{% url 'schedule-call' %}" class="btn btn-secondary-cm w-100" style="transform: none !important;">
                               <span class="label-up">Cancel</span>
                               <span class="label-up text-white fw-400">Cancel</span>
                           </a>
@@ -644,33 +654,29 @@ document.addEventListener('DOMContentLoaded', function () {
         //         bookingForm.requestSubmit ? bookingForm.requestSubmit() : bookingForm.submit();
         //     });
         // }
-        confirmScheduleAnyway.addEventListener('click', function () {
+        confirmScheduleAnyway.addEventListener('click', function (e) {
+            e.preventDefault();
             const modalEl = document.getElementById('bookingConflictModal');
             if (modalEl && window.bootstrap && bootstrap.Modal) {
                 bootstrap.Modal.getInstance(modalEl).hide();
             }
-            // Step 1: Freeze the label FIRST before anything changes
-            const dateTimeLabel = document.getElementById('selectedDateTimeLabel');
-            const frozenHTML = dateTimeLabel ? dateTimeLabel.innerHTML : '';
-            // Step 2: Update startTimeInput for the backend (required)
-            if (currentSuggestedRawTime) {
-                const startTimeInput = document.getElementById('startTimeInput');
-                if (startTimeInput) startTimeInput.value = currentSuggestedRawTime;
-            }
-            // Step 3: Restore frozen label immediately (before any re-render)
-            if (dateTimeLabel && frozenHTML) {
-                dateTimeLabel.innerHTML = frozenHTML;
-            }
             const ignoreInput = document.getElementById('ignoreConflictInput');
             if (ignoreInput) ignoreInput.value = 'true';
-            setTimeout(function () {
-                // Step 4: Restore again after timeout just in case
-                if (dateTimeLabel && frozenHTML) {
-                    dateTimeLabel.innerHTML = frozenHTML;
-                }
-                bookingForm.requestSubmit ? bookingForm.requestSubmit() : bookingForm.submit();
-            }, 300);
+            
+            // Just submit without changing the time
+            bookingForm.requestSubmit ? bookingForm.requestSubmit() : bookingForm.submit();
         });
+
+        function showFieldError(fieldName, msgText) {
+            const input = bookingForm.querySelector(`[name=${fieldName}]`);
+            if (input) {
+                const err = document.createElement('p');
+                err.className = 'ajax-error';
+                err.style.cssText = 'color:#FF0000;font-size:0.8rem;margin-top:4px;';
+                err.textContent = msgText;
+                input.closest('.form-group')?.appendChild(err);
+            }
+        }
 
         bookingForm.addEventListener('submit', function (e) {
             e.preventDefault();
@@ -683,13 +689,33 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!ignoreInput || ignoreInput.value !== 'true') {
                 const clientName = bookingForm.querySelector('[name=client_name]').value.trim();
                 const clientEmail = bookingForm.querySelector('[name=client_email]').value.trim();
-                const serviceRequested = bookingForm.querySelector('[name=service_requested]').value.trim();
+                const phoneNumber = bookingForm.querySelector('[name=phone_number]').value.trim();
                 const projectBrief = bookingForm.querySelector('[name=project_brief]').value.trim();
 
-                if (!clientName || !clientEmail || !serviceRequested || !projectBrief) {
-                    document.getElementById('err-schedule-fields').style.display = 'block';
-                    return;
+                let hasError = false;
+
+                if (!clientName) {
+                    showFieldError('client_name', "Please enter a valid name.");
+                    hasError = true;
                 }
+
+                if (!clientEmail) {
+                    showFieldError('client_email', "Email address is required.");
+                    hasError = true;
+                } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clientEmail)) {
+                    showFieldError('client_email', "Please enter a valid email address.");
+                    hasError = true;
+                }
+
+                if (!phoneNumber) {
+                    showFieldError('phone_number', "Phone number is required.");
+                    hasError = true;
+                } else if (phoneNumber.length !== 10 || !/^\d+$/.test(phoneNumber)) {
+                    showFieldError('phone_number', "Phone number must be exactly 10 digits.");
+                    hasError = true;
+                }
+
+                if (hasError) return;
             }
 
             if (submitBtn) submitBtn.disabled = true;
@@ -718,12 +744,8 @@ document.addEventListener('DOMContentLoaded', function () {
                             const existingTimeSpan = modalEl.querySelector('.existing-time-span');
                             const selectedTimeSpan = modalEl.querySelector('.selected-time-span');
                             if (existingTimeSpan) existingTimeSpan.textContent = data.existing_time;
-                            if (selectedTimeSpan) selectedTimeSpan.textContent = data.suggested_time; // Show suggested time
+                            if (selectedTimeSpan) selectedTimeSpan.textContent = data.selected_time; 
                             
-                            // Store suggested values for the button click
-                            currentSuggestedRawTime = data.suggested_raw_time;
-                            currentSuggestedRawDate = data.suggested_raw_date;
-
                             bootstrap.Modal.getOrCreateInstance(modalEl).show();
                         }
                     } else {

@@ -110,10 +110,11 @@ class CaseStudy(TimeStamp):
     title = models.CharField(max_length=255)
     slug = models.SlugField(unique=True)
     content = models.TextField()
-    about = models.TextField(blank=True, null=True)
-    goal = models.TextField(blank=True, null=True)
-    challenge = models.TextField(blank=True, null=True)
-    outcome = models.TextField(blank=True, null=True)
+    # about = models.TextField(blank=True, null=True)
+    # goal = models.TextField(blank=True, null=True)
+    # challenge = models.TextField(blank=True, null=True)
+    # outcome = models.TextField(blank=True, null=True)
+    description = RichTextField(blank=True, null=True)
     timeline = models.CharField(max_length=255, blank=True)
     team = models.CharField(max_length=255, blank=True)
     url = models.URLField(blank=True, null=True)
@@ -346,7 +347,8 @@ class Booking(TimeStamp):
     start_time = models.TimeField()
     meet_link = models.URLField(blank=True, null=True)
     status = models.CharField(max_length=100)
-    service_requested = models.CharField(max_length=255)
+    # service_requested = models.CharField(max_length=255)
+    phone_number = models.CharField(max_length=10, null=True, blank=True)
     project_brief = models.TextField()
 
     # NEW FIELDS
@@ -354,12 +356,7 @@ class Booking(TimeStamp):
     remarks = models.TextField(blank=True, null=True)
 
     class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=["client", "booking_date", "start_time"],
-                name="unique_client_booking"
-            ),
-        ]
+        pass
 
     def __str__(self):
         return f"Booking - {self.client.name} with {self.consultant.name}"

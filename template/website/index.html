@@ -234,12 +234,10 @@
                                     <span class="meta-value">{{ case.timeline }}</span>
                                 </div>
                             </div>
-                            {% if case.url %}
-                            <a href="{{ case.url }}" target="_blank" class="btn btn-secondary-cm">
-                                <span class="label-up">Vist Website</span>
-                                <span class="label-up">Vist Website</span>
+                            <a href="{% url 'case_study_detail' case.id %}" class="btn btn-secondary-cm">
+                                <span class="label-up">Visit case study</span>
+                                <span class="label-up">Visit case study</span>
                             </a>
-                            {% endif %}
                         </div>
                     </div>
                 </div>
