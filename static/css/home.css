@@ -653,7 +653,7 @@ body {
 }
 
 .project-mockup-side {
-    background: #F4F4F4;
+    /* background: #F4F4F4; */
     border-radius: 30px;
     padding: 20px;
     overflow: hidden;

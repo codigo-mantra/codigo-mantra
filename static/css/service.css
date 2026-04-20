@@ -72,7 +72,7 @@
 
 .our-services-img img {
     border-radius: 20px;
-    border: 1px solid #FFF;
+    /* border: 1px solid #FFF; */
     background: rgba(255, 255, 255, 0.15);
     height: 195px;
     width: 100%;

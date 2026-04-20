@@ -495,7 +495,7 @@ section.case-study-hero {
 .cs-card-img img {
   border-radius: 7px;
   width: 100%;
-  height: 258px;
+  /* height: 258px; */
   object-fit: fill;
   display: block;
 }

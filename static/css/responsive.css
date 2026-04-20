@@ -891,6 +891,9 @@ p.count-services {
 .cm-mega__thumb {
     height: auto;
 }
+.services-row-new {
+    gap: 12px !important;
+}
 }
 
 @media (max-width: 450px) {
