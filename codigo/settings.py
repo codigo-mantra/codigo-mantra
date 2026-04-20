@@ -16,6 +16,7 @@ from django.contrib.messages import constants as messages
 
 from dotenv import load_dotenv
 import os
+from decouple import config
 
 load_dotenv()  # loads variables from .env
 
@@ -44,8 +45,8 @@ sys.path.insert(0, os.path.join(BASE_DIRR, 'apps'))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '%a4-))8=7y0*z=de#zg+4vft8q9p9q27!gx9vteo6jmr#)k7y7'
-
+# SECRET_KEY = '%a4-))8=7y0*z=de#zg+4vft8q9p9q27!gx9vteo6jmr#)k7y7'
+SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -241,7 +242,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+# TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
@@ -331,3 +333,113 @@ LOGGING = {
         },
     },
 }
+
+
+# GOOGLE_AUTH_INFO = {
+#     "token": os.getenv("G_TOKEN"),
+#     "refresh_token": os.getenv("G_REFRESH_TOKEN"),
+#     "client_id": os.getenv("G_CLIENT_ID"),
+#     "client_secret": os.getenv("G_CLIENT_SECRET"),
+#     "token_uri": os.getenv("G_TOKEN_URI", "https://googleapis.com"),
+# }
+
+# GOOGLE_AUTH_INFO = {
+#     "token": config("G_TOKEN"),
+#     "refresh_token": config("G_REFRESH_TOKEN"),
+#     "client_id": config("G_CLIENT_ID"),
+#     "client_secret": config("G_CLIENT_SECRET"),
+#     "token_uri": config("G_TOKEN_URI", default="https://oauth2.googleapis.com/token"),
+# }
+
+
+ALLOWED_HOSTS = [
+    "127.0.0.1",
+    "localhost",
+    ".ngrok-free.dev",   # ✅ correct wildcard for your ngrok URL
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.ngrok-free.dev",  # ✅ correct
+]
+
+# CKEDITOR_CONFIGS = {
+#     'default': {
+#         'toolbar': 'Custom',
+#         'height': 400,
+#         'width': 'auto',
+
+#         'toolbar_Custom': [
+#             ['Bold', 'Italic', 'Underline'],
+#             ['NumberedList', 'BulletedList'],
+#             ['TextColor', 'BGColor'],
+#             ['Link', 'Unlink'],
+#             ['Format'],
+#             ['Undo', 'Redo'],
+#             ['RemoveFormat'],
+#             ['Source']
+#         ],
+
+#         'format_tags': 'p;h3;h4',
+#         'line_height': '1;1.2;1.5;2;2.5;3',
+
+#         'extraPlugins': ','.join([
+#             'colorbutton',
+#             'justify',
+#             'liststyle',
+#         ])
+#     }
+# }
+
+KEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Custom',
+        'height': 400,
+        'width': 'auto',
+
+        'toolbar_Custom': [
+            ['Bold', 'Italic', 'Underline'],
+            ['NumberedList', 'BulletedList'],
+            ['TextColor', 'BGColor'],
+            ['Link', 'Unlink'],
+            ['Format'],
+            ['Undo', 'Redo'],
+            ['RemoveFormat'],
+            ['Source']
+        ],
+
+        'format_tags': 'p;h3;h4',
+        'line_height': '1;1.2;1.5;2;2.5;3',
+
+        'extraPlugins': ','.join([
+            'colorbutton',
+            'justify',
+            'liststyle',
+        ]),
+
+        # Inject spacing CSS 
+        'contentsCss': [
+            '/static/ckeditor/ckeditor/contents.css',  # keep default styles
+            'data:text/css,' + (
+                'body { font-size: 14px; line-height: 1.5; margin: 10px; }'
+
+                # H1 — large section headings with big top spacing
+                'h1 { font-size: 2em; margin-top: 60px; margin-bottom: 10px; font-weight: bold; }'
+                'h1:first-child { margin-top: 0; }'
+
+                # H3 — sub-section headings
+                'h3 { font-size: 1.1em; margin-top: 20px; margin-bottom: 4px; font-weight: bold; }'
+
+                # H4 — minor headings (bold labels like "Complex user experience:")
+                'h4 { font-size: 1em; margin-top: 14px; margin-bottom: 2px; font-weight: bold; }'
+
+                # Paragraphs — moderate spacing
+                'p { margin-top: 0; margin-bottom: 10px; }'
+
+                # Lists — tight, indented
+                'ul, ol { margin-top: 4px; margin-bottom: 8px; padding-left: 24px; }'
+                'li { margin-bottom: 3px; }'
+            )
+        ],
+    }
+}
+

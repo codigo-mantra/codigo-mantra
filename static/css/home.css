@@ -491,7 +491,7 @@ body {
     margin-bottom: 14px;
     display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
+    /* -webkit-line-clamp: 2; */
     align-self: stretch;
     opacity: 0.7;
 }

@@ -44,6 +44,7 @@
                 <div class="case-study-slide case-study-slider" id="project">
                     {# Change 'case_studies' to 'featured_projects' to limit to exactly 3 #}
                     {% for case_study in featured_projects %}
+                        <a href="{% url 'case_study_detail' case_study.id %}" class="case-study-link">
                         <div class="case-study-image" aria-hidden="true">
                             {% if case_study.cover_image %}
                                 <img src="{{ case_study.cover_image.url }}" alt="{{ case_study.title }}">
@@ -53,6 +54,7 @@
                                 <img src="{% static 'images/case-studies/project-1.jpg' %}" alt="Placeholder">
                             {% endif %}
                         </div>
+                        </a>
                     {% endfor %}
                 </div>
             </div>
@@ -72,7 +74,7 @@
                         d="M5 0C5 0 4.7167 2.98814 5.9 4.15C7.06678 5.29564 10 5 10 5C10 5 6.99755 5.07093 5.9 6.35045C4.94427 7.46464 5 10 5 10C5 10 4.87219 7.44047 3.85 6.35045C2.76008 5.18822 0 5 0 5C0 5 2.70507 5.17951 3.85 4.15C5.10054 3.02553 5 0 5 0Z"
                         fill="#F16535" />
                 </svg>
-                We're hiring
+                Our Work
             </div>
         </div>
 
@@ -179,7 +181,7 @@
                         <div class="cs-card-body">
                             <div>
                                 <div class="cm-card-header-text">
-                                    <h5 class="cs-card-title">{{case_study.title}}</h5>
+                                    <h5 class="cs-card-title">{{case_study.project_name}}</h5>
                                     <a href="{% url 'case_study_detail' case_study.pk %}" class="cs-card-arrow">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="13"
                                             viewBox="0 0 14 13" fill="none">

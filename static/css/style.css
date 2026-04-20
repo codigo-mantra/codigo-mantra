@@ -1835,3 +1835,33 @@ a.btn-close.modal-close-btn {
 .error-newsletter-email {
     margin: 23px 0px 14px;
 } 
+
+
+.content-area h1 {
+    margin-top: 55px;
+    margin-bottom: 10px;
+}
+.content-area h1:first-child {
+    margin-top: 0;
+}
+.content-area h3 {
+    margin-top: 22px;
+    margin-bottom: 5px;
+}
+.content-area h4 {
+    margin-top: 14px;
+    margin-bottom: 2px;
+}
+.content-area p {
+    margin-top: 0;
+    margin-bottom: 16px;  /* was 14px — fixes double paragraph gap */
+}
+.content-area ul,
+.content-area ol {
+    margin-top: 4px;
+    margin-bottom: 14px;  /* was 12px — fixes list → paragraph gap */
+    padding-left: 24px;
+}
+.content-area li {
+    margin-bottom: 4px;
+}
