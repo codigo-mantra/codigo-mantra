@@ -448,10 +448,17 @@ class ScheduleCallStep2Page(views.View):
                 window_end = (selected_datetime_naive + timedelta(minutes=14, seconds=59)).time()
 
                 # Check if this consultant or this client is already booked in this window
+                # Ensure we only check for OTHER bookings (not the one we are about to save if it already has an ID, 
+                # though here we haven't saved it yet, but we filter by client and consultant)
                 existing_qs = Booking.objects.filter(
                     Q(client=client) | Q(consultant=consultant),
                     booking_date=booking.booking_date
                 )
+                
+                # IMPORTANT: If we're updating an existing booking (though step 2 usually creates new),
+                # we should exclude it from the conflict check.
+                if booking.pk:
+                    existing_qs = existing_qs.exclude(pk=booking.pk)
                 
                 if window_start <= window_end:
                     existing_qs = existing_qs.filter(start_time__range=(window_start, window_end))
@@ -544,7 +551,7 @@ class ScheduleCallStep2Page(views.View):
 class LandingPage(views.View):
     def get(self,request):
         form = ContactUsForm()
-        services = Service.objects.all().order_by('display_order')[:6]  # last 6 services
+        services = Service_index.objects.all().order_by('display_order')[:6]  # last 6 services
         insights = Insight.objects.all().order_by('-created_at')[:3]  # last 3 insights
         testimonials_qs = list(Testimonial.objects.all().order_by('-created_at')[:6])  # last 6 testimonials
         # Ensure image testimonials appear before video testimonials (preserve recency within each group)
@@ -609,7 +616,8 @@ class LandingPage(views.View):
 class AboutUsPage(views.View):
     def get(self,request):
         team_members = TeamMember.objects.all().order_by('created_at')
-        services = Service.objects.all()[:3].values("name", "description", "icon")
+        # services = Service.objects.all()[:3].values("name", "description", "icon")
+        services = Service.objects.all()[:3].values("name")
         workspace_images = CompanyEventImage.objects.all().order_by('created_at')
         return render(request,'website/about.html',{'team_members':team_members, 'services':services, 'workspace_images':workspace_images})
 
@@ -624,14 +632,15 @@ class ServicePage(views.View):
             'SaaS & Software Products', 'Startups & SMBs'
         ]
         industries = Industry.objects.filter(name__in=industry_names).values("name", "svg_icon")
-        services = Service.objects.all().order_by('display_order')[:9]
+        services = Service_page.objects.all().order_by('display_order')[:9]
         return render(request,'website/services.html',{'services':services, 'industries':industries})
     
 
 class CareerPage(views.View):
     def get(self,request):
         job_openings = JobOpening.objects.filter(is_active=True).order_by('-created_at')
-        services = Service.objects.all()[:3].values("name", "description", "icon")
+        # services = Service.objects.all()[:3].values("name", "description", "icon")
+        services = Service.objects.all()[:3].values("name")
         return render(request,'website/career.html',{'job_openings':job_openings, 'services':services})
 
 class CareerFormPage(views.View):

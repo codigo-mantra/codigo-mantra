@@ -1340,3 +1340,7 @@ body {
 .testimonials-section-cm-heading{
     margin-bottom: 10px !important;
 }
+.service-icon-box img {
+    width: 33px;
+    height: 33px;
+}

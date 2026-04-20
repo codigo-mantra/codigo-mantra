@@ -797,6 +797,16 @@ p.job-meta-sub {
     opacity: 0.9;
     margin: 0;
 }
+.project-overview-desc h5 {
+    color: #F6F6F6;
+    font-family: Poppins;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%; /* 33px */
+    opacity: 0.9;
+    margin: 0;
+}
 .project-overview-desc ul {
     color: rgba(246, 246, 246, 0.70);
     font-family: Poppins;
@@ -959,4 +969,8 @@ p.job-meta-sub {
 .explore-services-portfolio {
     margin: 44px 0 30px;
     padding: 0;
+}
+.project-overview-desc ul span {
+    color: #F6F6F6 !important;
+    font-weight: 400 !important;
 }

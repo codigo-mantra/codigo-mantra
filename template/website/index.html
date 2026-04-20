@@ -90,7 +90,9 @@
                     <div class="service-card-new service-card-new-mobile">
                         <div class="service-top">
                             <div class="service-icon-box">
-                                <i class="{{ service.icon }} text-orange"></i>
+                                <!-- <img loading="lazy" src="{{ service.icon }}" alt=""> -->
+                                <img loading="lazy" src="{{ service.icon.url }}" alt="{{ service.name }} Icon">
+                                <!-- <i class="{{ service.icon }} text-orange"></i> -->
                             </div>
 
                             <h5 class="service-title">{{ service.name }}</h5>
@@ -440,7 +442,7 @@
 <!-- ══════════════════════════════════
                  INSIGHTS SECTION
             ══════════════════════════════════ -->
-<section class="insights-section">
+<!-- <section class="insights-section">
     <div class="container">
         <div class="text-center">
             <div class="hero-badge-wrap">
@@ -487,7 +489,7 @@
             {% endfor %}
         </div>
     </div>
-</section>
+</section> -->
 
 
 <!-- ══════════════════════════════════

@@ -89,21 +89,44 @@ class Service(TimeStamp):
 
     name = models.CharField(max_length=255)
     slug = models.SlugField(unique=True)
-    description = models.TextField(blank=True)
-    icon = models.FileField(upload_to="services/icons/", blank=True, null=True)
-    cover_image = models.FileField(upload_to="services/covers/", blank=True, null=True)
+    # description = models.TextField(blank=True)
+    # icon = models.FileField(upload_to="services/icons/", blank=True, null=True)
+    # cover_image = models.FileField(upload_to="services/covers/", blank=True, null=True)
     parent = models.ForeignKey('self', on_delete=models.SET_NULL, null=True, blank=True, related_name='children')
     display_order = models.IntegerField(default=0)
     # index_card_order= models.PositiveIntegerField(default=0)
 
-    def save(self, *args, **kwargs):
-        if not self.display_order:
-            self.display_order = Service.objects.count() + 1
-        super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     if not self.display_order:
+    #         self.display_order = Service.objects.count() + 1
+    #     super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
+    
+
+class Service_index(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=255)
+    slug = models.SlugField(unique=True)
+    description = models.TextField(blank=True)
+    icon = models.FileField(upload_to="services/icons/", blank=True, null=True)
+    cover_image = models.FileField(upload_to="services/covers/", blank=True, null=True)
+    display_order = models.IntegerField(default=0)
 
     def __str__(self):
         return self.name
 
+class Service_page(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=255)
+    slug = models.SlugField(unique=True)
+    description = models.TextField(blank=True)
+    icon = models.FileField(upload_to="services/icons/", blank=True, null=True)
+    display_order = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.name
 
 class CaseStudy(TimeStamp):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

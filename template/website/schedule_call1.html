@@ -201,7 +201,7 @@ let currentMonth = new Date().getMonth();
 let selectedDate = null;
 let selectedTime = null;
 let timeFormat   = '12h';
-let selectedTimezone = null;
+let selectedTimezone = localStorage.getItem('schedule_call_tz') || null;
 
 // ── CONSTANTS ─────────────────────────────────────────────
 const DAY_NAMES   = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -641,6 +641,10 @@ async function fetchTimezoneOffset(zone) {
 
 // Auto-detect user timezone via WorldTimeAPI IP detection
 async function detectUserTimezoneViaWorldTime() {
+    // Only auto-detect if user hasn't manually selected one yet
+    const existingTz = localStorage.getItem('schedule_call_tz');
+    if (existingTz) return { zone: existingTz, offset: '+00:00' };
+
     try {
         const res = await fetch(`${WORLDTIME_API}/ip`);
         if (!res.ok) throw new Error('IP detection failed');
@@ -666,8 +670,8 @@ async function detectUserTimezoneViaWorldTime() {
     }
 }
 
-// Build timezone dropdown using WorldTimeAPI
-async function buildTimezoneDropdownWorldTime() {
+// Build basic list immediately using fallback/cached data so it's instant
+function buildInitialDropdown() {
     const dropdown = document.getElementById('timezoneDropdown');
     const toggle = document.getElementById('timezoneToggle');
     const searchEl = document.getElementById('timezoneSearch');
@@ -677,108 +681,119 @@ async function buildTimezoneDropdownWorldTime() {
 
     if (!dropdown || !toggle || !optionsWrap || !hiddenInput || !selectedText) return;
 
-    // Show loading state
-    optionsWrap.innerHTML = '<div class="tz-option tz-loading">⏳ Loading timezones...</div>';
-
-    // Step 1: Fetch all timezone IDs
-    const allZones = await fetchAllTimezones();
-    const currentValue = localStorage.getItem('schedule_call_tz') || hiddenInput.value || 'Asia/Kolkata';
-
-    // Step 2: Fetch offset only for current timezone first (fast render)
-    const currentInfo = await fetchTimezoneOffset(currentValue);
-    if (selectedText) selectedText.textContent = currentInfo.label;
-    hiddenInput.value = currentValue;
-
-    // Step 3: Render all zones (with offset fetched lazily)
-    optionsWrap.innerHTML = '';
-
-    // Sort zones alphabetically first
-    allZones.sort();
-
-    allZones.forEach(zone => {
-        const item = document.createElement('div');
-        item.className = 'tz-option' + (zone === currentValue ? ' selected' : '');
-        item.dataset.zone = zone;
-
-        // Show zone name immediately, offset loads lazily
-        const cached = tzOffsetCache[zone];
-        item.textContent = cached ? cached.label : zone;
-
-        item.addEventListener('click', async function () {
-            // Fetch offset on click if not cached
-            const info = await fetchTimezoneOffset(zone);
-
-            hiddenInput.value = zone;
-            localStorage.setItem('schedule_call_tz', zone);
-
-            if (selectedText) selectedText.textContent = info.label;
-
-            document.querySelectorAll('.tz-option.selected')
-                .forEach(el => el.classList.remove('selected'));
-            item.classList.add('selected');
-
-            dropdown.classList.remove('open');
-
-            if (typeof renderCalendar === 'function') renderCalendar();
-            if (typeof renderTimeSlots === 'function') renderTimeSlots();
-            if (typeof updateNavButtons === 'function') updateNavButtons();
-            if (typeof selectedDate !== 'undefined' && selectedDate) {
-                setDateLabelFromKey(selectedDate);
-            } else if (typeof getTomorrowKeyInZone === 'function') {
-                setDateLabelFromKey(getTomorrowKeyInZone(zone));
-            }
+    // Attach listeners IMMEDIATELY so UI is interactive
+    if (!toggle.hasAttribute('data-listener')) {
+        toggle.addEventListener('click', function (e) {
+            e.stopPropagation();
+            dropdown.classList.toggle('open');
         });
+        toggle.setAttribute('data-listener', 'true');
+    }
 
-        optionsWrap.appendChild(item);
-    });
-
-    // Toggle behavior
-    toggle.addEventListener('click', function (e) {
-        e.stopPropagation();
-        dropdown.classList.toggle('open');
-    });
-
-    // Search filter
-    if (searchEl) {
+    if (searchEl && !searchEl.hasAttribute('data-listener')) {
         searchEl.addEventListener('input', function () {
             const query = this.value.toLowerCase().trim();
             const items = optionsWrap.querySelectorAll('.tz-option');
-            
             items.forEach(item => {
                 const text = item.textContent.toLowerCase();
-                const zoneId = item.dataset.zone.toLowerCase();
-                
-                // Smarter search: 
-                // 1. Check if query matches a distinct part of the zone ID (e.g., "India" shouldn't match "Indiana")
-                // 2. We use a regex that looks for the query as a complete word or at the start of a component
+                const zoneId = item.dataset.zone ? item.dataset.zone.toLowerCase() : '';
                 const parts = zoneId.split(/[\/_]/);
                 const isPartMatch = parts.some(p => p === query || p.startsWith(query));
-                
-                // Also allow matching the full label (which includes GMT and friendly names like "(India)")
                 const isLabelMatch = text.includes(query);
-
-                // Special case: if query is "india", prioritize Asia/Kolkata and exclude Indiana unless exact match
-                if (query === 'india') {
-                    if (zoneId.includes('indiana')) {
-                        item.style.display = 'none';
-                        return;
-                    }
+                if (query === 'india' && zoneId.includes('indiana')) {
+                    item.style.display = 'none';
+                    return;
                 }
-
                 item.style.display = (isPartMatch || isLabelMatch) ? '' : 'none';
             });
         });
+        searchEl.setAttribute('data-listener', 'true');
     }
 
-    // Close on click outside
     document.addEventListener('click', function (e) {
         if (!dropdown.contains(e.target)) {
             dropdown.classList.remove('open');
         }
     });
 
-    // Step 4: Lazily load offsets in background and update labels
+    const currentValue = localStorage.getItem('schedule_call_tz') || 'Asia/Kolkata';
+    selectedText.textContent = timezoneOptionLabel(currentValue);
+    hiddenInput.value = currentValue;
+
+    const initialZones = typeof Intl.supportedValuesOf === 'function' 
+        ? Intl.supportedValuesOf('timeZone').slice() 
+        : ['Asia/Kolkata', 'UTC', 'America/New_York', 'Europe/London'];
+    
+    renderTzList(initialZones, currentValue);
+}
+
+// Build timezone dropdown using WorldTimeAPI (full data)
+async function buildTimezoneDropdownWorldTime() {
+    const hiddenInput = document.getElementById('timezoneSelect');
+    const optionsWrap = document.getElementById('timezoneOptions');
+    if (!optionsWrap || !hiddenInput) return;
+
+    // Step 1: Fetch all timezone IDs
+    const allZones = await fetchAllTimezones();
+    const currentValue = localStorage.getItem('schedule_call_tz') || hiddenInput.value || 'Asia/Kolkata';
+
+    // Step 2: Fetch offset only for current timezone first (fast render update)
+    fetchTimezoneOffset(currentValue).then(currentInfo => {
+        const selectedText = document.getElementById('timezoneSelectedText');
+        if (selectedText) selectedText.textContent = currentInfo.label;
+    }).catch(e => console.error('Error updating initial TZ label:', e));
+
+    // Step 3: Render all zones (with offset fetched lazily)
+    renderTzList(allZones, currentValue);
+
+    // Step 4: Lazily load offsets in background
     loadOffsetsInBackground(allZones, optionsWrap);
+}
+
+function renderTzList(zones, currentValue) {
+    const dropdown = document.getElementById('timezoneDropdown');
+    const optionsWrap = document.getElementById('timezoneOptions');
+    const selectedText = document.getElementById('timezoneSelectedText');
+    const hiddenInput = document.getElementById('timezoneSelect');
+    if (!optionsWrap) return;
+
+    optionsWrap.innerHTML = '';
+    [...new Set(zones)].sort().forEach(zone => {
+        const item = document.createElement('div');
+        item.className = 'tz-option' + (zone === currentValue ? ' selected' : '');
+        item.dataset.zone = zone;
+        item.textContent = tzOffsetCache[zone] ? tzOffsetCache[zone].label : timezoneOptionLabel(zone);
+
+        item.addEventListener('click', function () {
+            // Update UI immediately (non-blocking)
+            hiddenInput.value = zone;
+            selectedTimezone = zone;
+            localStorage.setItem('schedule_call_tz', zone);
+            
+            // Set initial label (without GMT offset if not cached)
+            if (selectedText) {
+                selectedText.textContent = tzOffsetCache[zone] ? tzOffsetCache[zone].label : timezoneOptionLabel(zone);
+            }
+            
+            optionsWrap.querySelectorAll('.tz-option').forEach(el => el.classList.remove('selected'));
+            item.classList.add('selected');
+            dropdown.classList.remove('open');
+
+            // Refresh slots immediately
+            if (typeof renderCalendar === 'function') renderCalendar();
+            if (typeof renderTimeSlots === 'function') renderTimeSlots();
+            if (typeof updateNavButtons === 'function') updateNavButtons();
+            if (typeof selectedDate !== 'undefined' && selectedDate) setDateLabelFromKey(selectedDate);
+
+            // Fetch full GMT info in the background and update label once ready
+            fetchTimezoneOffset(zone).then(info => {
+                if (selectedText && hiddenInput.value === zone) {
+                    selectedText.textContent = info.label;
+                }
+            }).catch(e => console.error('Error fetching offset on selection:', e));
+        });
+        optionsWrap.appendChild(item);
+    });
 }
 
 // Load offsets in background without blocking UI
@@ -822,22 +837,26 @@ function sortOptionsByOffset(container) {
 }
 
 // ── INIT ──────────────────────────────────────────────────
-document.addEventListener('DOMContentLoaded', async () => {
-    // Step 1: Auto-detect user timezone
-    await detectUserTimezoneViaWorldTime();
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Render dropdown structure IMMEDIATELY with cached data
+    buildInitialDropdown();
 
-    // Step 2: Build dropdown with WorldTimeAPI data
-    await buildTimezoneDropdownWorldTime();
-
-    // Step 3: Render initial calendar & slots
+    // 2. Render initial calendar & slots IMMEDIATELY
     renderCalendar();
     renderTimeSlots();
 
     const tz = getSelectedTz();
     const tomorrowKey = getTomorrowKeyInZone(tz);
     setDateLabelFromKey(tomorrowKey);
-
     updateNavButtons();
+
+    // 3. Perform detection and full dropdown build in background (non-blocking)
+    detectUserTimezoneViaWorldTime().then(() => {
+        buildTimezoneDropdownWorldTime();
+    }).catch(e => {
+        console.error('TZ background tasks failed:', e);
+        buildTimezoneDropdownWorldTime();
+    });
 });
 </script>
 {% endblock %}
