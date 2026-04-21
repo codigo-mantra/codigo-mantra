@@ -29,10 +29,12 @@
             </div>
 
             <h1 class="hero-title">
-                <span class="text-orange">AI-Powered</span> Solutions for <span class="text-orange"> Modern Business </span> to scale with <span class="text-orange"> confidence</span>
+                <span class="text-orange">AI-Powered</span> solutions for <span class="text-orange"> modern business
+                </span> to scale with <span class="text-orange"> confidence</span>
             </h1>
             <p class="hero-sub mobile-spacing">
-                Simplify your operations, improve decision-making, and accelerate growth with technology built for real business impact.
+                Simplify your operations, improve decision-making, and accelerate growth with technology built for real
+                business impact.
             </p>
 
             <div class="hero-cta-wrap">
@@ -83,7 +85,7 @@
             Everything your product needs to<br> go from idea to market
         </h2>
 
-        <div class="row g-4 text-start services-row-new" style="margin-bottom: 30px;">
+        <!-- <div class="row g-4 text-start services-row-new" style="margin-bottom: 30px;">
             {% for service in services %}
             <div class="col-lg-4 mb-1">
                 <div class="service-card-wrapper">
@@ -91,8 +93,8 @@
                         <div class="service-top">
                             <div class="service-icon-box">
                                 <!-- <img loading="lazy" src="{{ service.icon }}" alt=""> -->
-                                <img loading="lazy" src="{{ service.icon.url }}" alt="{{ service.name }} Icon">
-                                <!-- <i class="{{ service.icon }} text-orange"></i> -->
+        <!-- <img loading="lazy" src="{{ service.icon.url }}" alt="{{ service.name }} Icon">
+                                <i class="{{ service.icon }} text-orange"></i> 
                             </div>
 
                             <h5 class="service-title">{{ service.name }}</h5>
@@ -111,7 +113,7 @@
                 </div>
             </div>
             {% endfor %}
-        </div>
+        </div> -->
         <div class="text-center mt-5">
             <a href="{% url 'services' %}" class="btn btn-secondary-cm">
                 <span class="label-up">Explore Services</span>
@@ -145,14 +147,15 @@
             <div class="grid-item text-start">
                 <div class="result-card">
                     <h3>50+</h3>
-                    <h5>Satisfied Clients</h5>
-                    <p>From startups to enterprises, we combine strategy and execution to drive the right product decisions.</p>
+                    <h5>Satisfied clients</h5>
+                    <p>From startups to enterprises, we combine strategy and execution to drive the right product
+                        decisions.</p>
                 </div>
             </div>
             <div class="grid-item text-start">
                 <div class="result-card">
                     <h3>200+</h3>
-                    <h5>Projects Completed</h5>
+                    <h5>Projects completed</h5>
                     <p>From MVPs to full-scale platforms, we deliver solutions on time and built to scale.</p>
                 </div>
             </div>
@@ -166,7 +169,7 @@
             <div class="grid-item text-start">
                 <div class="result-card">
                     <h3>50+</h3>
-                    <h5>In-House Team Members</h5>
+                    <h5>In-house team members</h5>
                     <p>Skilled engineers, designers, and strategists working as your extended team.</p>
                 </div>
             </div>
@@ -270,7 +273,8 @@
                     Testimonials
                 </div>
             </div>
-            <h2 class="display-heading mt-3 testimonials-section-cm-heading">Let’s hear what our Business <br>Partners say</h2>
+            <h2 class="display-heading mt-3 testimonials-section-cm-heading">Let’s hear what our business <br>partners
+                say</h2>
             <p class="section-subtext mx-auto mb-0" style="max-width: 600px; color: rgba(255,255,255,0.6);">
                 We build long-term partnerships by delivering work that actually makes a difference.
             </p>
@@ -306,8 +310,8 @@
                                 <img src="{{ t.platform_image.url }}" alt="Platform"
                                     style="width: 44px; height: 44px; object-fit: contain;">
                                 {% else %}
-                                <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44"
-                                    viewBox="0 0 44 44" fill="none">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 44 44"
+                                    fill="none">
                                     <path
                                         d="M21.9993 3.66797C32.1245 3.66797 40.3327 11.8761 40.3327 22.0013C40.3327 32.1264 32.1245 40.3346 21.9993 40.3346C11.8741 40.3346 3.66602 32.1264 3.66602 22.0013C3.66602 11.8761 11.8741 3.66797 21.9993 3.66797ZM29.1178 15.1872C27.9351 15.243 26.7933 15.6597 25.8486 16.3867C24.7688 17.2178 24.0151 18.4027 23.7199 19.7329C23.0797 18.3918 22.5957 16.9806 22.2769 15.5291H17.5127V21.4374C17.5127 23.5835 16.5405 25.1754 14.6338 25.1755C12.7269 25.1755 11.6421 23.591 11.6421 21.4374V15.5291H8.90462V21.4374C8.84251 23.0744 9.408 24.6741 10.4837 25.9096C11.0086 26.4809 11.6495 26.9333 12.3636 27.2364C13.0782 27.5394 13.8507 27.6859 14.6266 27.6659C17.9239 27.6658 20.2337 25.1315 20.234 21.5054V17.5111C20.7941 19.66 21.7205 21.6973 22.9716 23.5321L21.5053 31.8912H24.2873L25.2524 25.9688C25.5718 26.2436 25.9117 26.4943 26.2694 26.7172C27.1985 27.3039 28.2666 27.6331 29.3649 27.6733H29.6191C30.4362 27.6817 31.2472 27.5259 32.0022 27.2131C32.757 26.9002 33.4412 26.4382 34.0126 25.8542C34.5839 25.2703 35.0305 24.5762 35.3268 23.815C35.6232 23.0536 35.7629 22.2395 35.7369 21.4231C35.756 20.6096 35.6104 19.8 35.3106 19.0436C35.0109 18.287 34.5626 17.5966 33.9912 17.0169C33.4201 16.4375 32.7377 15.9796 31.9861 15.6688C31.2338 15.3579 30.4259 15.2014 29.6119 15.2087L29.1178 15.1872ZM29.6264 17.6829C31.5556 17.6829 33.0226 19.1796 33.0226 21.4231C33.0223 23.6662 31.5255 25.1612 29.6264 25.1612L29.3202 25.181C28.6421 25.1024 27.9868 24.8828 27.3972 24.5346C26.7233 24.1364 26.1529 23.5816 25.7377 22.918C26.2386 18.9252 27.6973 17.6832 29.6264 17.6829Z"
                                         fill="#F16535" />
@@ -375,8 +379,8 @@
                                 <img src="{{ t.platform_image.url }}" alt="Platform"
                                     style="width: 44px; height: 44px; object-fit: contain;">
                                 {% else %}
-                                <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44"
-                                    viewBox="0 0 44 44" fill="none">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 44 44"
+                                    fill="none">
                                     <path
                                         d="M21.9993 3.66797C32.1245 3.66797 40.3327 11.8761 40.3327 22.0013C40.3327 32.1264 32.1245 40.3346 21.9993 40.3346C11.8741 40.3346 3.66602 32.1264 3.66602 22.0013C3.66602 11.8761 11.8741 3.66797 21.9993 3.66797ZM29.1178 15.1872C27.9351 15.243 26.7933 15.6597 25.8486 16.3867C24.7688 17.2178 24.0151 18.4027 23.7199 19.7329C23.0797 18.3918 22.5957 16.9806 22.2769 15.5291H17.5127V21.4374C17.5127 23.5835 16.5405 25.1754 14.6338 25.1755C12.7269 25.1755 11.6421 23.591 11.6421 21.4374V15.5291H8.90462V21.4374C8.84251 23.0744 9.408 24.6741 10.4837 25.9096C11.0086 26.4809 11.6495 26.9333 12.3636 27.2364C13.0782 27.5394 13.8507 27.6859 14.6266 27.6659C17.9239 27.6658 20.2337 25.1315 20.234 21.5054V17.5111C20.7941 19.66 21.7205 21.6973 22.9716 23.5321L21.5053 31.8912H24.2873L25.2524 25.9688C25.5718 26.2436 25.9117 26.4943 26.2694 26.7172C27.1985 27.3039 28.2666 27.6331 29.3649 27.6733H29.6191C30.4362 27.6817 31.2472 27.5259 32.0022 27.2131C32.757 26.9002 33.4412 26.4382 34.0126 25.8542C34.5839 25.2703 35.0305 24.5762 35.3268 23.815C35.6232 23.0536 35.7629 22.2395 35.7369 21.4231C35.756 20.6096 35.6104 19.8 35.3106 19.0436C35.0109 18.287 34.5626 17.5966 33.9912 17.0169C33.4201 16.4375 32.7377 15.9796 31.9861 15.6688C31.2338 15.3579 30.4259 15.2014 29.6119 15.2087L29.1178 15.1872ZM29.6264 17.6829C31.5556 17.6829 33.0226 19.1796 33.0226 21.4231C33.0223 23.6662 31.5255 25.1612 29.6264 25.1612L29.3202 25.181C28.6421 25.1024 27.9868 24.8828 27.3972 24.5346C26.7233 24.1364 26.1529 23.5816 25.7377 22.918C26.2386 18.9252 27.6973 17.6832 29.6264 17.6829Z"
                                         fill="#F16535" />
@@ -420,8 +424,8 @@
                                 <img src="{{ t.platform_image.url }}" alt="Platform"
                                     style="width: 44px; height: 44px; object-fit: contain;">
                                 {% else %}
-                                <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44"
-                                    viewBox="0 0 44 44" fill="none">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 44 44"
+                                    fill="none">
                                     <path
                                         d="M21.9993 3.66797C32.1245 3.66797 40.3327 11.8761 40.3327 22.0013C40.3327 32.1264 32.1245 40.3346 21.9993 40.3346C11.8741 40.3346 3.66602 32.1264 3.66602 22.0013C3.66602 11.8761 11.8741 3.66797 21.9993 3.66797ZM29.1178 15.1872C27.9351 15.243 26.7933 15.6597 25.8486 16.3867C24.7688 17.2178 24.0151 18.4027 23.7199 19.7329C23.0797 18.3918 22.5957 16.9806 22.2769 15.5291H17.5127V21.4374C17.5127 23.5835 16.5405 25.1754 14.6338 25.1755C12.7269 25.1755 11.6421 23.591 11.6421 21.4374V15.5291H8.90462V21.4374C8.84251 23.0744 9.408 24.6741 10.4837 25.9096C11.0086 26.4809 11.6495 26.9333 12.3636 27.2364C13.0782 27.5394 13.8507 27.6859 14.6266 27.6659C17.9239 27.6658 20.2337 25.1315 20.234 21.5054V17.5111C20.7941 19.66 21.7205 21.6973 22.9716 23.5321L21.5053 31.8912H24.2873L25.2524 25.9688C25.5718 26.2436 25.9117 26.4943 26.2694 26.7172C27.1985 27.3039 28.2666 27.6331 29.3649 27.6733H29.6191C30.4362 27.6817 31.2472 27.5259 32.0022 27.2131C32.757 26.9002 33.4412 26.4382 34.0126 25.8542C34.5839 25.2703 35.0305 24.5762 35.3268 23.815C35.6232 23.0536 35.7629 22.2395 35.7369 21.4231C35.756 20.6096 35.6104 19.8 35.3106 19.0436C35.0109 18.287 34.5626 17.5966 33.9912 17.0169C33.4201 16.4375 32.7377 15.9796 31.9861 15.6688C31.2338 15.3579 30.4259 15.2014 29.6119 15.2087L29.1178 15.1872ZM29.6264 17.6829C31.5556 17.6829 33.0226 19.1796 33.0226 21.4231C33.0223 23.6662 31.5255 25.1612 29.6264 25.1612L29.3202 25.181C28.6421 25.1024 27.9868 24.8828 27.3972 24.5346C26.7233 24.1364 26.1529 23.5816 25.7377 22.918C26.2386 18.9252 27.6973 17.6832 29.6264 17.6829Z"
                                         fill="#F16535" />
@@ -500,8 +504,9 @@
         <div class="cta-refined-box">
             <div class="row align-items-center">
                 <div class="col-lg-7">
-                    <h1 class="cta-title-refined">Build impactful solutions with a Tech Catalyst</h1>
-                    <p class="cta-subtitle-refined">Partner with a team that focuses on meaningful outcomes, not just deliverables.</p>
+                    <h1 class="cta-title-refined">Build impactful solutions with a tech catalyst</h1>
+                    <p class="cta-subtitle-refined">Partner with a team that focuses on meaningful outcomes, not just
+                        deliverables.</p>
                     <a href="{% url 'contact' %}" class="btn-cta-refined">
                         <span class="label-up">Get in touch</span>
                         <span class="label-up">Get in touch</span>
@@ -544,35 +549,35 @@
         });
     });
 
-   $(document).ready(function () {
-    function initCaseStudySlider() {
-        if ($(window).width() <= 767) {
-            if (!$('.case-study-slider').hasClass('slick-initialized')) {
-                $('.case-study-slider').slick({
-                    slidesToShow: 1,
-                    slidesToScroll: 1,
-                    arrows: false,
-                    dots: true,
-                    speed: 600,
-                    infinite: true,
-                    autoplay: true,
-                    autoplaySpeed: 1500,
-                    centerMode: false,
-                    centerPadding: '0px'
-                });
-            }
-        } else {
-            if ($('.case-study-slider').hasClass('slick-initialized')) {
-                $('.case-study-slider').slick('unslick');
+    $(document).ready(function () {
+        function initCaseStudySlider() {
+            if ($(window).width() <= 767) {
+                if (!$('.case-study-slider').hasClass('slick-initialized')) {
+                    $('.case-study-slider').slick({
+                        slidesToShow: 1,
+                        slidesToScroll: 1,
+                        arrows: false,
+                        dots: true,
+                        speed: 600,
+                        infinite: true,
+                        autoplay: true,
+                        autoplaySpeed: 1500,
+                        centerMode: false,
+                        centerPadding: '0px'
+                    });
+                }
+            } else {
+                if ($('.case-study-slider').hasClass('slick-initialized')) {
+                    $('.case-study-slider').slick('unslick');
+                }
             }
         }
-    }
 
-    initCaseStudySlider();
-
-    $(window).on('resize', function () {
         initCaseStudySlider();
+
+        $(window).on('resize', function () {
+            initCaseStudySlider();
+        });
     });
-});
 </script>
 {% endblock JavaScript %}
