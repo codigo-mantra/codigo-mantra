@@ -78,6 +78,7 @@ body {
     background: #FFF;
     box-shadow: 0 -0.535px 2.677px 0 rgba(0, 0, 0, 0.09);
     position: relative;
+    margin-bottom: 30px;
 }
 
 .hero-badge::after {
@@ -387,7 +388,7 @@ body {
     font-style: normal;
     font-weight: 500;
     line-height: 150%;
-    margin-bottom: 40px;
+    margin-bottom: 50px;
     letter-spacing: 0.64px;
     /* 63px */
 }
@@ -589,7 +590,7 @@ body {
 .result-card h5 {
     color: #F6F6F6;
     font-family: Poppins;
-    font-size: 18px;
+    font-size: 20px;
     font-style: normal;
     font-weight: 500;
     line-height: 150%;
@@ -682,10 +683,11 @@ body {
 .project-title {
     color: #F6F6F6;
     font-family: Poppins;
-    font-size: 24px;
+    font-size: 20px;
     font-style: normal;
     font-weight: 500;
     line-height: 150%;
+    letter-spacing: 0.48px;
 }
 
 .project-description {
