@@ -227,7 +227,7 @@ a.open-position-btn {
 }
 
 .job-page {
-    margin-top: 60px;
+    margin: 60px 0 130px;
 }
 
 .job-hero h1 {
@@ -480,10 +480,12 @@ a.open-position-btn::after {
     align-items: center;
     justify-content: space-between;
 }
+
 .btn-delete-resume {
     background: transparent;
     border: none;
 }
+
 .resume-file-name {
     color: var(--white, #F6F6F6);
     font-family: Poppins;
@@ -496,6 +498,7 @@ a.open-position-btn::after {
     overflow-wrap: anywhere;
     white-space: normal;
 }
+
 .file-info-left {
     display: flex;
     align-items: center;
@@ -505,7 +508,8 @@ a.open-position-btn::after {
 section.no-openings {
     padding-top: 84px;
 }
-.hero-sub-career{
+
+.hero-sub-career {
     color: var(--white, #F6F6F6);
     font-family: Poppins;
     font-size: 16px;

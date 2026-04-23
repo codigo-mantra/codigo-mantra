@@ -104,14 +104,15 @@
     justify-content: center;
     height: 700px;
 }
-.service-card-new-2{
+
+.service-card-new-2 {
     border-radius: 10px;
-  background: #0C0C0C;
-  border: 1px solid #333232;
-  box-shadow: 0 4px 5.3px 0 rgba(241, 101, 53, 0.10);
-  transition: all 0.35s ease;
-  background: rgba(29, 29, 29, 0.20);
-  box-shadow: 0.5rem 1rem 1rem rgb(0 0 0 / 40%), -1px -1px 0px rgb(179 179 179), 1px 1px 0px rgb(234 234 234);
+    background: #0C0C0C;
+    border: 1px solid #333232;
+    box-shadow: 0 4px 5.3px 0 rgba(241, 101, 53, 0.10);
+    transition: all 0.35s ease;
+    background: rgba(29, 29, 29, 0.20);
+    box-shadow: 0.5rem 1rem 1rem rgb(0 0 0 / 40%), -1px -1px 0px rgb(179 179 179), 1px 1px 0px rgb(234 234 234);
 }
 
 .service-card-new-2:hover {
@@ -120,24 +121,22 @@
     background: #0C0C0C;
     box-shadow: 0 4px 5.3px 0 rgba(241, 101, 53, 0.19); */
     border-radius: 10px;
-  background: rgba(12, 12, 12, 0);
-  border: 1px solid transparent;
+    background: rgba(12, 12, 12, 0);
+    border: 1px solid transparent;
 
-  background-image:
-    linear-gradient(rgba(12, 12, 12, 0), rgba(12, 12, 12, 0)),
-    linear-gradient(
-      to bottom,
-      #333232 0%,
-      #333232 40%,
-      #F16535 100%
-    );
+    background-image:
+        linear-gradient(rgba(12, 12, 12, 0), rgba(12, 12, 12, 0)),
+        linear-gradient(to bottom,
+            #333232 0%,
+            #333232 40%,
+            #F16535 100%);
 
-  background-origin: border-box;
-  background-clip: content-box, border-box;
+    background-origin: border-box;
+    background-clip: content-box, border-box;
 
-  box-shadow:
-    2px 1000px 1px #0C0C0C inset,
-    0 0 24px rgba(241, 101, 53, 0.20);
+    box-shadow:
+        2px 1000px 1px #0C0C0C inset,
+        0 0 24px rgba(241, 101, 53, 0.20);
     transform: translateY(-5px);
 }
 
@@ -194,9 +193,11 @@
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
-    line-height: 150%; /* 24px */
+    line-height: 150%;
+    /* 24px */
     letter-spacing: 0.32px;
     margin-bottom: 28px;
+    opacity: 0.8;
 }
 
 .btn-why-cta {
@@ -322,6 +323,7 @@
     opacity: 0.7;
     letter-spacing: 0.32px;
 }
+
 .marquee-track-service {
     display: inline-flex;
     /* animation: marqueeScroll 30s linear infinite; */
@@ -329,6 +331,7 @@
     gap: 34.241px;
     margin-top: 0px;
 }
+
 /* .right-server-col-img::after {
     border-radius: 832px;
     opacity: 0.92;

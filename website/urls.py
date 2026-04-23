@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import *
-
+# from .views import zoho_callback
 urlpatterns = [
     path('', LandingPage.as_view(), name='index'), 
     path('about-us/', AboutUsPage.as_view(), name='about-us'),
@@ -21,6 +21,9 @@ urlpatterns = [
     
     path('privacy-policy/', PrivacyPolicyView.as_view(), name='privacy-policy'),
     path('terms-and-conditions/', TermsConditionsView.as_view(), name='terms-conditions'),
+
+    # path("zoho/callback/", zoho_callback),
+
 
 ]
 

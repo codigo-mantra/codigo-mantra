@@ -26,6 +26,7 @@ from django.shortcuts import redirect
 from django.http import JsonResponse
 from django.db import transaction, IntegrityError
 import threading
+# from django.http import HttpResponse
 
 logger = logging.getLogger(__name__)
 
@@ -36,6 +37,11 @@ TZ_ALIASES = {
     # Not a real IANA id; India uses Asia/Kolkata
     "Asia/India": "Asia/Kolkata",
 }
+
+
+# def zoho_callback(request):
+#     code = request.GET.get("code")
+#     return HttpResponse(f"CODE: {code}")
 
 
 def _safe_zone(tz_name: str) -> ZoneInfo:

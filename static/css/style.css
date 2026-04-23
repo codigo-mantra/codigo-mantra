@@ -1319,6 +1319,10 @@ span.cm-mega__thumb img {
   /* opacity: 0.8; */
 }
 
+.address-cm {
+  opacity: 0.8;
+}
+
 .fc-ic {
   width: 19px;
   height: 15px;
@@ -1442,7 +1446,7 @@ span.reserved-rights {
   font-weight: 400;
   line-height: 160%;
   opacity: 0.8;
-  letter-spacing: 0.28px; 
+  letter-spacing: 0.28px;
 }
 
 .cm-social {

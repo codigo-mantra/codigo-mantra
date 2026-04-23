@@ -349,11 +349,6 @@
     <!-- Slider track (full-width overflow) -->
     <div class="ws-slider-outer">
         <div class="ws-track" id="wsTrack">
-            <!-- <div class="ws-slide"><img src="{% static 'images/about/slider-image.png' %}" alt="Workspace moment 1"></div>
-                <div class="ws-slide"><img src="{% static 'images/about/ws-slide-2.png' %}" alt="Workspace moment 2"></div>
-                <div class="ws-slide"><img src="{% static 'images/about/ws-slide-6.png' %}" alt="Workspace moment 3"></div>
-                <div class="ws-slide"><img src="{% static 'images/about/ws-slide-5.png' %}" alt="Workspace moment 4"></div>
-                <div class="ws-slide"><img src="{% static 'images/about/ws-slide-4.png' %}" alt="Workspace moment 5"></div> -->
             {% for workspace_image in workspace_images %}
             <div class="ws-slide"><img src="{{ workspace_image.image.url }}"
                     alt="Workspace moment {{ forloop.counter }}"></div>

@@ -416,7 +416,7 @@
     }
 
     .job-page {
-        margin-top: 24px;
+        margin: 24px 0 70px;
         padding: 0px 20px;
     }
 
@@ -725,6 +725,8 @@
 
     .cm-mega__panel-2 {
         margin: 0 !important;
+        height: 300px;
+        overflow-y: scroll;
     }
 
     .grid-container {

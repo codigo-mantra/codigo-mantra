@@ -133,50 +133,13 @@
                     <p>
                         {{ job.description|safe }}
                     </p>
-                    <!-- <h3>About the Role</h3>
-                                <p>We are seeking a talented and passionate Full Stack Engineer to join our dynamic
-                                    team. In
-                                    this role, you will be responsible for developing and maintaining high-quality web
-                                    applications, collaborating with cross-functional teams, and contributing to the
-                                    overall
-                                    success of our projects. If you are a self-motivated individual with a strong
-                                    understanding
-                                    of software development principles and a desire to learn and grow, we encourage you
-                                    to
-                                    apply.</p>
-                            </div>
-
-                            <div class="detail-section">
-                                <h3>Key Responsibilities</h3>
-                                <ul>
-                                    <li>As a Full Stack Engineer, you will:</li>
-                                    <li>Design, develop, and maintain scalable and reliable web applications.</li>
-                                    <li>Collaborate with product managers, designers, and other engineers to deliver
-                                        high-quality solutions.</li>
-                                    <li>Write clean, testable, and well-documented code.</li>
-                                    <li>Participate in code reviews and contribute to improving our development
-                                        processes.</li>
-                                    <li>Troubleshoot and debug issues, and implement effective solutions.</li>
-                                </ul>
-                            </div>
-
-                            <div class="detail-section">
-                                <h3>Qualifications</h3>
-                                <p>We are looking for candidates with a Bachelor's degree in Computer Science or a
-                                    related
-                                    field. Strong problem-solving skills and attention to detail are essential.
-                                    Proficiency in
-                                    at least one programming language (e.g., Java, Python, or JavaScript) is required.
-                                    Experience with web development frameworks (e.g., React, Angular, or Vue.js) is a
-                                    plus.
-                                    Excellent communication and teamwork skills are also necessary.</p>
-                            </div> -->
 
                 </div>
             </div>
         </div>
 </section>
 
+{% if similar_jobs %}
 <section class="open-roles career-page-form">
     <div class="container">
         <div class="hero-badge-wrap">
@@ -200,50 +163,6 @@
             <div class="col-md-12">
                 <div class="jobs-list1">
                     {% if similar_jobs %}
-                    <!-- {% for job in similar_jobs|slice:":2" %}
-                                        <div class="job-item">
-                                        <div class="job-tag">Open Position</div>
-                                        <div class="job-title">{{ job.title }}</div>
-                                        <div class="job-desc" id="desc-1">
-                                            {{job.short_description|safe}}
-                                        </div>
-                                        <div class="job-meta">
-                                            <span>{{job.job_type}}</span>
-                                            <span>{{job.package}} LPA</span>
-                                            <span>{{job.experience}} Years of experience</span>
-                                            <span>{{job.location}}</span>
-                                        </div>
-                                        <div class="job-actions">
-                                            <button class="btn-toggle" id="toggle-1" onclick="toggleDesc(1)"
-                                                aria-label="Toggle description">
-                                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                                                    <path d="M2 5L7 10L12 5" stroke="white" stroke-width="1.8"
-                                                        stroke-linecap="round" stroke-linejoin="round" />
-                                                </svg>
-                                            </button>
-                                            <a href="#" class="btn btn-cm-cta btn-pill">
-                                                <span class="label-up">Submit Application
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="9"
-                                                        viewBox="0 0 13 9" fill="none">
-                                                        <path
-                                                            d="M9.69443 7.91307L11.4945 2.55027M11.4945 2.55027L6.13172 0.750171M11.4945 2.55027L0.750178 7.89433"
-                                                            stroke="#F6F6F6" stroke-width="1.5" stroke-linecap="round"
-                                                            stroke-linejoin="round" />
-                                                    </svg>
-                                                </span>
-                                                <span class="label-up">Submit Application
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="9"
-                                                        viewBox="0 0 13 9" fill="none">
-                                                        <path
-                                                            d="M9.69443 7.91307L11.4945 2.55027M11.4945 2.55027L6.13172 0.750171M11.4945 2.55027L0.750178 7.89433"
-                                                            stroke="#F6F6F6" stroke-width="1.5" stroke-linecap="round"
-                                                            stroke-linejoin="round" />
-                                                    </svg>
-                                                </span>
-                                            </a>
-                                        </div>
-                                        </div>
-                                    {% endfor %} -->
                     {% for job in similar_jobs|slice:":2" %}
                     {% with job_id=forloop.counter %}
                     <div class="job-item">
@@ -300,100 +219,6 @@
                     <!-- need code here for no simiar jobs  -->
                     <p>No similar job openings available at the moment. Please check back later.</p>
                     {% endif %}
-                    <!-- Job 1 -->
-                    <!-- <div class="job-item">
-                                    <div class="job-tag">Open Position</div>
-                                    <div class="job-title">Sr. Full Stack Engineer</div>
-                                    <div class="job-desc" id="desc-1">
-                                        We are looking for a skilled full stack engineer to join our growing team. The
-                                        ideal candidate will have experience with both front-end and back-end
-                                        technologies, and be able to work independently as well as collaborate with
-                                        other team members. If you are passionate about technology and want to make a
-                                        real impact, we encourage you to apply.
-                                    </div>
-                                    <div class="job-meta">
-                                        <span>Full Time</span>
-                                        <span>8-10 LPA</span>
-                                        <span>0-2 Years of experience</span>
-                                        <span>Sahibzada Ajit Singh Nagar, Punjab</span>
-                                    </div>
-                                    <div class="job-actions">
-                                        <button class="btn-toggle" id="toggle-1" onclick="toggleDesc(1)"
-                                            aria-label="Toggle description">
-                                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                                                <path d="M2 5L7 10L12 5" stroke="white" stroke-width="1.8"
-                                                    stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </button>
-                                        <a href="#" class="btn btn-cm-cta btn-pill open-position-btn">
-                                            <span class="label-up">Submit Application
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="9"
-                                                    viewBox="0 0 13 9" fill="none">
-                                                    <path
-                                                        d="M9.69443 7.91307L11.4945 2.55027M11.4945 2.55027L6.13172 0.750171M11.4945 2.55027L0.750178 7.89433"
-                                                        stroke="#F6F6F6" stroke-width="1.5" stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                </svg>
-                                            </span>
-                                            <span class="label-up">Submit Application
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="9"
-                                                    viewBox="0 0 13 9" fill="none">
-                                                    <path
-                                                        d="M9.69443 7.91307L11.4945 2.55027M11.4945 2.55027L6.13172 0.750171M11.4945 2.55027L0.750178 7.89433"
-                                                        stroke="#F6F6F6" stroke-width="1.5" stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                </svg>
-                                            </span>
-                                        </a>
-                                    </div>
-                                </div> -->
-
-                    <!-- Job 2 -->
-                    <!-- <div class="job-item">
-                                    <div class="job-tag">Open Position</div>
-                                    <div class="job-title">Data Scientist</div>
-                                    <div class="job-desc" id="desc-2">
-                                        Skilled in machine learning algorithms and data analytics to drive insights and
-                                        decision-making. You will work with large datasets to build predictive models
-                                        and provide actionable insights to our clients and internal teams.
-                                    </div>
-                                    <div class="job-meta">
-                                        <span>Full Time</span>
-                                        <span>8-10 LPA</span>
-                                        <span>0-2 Years of experience</span>
-                                        <span>Sahibzada Ajit Singh Nagar, Punjab</span>
-                                    </div>
-                                    <div class="job-actions">
-                                        <button class="btn-toggle" id="toggle-2" onclick="toggleDesc(2)"
-                                            aria-label="Toggle description">
-                                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                                                <path d="M2 5L7 10L12 5" stroke="white" stroke-width="1.8"
-                                                    stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </button>
-                                        <a href="#" class="btn btn-cm-cta btn-pill open-position-btn">
-                                            <span class="label-up">Submit Application
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="9"
-                                                    viewBox="0 0 13 9" fill="none">
-                                                    <path
-                                                        d="M9.69443 7.91307L11.4945 2.55027M11.4945 2.55027L6.13172 0.750171M11.4945 2.55027L0.750178 7.89433"
-                                                        stroke="#F6F6F6" stroke-width="1.5" stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                </svg>
-                                            </span>
-                                            <span class="label-up">Submit Application
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="9"
-                                                    viewBox="0 0 13 9" fill="none">
-                                                    <path
-                                                        d="M9.69443 7.91307L11.4945 2.55027M11.4945 2.55027L6.13172 0.750171M11.4945 2.55027L0.750178 7.89433"
-                                                        stroke="#F6F6F6" stroke-width="1.5" stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                </svg>
-                                            </span>
-                                        </a>
-                                    </div>
-                                </div> -->
-
                 </div>
 
             </div>
@@ -402,6 +227,7 @@
     </div>
 
 </section>
+{% endif %}
 
 
 <div class="modal fade" id="contactModal" tabindex="-1" aria-hidden="true">
