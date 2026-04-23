@@ -11,8 +11,8 @@
             <p class="job-location">{{job.location}}</p>
             <div class="job-hero-meta">
                 <span>{{ job.job_type }}</span>
-                <span>{{job.package}} LPA</span>
-                <span>{{ job.experience }} Years of experience</span>
+                <!-- <span>{{job.package}} LPA</span> -->
+                <span>{{ job.experience }} of experience</span>
             </div>
         </div>
 
@@ -82,14 +82,20 @@
 
                         <div class="resume-uploaded-preview" id="resume-uploaded-preview" style="display: none;">
                             <div class="file-info-left">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M10 20C15.5228 20 20 15.5228 20 10C20 4.47715 15.5228 0 10 0C4.47715 0 0 4.47715 0 10C0 15.5228 4.47715 20 10 20ZM14.592 7.46049C14.8463 7.13353 14.7874 6.66232 14.4605 6.40802C14.1335 6.15372 13.6623 6.21262 13.408 6.53958L9.40099 11.6914C9.31189 11.806 9.14429 11.8209 9.03641 11.7238L6.50173 9.44256C6.19385 9.16547 5.71963 9.19043 5.44254 9.49831C5.16544 9.80619 5.1904 10.2804 5.49828 10.5575L8.03296 12.8387C8.78809 13.5183 9.9613 13.4143 10.585 12.6123L14.592 7.46049Z" fill="#00CC00"/>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"
+                                    fill="none">
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M10 20C15.5228 20 20 15.5228 20 10C20 4.47715 15.5228 0 10 0C4.47715 0 0 4.47715 0 10C0 15.5228 4.47715 20 10 20ZM14.592 7.46049C14.8463 7.13353 14.7874 6.66232 14.4605 6.40802C14.1335 6.15372 13.6623 6.21262 13.408 6.53958L9.40099 11.6914C9.31189 11.806 9.14429 11.8209 9.03641 11.7238L6.50173 9.44256C6.19385 9.16547 5.71963 9.19043 5.44254 9.49831C5.16544 9.80619 5.1904 10.2804 5.49828 10.5575L8.03296 12.8387C8.78809 13.5183 9.9613 13.4143 10.585 12.6123L14.592 7.46049Z"
+                                        fill="#00CC00" />
                                 </svg>
-                                <span id="resume-file-name" class="resume-file-name">Amandeep_resume.pdf</span>
+                                <span id="resume-file-name" class="resume-file-name"></span>
                             </div>
                             <button type="button" class="btn-delete-resume" id="btn-delete-resume">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M9.75052 5.49805C12.2316 5.49808 14.5865 5.90925 16.7036 6.64746L16.0152 16.2832C15.8656 18.3763 14.1243 19.998 12.0259 19.998H7.47513C5.37663 19.998 3.63449 18.3763 3.48489 16.2832L2.79642 6.64746C4.91374 5.90915 7.26925 5.49805 9.75052 5.49805ZM7.75052 8.24805C7.33631 8.24805 7.00052 8.58383 7.00052 8.99805V14.998C7.00052 15.4123 7.33631 15.748 7.75052 15.748C8.1646 15.7479 8.50052 15.4122 8.50052 14.998V8.99805C8.50052 8.58393 8.1646 8.2482 7.75052 8.24805ZM11.7505 8.24805C11.3363 8.24805 11.0005 8.58383 11.0005 8.99805V14.998C11.0005 15.4123 11.3363 15.748 11.7505 15.748C12.1646 15.7479 12.5005 15.4122 12.5005 14.998V8.99805C12.5005 8.58393 12.1646 8.2482 11.7505 8.24805ZM9.75052 0C11.2692 0.000171178 12.5005 1.23132 12.5005 2.75V2.91602C14.8854 3.20629 17.1133 3.8684 19.0786 4.82617C19.4508 5.0076 19.6055 5.45586 19.4243 5.82812C19.2429 6.20048 18.7938 6.35528 18.4214 6.17383C15.9299 4.95974 12.9545 4.25005 9.75052 4.25C6.54629 4.25 3.57027 4.95962 1.07864 6.17383C0.706291 6.35528 0.25717 6.20048 0.075714 5.82812C-0.105343 5.45597 0.0494495 5.00766 0.421417 4.82617C2.3869 3.86835 4.61554 3.20626 7.00052 2.91602V2.75C7.00052 1.23122 8.23174 0 9.75052 0Z" fill="white"/>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"
+                                    fill="none">
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M9.75052 5.49805C12.2316 5.49808 14.5865 5.90925 16.7036 6.64746L16.0152 16.2832C15.8656 18.3763 14.1243 19.998 12.0259 19.998H7.47513C5.37663 19.998 3.63449 18.3763 3.48489 16.2832L2.79642 6.64746C4.91374 5.90915 7.26925 5.49805 9.75052 5.49805ZM7.75052 8.24805C7.33631 8.24805 7.00052 8.58383 7.00052 8.99805V14.998C7.00052 15.4123 7.33631 15.748 7.75052 15.748C8.1646 15.7479 8.50052 15.4122 8.50052 14.998V8.99805C8.50052 8.58393 8.1646 8.2482 7.75052 8.24805ZM11.7505 8.24805C11.3363 8.24805 11.0005 8.58383 11.0005 8.99805V14.998C11.0005 15.4123 11.3363 15.748 11.7505 15.748C12.1646 15.7479 12.5005 15.4122 12.5005 14.998V8.99805C12.5005 8.58393 12.1646 8.2482 11.7505 8.24805ZM9.75052 0C11.2692 0.000171178 12.5005 1.23132 12.5005 2.75V2.91602C14.8854 3.20629 17.1133 3.8684 19.0786 4.82617C19.4508 5.0076 19.6055 5.45586 19.4243 5.82812C19.2429 6.20048 18.7938 6.35528 18.4214 6.17383C15.9299 4.95974 12.9545 4.25005 9.75052 4.25C6.54629 4.25 3.57027 4.95962 1.07864 6.17383C0.706291 6.35528 0.25717 6.20048 0.075714 5.82812C-0.105343 5.45597 0.0494495 5.00766 0.421417 4.82617C2.3869 3.86835 4.61554 3.20626 7.00052 2.91602V2.75C7.00052 1.23122 8.23174 0 9.75052 0Z"
+                                        fill="white" />
                                 </svg>
                             </button>
                         </div>
@@ -101,11 +107,16 @@
 
                     <!-- ERROR MESSAGES -->
                     <div id="careerFormErrors" style="text-align: right; margin-bottom: 15px;">
-                        <p id="err-general" style="display:none; color: #FF0000; font-size: 14px; margin-bottom: 5px;">We could not submit your application, please try again later</p>
-                        <p id="err-format" style="display:none; color: #FF0000; font-size: 14px; margin-bottom: 5px;">Please upload your resume in PDF, DOC or DOCX format</p>
-                        <p id="err-fields" style="display:none; color: #FF0000; font-size: 14px; margin-bottom: 5px;">Please complete all required fields correctly to submit the form</p>
-                        <p id="err-network" style="display:none; color: #FF0000; font-size: 14px; margin-bottom: 5px;">Unable to connect, please check your internet connection and try again</p>
-                        <p id="err-size" style="display:none; color: #FF0000; font-size: 14px; margin-bottom: 5px;">The uploaded file must be less than 5 MB in size</p>
+                        <p id="err-general" style="display:none; color: #FF0000; font-size: 14px; margin-bottom: 5px;">
+                            We could not submit your application, please try again later</p>
+                        <p id="err-format" style="display:none; color: #FF0000; font-size: 14px; margin-bottom: 5px;">
+                            Please upload your resume in PDF, DOC or DOCX format</p>
+                        <p id="err-fields" style="display:none; color: #FF0000; font-size: 14px; margin-bottom: 5px;">
+                            Please complete all required fields correctly to submit the form</p>
+                        <p id="err-network" style="display:none; color: #FF0000; font-size: 14px; margin-bottom: 5px;">
+                            Unable to connect, please check your internet connection and try again</p>
+                        <p id="err-size" style="display:none; color: #FF0000; font-size: 14px; margin-bottom: 5px;">The
+                            uploaded file must be less than 5 MB in size</p>
                     </div>
 
                     <button type="submit" class="btn btn-cm-cta btn-pill w-100">
@@ -120,7 +131,7 @@
 
                 <div class="detail-section">
                     <p>
-                      {{ job.description|safe }}
+                        {{ job.description|safe }}
                     </p>
                     <!-- <h3>About the Role</h3>
                                 <p>We are seeking a talented and passionate Full Stack Engineer to join our dynamic
@@ -246,36 +257,36 @@
                         <div class="job-meta">
                             <span>{{ job.job_type }}</span>
                             <span>{{ job.package }} LPA</span>
-                            <span>{{ job.experience }} Years of experience</span>
+                            <span>{{ job.experience }} of experience</span>
                             <span>{{ job.location }}</span>
                         </div>
 
                         <div class="job-actions">
 
                             <!-- FIXED: Unique toggle button id and index -->
-                                                <button class="btn-toggle"
-                                                    id="toggle-{{ job_id }}"
-                                                    onclick="toggleDesc({{ job_id }})"
+                            <button class="btn-toggle" id="toggle-{{ job_id }}" onclick="toggleDesc({{ job_id }})"
                                 aria-label="Toggle description">
                                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                                                        <path d="M2 5L7 10L12 5" stroke="white" stroke-width="1.8"
-                                                            stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M2 5L7 10L12 5" stroke="white" stroke-width="1.8" stroke-linecap="round"
+                                        stroke-linejoin="round" />
                                 </svg>
                             </button>
 
-                                                <a href="{% url 'career-apply' job.id %}" class="btn btn-cm-cta btn-pill">
+                            <a href="{% url 'career-apply' job.id %}" class="btn btn-cm-cta btn-pill">
                                 <span class="label-up">Submit Application
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="9"
-                                                            viewBox="0 0 13 9" fill="none">
-                                                            <path d="M9.69443 7.91307L11.4945 2.55027M11.4945 2.55027L6.13172 0.750171M11.4945 2.55027L0.750178 7.89433"
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="9" viewBox="0 0 13 9"
+                                        fill="none">
+                                        <path
+                                            d="M9.69443 7.91307L11.4945 2.55027M11.4945 2.55027L6.13172 0.750171M11.4945 2.55027L0.750178 7.89433"
                                             stroke="#F6F6F6" stroke-width="1.5" stroke-linecap="round"
                                             stroke-linejoin="round" />
                                     </svg>
                                 </span>
                                 <span class="label-up">Submit Application
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="9"
-                                                            viewBox="0 0 13 9" fill="none">
-                                                            <path d="M9.69443 7.91307L11.4945 2.55027M11.4945 2.55027L6.13172 0.750171M11.4945 2.55027L0.750178 7.89433"
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="13" height="9" viewBox="0 0 13 9"
+                                        fill="none">
+                                        <path
+                                            d="M9.69443 7.91307L11.4945 2.55027M11.4945 2.55027L6.13172 0.750171M11.4945 2.55027L0.750178 7.89433"
                                             stroke="#F6F6F6" stroke-width="1.5" stroke-linecap="round"
                                             stroke-linejoin="round" />
                                     </svg>
@@ -409,15 +420,15 @@
 
                 <!-- Balloons + Envelope -->
                 <div class="balloon-envelope-wrap">
-                        <img src="{% static 'images/application-success.png' %}"
-                            alt="Application received">
+                    <img src="{% static 'images/application-success.png' %}" alt="Application received">
                 </div>
             </div>
 
             <!-- Text Content -->
             <div class="newsletter-body">
                 <h2 class="newsletter-title">Application Received!</h2>
-                      <p class="newsletter-desc">Thank you for applying to Codigo Mantra. Our team will review your application and reach out if your profile is a good match.</p>
+                <p class="newsletter-desc">Thank you for applying to Codigo Mantra. Our team will review your
+                    application and reach out if your profile is a good match.</p>
             </div>
 
         </div>

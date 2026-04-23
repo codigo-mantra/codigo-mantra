@@ -85,16 +85,16 @@
             Everything your product needs to<br> go from idea to market
         </h2>
 
-        <!-- <div class="row g-4 text-start services-row-new" style="margin-bottom: 30px;">
+        <div class="row g-4 text-start services-row-new" style="margin-bottom: 30px;">
             {% for service in services %}
             <div class="col-lg-4 mb-1">
-                <div class="service-card-wrapper">
+                <div class="service-card-wrapper h-100">
                     <div class="service-card-new service-card-new-mobile">
                         <div class="service-top">
                             <div class="service-icon-box">
                                 <!-- <img loading="lazy" src="{{ service.icon }}" alt=""> -->
-        <!-- <img loading="lazy" src="{{ service.icon.url }}" alt="{{ service.name }} Icon">
-                                <i class="{{ service.icon }} text-orange"></i> 
+                                <img loading="lazy" src="{{ service.icon.url }}" alt="{{ service.name }} Icon">
+                                <i class="{{ service.icon }} text-orange"></i>
                             </div>
 
                             <h5 class="service-title">{{ service.name }}</h5>
@@ -113,7 +113,7 @@
                 </div>
             </div>
             {% endfor %}
-        </div> -->
+        </div>
         <div class="text-center mt-5">
             <a href="{% url 'services' %}" class="btn btn-secondary-cm">
                 <span class="label-up">Explore Services</span>
@@ -148,6 +148,8 @@
                 <div class="result-card">
                     <h3>50+</h3>
                     <h5>Satisfied clients</h5>
+
+
                     <p>From startups to enterprises, we combine strategy and execution to drive the right product
                         decisions.</p>
                 </div>
@@ -273,7 +275,8 @@
                     Testimonials
                 </div>
             </div>
-            <h2 class="display-heading mt-3 testimonials-section-cm-heading">Let’s hear what our business <br>partners
+            <h2 class="display-heading mt-3 testimonials-section-cm-heading">Let’s hear what
+                our business <br>partners
                 say</h2>
             <p class="section-subtext mx-auto mb-0" style="max-width: 600px; color: rgba(255,255,255,0.6);">
                 We build long-term partnerships by delivering work that actually makes a difference.
@@ -287,9 +290,9 @@
                     <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=600&h=800"
                         alt="Video Review" class="video-preview-img">
                     <div class="video-overlay">
-                        <a href="#" class="btn-video-review">
+                        <!-- <a href="#" class="btn-video-review">
                             <i class="bi bi-play-fill me-2"></i>Watch video review
-                        </a>
+                        </a> -->
                     </div>
                 </div>
                 {% else %}
@@ -355,9 +358,9 @@
                     <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=600&h=800"
                         alt="Video Review" class="video-preview-img">
                     <div class="video-overlay">
-                        <a href="#" class="btn-video-review">
+                        <!-- <a href="#" class="btn-video-review">
                             <i class="bi bi-play-fill me-2"></i>Watch video review
-                        </a>
+                        </a> -->
                     </div>
                 </div>
                 {% else %}
@@ -401,9 +404,9 @@
                     <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=600&h=800"
                         alt="Video Review" class="video-preview-img">
                     <div class="video-overlay">
-                        <a href="#" class="btn-video-review">
+                        <!-- <a href="#" class="btn-video-review">
                             <i class="bi bi-play-fill me-2"></i>Watch video review
-                        </a>
+                        </a> -->
                     </div>
                 </div>
                 {% else %}
@@ -504,8 +507,10 @@
         <div class="cta-refined-box">
             <div class="row align-items-center">
                 <div class="col-lg-7">
-                    <h1 class="cta-title-refined">Build impactful solutions with a tech catalyst</h1>
-                    <p class="cta-subtitle-refined">Partner with a team that focuses on meaningful outcomes, not just
+                    <h1 class="cta-title-refined">Build impactful solutions with a tech
+                        catalyst</h1>
+                    <p class="cta-subtitle-refined">Partner with a team that focuses on meaningful outcomes, not
+                        just
                         deliverables.</p>
                     <a href="{% url 'contact' %}" class="btn-cta-refined">
                         <span class="label-up">Get in touch</span>

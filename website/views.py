@@ -21,6 +21,12 @@ import threading
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
+from django.contrib import messages
+from django.shortcuts import redirect
+from django.http import JsonResponse
+from django.db import transaction, IntegrityError
+import threading
+
 logger = logging.getLogger(__name__)
 
 # Bookings are stored as calendar date + wall clock in this zone (matches Django TIME_ZONE / Zoom).
@@ -256,9 +262,9 @@ def _career_application_send_emails(application_id):
                 ),
             },
         )
-        hr_addr = getattr(settings, "EMAIL_HOST_USER", "") or ""
+        hr_addr = getattr(settings, "HR_EMAIL_ADDRESS", "") or ""
         if not hr_addr:
-            logger.warning("Career application: EMAIL_HOST_USER not set; skipping HR mail")
+            logger.warning("Career application: HR_EMAIL_ADDRESS not set; skipping HR mail")
             return
 
         admin_msg = EmailMessage(
@@ -402,10 +408,19 @@ class ScheduleCallStep2Page(views.View):
             if not consultant:
                 consultant = User.objects.create(
                     name="Admin Consultant",
-                    email="admin@codigomantra.com",
+                    email="bhuvan@codigomantra.com",
                     role="consultant",
                     status="active"
                 )
+
+            # consultant, created = User.objects.get_or_create(
+            # email="abbas.codigo@gmail.com",
+            # defaults={
+            #     "name": "Admin Consultant",
+            #     "role": "consultant",
+            #     "status": "active",
+            # }
+            # )
 
             booking = form.save(commit=False)
             booking.client = client
@@ -495,9 +510,9 @@ class ScheduleCallStep2Page(views.View):
                         sug_d, sug_t = _format_date_time_in_zone(suggested_dt, client_timezone)
                         return JsonResponse({
                             "status": "conflict",
-                            "existing_time": f"{ex_d} at {ex_t}",
-                            "selected_time": f"{sel_d} at {sel_t}",
-                            "suggested_time": f"{sug_d} at {sug_t}",
+                            "existing_time": f"{ex_t}",
+                            "selected_time": f"{sel_t}",
+                            "suggested_time": f"{sug_t}",
                             "suggested_raw_time": suggested_dt.astimezone(_safe_zone(client_timezone)).strftime("%H:%M"),
                             # "suggested_raw_date": suggested_dt.astimezone(_safe_zone(client_timezone)).strftime("%Y-%m-%d")
                         }, status=409)
@@ -557,13 +572,14 @@ class LandingPage(views.View):
         # Ensure image testimonials appear before video testimonials (preserve recency within each group)
         testimonials = sorted(testimonials_qs, key=lambda t: t.media_type == "video")
         # industries = Industry.objects.all().values("name", "svg_icon")  # all industries with svg icons
-        industry_names = [
-            'Healthcare & MedTech', 'EdTech & E-Learning', 'Fintech & Banking',
-            'E-Commerce & Retail', 'Real Estate & PropTech', 'Logistics & Supply Chain',
-            'Legal & LegalTech', 'Media & Entertainment', 'Travel & Hospitality',
-            'SaaS & Software Products', 'Startups & SMBs'
-        ]
-        industries = Industry.objects.filter(name__in=industry_names).values("name", "svg_icon")
+        # industry_names = [
+        #     'Healthcare & MedTech', 'EdTech & E-Learning', 'Fintech & Banking',
+        #     'E-Commerce & Retail', 'Real Estate & PropTech', 'Logistics & Supply Chain',
+        #     'Legal & LegalTech', 'Media & Entertainment', 'Travel & Hospitality',
+        #     'SaaS & Software Products', 'Startups & SMBs'
+        # ]
+        # industries = Industry.objects.filter(name__in=industry_names).values("name", "svg_icon")
+        industries = Industry.objects.all().values("name", "svg_icon")
         case_studies = CaseStudy.objects.all().order_by('-created_at')[:3].prefetch_related(
             "services", "industries", "images"
         )  # last 3 case studies
@@ -625,13 +641,14 @@ class AboutUsPage(views.View):
 class ServicePage(views.View):
     def get(self,request):
         # industries = Industry.objects.all().values("name", "svg_icon")  # all industries with svg icons
-        industry_names = [
-            'Healthcare & MedTech', 'EdTech & E-Learning', 'Fintech & Banking',
-            'E-Commerce & Retail', 'Real Estate & PropTech', 'Logistics & Supply Chain',
-            'Legal & LegalTech', 'Media & Entertainment', 'Travel & Hospitality',
-            'SaaS & Software Products', 'Startups & SMBs'
-        ]
-        industries = Industry.objects.filter(name__in=industry_names).values("name", "svg_icon")
+        # industry_names = [
+        #     'Healthcare & MedTech', 'EdTech & E-Learning', 'Fintech & Banking',
+        #     'E-Commerce & Retail', 'Real Estate & PropTech', 'Logistics & Supply Chain',
+        #     'Legal & LegalTech', 'Media & Entertainment', 'Travel & Hospitality',
+        #     'SaaS & Software Products', 'Startups & SMBs'
+        # ]
+        # industries = Industry.objects.filter(name__in=industry_names).values("name", "svg_icon")
+        industries = Industry.objects.all().values("name", "svg_icon")
         services = Service_page.objects.all().order_by('display_order')[:9]
         return render(request,'website/services.html',{'services':services, 'industries':industries})
     
@@ -739,7 +756,7 @@ class PortfolioPage(views.View):
         industries = Industry.objects.all()
         technologies = Technology.objects.all()
         featured_projects = case_studies.all()[:3]
-        
+        print(industries, "industries")
 
         return render(request,'website/portfolio.html',{'case_studies':case_studies, 'industries':industries, 'technologies': technologies,'featured_projects': featured_projects})
     
@@ -814,10 +831,6 @@ class ContactPage(views.View):
             },
         )
     
-
-
-from django.contrib import messages
-from django.shortcuts import redirect
 
 def newsletter_subscribe(request):
     if request.method == "POST":

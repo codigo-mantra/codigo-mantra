@@ -1,461 +1,635 @@
 {% load static %}
 
 <header class="site-header">
-            <nav class="navbar navbar-expand-lg py-4">
-                <div class="container">
-                    <div class="cm-headerbar">
-                        <a class="navbar-brand d-flex align-items-center gap-2 m-0" href="/">
-                            <span class="cm-logo" aria-hidden="true">
-                               <img src="{% static 'images/codigo-mantra-logo.svg' %}" alt="Logo">
-                            </span>
-                            <span class="cm-brand">Codigo Mantra</span>
-                        </a>
+    <nav class="navbar navbar-expand-lg py-4">
+        <div class="container">
+            <div class="cm-headerbar">
+                <a class="navbar-brand d-flex align-items-center gap-2 m-0" href="/">
+                    <span class="cm-logo" aria-hidden="true">
+                        <img src="{% static 'images/codigo-mantra-logo.svg' %}" alt="Logo">
+                    </span>
+                    <span class="cm-brand">Codigo Mantra</span>
+                </a>
 
-                        <button class="navbar-toggler cm-navtoggle" type="button" data-bs-toggle="collapse" data-bs-target="#primaryNav" aria-controls="primaryNav" aria-expanded="false" aria-label="Toggle navigation">
-                            <span class="navbar-toggler-icon"></span>
-                            <span class="close-icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                <path d="M4.25 17.6342C4.0375 17.6342 3.85942 17.5623 3.71575 17.4185C3.57192 17.2748 3.5 17.0967 3.5 16.884C3.5 16.6715 3.57192 16.4934 3.71575 16.3497C3.85942 16.2062 4.0375 16.1345 4.25 16.1345L19.5343 6.36523C19.7467 6.36523 19.9248 6.43707 20.0685 6.58073C20.2123 6.72457 20.2843 6.90282 20.2843 7.11548C20.2843 7.32798 20.2123 7.50607 20.0685 7.64973C19.9248 7.79323 19.7467 7.86498 19.5343 7.86498L4.25 17.6342ZM4.25 7.86498C4.0375 7.86498 3.85942 7.79315 3.71575 7.64948C3.57192 7.50565 3.5 7.3274 3.5 7.11473C3.5 6.90223 3.57192 6.72415 3.71575 6.58048C3.85942 6.43698 4.0375 6.36523 4.25 6.36523L19.5343 16.3497C19.7467 16.3497 19.9248 16.4217 20.0685 16.5655C20.2123 16.7092 20.2843 16.8873 20.2843 17.1C20.2843 17.3125 20.2123 17.4906 20.0685 17.6342C19.9248 17.7777 19.7467 17.8495 19.5343 17.8495L4.25 7.86498Z" fill="#1F1F1F"/>
-                            </svg>
-                            </span>
-                        </button>
+                <button class="navbar-toggler cm-navtoggle" type="button" data-bs-toggle="collapse"
+                    onclick="closeonnonhover()" data-bs-target="#primaryNav" aria-controls="primaryNav"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                    <span class="close-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path
+                                d="M4.25 17.6342C4.0375 17.6342 3.85942 17.5623 3.71575 17.4185C3.57192 17.2748 3.5 17.0967 3.5 16.884C3.5 16.6715 3.57192 16.4934 3.71575 16.3497C3.85942 16.2062 4.0375 16.1345 4.25 16.1345L19.5343 6.36523C19.7467 6.36523 19.9248 6.43707 20.0685 6.58073C20.2123 6.72457 20.2843 6.90282 20.2843 7.11548C20.2843 7.32798 20.2123 7.50607 20.0685 7.64973C19.9248 7.79323 19.7467 7.86498 19.5343 7.86498L4.25 17.6342ZM4.25 7.86498C4.0375 7.86498 3.85942 7.79315 3.71575 7.64948C3.57192 7.50565 3.5 7.3274 3.5 7.11473C3.5 6.90223 3.57192 6.72415 3.71575 6.58048C3.85942 6.43698 4.0375 6.36523 4.25 6.36523L19.5343 16.3497C19.7467 16.3497 19.9248 16.4217 20.0685 16.5655C20.2123 16.7092 20.2843 16.8873 20.2843 17.1C20.2843 17.3125 20.2123 17.4906 20.0685 17.6342C19.9248 17.7777 19.7467 17.8495 19.5343 17.8495L4.25 7.86498Z"
+                                fill="#1F1F1F" />
+                        </svg>
+                    </span>
+                </button>
 
-                        <div class="collapse navbar-collapse" id="primaryNav">
-                            <ul class="navbar-nav m-auto align-items-lg-center cm-nav">
-                                <li class="nav-item dropdown" data-cm-nav="services">
-                                    <a class="nav-link dropdown-toggle" href="{% url 'services' %}" role="button" aria-expanded="false">What we do</a>
-                                    <div class="dropdown-menu cm-mega" aria-label="What we do menu">
-                                        <div class="cm-mega__panel first-sub-menu-cm">
-                                            <div class="cm-mega__grid cm-mega__grid-server">
-                                                <div class="cm-mega__col">
-                                                    <div class="cm-mega__h">Solutions</div>
-                                                    {% for category in services_nav|slice:":2" %}
-                                                        <div class="cm-sub-menu {% if not forloop.first %}mt-4{% endif %}">{{ category.name|upper }}</div>
-                                                        {% for child in category.children.all %}
-                                                            <a class="cm-mega__link" href="#">{{ child.name }}</a>
-                                                        {% endfor %}
+                <div class="collapse navbar-collapse" id="primaryNav">
+                    <ul class="navbar-nav m-auto align-items-lg-center cm-nav">
+                        <li class="nav-item dropdown" data-cm-nav="services">
+                            <!-- <a class="nav-link dropdown-toggle" href="{% url 'services' %}" role="button" aria-expanded="false">What we do</a> -->
+                            <a class="nav-link" href="{% url 'services' %}" role="button"
+                                aria-expanded="false">Services</a>
+                            <!-- <div class="dropdown-menu cm-mega" aria-label="What we do menu">
+                                <div class="cm-mega__panel first-sub-menu-cm">
+                                    <div class="cm-mega__grid cm-mega__grid-server">
+                                        <div class="cm-mega__col">
+                                            <div class="cm-mega__h">Solutions</div>
+                                            {% for category in services_nav|slice:":2" %}
+                                            <div class="cm-sub-menu {% if not forloop.first %}mt-4{% endif %}">{{
+                                                category.name|upper }}</div>
+                                            {% for child in category.children.all %}
+                                            <a class="cm-mega__link" href="#">{{ child.name }}</a>
+                                            {% endfor %}
+                                            {% endfor %}
+                                        </div>
+
+                                        <div class="cm-mega__col cm-mega__col--mid">
+                                            <div class="cm-mega__h">&nbsp;</div>
+                                            {% for category in services_nav|slice:"2:4" %}
+                                            <div class="cm-sub-menu {% if not forloop.first %}mt-4{% endif %}">{{
+                                                category.name|upper }}</div>
+                                            {% for child in category.children.all %}
+                                            <a class="cm-mega__link" href="#">{{ child.name }}</a>
+                                            {% endfor %}
+                                            {% endfor %}
+                                        </div>
+
+                                        <div class="cm-mega__col cm-mega__col--product">
+                                            <div class="cm-mega__col cm-mega__col--mid-last">
+                                                {% for category in services_nav|slice:"4:6" %}
+                                                <div
+                                                    class="{% if not forloop.first %}right-col-cm-app-development{% endif %}">
+                                                    <div class="cm-mega__h mb-0">&nbsp;</div>
+                                                    <div class="cm-sub-menu ">{{ category.name|upper }}</div>
+                                                    {% for child in category.children.all %}
+                                                    <a class="cm-mega__link" href="#">{{ child.name }}</a>
                                                     {% endfor %}
                                                 </div>
+                                                {% endfor %}
+                                            </div>
+                                            <div class="cm-mega__h">Our Product</div>
+                                            <span class="cm-mega__thumb" aria-hidden="true">
+                                                <img loading="lazy" src="{% static 'images/bellscrm.svg' %}"
+                                                    alt="BellsCRM">
+                                            </span>
+                                            <span class="cm-mega__productBody">
+                                                <span class="cm-mega__productT">BellsCRM</span>
+                                                <span class="cm-mega__productD">Technology that simplifies operations,
+                                                    improves decisions, and accelerates business success. <a
+                                                        href="https://www.bellscrm.com.au/" target="_blank">View
+                                                        Product</a></span>
+                                            </span>
 
-                                                <div class="cm-mega__col cm-mega__col--mid">
-                                                    <div class="cm-mega__h">&nbsp;</div>
-                                                    {% for category in services_nav|slice:"2:4" %}
-                                                        <div class="cm-sub-menu {% if not forloop.first %}mt-4{% endif %}">{{ category.name|upper }}</div>
-                                                        {% for child in category.children.all %}
-                                                            <a class="cm-mega__link" href="#">{{ child.name }}</a>
-                                                        {% endfor %}
-                                                    {% endfor %}
-                                                </div>
+                                        </div>
+                                    </div> -->
 
-                                                <div class="cm-mega__col cm-mega__col--product">
-                                                    <div class="cm-mega__col cm-mega__col--mid-last">
-                                                        {% for category in services_nav|slice:"4:6" %}
-                                                        <div class="{% if not forloop.first %}right-col-cm-app-development{% endif %}">
-                                                            <div class="cm-mega__h mb-0">&nbsp;</div>
-                                                            <div class="cm-sub-menu ">{{ category.name|upper }}</div>
-                                                            {% for child in category.children.all %}
-                                                                <a class="cm-mega__link" href="#">{{ child.name }}</a>
-                                                            {% endfor %}
-                                                        </div>
-                                                        {% endfor %}
-                                                    </div>
-                                                    <div class="cm-mega__h">Our Product</div>
-                                                        <span class="cm-mega__thumb" aria-hidden="true">
-                                                            <img loading="lazy" src="{% static 'images/bellscrm.svg' %}" alt="BellsCRM">
-                                                        </span>
-                                                        <span class="cm-mega__productBody">
-                                                            <span class="cm-mega__productT">BellsCRM</span>
-                                                            <span class="cm-mega__productD">Technology that simplifies operations, improves decisions, and accelerates business success. <a href="https://www.bellscrm.com.au/" target="_blank">View Product</a></span>
-                                                        </span>
-                                                  
-                                                </div>
+                            <!-- <div class="cm-mega__bottom">
+                                <span class="cm-mega__bottomText">Want to know more about us ?</span>
+                                <a class="cm-mega__bottomLink" href="{% url 'contact' %}">Talk to experts</a>
+                            </div>
+                </div>
+            </div> -->
+                        </li>
+                        <!-- <li class="nav-item dropdown" data-cm-nav="industries">
+                            <a class="nav-link dropdown-toggle" href="{% url 'portfolio' %}" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">Industries</a>
+                            <div class="dropdown-menu cm-mega" aria-label="Industries menu">
+                                <div class="cm-mega__panel">
+                                    <div class="border-custom-">
+                                        <div class="cm-mega__h cm-mega__col mt-0">Industries</div>
+                                        <div class="cm-mega__grid">
+                                            <div class="cm-mega__col mt-0">
+
+                                                {% for industry in industries_nav|slice:":6" %} -->
+                        <!-- <a class="cm-mega__link" href="{% url 'portfolio' %}?industry={{ industry.name|lower }}">{{ industry.name }}</a> -->
+                        <!-- <a class="cm-mega__link" href="#">{{ industry.name }}</a> -->
+
+                        <!-- {% endfor %}
                                             </div>
 
-                                            <div class="cm-mega__bottom">
-                                                <span class="cm-mega__bottomText">Want to know more about us ?</span>
-                                                <a class="cm-mega__bottomLink" href="{% url 'contact' %}">Talk to experts</a>
-                                            </div>
+                                            <div class="cm-mega__col mt-0 cm-mega__col--mid ps-5">
+                                                <div class="cm-mega__h">&nbsp;</div> -->
+                        <!-- {% for industry in industries_nav|slice:"6:12" %} -->
+                        <!-- <a class="cm-mega__link" href="{% url 'portfolio' %}?industry={{ industry.name|lower }}">{{ industry.name }}</a> -->
+                        <!-- <a class="cm-mega__link" href="#">{{ industry.name }}</a>
+                                                {% endfor %}
+                                            </div>  -->
+                        <!-- <div class="cm-mega__col cm-mega__col--product">
+                                            <div class="cm-mega__h">Our Product</div>
+
+                                            <span class="cm-mega__thumb" aria-hidden="true">
+                                                <img loading="lazy" src="{% static 'images/yurayi.svg' %}" alt="Yurayi">
+                                            </span>
+                                            <span class="cm-mega__productBody">
+                                                <span class="cm-mega__productT">Yurayi</span>
+                                                <span class="cm-mega__productD">Yurayi helps you build a lasting digital
+                                                    legacy with a beautifully crafted web platform. <a
+                                                        href="https://yurayi.com/" target="_blank">View
+                                                        Product</a></span>
+                                            </span>
+
+                                        </div> -->
+                        <!-- </div>
+                                    </div>
+                                    <div class="cm-mega__bottom">
+                                        <span class="cm-mega__bottomText">Want to know more about us ?</span>
+                                        <a class="cm-mega__bottomLink" href="{% url 'contact' %}">Talk to experts</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </li> -->
+                        <li class="nav-item" data-cm-nav="case-studies"><a class="nav-link"
+                                href="{% url 'portfolio' %}">Case
+                                Studies</a></li>
+                        <li class="nav-item dropdown custom-postion-accoding" data-cm-nav="about">
+                            <a class="nav-link dropdown-toggle" href="{% url 'about-us' %}" role="button"
+                                aria-expanded="false">Who
+                                We Are</a>
+                            <div class="dropdown-menu cm-mega custom-drop-sw" aria-label="Who we are menu">
+                                <div class="cm-mega__panel-2">
+                                    <div class="cm-mega__grid-2">
+                                        <div class="cm-mega__col">
+                                            <div class="cm-mega__h">Who are we</div>
+                                            <a class="cm-mega__link" href="{% url 'about-us' %}"
+                                                onclick="onclickremove()">About us</a>
+                                            <a class="cm-mega__link" href="{% url 'career' %}"
+                                                onclick="onclickremove()">Career</a>
+                                            <a class="cm-mega__link" href="javascript:void(0);"
+                                                onclick="openProductsTab()">Our Products</a>
+                                            <!-- <a class="cm-mega__link" href="#about">Insights</a> -->
+                                        </div>
+                                        <!-- <div class="cm-mega__col cm-mega__col--product">
+                                            <div class="cm-mega__h">Our Product</div>
+                                            <span class="cm-mega__thumb" aria-hidden="true">
+                                                <img loading="lazy" src="{% static 'images/bellscrm.svg' %}"
+                                                    alt="BellsCRM">
+                                            </span>
+                                            <span class="cm-mega__productBody">
+                                                <span class="cm-mega__productT">BellsCRM</span>
+                                                <span class="cm-mega__productD">Technology that simplifies operations,
+                                                    improves decisions, and accelerates business success. <a
+                                                        href="https://www.bellscrm.com.au/" target="_blank">View
+                                                        Product</a></span>
+                                            </span>
+
+                                        </div> -->
+                                        <div class="cm-mega__col cm-mega__col--product" id="productsTab"
+                                            style="display:none;">
+                                            <div class="cm-mega__h">Our Products</div>
+
+                                            <span class="cm-mega__thumb" aria-hidden="true">
+                                                <img class="h-100 " style="object-fit: cover; object-position: left;"
+                                                    loading="lazy" src="{% static 'images/bellscrm.svg' %}"
+                                                    alt="BellsCRM">
+                                            </span>
+
+                                            <span class="cm-mega__productBody">
+                                                <span class="cm-mega__productT">BellsCRM</span>
+                                                <span class="cm-mega__productD d-flex flex-column " style="gap: 10px;">
+                                                    Technology that simplifies operations, improves decisions, and
+                                                    accelerates business success. <br>
+                                                    <a href="https://www.bellscrm.com.au/" target="_blank">View
+                                                        Product</a>
+                                                </span>
+                                            </span>
+                                        </div>
+                                        <div class="cm-mega__col cm-mega__col--product " id="productsTab2"
+                                            style="display: none;">
+                                            <div class="cm-mega__h">Our Product</div>
+
+                                            <span class="cm-mega__thumb" aria-hidden="true">
+                                                <img class="h-100" loading="lazy" src="{% static 'images/yurayi.svg' %}"
+                                                    alt="Yurayi" style="object-fit: cover; object-position: left;">
+                                            </span>
+                                            <span class="cm-mega__productBody">
+                                                <span class="cm-mega__productT">Yurayi</span>
+                                                <span class="cm-mega__productD d-flex flex-column "
+                                                    style="gap: 10px;">Yurayi helps you build a lasting digital
+                                                    legacy with a beautifully crafted web platform. <br> <a
+                                                        href="https://yurayi.com/" target="_blank">View
+                                                        Product</a></span>
+                                            </span>
+
                                         </div>
                                     </div>
-                                </li>
-                                <li class="nav-item dropdown" data-cm-nav="industries">
-                                    <a class="nav-link dropdown-toggle" href="{% url 'portfolio' %}" role="button" data-bs-toggle="dropdown" aria-expanded="false">Industries</a>
-                                    <div class="dropdown-menu cm-mega" aria-label="Industries menu">
-                                        <div class="cm-mega__panel">
-                                            <div class="cm-mega__grid">
-                                                <div class="cm-mega__col">
-                                                    <div class="cm-mega__h">Industries</div>
-                                                    {% for industry in industries_nav|slice:":6" %}
-                                                        <!-- <a class="cm-mega__link" href="{% url 'portfolio' %}?industry={{ industry.name|lower }}">{{ industry.name }}</a> -->
-                                                        <a class="cm-mega__link" href="#">{{ industry.name }}</a>
-
-                                                    {% endfor %}
-                                                </div>
-
-                                                <div class="cm-mega__col cm-mega__col--mid">
-                                                    <div class="cm-mega__h">&nbsp;</div>
-                                                    {% for industry in industries_nav|slice:"6:12" %}
-                                                        <!-- <a class="cm-mega__link" href="{% url 'portfolio' %}?industry={{ industry.name|lower }}">{{ industry.name }}</a> -->
-                                                        <a class="cm-mega__link" href="#">{{ industry.name }}</a>
-                                                    {% endfor %}
-                                                </div>
-                                                <div class="cm-mega__col cm-mega__col--product">
-                                                    <div class="cm-mega__h">Our Product</div>
-                                                    
-                                                        <span class="cm-mega__thumb" aria-hidden="true">
-                                                            <img loading="lazy" src="{% static 'images/yurayi.svg' %}" alt="Yurayi">
-                                                        </span>
-                                                        <span class="cm-mega__productBody">
-                                                            <span class="cm-mega__productT">Yurayi</span>
-                                                            <span class="cm-mega__productD">Yurayi helps you build a lasting digital legacy with a beautifully crafted web platform. <a href="https://yurayi.com/" target="_blank">View Product</a></span>
-                                                        </span>
-                                                    
-                                                </div>
-                                            </div>
-                                            <div class="cm-mega__bottom">
-                                                <span class="cm-mega__bottomText">Want to know more about us ?</span>
-                                                <a class="cm-mega__bottomLink" href="{% url 'contact' %}">Talk to experts</a>
-                                            </div>
-                                        </div>
+                                    <div class="cm-mega__bottom">
+                                        <span class="cm-mega__bottomText">Want to know more about us ?</span>
+                                        <a class="cm-mega__bottomLink" href="{% url 'contact' %}">Talk to experts</a>
                                     </div>
-                                </li>
-                                <li class="nav-item" data-cm-nav="case-studies"><a class="nav-link" href="{% url 'portfolio' %}">Case Studies</a></li>
-                                <li class="nav-item dropdown" data-cm-nav="about">
-                                    <a class="nav-link dropdown-toggle" href="{% url 'about-us' %}" role="button"  aria-expanded="false">Who We Are</a>
-                                    <div class="dropdown-menu cm-mega" aria-label="Who we are menu">
-                                        <div class="cm-mega__panel-2">
-                                            <div class="cm-mega__grid-2">
-                                                <div class="cm-mega__col">
-                                                    <div class="cm-mega__h">Who are we</div>
-                                                    <a class="cm-mega__link" href="{% url 'about-us' %}">About us</a>
-                                                    <a class="cm-mega__link" href="{% url 'career' %}">Career</a>
-                                                    <a class="cm-mega__link" href="#about">Our Products</a>
-                                                    <a class="cm-mega__link" href="#about">Insights</a>
-                                                </div>
-                                                 <div class="cm-mega__col cm-mega__col--product">
-                                                    <div class="cm-mega__h">Our Product</div>
-                                                        <span class="cm-mega__thumb" aria-hidden="true">
-                                                            <img loading="lazy" src="{% static 'images/bellscrm.svg' %}" alt="BellsCRM">
-                                                        </span>
-                                                        <span class="cm-mega__productBody">
-                                                            <span class="cm-mega__productT">BellsCRM</span>
-                                                            <span class="cm-mega__productD">Technology that simplifies operations, improves decisions, and accelerates business success. <a href="https://www.bellscrm.com.au/" target="_blank">View Product</a></span>
-                                                        </span>
-                                               
-                                                </div>
-                                            </div>
-                                            <div class="cm-mega__bottom">
-                                                <span class="cm-mega__bottomText">Want to know more about us ?</span>
-                                                <a class="cm-mega__bottomLink" href="{% url 'contact' %}">Talk to experts</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                                <!-- <li class="nav-item ms-lg-3">
+                                </div>
+                            </div>
+                        </li>
+                        <!-- <li class="nav-item ms-lg-3">
                                      <a class="btn btn-cm-cta btn-pill" href="{% url 'contact' %}">
                                         <span class="label-up">Request a Quote</span>
                                         <span class="label-up">Request a Quote</span>
                                     </a>
                                 </li> -->
-                            </ul>
-                            <a class="btn-cm-cta btn-pill btn-mobile-cm" href="{% url 'contact' %}">
-                                <span class="label-up">Request a Quote</span>
-                                <span class="label-up">Request a Quote</span>
-                            </a>
-                        </div>
-                    </div>
+                    </ul>
+                    <a class="btn-cm-cta btn-pill btn-mobile-cm" href="{% url 'contact' %}">
+                        <span class="label-up">Request a Quote</span>
+                        <span class="label-up">Request a Quote</span>
+                    </a>
                 </div>
-            </nav>
-        </header>
-       <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const megaMenus = document.querySelectorAll('.nav-item.dropdown');
-    const DESKTOP_WIDTH = 991;
-    const OPEN_DELAY = 200;
-    const CLOSE_DELAY = 250;
-
-    megaMenus.forEach(menu => {
-        const toggle = menu.querySelector('.dropdown-toggle');
-        const dropdown = menu.querySelector('.dropdown-menu');
-
-        if (!toggle || !dropdown) return;
-
-        let openTimer;
-        let closeTimer;
-
-        function isDesktop() {
-            return window.innerWidth > DESKTOP_WIDTH;
-        }
-
-        function lockScroll() {
-            document.body.classList.add('menu-open');
-        }
-
-        function unlockScroll() {
-            const anyOpen = document.querySelector('.dropdown-menu.show');
-            if (!anyOpen) {
-                document.body.classList.remove('menu-open');
-            }
-        }
-
-        function openMenu() {
-            megaMenus.forEach(otherMenu => {
-                const otherDropdown = otherMenu.querySelector('.dropdown-menu');
-                if (otherDropdown && otherDropdown !== dropdown) {
-                    closeDropdown(otherDropdown);
-                }
-            });
-
-            clearTimeout(closeTimer);
-            dropdown.style.display = 'block';
-
-            requestAnimationFrame(() => {
-                dropdown.classList.add('show');
-                dropdown.style.opacity = '1';
-                dropdown.style.transform = 'translateY(0)';
-                dropdown.style.pointerEvents = 'auto';
-                lockScroll();
-            });
-        }
-
-        function closeDropdown(target) {
-            target.style.opacity = '0';
-            target.style.transform = 'translateY(8px)';
-            target.style.pointerEvents = 'none';
-            target.classList.remove('show');
-
-            setTimeout(() => {
-                if (!target.classList.contains('show')) {
-                    target.style.display = 'none';
-                    unlockScroll();
-                }
-            }, 250);
-        }
-
-        function closeMenu() {
-            closeDropdown(dropdown);
-        }
-
-        function scheduleOpen() {
-            clearTimeout(closeTimer);
-            clearTimeout(openTimer);
-            openTimer = setTimeout(openMenu, OPEN_DELAY);
-        }
-
-        function scheduleClose() {
-            clearTimeout(openTimer);
-            clearTimeout(closeTimer);
-            closeTimer = setTimeout(closeMenu, CLOSE_DELAY);
-        }
-
-        menu.addEventListener('mouseenter', function () {
-            if (!isDesktop()) return;
-            scheduleOpen();
-        });
-
-        menu.addEventListener('mouseleave', function () {
-            if (!isDesktop()) return;
-            scheduleClose();
-        });
-
-        dropdown.addEventListener('mouseenter', function () {
-            if (!isDesktop()) return;
-            clearTimeout(closeTimer);
-        });
-
-        dropdown.addEventListener('mouseleave', function () {
-            if (!isDesktop()) return;
-            scheduleClose();
-        });
-    });
-
-    document.addEventListener('click', function (e) {
-        if (window.innerWidth <= 991) return;
-
-        megaMenus.forEach(menu => {
-            const dropdown = menu.querySelector('.dropdown-menu');
-            if (dropdown && !menu.contains(e.target)) {
-                dropdown.classList.remove('show');
-                dropdown.style.opacity = '0';
-                dropdown.style.transform = 'translateY(8px)';
-                dropdown.style.pointerEvents = 'none';
-
-                setTimeout(() => {
-                    if (!dropdown.classList.contains('show')) {
-                        dropdown.style.display = 'none';
-                        document.body.classList.remove('menu-open');
-                    }
-                }, 250);
-            }
-        });
-    });
-
-    window.addEventListener('resize', function () {
-        megaMenus.forEach(menu => {
-            const dropdown = menu.querySelector('.dropdown-menu');
-            if (!dropdown) return;
-
-            dropdown.classList.remove('show');
-            dropdown.style.display = '';
-            dropdown.style.opacity = '';
-            dropdown.style.transform = '';
-            dropdown.style.pointerEvents = '';
-        });
-
-        document.body.classList.remove('menu-open');
-    });
-
-    (function initCmNavActive() {
-        const navRoot = document.querySelector('#primaryNav');
-        if (!navRoot) return;
-        const STORAGE_KEY = 'cmActiveNavKey';
-        const items = Array.from(navRoot.querySelectorAll(':scope > ul > li.nav-item[data-cm-nav]'));
-        const allTopLinks = items.map(function (li) { return li.querySelector(':scope > a.nav-link'); }).filter(Boolean);
-
-        function clearActive() {
-            allTopLinks.forEach(function (a) { a.classList.remove('active'); });
-        }
-
-        function setActiveByKey(key) {
-            clearActive();
-            const li = navRoot.querySelector('li.nav-item[data-cm-nav="' + key + '"]');
-            const link = li && li.querySelector(':scope > a.nav-link');
-            if (link) link.classList.add('active');
-        }
-
-        function pathToActiveKey() {
-            var path = (window.location.pathname || '/').replace(/\/+$/, '') || '/';
-            if (path === '/services' || path.indexOf('/services/') === 0) return 'services';
-            if (path === '/about-us' || path.indexOf('/about-us/') === 0 || path === '/career' || path.indexOf('/career/') === 0) return 'about';
-            if (path === '/portfolio' || path.indexOf('/portfolio/') === 0) {
-                var s = sessionStorage.getItem(STORAGE_KEY);
-                if (s === 'industries' || s === 'case-studies') return s;
-                return null;
-            }
-            return null;
-        }
-
-        items.forEach(function (li) {
-            var key = li.dataset.cmNav;
-            var link = li.querySelector(':scope > a.nav-link');
-            if (!link || !key) return;
-            link.addEventListener('click', function () {
-                sessionStorage.setItem(STORAGE_KEY, key);
-                clearActive();
-                link.classList.add('active');
-            });
-        });
-
-        var initialKey = pathToActiveKey();
-        if (initialKey) {
-            if (initialKey === 'services' || initialKey === 'about') {
-                sessionStorage.setItem(STORAGE_KEY, initialKey);
-            }
-            setActiveByKey(initialKey);
-        } else {
-            clearActive();
-        }
-    })();
-});
-</script>
+            </div>
+        </div>
+    </nav>
+</header>
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const dropdownItems = document.querySelectorAll('.nav-item.dropdown');
-    const MOBILE_WIDTH = 991;
+    document.addEventListener('DOMContentLoaded', function () {
+        const megaMenus = document.querySelectorAll('.nav-item.dropdown');
+        const DESKTOP_WIDTH = 991;
+        const OPEN_DELAY = 200;
+        const CLOSE_DELAY = 250;
 
-    function isMobile() {
-        return window.innerWidth <= MOBILE_WIDTH;
-    }
+        megaMenus.forEach(menu => {
+            const toggle = menu.querySelector('.dropdown-toggle');
+            const dropdown = menu.querySelector('.dropdown-menu');
 
-    dropdownItems.forEach(item => {
-        const toggle = item.querySelector('.dropdown-toggle');
-        const dropdown = item.querySelector('.dropdown-menu');
+            if (!toggle || !dropdown) return;
 
-        if (!toggle || !dropdown) return;
+            let openTimer;
+            let closeTimer;
 
-        toggle.addEventListener('click', function (e) {
-            if (!isMobile()) return;
+            function isDesktop() {
+                return window.innerWidth > DESKTOP_WIDTH;
+            }
 
-            const isOpen = dropdown.classList.contains('show');
+            function lockScroll() {
+                document.body.classList.add('menu-open');
+            }
 
-            if (!isOpen) {
-                e.preventDefault();
-                e.stopPropagation();
+            function unlockScroll() {
+                const anyOpen = document.querySelector('.dropdown-menu.show');
+                if (!anyOpen) {
+                    document.body.classList.remove('menu-open');
+                }
+            }
 
-                dropdownItems.forEach(otherItem => {
-                    const otherDropdown = otherItem.querySelector('.dropdown-menu');
+            function openMenu() {
+                megaMenus.forEach(otherMenu => {
+                    const otherDropdown = otherMenu.querySelector('.dropdown-menu');
                     if (otherDropdown && otherDropdown !== dropdown) {
-                        otherDropdown.classList.remove('show');
-                        otherItem.classList.remove('mobile-open');
+                        closeDropdown(otherDropdown);
                     }
                 });
 
-                dropdown.classList.add('show');
-                item.classList.add('mobile-open');
+                clearTimeout(closeTimer);
+                dropdown.style.display = 'block';
+
+                requestAnimationFrame(() => {
+                    dropdown.classList.add('show');
+                    dropdown.style.opacity = '1';
+                    dropdown.style.transform = 'translateY(0)';
+                    dropdown.style.pointerEvents = 'auto';
+                    lockScroll();
+                });
             }
+
+            function closeDropdown(target) {
+                if (!target) return;
+                target.style.opacity = '0';
+                target.style.transform = 'translateY(8px)';
+                target.style.pointerEvents = 'none';
+                target.classList.remove('show');
+
+                setTimeout(() => {
+                    if (!target.classList.contains('show')) {
+                        target.style.display = 'none';
+                        unlockScroll();
+                    }
+
+                    closeonnonhover()
+                }, 250);
+            }
+
+            function closeMenu() {
+                closeDropdown(dropdown);
+            }
+
+            function scheduleOpen() {
+                clearTimeout(closeTimer);
+                clearTimeout(openTimer);
+                openTimer = setTimeout(openMenu, OPEN_DELAY);
+            }
+
+            function scheduleClose() {
+                clearTimeout(openTimer);
+                clearTimeout(closeTimer);
+                closeTimer = setTimeout(closeMenu, CLOSE_DELAY);
+            }
+
+            menu.addEventListener('mouseenter', function () {
+                if (!isDesktop()) return;
+                scheduleOpen();
+            });
+
+            menu.addEventListener('mouseleave', function () {
+                if (!isDesktop()) return;
+                scheduleClose();
+            });
+
+            dropdown.addEventListener('mouseenter', function () {
+                if (!isDesktop()) return;
+                clearTimeout(closeTimer);
+            });
+
+            dropdown.addEventListener('mouseleave', function () {
+                if (!isDesktop()) return;
+                scheduleClose();
+            });
         });
-    });
 
-    document.addEventListener('click', function (e) {
-        if (!isMobile()) return;
+        document.addEventListener('click', function (e) {
+            if (window.innerWidth <= 991) return;
 
-        dropdownItems.forEach(item => {
-            const dropdown = item.querySelector('.dropdown-menu');
-            if (!item.contains(e.target)) {
+            megaMenus.forEach(menu => {
+                const dropdown = menu.querySelector('.dropdown-menu');
+                if (dropdown && !menu.contains(e.target)) {
+                    dropdown.classList.remove('show');
+                    dropdown.style.opacity = '0';
+                    dropdown.style.transform = 'translateY(8px)';
+                    dropdown.style.pointerEvents = 'none';
+
+                    setTimeout(() => {
+                        if (!dropdown.classList.contains('show')) {
+                            dropdown.style.display = 'none';
+                            document.body.classList.remove('menu-open');
+                        }
+                    }, 250);
+                }
+            });
+        });
+
+        window.addEventListener('resize', function () {
+            megaMenus.forEach(menu => {
+                const dropdown = menu.querySelector('.dropdown-menu');
+                if (!dropdown) return;
+
                 dropdown.classList.remove('show');
-                item.classList.remove('mobile-open');
-            }
-        });
-    });
+                dropdown.style.display = '';
+                dropdown.style.opacity = '';
+                dropdown.style.transform = '';
+                dropdown.style.pointerEvents = '';
 
-    window.addEventListener('resize', function () {
-        dropdownItems.forEach(item => {
-            const dropdown = item.querySelector('.dropdown-menu');
-            dropdown.classList.remove('show');
-            item.classList.remove('mobile-open');
+            });
+
+            document.body.classList.remove('menu-open');
         });
+
+        (function initCmNavActive() {
+            const navRoot = document.querySelector('#primaryNav');
+            if (!navRoot) return;
+            const STORAGE_KEY = 'cmActiveNavKey';
+            const items = Array.from(navRoot.querySelectorAll(':scope > ul > li.nav-item[data-cm-nav]'));
+            const allTopLinks = items.map(function (li) { return li.querySelector(':scope > a.nav-link'); }).filter(Boolean);
+
+            function clearActive() {
+                allTopLinks.forEach(function (a) { a.classList.remove('active'); });
+            }
+
+            function setActiveByKey(key) {
+                clearActive();
+                const li = navRoot.querySelector('li.nav-item[data-cm-nav="' + key + '"]');
+                const link = li && li.querySelector(':scope > a.nav-link');
+                if (link) link.classList.add('active');
+            }
+
+            function pathToActiveKey() {
+                var path = (window.location.pathname || '/').replace(/\/+$/, '') || '/';
+                if (path === '/services' || path.indexOf('/services/') === 0) return 'services';
+                if (path === '/about-us' || path.indexOf('/about-us/') === 0 || path === '/career' || path.indexOf('/career/') === 0) return 'about';
+                if (path === '/portfolio' || path.indexOf('/portfolio/') === 0) {
+                    var s = sessionStorage.getItem(STORAGE_KEY);
+                    if (s === 'industries' || s === 'case-studies') return s;
+                    return null;
+                }
+                return null;
+            }
+
+            items.forEach(function (li) {
+                var key = li.dataset.cmNav;
+                var link = li.querySelector(':scope > a.nav-link');
+                if (!link || !key) return;
+                link.addEventListener('click', function () {
+                    sessionStorage.setItem(STORAGE_KEY, key);
+                    clearActive();
+                    link.classList.add('active');
+                });
+            });
+
+            var initialKey = pathToActiveKey();
+            if (initialKey) {
+                if (initialKey === 'services' || initialKey === 'about') {
+                    sessionStorage.setItem(STORAGE_KEY, initialKey);
+                }
+                setActiveByKey(initialKey);
+            } else {
+                clearActive();
+            }
+        })();
     });
-});
 </script>
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const navCollapse = document.getElementById("primaryNav");
+    document.addEventListener('DOMContentLoaded', function () {
+        const dropdownItems = document.querySelectorAll('.nav-item.dropdown');
+        const MOBILE_WIDTH = 991;
 
-    navCollapse.addEventListener("shown.bs.collapse", function () {
-        document.body.style.overflow = "hidden";
+        function isMobile() {
+            return window.innerWidth <= MOBILE_WIDTH;
+        }
+
+        dropdownItems.forEach(item => {
+            const toggle = item.querySelector('.dropdown-toggle');
+            const dropdown = item.querySelector('.dropdown-menu');
+
+            if (!toggle || !dropdown) return;
+
+            toggle.addEventListener('click', function (e) {
+                if (!isMobile()) return;
+
+                const isOpen = dropdown.classList.contains('show');
+
+                if (!isOpen) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    dropdownItems.forEach(otherItem => {
+                        const otherDropdown = otherItem.querySelector('.dropdown-menu');
+                        if (otherDropdown && otherDropdown !== dropdown) {
+                            otherDropdown.classList.remove('show');
+                            otherItem.classList.remove('mobile-open');
+                        }
+                    });
+
+                    dropdown.classList.add('show');
+                    item.classList.add('mobile-open');
+                }
+            });
+        });
+
+        document.addEventListener('click', function (e) {
+            if (!isMobile()) return;
+
+            dropdownItems.forEach(item => {
+                const dropdown = item.querySelector('.dropdown-menu');
+                if (!item.contains(e.target)) {
+                    dropdown.classList.remove('show');
+                    item.classList.remove('mobile-open');
+                }
+            });
+        });
+
+        window.addEventListener('resize', function () {
+            dropdownItems.forEach(item => {
+                const dropdown = item.querySelector('.dropdown-menu');
+                dropdown.classList.remove('show');
+                item.classList.remove('mobile-open');
+            });
+        });
+    });
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const navCollapse = document.getElementById("primaryNav");
+
+        navCollapse.addEventListener("shown.bs.collapse", function () {
+            document.body.style.overflow = "hidden";
+        });
+
+        navCollapse.addEventListener("hidden.bs.collapse", function () {
+            document.body.style.overflow = "";
+        });
     });
 
-    navCollapse.addEventListener("hidden.bs.collapse", function () {
-        document.body.style.overflow = "";
+    document.addEventListener("DOMContentLoaded", function () {
+        const navCollapse = document.getElementById("primaryNav");
+        const togglerIcon = document.querySelector(".navbar-toggler-icon");
+        const closeIcon = document.querySelector(".close-icon");
+
+        function updateIcons(isOpen) {
+            if (isOpen) {
+                togglerIcon.style.display = "none";
+                closeIcon.style.display = "block";
+            } else {
+                togglerIcon.style.display = "block";
+                closeIcon.style.display = "none";
+            }
+        }
+
+        // Set initial state
+        updateIcons(false);
+
+        navCollapse.addEventListener("shown.bs.collapse", function () {
+            document.body.style.overflow = "hidden";
+            updateIcons(true);
+        });
+
+        navCollapse.addEventListener("hidden.bs.collapse", function () {
+            document.body.style.overflow = "";
+            updateIcons(false);
+        });
     });
-});
 
-document.addEventListener("DOMContentLoaded", function () {
-    const navCollapse = document.getElementById("primaryNav");
-    const togglerIcon = document.querySelector(".navbar-toggler-icon");
-    const closeIcon = document.querySelector(".close-icon");
 
-    function updateIcons(isOpen) {
-        if (isOpen) {
-            togglerIcon.style.display = "none";
-            closeIcon.style.display = "block";
+    function openProductsTab() {
+        debugger
+
+        const isMobile = window.innerWidth < 1024;
+
+        const tab1 = document.getElementById("productsTab");
+        const tab2 = document.getElementById("productsTab2");
+        const grid = document.querySelector(".cm-mega__grid-2");
+        const addwidth = document.querySelector(".cm-mega__panel-2");
+
+        const aboutNavItem = document.querySelector('[data-cm-nav="about"]');
+        const productsLink = document.querySelector('.cm-mega__link[onclick="openProductsTab()"]');
+        const customDrop = document.querySelector('.dropdown-menu.cm-mega');
+
+        const isHidden =
+            tab1.style.display === "none" || tab1.style.display === "";
+
+        if (isHidden) {
+
+            // Show tabs
+            tab1.style.display = "block";
+            tab2.style.display = "block";
+
+            // ✅ RESPONSIVE GRID
+            if (isMobile) {
+                grid.style.gridTemplateColumns = "1fr";   // 📱 Mobile (stacked)
+                addwidth.style.width = "100%";
+            } else {
+                grid.style.gridTemplateColumns = "1.05fr 2fr 2fr"; // 💻 Desktop
+                addwidth.style.width = "min(1150px, calc(100vw - 48px))";
+            }
+
+            // Remove class from <li>
+            if (aboutNavItem) {
+                aboutNavItem.classList.remove("custom-postion-accoding");
+            }
+
+            // Add active class
+            if (productsLink) {
+                productsLink.classList.add("active-product-tab");
+            }
+
+            // Dropdown adjustment
+            if (customDrop) {
+                customDrop.classList.remove("custom-drop-sw");
+                customDrop.style.top = isMobile ? "0px" : "140px";
+            }
+
         } else {
-            togglerIcon.style.display = "block";
-            closeIcon.style.display = "none";
+
+            // Hide tabs
+            tab1.style.display = "none";
+            tab2.style.display = "none";
+
+            grid.style.gridTemplateColumns = "";
+            addwidth.style.width = "";
+
+            // Remove active class
+            if (productsLink) {
+                productsLink.classList.remove("active-product-tab");
+            }
+
+            // Reset dropdown
+            if (customDrop) {
+                customDrop.style.top = "";
+            }
         }
     }
+    function closeonnonhover() {
+        // Run ONLY on desktop
+        // if (window.innerWidth < 1024) return;
 
-    // Set initial state
-    updateIcons(false);
+        const tab1 = document.getElementById("productsTab");
+        const tab2 = document.getElementById("productsTab2");
+        const grid = document.querySelector(".cm-mega__grid-2");
+        const addwidth = document.querySelector(".cm-mega__panel-2");
+        const aboutNavItem = document.querySelector('[data-cm-nav="about"]');
+        const productsLink = document.querySelector('.cm-mega__link[onclick="openProductsTab()"]');
+        const customDrop = document.querySelector('.dropdown-menu.cm-mega'); // dropdown element
 
-    navCollapse.addEventListener("shown.bs.collapse", function () {
-        document.body.style.overflow = "hidden";
-        updateIcons(true);
-    });
 
-    navCollapse.addEventListener("hidden.bs.collapse", function () {
-        document.body.style.overflow = "";
-        updateIcons(false);
-    });
-});
+        customDrop.classList.add("custom-drop-sw");
+        customDrop.style.top = "";
+        aboutNavItem.classList.add("custom-postion-accoding");
+        productsLink.classList.remove("active-product-tab");
+
+        if (tab1) tab1.style.display = "none";
+        if (tab2) tab2.style.display = "none";
+        if (grid) grid.style.gridTemplateColumns = "";
+        if (addwidth) addwidth.style.width = "";
+    }
+
+    function onclickremove() {
+        const productsLink = document.querySelector('.cm-mega__link[onclick="openProductsTab()"]');
+        productsLink.classList.remove("active-product-tab");
+
+    }
+
+
 </script>

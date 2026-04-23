@@ -728,9 +728,11 @@
     .grid-container {
         grid-template-columns: repeat(2, 1fr);
     }
-    body.cm-headerbar #primaryNav{
-    overflow: hidden;
-}
+
+    body.cm-headerbar #primaryNav {
+        overflow: hidden;
+    }
+
     .navbar-collapse {
         max-height: 80vh;
         height: 70vh;
@@ -741,159 +743,223 @@
         justify-content: space-between;
         transition: all 0.3s ease-in-out;
     }
+
     .why-features-track {
         gap: 58px;
     }
+
     .testimonials-v2-grid .col-lg-4 {
-    gap: 10px !important;
+        gap: 10px !important;
     }
+
     .insights-section-cm-row {
         margin-top: 2px;
     }
+
     .slick-initialized .slick-slide {
-    margin: 0 12px 0 0;
+        margin: 0 12px 0 0;
     }
+
     .right-server-col-img {
         background-size: contain;
         position: relative;
         width: 483px;
         height: 345px;
     }
+
     .hero-sub {
         margin: 0 !important;
     }
+
     .label-up {
         padding: 0px 15px;
     }
+
     .ws-slide img {
-    width: 150px;
-    border-radius: 10px;
+        width: 150px;
+        border-radius: 10px;
     }
+
     .ws-slide.slick-slide {
         width: 150px !important;
     }
-    .left-card-about-cm{
+
+    .left-card-about-cm {
         padding: 0 !important;
     }
+
     .about-cap-img-card {
         border-radius: 10.938px;
         border: 0.547px solid #333232;
     }
+
     .about-cap-img-card img {
         border-radius: 10.938px;
         border: 0.53px solid #727272;
-        }
+    }
+
     .cm-social {
         margin-top: 16px;
     }
+
     .right-server-col-img img {
-                width: 495px;
+        width: 495px;
         height: 596px;
         position: absolute;
         left: -18%;
         top: -47%;
     }
+
     .hero-right {
         height: auto;
     }
-    .project-meta span+span{
+
+    .project-meta span+span {
         border: none !important;
     }
+
     .hero-sub-empty {
-    max-width: 100% !important;
-}
-a.open-position-btn::after {
-    width: 67px;
-    height: 40px;
-    right: -35%;
-}
-.mobile-spacing{
-    margin-bottom: 48px !important;
-}
-.service-card-new-mobile{
-    
-    flex-direction: column;
-}
-.portfolio-section::before {
-    display: none;
-}
-.portfolio-section::after{
-    display: none;
-}
-.career-hero-sub.text-center {
-    font-size: 14px;
-}
-.job-meta span+span::before {
-    display: none;
-}
-.services-section-career{
-    padding: 10px 0 50px;
-}
-.about-services-cm-last img {
-    height: 78px;
-    width: 108px;
-}
-.about-services-cm-last {
-    padding: 0px;
-}
-.service-card-new.service-card-new-mobile-view {
-    align-items: stretch;
-    flex-direction: column;
-}
-.service-top-mobile-view {
-    display: flex;
-    gap: 11px;
-}
-.mobile-view-service {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-}
-.service-top-mobile-view .our-services-img img {
-    border-radius: 12px;
-    width: 139px;
-    height: 137px;
-    margin-bottom: 0;
-}
-p.count-services {
-    position: absolute;
-    right: 3px;
-    top: 3px;
-}
-.mobile-view-service h5 {
-    margin-top: 14px;
-}
-.service-card-new-2{
-    padding: 28px 18px;
-}
-.footer-news {
-    padding: 26px 12px 26px 14px;
-}
-.footer-col {
-    padding: 0px 12px;
-    gap: 10px;
-    margin-bottom: 20px ;
-}
-.navbar-nav.cm-nav {
-    margin: 30px 0 !important;
-    width: 100%;
-}
-.service-row-cm {
-    border-radius: 16px;
-    background: #000;
-    gap: 14px !important;
-    padding: 12px 9px;
-    margin: 0px 10px;
-}
-.service-row-cm .service-card-wrapper {
-    padding: 0px !important;
-}
-.cm-mega__thumb {
-    height: auto;
-}
-.services-row-new {
-    gap: 12px !important;
-}
+        max-width: 100% !important;
+    }
+
+    a.open-position-btn::after {
+        width: 67px;
+        height: 40px;
+        right: -35%;
+    }
+
+    .mobile-spacing {
+        margin-bottom: 48px !important;
+    }
+
+    .service-card-new-mobile {
+
+        flex-direction: column;
+    }
+
+    .portfolio-section::before {
+        display: none;
+    }
+
+    .portfolio-section::after {
+        display: none;
+    }
+
+    .career-hero-sub.text-center {
+        font-size: 14px;
+    }
+
+    .job-meta span+span::before {
+        display: none;
+    }
+
+    .services-section-career {
+        padding: 10px 0 50px;
+    }
+
+    .about-services-cm-last img {
+        height: 78px;
+        width: 108px;
+    }
+
+    .about-services-cm-last {
+        padding: 0px;
+    }
+
+    .service-card-new.service-card-new-mobile-view {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .service-top-mobile-view {
+        display: flex;
+        gap: 11px;
+    }
+
+    .mobile-view-service {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .service-top-mobile-view .our-services-img img {
+        border-radius: 12px;
+        width: 139px;
+        height: 137px;
+        margin-bottom: 0;
+    }
+
+    p.count-services {
+        position: absolute;
+        right: 3px;
+        top: 3px;
+    }
+
+    .mobile-view-service h5 {
+        margin-top: 14px;
+    }
+
+    .service-card-new-2 {
+        padding: 28px 18px;
+    }
+
+    .footer-news {
+        padding: 26px 12px 26px 14px;
+    }
+
+    .footer-col {
+        padding: 0px 12px;
+        gap: 10px;
+        margin-bottom: 20px;
+    }
+
+    .navbar-nav.cm-nav {
+        margin: 30px 0 !important;
+        width: 100%;
+    }
+
+    .service-row-cm {
+        border-radius: 16px;
+        background: #000;
+        gap: 14px !important;
+        padding: 12px 9px;
+        margin: 0px 10px;
+    }
+
+    .service-row-cm .service-card-wrapper {
+        padding: 0px !important;
+    }
+
+    .cm-mega__thumb {
+        height: auto;
+    }
+
+    .services-row-new {
+        gap: 12px !important;
+    }
+
+    .service-icon-box img {
+        width: 20px;
+        height: 20px;
+    }
+
+    .cm-footer::before {
+        display: none;
+    }
+
+    section.no-openings {
+        padding: 0 0 50px
+    }
+
+    .cm-mega__panel-2 {
+        width: 100% !important;
+    }
+
+    .cm-mega.dropdown-menu {
+        width: 100% !important;
+        max-height: 357px;
+        overflow-y: scroll;
+    }
 }
 
 @media (max-width: 450px) {
@@ -901,9 +967,8 @@ p.count-services {
         background-image: url('../images/about/for-mobile-bg-cm-about.svg');
         background-size: auto;
     }
+
     .btn-mobile-cm {
         width: 100%;
     }
 }
-
-

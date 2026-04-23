@@ -16,7 +16,7 @@ class ContactUs(TimeStamp):
     last_name = models.CharField(max_length=100)
     email = models.EmailField()
     phone = models.CharField(
-        max_length=20,
+        max_length=10,
         null=True,
         blank=True,
         validators=[
@@ -287,7 +287,8 @@ class JobOpening(TimeStamp):
     is_active = models.BooleanField(default=True)
     count = models.IntegerField(default=1)
     job_type = models.CharField(max_length=20, choices=JOB_TYPE_CHOICES)
-    package = models.CharField(max_length=100)
+    # package = models.CharField(max_length=100)
+    package = models.CharField(max_length=100, blank=True, null=True)
     experience = models.CharField(max_length=100)
 
     def __str__(self):

@@ -157,17 +157,17 @@ body {
     display: inline-block;
 }
 
-    .hero-sub {
-        color: #F6F6F6;
-        text-align: center;
-        font-family: Poppins;
-        font-size: 26px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 150%;
-        max-width: 100%;
-        margin: 0 auto 48px;
-    }
+.hero-sub {
+    color: #F6F6F6;
+    text-align: center;
+    font-family: Poppins;
+    font-size: 26px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
+    max-width: 100%;
+    margin: 0 auto 48px;
+}
 
 .hero-cta-wrap {
     display: flex;
@@ -382,9 +382,10 @@ body {
     font-family: "Bricolage Grotesque";
     font-size: 42px;
     font-style: normal;
-    font-weight: 600;
+    font-weight: 500;
     line-height: 150%;
     margin-bottom: 40px;
+
     /* 63px */
 }
 
@@ -495,7 +496,8 @@ body {
     align-self: stretch;
     opacity: 0.7;
 }
-.service-desc-new{
+
+.service-desc-new {
     -webkit-line-clamp: 3;
 }
 
@@ -655,7 +657,7 @@ body {
 .project-mockup-side {
     /* background: #F4F4F4; */
     border-radius: 30px;
-    padding: 20px;
+    /* padding: 20px; */
     overflow: hidden;
 }
 
@@ -667,7 +669,7 @@ body {
 }
 
 .project-content-side {
-    padding: 20px 0 20px 40px;
+    padding: 0px 0 0px 40px;
 }
 
 .project-title {
@@ -790,7 +792,8 @@ body {
 .testimonials-v2-grid {
     margin-top: 26px;
 }
-.insights-section-cm-row{
+
+.insights-section-cm-row {
     margin-top: 26px;
 }
 
@@ -1332,14 +1335,17 @@ body {
     opacity: 1;
     transform: translateY(0);
 }
+
 .grid-container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 13px;
 }
-.testimonials-section-cm-heading{
+
+.testimonials-section-cm-heading {
     margin-bottom: 10px !important;
 }
+
 .service-icon-box img {
     width: 33px;
     height: 33px;

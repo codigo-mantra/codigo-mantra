@@ -482,6 +482,7 @@ section.case-study-hero {
 .cs-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
 }
 
 .cs-card.hidden {
@@ -768,7 +769,7 @@ p.job-meta-sub {
   line-height: 150%;
 }
 
-.project-overview-desc p{
+.project-overview-desc p {
   color: #F6F6F6;
   font-family: Poppins;
   font-size: 16px;
@@ -778,42 +779,49 @@ p.job-meta-sub {
   margin: 0;
   opacity: 0.7;
 }
+
 .project-overview-desc h3 {
-    color: #F6F6F6;
-    font-family: "Cabinet Grotesk";
-    font-size: 42px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 150%;
-    margin: 0;
+  color: #F6F6F6;
+  font-family: "Cabinet Grotesk";
+  font-size: 42px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 150%;
+  /* margin: 0; */
 }
+
 .project-overview-desc h4 {
-    color: #F6F6F6;
-    font-family: Poppins;
-    font-size: 22px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 150%; /* 33px */
-    opacity: 0.9;
-    margin: 0;
+  color: #F6F6F6;
+  font-family: Poppins;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%;
+  /* 33px */
+  opacity: 0.9;
+  margin: 0;
 }
+
 .project-overview-desc h5 {
-    color: #F6F6F6;
-    font-family: Poppins;
-    font-size: 22px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 150%; /* 33px */
-    opacity: 0.9;
-    margin: 0;
+  color: #F6F6F6;
+  font-family: Poppins;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%;
+  /* 33px */
+  opacity: 0.9;
+  margin: 0;
 }
+
 .project-overview-desc ul {
-    color: rgba(246, 246, 246, 0.70);
-    font-family: Poppins;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 300;
-    line-height: 150%;
+  color: rgba(246, 246, 246, 0.70);
+  font-family: Poppins;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 150%;
+
 }
 
 .project-overview-img {
@@ -828,9 +836,11 @@ p.job-meta-sub {
   gap: 44px;
   padding: 104px 0 0;
 }
-.image-row{
+
+.image-row {
   margin-top: 104px;
 }
+
 .project-image-section {
   border-radius: 20px;
   border: 1px solid #333232;
@@ -858,119 +868,124 @@ p.job-meta-sub {
   opacity: 0.8;
   margin: 0;
 }
+
 .tz-dropdown {
-    position: relative;
-    width: 100%;
-    max-width: 320px;
+  position: relative;
+  width: 100%;
+  max-width: 320px;
 }
 
 .tz-dropdown-toggle {
-    width: 100%;
-    border: none;
-    background: #11111100;
-    color: #F6F6F6;
-    text-align: left;
-    font-size: 15px;
-    line-height: 1.4;
-    position: relative;
-    cursor: pointer;
+  width: 100%;
+  border: none;
+  background: #11111100;
+  color: #F6F6F6;
+  text-align: left;
+  font-size: 15px;
+  line-height: 1.4;
+  position: relative;
+  cursor: pointer;
 }
 
 .tz-caret {
-    position: absolute;
-    right: 14px;
-    top: 50%;
-    width: 10px;
-    height: 10px;
-    border-right: 2px solid #F6F6F6;
-    border-bottom: 2px solid #F6F6F6;
-    transform: translateY(-60%) rotate(45deg);
-    transition: transform 0.2s ease;
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  border-right: 2px solid #F6F6F6;
+  border-bottom: 2px solid #F6F6F6;
+  transform: translateY(-60%) rotate(45deg);
+  transition: transform 0.2s ease;
 }
 
 .tz-dropdown.open .tz-caret {
-    transform: translateY(-40%) rotate(225deg);
+  transform: translateY(-40%) rotate(225deg);
 }
 
 .tz-dropdown-menu {
-    position: absolute;
-    top: calc(100% + 8px);
-    left: 0;
-    width: 100%;
-    background: #111;
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 14px;
-    box-shadow: 0 14px 40px rgba(0,0,0,0.35);
-    z-index: 999;
-    display: none;
-    overflow: hidden;
-    height: 350px;
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 100%;
+  background: #111;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 14px;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
+  z-index: 999;
+  display: none;
+  overflow: hidden;
+  height: 350px;
 }
 
 .tz-dropdown.open .tz-dropdown-menu {
-    display: block;
+  display: block;
 }
 
 .tz-search-wrap {
-    padding: 10px;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .tz-search {
-    width: 100%;
-    height: 40px;
-    padding: 0 12px;
-    border-radius: 10px;
-    border: 1px solid rgba(255,255,255,0.12);
-    background: #1a1a1a;
-    color: #fff;
-    outline: none;
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #1a1a1a;
+  color: #fff;
+  outline: none;
 }
 
 .tz-options {
-    max-height: 320px; /* control open dropdown height here */
-    overflow-y: auto;
-    padding: 6px;
+  max-height: 320px;
+  /* control open dropdown height here */
+  overflow-y: auto;
+  padding: 6px;
 }
 
 .tz-option {
-    padding: 10px 12px;
-    border-radius: 10px;
-    color: #F6F6F6;
-    cursor: pointer;
-    font-size: 14px;
-    line-height: 1.4;
-    transition: background 0.2s ease;
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: #F6F6F6;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1.4;
+  transition: background 0.2s ease;
 }
 
 .tz-option:hover,
 .tz-option.active {
-    background: rgba(240, 93, 53, 0.16);
+  background: rgba(240, 93, 53, 0.16);
 }
 
 .tz-option.selected {
-    background: #F05D35;
-    color: #fff;
+  background: #F05D35;
+  color: #fff;
 }
 
 .info-meta-item {
-    align-items: flex-start;
+  align-items: flex-start;
 }
+
 .job-meta-head {
-    color: var(--white, #F6F6F6);
-    font-family: Poppins;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 150%;
-    opacity: 0.8;
-    margin: 0;
+  color: var(--white, #F6F6F6);
+  font-family: Poppins;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%;
+  opacity: 0.8;
+  margin: 0;
 }
+
 .explore-services-portfolio {
-    margin: 44px 0 30px;
-    padding: 0;
+  margin: 44px 0 30px;
+  padding: 0;
 }
+
 .project-overview-desc ul span {
-    color: #F6F6F6 !important;
-    font-weight: 400 !important;
+  color: #F6F6F6 !important;
+  font-weight: 400 !important;
 }

@@ -39,35 +39,35 @@ $(document).ready(function () {
 });
 
 function toggleDesc(id) {
-  const desc = document.getElementById('desc-' + id);
-  const toggle = document.getElementById('toggle-' + id);
-  const isExpanded = desc.classList.contains('expanded');
+    const desc = document.getElementById('desc-' + id);
+    const toggle = document.getElementById('toggle-' + id);
+    const isExpanded = desc.classList.contains('expanded');
 
-  // Close ALL others smoothly
-  document.querySelectorAll('.job-desc').forEach(d => {
-    d.style.height = d.scrollHeight + 'px'; // set explicit height first
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        d.style.height = '24px';
-        d.classList.remove('expanded');
-      });
+    // Close ALL others smoothly
+    document.querySelectorAll('.job-desc').forEach(d => {
+        d.style.height = d.scrollHeight + 'px'; // set explicit height first
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                d.style.height = '24px';
+                d.classList.remove('expanded');
+            });
+        });
     });
-  });
-  document.querySelectorAll('.btn-toggle').forEach(t => t.classList.remove('open'));
+    document.querySelectorAll('.btn-toggle').forEach(t => t.classList.remove('open'));
 
-  // Open clicked one
-  if (!isExpanded) {
-    const fullHeight = desc.scrollHeight;
-    desc.style.height = '24px';
+    // Open clicked one
+    if (!isExpanded) {
+        const fullHeight = desc.scrollHeight;
+        desc.style.height = '24px';
 
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        desc.style.height = fullHeight + 'px';
-        desc.classList.add('expanded');
-        toggle.classList.add('open');
-      });
-    });
-  }
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                desc.style.height = fullHeight + 'px';
+                desc.classList.add('expanded');
+                toggle.classList.add('open');
+            });
+        });
+    }
 }
 
 // ── MOBILE MENU ──
@@ -125,7 +125,7 @@ const contactForm = document.getElementById('contactForm');
 const applyForm = document.getElementById('applyForm');
 
 function validateEmail(email) {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const re = /^[A-Za-z0-9][A-Za-z0-9._%+-]*@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
     return re.test(String(email).toLowerCase());
 }
 

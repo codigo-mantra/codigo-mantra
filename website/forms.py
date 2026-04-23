@@ -5,6 +5,9 @@ from .models import ContactUs, Newsletter, Application, Booking, User
 import datetime
 import re
 
+from django import forms
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
 
 
 # class ContactUsForm(forms.Form):
@@ -168,8 +171,8 @@ class BookingForm(forms.ModelForm):
         message = self.cleaned_data.get('project_brief', '')
 
         # Validate only if not empty (it's optional)
-        if message and len(message.strip()) < 5:
-            raise forms.ValidationError("Message is too short.")
+        # if message and len(message.strip()) < 5:
+        #     raise forms.ValidationError("Message is too short.")
 
         return message
 
@@ -234,11 +237,24 @@ class ContactUsForm(forms.ModelForm):
         if not re.search(r'[A-Za-z0-9]', message):
             raise forms.ValidationError("Please enter a valid message.")
         return message
+    
 class NewsletterForm(forms.ModelForm):
     class Meta:
         model = Newsletter
         fields = ['email']
+    def clean_email(self):
+        email = self.cleaned_data.get('email', '').strip().lower()
 
+        if email.startswith(("-", ".", "_")):
+            raise forms.ValidationError("Email cannot start with special characters.")
+
+        # Django's built-in validate_email is enough — drop the custom regex
+        try:
+            validate_email(email)
+        except ValidationError:
+            raise forms.ValidationError("Enter a valid email address.")
+
+        return email
 
 class CareerApplicationForm(forms.ModelForm):
     last_name = forms.CharField(

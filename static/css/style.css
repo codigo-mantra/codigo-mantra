@@ -2,6 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Space+Grotesk:wght@300..700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Space+Grotesk:wght@300..700&display=swap');
 @import url('https://fonts.cdnfonts.com/css/cabinet-grotesk');
+
 :root {
   --bg0: #070A12;
   --bg1: #0B1023;
@@ -30,8 +31,9 @@ body {
   height: 100%;
   overflow-x: hidden;
 }
+
 body.menu-open {
-    overflow: hidden;
+  overflow: hidden;
 }
 
 body {
@@ -261,10 +263,12 @@ a:hover {
   border-radius: 999px;
   padding: 6px 10px;
 }
+
 .cm-navtoggle:focus:not(:focus-visible) {
-    outline: 0;
-    box-shadow: none !important;
+  outline: 0;
+  box-shadow: none !important;
 }
+
 .cm-navtoggle .navbar-toggler-icon {
   filter: invert(0);
 }
@@ -364,7 +368,8 @@ a:hover {
 }
 
 .cm-mega__panel {
-  width: min(1150px, calc(100vw - 48px));
+  /* width: min(1150px, calc(100vw - 48px)); */
+  width: 616px;
   margin: -22px auto 0;
   border-radius: 20px;
   border: 1px solid #343333;
@@ -380,7 +385,8 @@ a:hover {
 }
 
 .cm-mega__panel-2 {
-  width: min(743px, calc(100vw - 48px));
+  /* width: min(743px, calc(100vw - 48px)); */
+  width: 253px;
   margin: -25px auto 0;
   border-radius: 20px;
   border: 1px solid #343333;
@@ -396,13 +402,26 @@ a:hover {
 
 .cm-mega__grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 2fr;
+  grid-template-columns: 1fr 1.5fr;
   gap: 0;
+
+}
+
+.custom-postion-accoding {
+  position: relative !important;
+}
+
+.custom-drop-sw {
+  top: 95px !important;
+}
+
+.border-custom- {
   border-radius: 13px;
   border: 1px solid rgba(52, 51, 51, 0.89);
   background: #131313;
   box-shadow: 0 4px 34px 0 rgba(244, 93, 52, 0.09);
   width: 100%;
+  padding-top: 17px;
 }
 
 .cm-mega__col.cm-mega__col--mid-last {
@@ -427,7 +446,7 @@ a:hover {
 
 .cm-mega__grid-2 {
   display: grid;
-  grid-template-columns: 1.05fr 2fr;
+  grid-template-columns: 1.05fr;
   gap: 0;
   border-radius: 13px;
   border: 1px solid rgba(52, 51, 51, 0.89);
@@ -438,7 +457,7 @@ a:hover {
 
 .cm-mega__col {
   margin: 22px 0px 18px;
-  padding: 0 22px;
+  padding: 0 26px;
 }
 
 .cm-mega__col--mid {
@@ -461,7 +480,10 @@ a:hover {
   /* 27px */
   margin-bottom: 17px;
   opacity: 0.3;
+  position: relative;
 }
+
+
 
 .cm-mega__link {
   display: block;
@@ -558,6 +580,7 @@ span.cm-mega__thumb img {
 .cm-mega__bottom {
   display: flex;
   justify-content: flex-end;
+  /* justify-content: flex-start; */
   gap: 8px;
   align-items: center;
   width: 100%;
@@ -604,6 +627,7 @@ span.cm-mega__thumb img {
   .cm-nav .dropdown {
     position: static;
   }
+
 
   .cm-mega {
     left: 0;
@@ -1272,6 +1296,7 @@ span.cm-mega__thumb img {
 
 .footer-a:hover {
   color: rgba(255, 255, 255, .92);
+  opacity: 1;
 }
 
 .footer-contact {
@@ -1360,7 +1385,7 @@ button.btn.btn-sm.btn-cm-cta.btn-pill.custom-footer-btn {
   gap: 5.179px;
   color: #FFF;
   font-family: Poppins;
-  font-size: 8.286px;
+  font-size: 10px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
@@ -1460,6 +1485,10 @@ span.reserved-rights {
   z-index: -1;
 }
 
+.active-product-tab {
+  color: #F05736;
+}
+
 .cm-footer::before {
   content: '';
   position: absolute;
@@ -1483,7 +1512,7 @@ span.reserved-rights {
     min-height: 20px;
     max-height: 80vh;
     overflow-y: scroll;
-    
+
   }
 
   .cm-nav .nav-link {
@@ -1493,6 +1522,7 @@ span.reserved-rights {
     gap: 10px;
     align-items: center;
   }
+
   .cm-nav .nav-link.active {
     color: #333;
     font-family: Poppins;
@@ -1502,7 +1532,8 @@ span.reserved-rights {
     line-height: normal;
     background: #F8F8F8;
     box-shadow: none !important;
-}
+  }
+
   .hero {
     padding-top: 22px;
   }
@@ -1785,6 +1816,7 @@ p.error-sub.text-center {
   text-decoration-thickness: auto;
   text-underline-offset: auto;
   text-underline-position: from-font;
+  white-space: nowrap;
 }
 
 a.btn-close.modal-close-btn {
@@ -1800,68 +1832,78 @@ a.btn-close.modal-close-btn {
   opacity: 1;
 }
 
-.hero-sub-empty{
+.hero-sub-empty {
   font-size: 18px !important;
   opacity: 0.8;
   max-width: 73% !important;
   margin: 0 auto 1.5rem !important;
 }
+
 .first-sub-menu-cm {
-    height: 87vh;
-    overflow-y: scroll;
+  height: 87vh;
+  overflow-y: scroll;
 }
+
 .contact-hero-title {
   margin-bottom: 40px !important;
 }
+
 .tech-stack-container img {
-    width: 100%;
+  width: 100%;
 }
+
 .contact-form-error {
-    color: var(--color-icon-error-default, #F00);
-    /* text-align: right; */
-    font-family: Poppins;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 300;
-    line-height: 150%;
-    margin: -5px 0px 30px;
+  color: var(--color-icon-error-default, #F00);
+  /* text-align: right; */
+  font-family: Poppins;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 150%;
+  margin: -5px 0px 30px;
 }
+
 .schedule-call-error {
-    margin: 50px 0px -36px;
+  margin: 50px 0px -36px;
 }
+
 .error-schedule-call {
-    margin: -3px 0px 10px;
+  margin: -3px 0px 10px;
 }
+
 .error-newsletter-email {
-    margin: 23px 0px 14px;
-} 
+  margin: 23px 0px 14px;
+}
 
 
-.content-area h1 {
-    margin-top: 55px;
-    margin-bottom: 10px;
+.project-overview-desc h3 {
+  margin-top: 44px;
+  margin-bottom: 10px;
 }
-.content-area h1:first-child {
-    margin-top: 0;
+
+.project-overview-desc h3:first-child {
+  margin-top: 0;
 }
-.content-area h3 {
-    margin-top: 22px;
-    margin-bottom: 5px;
+
+
+
+.service-card-new.service-card-new-mobile {
+  display: flex;
+  flex-direction: column;
 }
-.content-area h4 {
-    margin-top: 14px;
-    margin-bottom: 2px;
+
+.cm-para-t {
+  margin-top: 10px !important;
 }
-.content-area p {
-    margin-top: 0;
-    margin-bottom: 16px;  /* was 14px — fixes double paragraph gap */
+
+.custom-margin-p {
+  margin-bottom: 10px !important;
 }
-.content-area ul,
-.content-area ol {
-    margin-top: 4px;
-    margin-bottom: 14px;  /* was 12px — fixes list → paragraph gap */
-    padding-left: 24px;
+
+.form-gap-t {
+  margin-bottom: 7px !important;
 }
-.content-area li {
-    margin-bottom: 4px;
+
+.cm-ul {
+  margin-top: 16px !important;
 }
