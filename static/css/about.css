@@ -250,11 +250,12 @@
 .ws-heading {
     color: var(--white, #F6F6F6);
     font-family: "Bricolage Grotesque";
-    font-size: 42px;
+    font-size: 32px;
     font-style: normal;
     font-weight: 600;
     line-height: 150%;
     margin-bottom: 11px;
+    letter-spacing: 0.84px;
 }
 
 .ws-desc {

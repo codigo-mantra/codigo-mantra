@@ -19,10 +19,11 @@
     opacity: 0.8;
     color: var(--Orange, #F05D35);
     font-family: Poppins;
-    font-size: 24px;
+    font-size: 18px;
     font-style: normal;
     font-weight: 500;
     line-height: 150%;
+    letter-spacing: 0.36px;
 }
 
 .open-roles {
@@ -82,12 +83,13 @@ a.open-position-btn {
 .job-title {
     color: var(--white, #F6F6F6);
     font-family: Poppins;
-    font-size: 24px;
+    font-size: 20px;
     font-style: normal;
     font-weight: 600;
     line-height: 150%;
     /* 36px */
     margin-bottom: 14px;
+    letter-spacing: 0.4px;
 }
 
 /* Description — collapsed: 1 line, expanded: full */
@@ -110,6 +112,7 @@ a.open-position-btn {
         opacity 0.35s ease;
 
     opacity: 0.7;
+    letter-spacing: 0.32px;
 }
 
 .job-desc.expanded {
@@ -131,6 +134,7 @@ a.open-position-btn {
     /* 24px */
     opacity: 0.7;
     margin-bottom: 30px;
+    letter-spacing: 0.32px;
 }
 
 .job-meta span {
@@ -414,6 +418,7 @@ a.open-position-btn {
     line-height: 150%;
     list-style: none;
     margin: 0;
+    letter-spacing: 0.32px;
 }
 
 .detail-section ul li {
@@ -454,11 +459,15 @@ a.open-position-btn::after {
     color: #F6F6F6;
     text-align: center;
     font-family: Poppins;
-    font-size: 26px;
+    font-size: 20px;
     font-style: normal;
     font-weight: 400;
     line-height: 150%;
     margin-bottom: 48px;
+    max-width: 75%;
+    margin: 0 auto 48px;
+    opacity: 0.8;
+    letter-spacing: 0.4px;
 }
 
 .resume-uploaded-preview {
@@ -499,9 +508,10 @@ section.no-openings {
 .hero-sub-career{
     color: var(--white, #F6F6F6);
     font-family: Poppins;
-    font-size: 18px;
+    font-size: 16px;
     font-style: normal;
     font-weight: 400;
     line-height: 150%;
     opacity: 0.8;
+    letter-spacing: 0.32px;
 }
