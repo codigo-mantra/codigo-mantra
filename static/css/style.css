@@ -1281,6 +1281,7 @@ span.cm-mega__thumb img {
   font-weight: 400;
   line-height: 150%;
   margin-bottom: 0px;
+  letter-spacing: 0.48px;
 }
 
 .footer-a {
@@ -1341,7 +1342,7 @@ span.cm-mega__thumb img {
   font-weight: 300;
   line-height: 150%;
   opacity: 0.8;
-  /* 18px */
+  letter-spacing: 0.28px;
 }
 
 .footer-form-2 {
@@ -1436,11 +1437,12 @@ button.btn.btn-sm.btn-cm-cta.btn-pill.custom-footer-btn {
 span.reserved-rights {
   color: var(--white, #F6F6F6);
   font-family: Poppins;
-  font-size: 18px;
+  font-size: 14px;
   font-style: normal;
   font-weight: 400;
   line-height: 160%;
   opacity: 0.8;
+  letter-spacing: 0.28px; 
 }
 
 .cm-social {

@@ -56,6 +56,7 @@ section.case-study-hero {
   font-weight: 800;
   line-height: 48px;
   margin: 38px 0px 20px;
+  letter-spacing: 0.60px;
 }
 
 /* Filter Styles */
@@ -216,6 +217,8 @@ section.case-study-hero {
   font-size: 14px;
   margin: 0 15px;
   margin-bottom: 15px;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: 0.28px;
 }
 
 .project-tags {
@@ -533,6 +536,7 @@ section.case-study-hero {
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  letter-spacing: 0.50px;
 }
 
 /* Arrow button — orange fill in Figma */
@@ -668,11 +672,12 @@ section.case-study-hero {
 h1.display-heading-project {
   color: var(--white, #F6F6F6);
   font-family: "Cabinet Grotesk";
-  font-size: 60px;
+  font-size: 56px;
   font-style: normal;
   font-weight: 800;
   line-height: 116%;
   margin: 0;
+  letter-spacing: 1.12px;
 }
 
 p.hero-desc-project {
@@ -684,6 +689,7 @@ p.hero-desc-project {
   line-height: 150%;
   margin: 0;
   opacity: 0.8;
+  letter-spacing: 0.32px;
 }
 
 .hero-center-project {
@@ -718,6 +724,7 @@ p.job-meta-sub {
   line-height: 150%;
   margin: 0;
   opacity: 1 !important;
+  letter-spacing: 0.36px;
 }
 
 .project-meta {
@@ -778,16 +785,18 @@ p.job-meta-sub {
   line-height: 150%;
   margin: 0;
   opacity: 0.7;
+  letter-spacing: 0.32px;
 }
 
 .project-overview-desc h3 {
   color: #F6F6F6;
   font-family: "Cabinet Grotesk";
-  font-size: 42px;
+  font-size: 32px;
   font-style: normal;
   font-weight: 700;
   line-height: 150%;
   /* margin: 0; */
+  letter-spacing: 0.64px;
 }
 
 .project-overview-desc h4 {
@@ -800,6 +809,7 @@ p.job-meta-sub {
   /* 33px */
   opacity: 0.9;
   margin: 0;
+  letter-spacing: 0.44px;
 }
 
 .project-overview-desc h5 {
@@ -978,6 +988,7 @@ p.job-meta-sub {
   line-height: 150%;
   opacity: 0.8;
   margin: 0;
+  letter-spacing: 0.36px;
 }
 
 .explore-services-portfolio {
@@ -988,4 +999,5 @@ p.job-meta-sub {
 .project-overview-desc ul span {
   color: #F6F6F6 !important;
   font-weight: 400 !important;
+  margin-bottom: 7px;
 }

@@ -138,17 +138,19 @@
     font-weight: 500;
     line-height: 150%;
     margin-bottom: 10px;
+    letter-spacing: 0.4px;
 }
 
 .about-cap-desc {
     color: #F6F6F6;
-    font-family: Poppins, sans-serif;
+    font-family: Poppins;
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
     line-height: 150%;
     margin: 0;
     opacity: 0.7;
+    letter-spacing: 0.32px;
 }
 
 /* ─── TEAM SECTION ─── */

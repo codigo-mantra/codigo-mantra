@@ -129,13 +129,14 @@
 }
 
 .apply-card-contact h6 {
-  color: var(--white, #F6F6F6);
-  font-family: Poppins;
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 150%;
-  margin-bottom: 40px;
+    color: var(--white, #F6F6F6);
+    font-family: Poppins;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
+    margin-bottom: 40px;
+    letter-spacing: 0.4px;
 }
 
 .pera-contact {
@@ -299,15 +300,169 @@ span.cm-brand-contact {
 }
 
 
-.info-desc {
-  color: var(--white, #F6F6F6);
-  font-family: Poppins;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  margin: 20px 0 8px;
-  opacity: 0.8;
+  .info-desc {
+    color: var(--white, #F6F6F6);
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin: 20px 0 8px;
+    opacity: 0.8;
+    letter-spacing: 0.28px;
+  }
+
+  .info-thank {
+    color: var(--white, #F6F6F6);
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin-bottom: 24px;
+    opacity: 0.8;
+  }
+
+  .info-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .info-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #FFF;
+    font-family: Poppins;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+
+  .info-meta-item svg {
+    flex-shrink: 0;
+    opacity: 0.8;
+  }
+
+  .timezone-select {
+    background: transparent;
+    border: none;
+    color: var(--white);
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    padding: 0;
+  }
+
+  .timezone-select:focus { outline: none; }
+  .timezone-select option { background: #1a1a1a; color: #fff; }
+
+  /* ── MIDDLE: CALENDAR ── */
+  .cal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .cal-month {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--white);
+  }
+
+  .cal-month span {
+    font-weight: 300;
+    opacity: 0.5;
+    margin-left: 6px;
+  }
+
+  .cal-nav {
+    background: transparent;
+    border: none;
+    color: var(--white);
+    opacity: 1;
+    cursor: pointer;
+    padding: 0px 8px;
+    border-radius: 6px;
+    transition: opacity 0.2s, background 0.2s;
+    font-size: 21px;
+  }
+  .cal-nav.disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+  }
+
+  /* Day grid */
+  .cal-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+  }
+
+  .cal-dow {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--white);
+    opacity: 0.45;
+    text-align: center;
+    padding: 6px 0 10px;
+  }
+
+  .cal-day {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 400;
+    cursor: pointer;
+    background: var(--day-bg);
+    color: var(--white);
+    border: 1px solid transparent;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+    user-select: none;
+  }
+
+  .cal-day:hover {
+    background: rgba(255, 255, 255, 0.21);
+    color: var(--Orange, #F05D35);
+  }
+
+  .cal-day.today {
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.21);
+    color: var(--Orange, #F05D35) !important;
+    font-family: Poppins;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+
+  .cal-day.selected {
+    background: #F05D35;
+    color: var(--Orange, #F6F6F6);
+    font-weight: 600;
+  }
+
+  .cal-day.disabled {
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--white, #F6F6F6);
+    font-family: Poppins;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    opacity: 0.3;
+    cursor: default;
+  }
+  .cal-day.empty {
+    opacity: 0.3;
+    pointer-events: none;
 }
 
 .info-thank {

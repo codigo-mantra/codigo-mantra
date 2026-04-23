@@ -1,6 +1,7 @@
 @media screen and (max-width: 991px) {
     .hero-title {
-        font-size: clamp(34px, 34px, 56px);
+        font-size: clamp(32px, 32px, 56px);
+        font-weight: 700;
     }
 
     .marquee-track {
@@ -70,7 +71,7 @@
     }
 
     .display-heading {
-        font-size: 34px;
+        font-size: 26px;
     }
 
     .result-card h3 {
@@ -152,6 +153,7 @@
     .hero-sub {
         font-size: 16px;
         margin-bottom: 40px;
+        max-width: 100% !important;
     }
 
     .service-hero {

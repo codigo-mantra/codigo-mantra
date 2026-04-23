@@ -247,7 +247,7 @@
                         </div>
                         <div class="service-top">
                             <h5 class="service-title">Commit to professionalism</h5>
-                            <p class="service-des service-desc-new">Structured processes, clear accountability, and a
+                            <p class="service-desc service-desc-new">Structured processes, clear accountability, and a
                                 focus on long-term relationships define how we work.</p>
                         </div>
 
@@ -390,13 +390,15 @@
     $(document).ready(function () {
         $('.ws-track').slick({
             slidesToShow: 5.4,
-            slidesToScroll: 1,
+            slidesToScroll: 2,
             arrows: false,
             dots: false,
-            speed: 200,
+            speed: 500,
             infinite: true,
-            autoplaySpeed: 200,
+            autoplaySpeed: 1000,
             autoplay: true,
+            pauseOnHover: true,
+            cssEase: 'linear',
             responsive: [
                 {
                     breakpoint: 991,

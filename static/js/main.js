@@ -11,32 +11,32 @@ const observer = new IntersectionObserver((entries) => {
 document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
 
-$(document).ready(function () {
-    $('.ws-track').slick({
-        slidesToShow: 5.4,
-        slidesToScroll: 1,
-        arrows: false,
-        dots: false,
-        speed: 300,
-        infinite: true,
-        autoplaySpeed: 5000,
-        autoplay: true,
-        responsive: [
-            {
-                breakpoint: 991,
-                settings: {
-                    slidesToShow: 3,
-                }
-            },
-            {
-                breakpoint: 767,
-                settings: {
-                    slidesToShow: 1,
-                }
-            }
-        ]
-    });
-});
+// $(document).ready(function () {
+//     $('.ws-track').slick({
+//         slidesToShow: 5.4,
+//         slidesToScroll: 1,
+//         arrows: false,
+//         dots: false,
+//         speed: 300,
+//         infinite: true,
+//         autoplaySpeed: 5000,
+//         autoplay: true,
+//         responsive: [
+//             {
+//                 breakpoint: 991,
+//                 settings: {
+//                     slidesToShow: 3,
+//                 }
+//             },
+//             {
+//                 breakpoint: 767,
+//                 settings: {
+//                     slidesToShow: 1,
+//                 }
+//             }
+//         ]
+//     });
+// });
 
 function toggleDesc(id) {
     const desc = document.getElementById('desc-' + id);
