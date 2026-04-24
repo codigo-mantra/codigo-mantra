@@ -733,6 +733,7 @@ p.job-meta-sub {
   gap: 0;
   margin-bottom: 0;
   opacity: 1;
+  grid-auto-flow: column;
 }
 
 .project-meta span {
