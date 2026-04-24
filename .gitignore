@@ -16,7 +16,7 @@ db.sqlite3
 env/
 venv/
 ENV/
-
+media/
 # Visual Studio Code #
 .vscode/*
 !.vscode/settings.json
