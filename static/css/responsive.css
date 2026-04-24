@@ -364,6 +364,7 @@
     .job-meta {
         font-size: 12px;
         margin-bottom: 30px;
+        grid-auto-flow: row;
     }
 
     .job-meta {

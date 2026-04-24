@@ -728,7 +728,7 @@ p.job-meta-sub {
 }
 
 .project-meta {
-  display: flex;
+  display: grid;
   align-items: stretch;
   gap: 0;
   margin-bottom: 0;
@@ -831,6 +831,10 @@ p.job-meta-sub {
   font-style: normal;
   font-weight: 300;
   line-height: 150%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
 
 }
 
