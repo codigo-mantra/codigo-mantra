@@ -37,16 +37,22 @@
                     </div>
                     <div class="contact-info-item">
                         <div class="contact-info-icon">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            <!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none">
                                 <path
                                     d="M19.4402 20.5C17.5557 20.5 15.6625 20.0618 13.7605 19.1855C11.8587 18.3092 10.1097 17.073 8.5135 15.477C6.92383 13.8808 5.69083 12.1333 4.8145 10.2345C3.93817 8.33583 3.5 6.44425 3.5 4.55975C3.5 4.25975 3.6 4.00808 3.8 3.80475C4 3.60158 4.25 3.5 4.55 3.5H7.8115C8.064 3.5 8.28675 3.58242 8.47975 3.74725C8.67275 3.91192 8.7955 4.11542 8.848 4.35775L9.42125 7.3C9.46092 7.573 9.45258 7.80758 9.39625 8.00375C9.33975 8.19992 9.23842 8.36467 9.09225 8.498L6.78275 10.7462C7.15442 11.4269 7.57908 12.0708 8.05675 12.678C8.53425 13.285 9.05125 13.8647 9.60775 14.4173C10.1564 14.9661 10.7397 15.4757 11.3577 15.9462C11.9757 16.4167 12.6431 16.8546 13.3598 17.2598L15.6038 14.9963C15.7603 14.8334 15.9498 14.7192 16.1723 14.6538C16.3946 14.5884 16.6257 14.5724 16.8655 14.6058L19.6423 15.1713C19.8948 15.2379 20.1008 15.3667 20.2605 15.5577C20.4202 15.7487 20.5 15.9654 20.5 16.2078V19.45C20.5 19.75 20.3984 20 20.1952 20.2C19.9919 20.4 19.7402 20.5 19.4402 20.5Z"
                                     fill="white" />
+                            </svg> -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none">
+                                <path
+                                    d="M12.0011 20.9403C11.8063 20.9403 11.6115 20.9067 11.4166 20.8395C11.2216 20.7722 11.0453 20.668 10.8876 20.527C9.99029 19.7 9.15054 18.8483 8.36838 17.972C7.58637 17.0958 6.90662 16.2199 6.32912 15.3443C5.75146 14.4686 5.29438 13.6007 4.95788 12.7405C4.62138 11.8802 4.45312 11.0493 4.45312 10.248C4.45312 7.94033 5.19954 6.07208 6.69237 4.64325C8.18537 3.21442 9.95496 2.5 12.0011 2.5C14.0473 2.5 15.8169 3.21442 17.3099 4.64325C18.8027 6.07208 19.5491 7.94033 19.5491 10.248C19.5491 11.0493 19.3809 11.8785 19.0444 12.7355C18.7079 13.5927 18.2525 14.4607 17.6781 15.3395C17.1036 16.2183 16.4254 17.0943 15.6434 17.9672C14.8614 18.8404 14.0216 19.6904 13.1241 20.5173C12.9688 20.6583 12.7922 20.764 12.5944 20.8345C12.3967 20.905 12.199 20.9403 12.0011 20.9403ZM12.0029 11.8652C12.5004 11.8652 12.9257 11.6881 13.2789 11.3338C13.6322 10.9794 13.8089 10.5535 13.8089 10.056C13.8089 9.5585 13.6317 9.13308 13.2774 8.77975C12.923 8.42658 12.497 8.25 11.9994 8.25C11.5019 8.25 11.0765 8.42717 10.7234 8.7815C10.37 9.13583 10.1934 9.56183 10.1934 10.0595C10.1934 10.557 10.3705 10.9823 10.7249 11.3355C11.0792 11.6887 11.5052 11.8652 12.0029 11.8652Z"
+                                    fill="white" />
                             </svg>
                         </div>
                         <div class="contact-info-text">
-                            <p>Phone number</p>
-                            <a href="tel:+9876543210">{{contact.phone}}</a>
+                            <p>Office Address- India </p>
+                            <span>{{contact.address_india}}</span>
                         </div>
                     </div>
                     <div class="contact-info-item">
@@ -59,8 +65,8 @@
                             </svg>
                         </div>
                         <div class="contact-info-text">
-                            <p>Office address</p>
-                            <span>{{contact.address}}</span>
+                            <p>Office Address- Australia </p>
+                            <span>{{contact.address_australia}}</span>
                         </div>
                     </div>
                 </div>
@@ -135,9 +141,9 @@
                             check your internet connection and try again</p>
                     </div>
                     <button type="submit" class="btn btn-cm-cta btn-pill open-position-btn w-100">
-                        <span class="label-up">Contact Us
+                        <span class="label-up">Contact us
                         </span>
-                        <span class="label-up">Contact Us
+                        <span class="label-up">Contact us
                         </span>
                     </button>
 
@@ -148,7 +154,7 @@
     </div>
 </section>
 
-<!-- <section class="open-roles career-page-form">
+<section class="open-roles career-page-form">
     <div class="container">
         <div class="contact-info-bottom-cm">
             <div class="hero-badge-wrap">
@@ -177,7 +183,7 @@
         </div>
     </div>
 
-</section> -->
+</section>
 <!-- <section class="faq-section">
                 <div class="container"> -->
 <!-- Header -->
@@ -322,6 +328,15 @@
 </div>
 
 <script>
+    window.addEventListener("pageshow", function (event) {
+        if (event.persisted) {
+            // Page loaded from back/forward cache
+            localStorage.removeItem("schedule_call_date");
+            localStorage.removeItem("schedule_call_display_date");
+            localStorage.removeItem("schedule_call_time");
+            localStorage.removeItem("schedule_call_display_time_range");
+        }
+    });
     document.addEventListener('DOMContentLoaded', function () {
         const contactForm = document.getElementById('contactForm');
         if (!contactForm) return;

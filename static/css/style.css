@@ -1303,7 +1303,7 @@ span.cm-mega__thumb img {
 .footer-contact {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 14px;
 }
 
 .footer-contact__item {

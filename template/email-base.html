@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,15 +10,18 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
   <style>
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
-* {
-  font-family: 'Poppins', Arial, sans-serif !important;
-}
-</style>
+    * {
+      font-family: 'Poppins', Arial, sans-serif !important;
+    }
+  </style>
 </head>
+
 <body style="margin:0;padding:0;background-color:#6b6b6b;font-family:poppins;-webkit-font-smoothing:antialiased;">
 
   <!-- Wrapper -->
@@ -26,7 +30,8 @@
       <td align="center">
 
         <!-- Main Container -->
-        <table width="540" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;width:100%;background-color:#171717;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.5);">
+        <table width="540" cellpadding="0" cellspacing="0" border="0"
+          style="max-width:600px;width:100%;background-color:#171717;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.5);">
 
           <!-- ── HEADER ── -->
           <tr>
@@ -35,10 +40,13 @@
                 <tr>
                   <td style="vertical-align:middle;padding-right:12px;">
                     <!-- Logo -->
-                    <img src='https://yurayi.s3.ap-south-1.amazonaws.com/logo-cm.svg' alt='Logo'>
+                    <!-- <img src='https://yurayi.s3.ap-south-1.amazonaws.com/logo-cm.svg' alt='Logo'> -->
+                    <img src="{% if use_external_images %}{{ image_urls.logo }}{% else %}cid:logo{% endif %}" alt="Logo"
+                      style="display:block;" width="40" height="40">
                   </td>
                   <td style="vertical-align:middle;">
-                    <span style="font-size:18px;font-weight:500;color:#F6F6F6;font-family: poppins;">Codigo Mantra</span>
+                    <span style="font-size:18px;font-weight:500;color:#F6F6F6;font-family: poppins;">Codigo
+                      Mantra</span>
                   </td>
                 </tr>
               </table>
@@ -55,7 +63,8 @@
               <table cellpadding="0" cellspacing="0" border="0" style="margin:0 auto 14px;">
                 <tr>
                   <td style="vertical-align:middle;padding-right:8px;">
-                    <img src='https://yurayi.s3.ap-south-1.amazonaws.com/logo-cm.svg' alt="Logo">
+                    <img src="{% if use_external_images %}{{ image_urls.logo }}{% else %}cid:logo{% endif %}" alt="Logo"
+                      style="display:block;" width="40" height="40">
                   </td>
                   <td style="vertical-align:middle;">
                     <span style="font-size:12px;font-weight:500;color:#F6F6F6;font-family:poppins;">Codigo Mantra</span>
@@ -64,33 +73,49 @@
               </table>
 
               <!-- Footer text -->
-              <p style="margin:0 auto 20px;font-size:8px;color:rgba(246,246,246,0.8);line-height:1.6;max-width:320px;font-family:poppins;">Codigo Mantra is dedicated to providing exceptional service and support. We appreciate your trust in our products and services. If you have any questions, please do not hesitate to contact us.</p>
+              <p
+                style="margin:0 auto 20px;font-size:8px;color:#F6F6F6;line-height:1.6;max-width:320px;font-family:poppins;">
+                Codigo Mantra is dedicated to providing exceptional service and support. We appreciate your trust in our
+                products and services. If you have any questions, please do not hesitate to contact us.</p>
 
               <!-- Social Icons -->
               <table cellpadding="0" cellspacing="0" border="0" style="margin:0 auto;">
                 <tr>
                   <!-- Facebook -->
                   <td style="padding:0 6px;">
-                    <a href="https://www.facebook.com/codigomantra/" style="display:inline-block;width:20px;height:20px;border-radius:50%;background-color:rgba(255,255,255,0.08);text-align:center;line-height:34px;text-decoration:none;border: 1px solid rgba(255, 255, 255, 0.08);" target="_blank">
-                      <img src='https://codigomantra.s3.ap-south-1.amazonaws.com/facebook.png' width="13" height="13" alt="Facebook" style="display: block; margin: 0 auto; margin-top: 3px;">
+                    <a href="https://www.facebook.com/codigomantra/"
+                      style="display:inline-block;width:20px;height:20px;border-radius:50%;color:#F6F6F6;text-align:center;line-height:34px;text-decoration:none;border: 1px solid rgba(255, 255, 255, 0.08);"
+                      target="_blank">
+                      <img src="{% if use_external_images %}{{ image_urls.facebook }}{% else %}cid:facebook{% endif %}"
+                        width="13" height="13" alt="Facebook" style="display: block; margin: 0 auto; margin-top: 3px;">
                     </a>
                   </td>
                   <!-- Instagram -->
                   <td style="padding:0 6px;">
-                    <a href="https://www.instagram.com/codigomantra/" style="display:inline-block;width:20px;height:20px;border-radius:50%;background-color:rgba(255,255,255,0.08);text-align:center;line-height:34px;text-decoration:none;border: 1px solid rgba(255, 255, 255, 0.08);" target="_blank">
-                      <img src='https://codigomantra.s3.ap-south-1.amazonaws.com/instagram.png' width="13" height="13" alt="Instagram" style="display: block; margin: 0 auto; margin-top: 3px;">
+                    <a href="https://www.instagram.com/codigomantra/"
+                      style="display:inline-block;width:20px;height:20px;border-radius:50%;color:#F6F6F6;text-align:center;line-height:34px;text-decoration:none;border: 1px solid rgba(255, 255, 255, 0.08);"
+                      target="_blank">
+                      <img
+                        src="{% if use_external_images %}{{ image_urls.instagram }}{% else %}cid:instagram{% endif %}"
+                        width="13" height="13" alt="Instagram" style="display: block; margin: 0 auto; margin-top: 3px;">
                     </a>
                   </td>
                   <!-- LinkedIn -->
                   <td style="padding:0 6px;">
-                    <a href="https://www.linkedin.com/company/codigo-mantra-2406/posts/?feedView=all" style="display:inline-block;width:20px;height:20px;border-radius:50%;background-color:rgba(255,255,255,0.08);text-align:center;line-height:34px;text-decoration:none;border: 1px solid rgba(255, 255, 255, 0.08);" target="_blank">
-                        <img src='https://codigomantra.s3.ap-south-1.amazonaws.com/linkedin.png' width="13" height="13" alt="LinkedIn" style="display: block; margin: 0 auto; margin-top: 3px;">
+                    <a href="https://www.linkedin.com/company/codigomantra/"
+                      style="display:inline-block;width:20px;height:20px;border-radius:50%;color:#F6F6F6;text-align:center;line-height:34px;text-decoration:none;border: 1px solid rgba(255, 255, 255, 0.08);"
+                      target="_blank">
+                      <img src="{% if use_external_images %}{{ image_urls.linkedin }}{% else %}cid:linkedin{% endif %}"
+                        width="13" height="13" alt="LinkedIn" style="display: block; margin: 0 auto; margin-top: 3px;">
                     </a>
                   </td>
                   <!-- YouTube -->
                   <td style="padding:0 6px;">
-                    <a href="https://www.youtube.com/@codigo.mantra/" style="display:inline-block;width:20px;height:20px;border-radius:50%;background-color:rgba(255,255,255,0.08);text-align:center;line-height:34px;text-decoration:none;border: 1px solid rgba(255, 255, 255, 0.08);" target="_blank">
-                      <img src='https://codigomantra.s3.ap-south-1.amazonaws.com/youtube.png' width="13" height="13" alt="YouTube" style="display: block; margin: 0 auto; margin-top: 3px;">
+                    <a href="https://www.youtube.com/@codigomantra"
+                      style="display:inline-block;width:20px;height:20px;border-radius:50%;color:#F6F6F6;text-align:center;line-height:34px;text-decoration:none;border: 1px solid rgba(255, 255, 255, 0.08);"
+                      target="_blank">
+                      <img src="{% if use_external_images %}{{ image_urls.youtube }}{% else %}cid:youtube{% endif %}"
+                        width="13" height="13" alt="YouTube" style="display: block; margin: 0 auto; margin-top: 3px;">
                     </a>
                   </td>
                 </tr>
@@ -108,4 +133,5 @@
   <!-- /Wrapper -->
 
 </body>
+
 </html>

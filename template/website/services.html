@@ -335,6 +335,15 @@
 
 {% block JavaScript %}
 <script>
+    window.addEventListener("pageshow", function (event) {
+        if (event.persisted) {
+            // Page loaded from back/forward cache
+            localStorage.removeItem("schedule_call_date");
+            localStorage.removeItem("schedule_call_display_date");
+            localStorage.removeItem("schedule_call_time");
+            localStorage.removeItem("schedule_call_display_time_range");
+        }
+    });
     $(function () {
         $('.marquee-track-service').slick({
             autoplay: true,

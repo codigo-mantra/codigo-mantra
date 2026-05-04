@@ -894,24 +894,32 @@ p.job-meta-sub {
   width: 100%;
   border: none;
   background: #11111100;
-  color: #F6F6F6;
+  color: #FFF;
+  font-family: Poppins;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
   text-align: left;
-  font-size: 15px;
-  line-height: 1.4;
   position: relative;
   cursor: pointer;
+      display: flex;
+    gap: 12px;
+    align-content: center;
+    align-items: center;
 }
 
 .tz-caret {
-  position: absolute;
+  /* position: absolute;
   right: 14px;
-  top: 50%;
+  top: 50%; */
   width: 10px;
   height: 10px;
   border-right: 2px solid #F6F6F6;
   border-bottom: 2px solid #F6F6F6;
   transform: translateY(-60%) rotate(45deg);
   transition: transform 0.2s ease;
+  margin-top: 8px;
 }
 
 .tz-dropdown.open .tz-caret {

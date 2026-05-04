@@ -1,13 +1,21 @@
 {% extends "email-base.html" %}
 {% load static %}
 
-{% block title %}New Contact Submission: {{ name }}{% endblock %}
+
+
+{% block title %}Schedule Call{% endblock %}
 
 {% block content %}
 <!-- ── HERO TITLE ── -->
 <tr>
   <td style="background-color:#171717;padding:30px 32px 0;text-align:center;">
-    <h1 style="margin:0 0 28px;font-size:24px;font-weight:400;color:#F6F6F6;line-height:140%;font-family:poppins;">{% if meet_link_failed %}ACTION: No meeting link — {{ name }}{% else %}New Call Scheduled with {{ name }}{% endif %}</h1>
+    <h1 style="margin:0 0 28px;font-size:24px;font-weight:400;color:#F6F6F6;line-height:140%;font-family:poppins;">
+      {% if meet_link_failed %}
+      ACTION: No meeting link — {{ name }}
+      {% else %}
+      New Call Scheduled with {{ name }}
+      {% endif %}
+    </h1>
   </td>
 </tr>
 
@@ -23,8 +31,8 @@
             <tr>
               <!-- Illustration -->
               <td style="vertical-align:bottom;padding-bottom:0;">
-                <a href="#"  style="display:inline-block; cursor: pointer;">
-                  <img src='https://codigomantra.s3.ap-south-1.amazonaws.com/scheduling-call-email-template.png' alt="Envelope">
+                <a href="#" style="display:inline-block; cursor: pointer;">
+                  <img src="cid:illustration" alt="Envelope">
                 </a>
               </td>
             </tr>
@@ -41,10 +49,15 @@
   <td style="padding:32px 32px 28px;background-color:#171717;">
     <p style="margin:0 0 12px;font-size:16px;font-weight:400;color:#F6F6F6;font-family:poppins;">Hello Admin,</p>
     {% if meet_link_failed %}
-    <p style="margin:0 0 24px;font-size:12px;font-weight:400;color:rgba(246,246,246,0.75);line-height:1.6;font-family:poppins;">A call was booked, but Google Meet and Zoom both failed to create a link. Please create a meeting manually and share it with the client.</p>
+    <p style="margin:0 0 24px;font-size:12px;font-weight:400;color:#F6F6F6;line-height:1.6;font-family:poppins;">
+      A call was booked, but Google Meet and Zoom both failed to create a link. Please create a meeting manually and
+      share it with the client.</p>
     {% else %}
-    <p style="margin:0 0 24px;font-size:12px;font-weight:400;color:rgba(246,246,246,0.75);line-height:1.6;font-family:poppins;">A new call has been scheduled with the following details:</p>
-    <a href="{{ meet_link }}" style="border: 2px solid #D83903;box-shadow: 0 4px 9.6px 0 rgba(241, 101, 53, 0.23), 0 6px 4px 0 rgba(255, 242, 242, 0.25) inset, 0 4px 4px 0 rgba(0, 0, 0, 0.25);display:inline-block;background-color:#F05D35;color:#ffffff;font-size:14px;font-weight:600;text-decoration:none;padding:13px 28px;border-radius:8px;letter-spacing:0.01em;font-family:poppins;">Join Call</a>
+    <p style="margin:0 0 24px;font-size:12px;font-weight:400;color:#F6F6F6;line-height:1.6;font-family:poppins;">
+      A new call has been scheduled with the following details:</p>
+    <a href="{{ meet_link }}"
+      style="border: 2px solid #D83903;display:inline-block;background-color:#F05D35;color:#ffffff;font-size:14px;font-weight:600;text-decoration:none;padding:13px 28px;border-radius:8px;letter-spacing:0.01em;font-family:poppins;">Join
+      Call</a>
     {% endif %}
   </td>
 </tr>
@@ -67,24 +80,29 @@
       <tr>
         <td style="padding:18px;">
           <p style="margin:0 0 14px;font-size:14px;font-weight:600;color:#F6F6F6;font-family:poppins;">Details:</p>
-          <ul style="margin:0 0 20px;padding:0 0 0 20px;font-size:12.5px;font-weight:400;color:rgba(246,246,246,0.80);line-height:1.65;font-family:poppins;">
-              <li style="margin-bottom:8px;"><strong>Name:</strong> {{ name }}</li>
-              <li style="margin-bottom:8px;"><strong>Email:</strong> {{ email }}</li>
-              <li style="margin-bottom:8px;"><strong>Phone Number:</strong> {{ phone_number }}</li>
-              <!-- <li style="margin-bottom:8px;"><strong>Phone Number:</strong> {{  number }}</li> -->
+          <ul
+            style="margin:0 0 20px;padding:0 0 0 20px;font-size:12.5px;font-weight:400;color:#F6F6F6;line-height:1.65;font-family:poppins;">
+            <li style="margin-bottom:8px;"><strong>Name:</strong> {{ name }}</li>
+            <li style="margin-bottom:8px;"><strong>Email:</strong> {{ email }}</li>
+            <li style="margin-bottom:8px;"><strong>Phone Number:</strong> {{ phone_number }}</li>
+            <!-- <li style="margin-bottom:8px;"><strong>Phone Number:</strong> {{  number }}</li> -->
           </ul>
-          <p style="margin:0 0 24px;font-size:12px;font-weight:400;color:rgba(246,246,246,0.75);line-height:1.6;font-family:poppins;">Scheduled Date and Time: {{ date }} at {{ time }}</p>
+          <p style="margin:0 0 24px;font-size:12px;font-weight:400;color:#F6F6F6;line-height:1.6;font-family:poppins;">
+            Scheduled Date and Time: {{ date }} at {{ time }}</p>
           {% if meet_link_failed %}
-          <p style="margin:0 0 24px;font-size:12px;font-weight:400;color:#F6A5A5;line-height:1.6;font-family:poppins;">Meeting link: <strong>none</strong> — create one and email the client.</p>
+          <p style="margin:0 0 24px;font-size:12px;font-weight:400;color:#F6A5A5;line-height:1.6;font-family:poppins;">
+            Meeting link: <strong>none</strong> — create one and email the client.</p>
           {% endif %}
-        
-          <!-- <div style="font-size:12.5px;font-weight:400;color:rgba(246,246,246,0.80);line-height:1.65;font-family:poppins;background-color:rgba(255,255,255,0.05);padding:12px;border-radius:8px;">
+
+          <!-- <div style="font-size:12.5px;font-weight:400;color:#F6F6F6;line-height:1.65;font-family:poppins;background-color:rgba(255,255,255,0.05);padding:12px;border-radius:8px;">
             {{ message_body|linebreaks }}
           </div> -->
-         
-          <p style="margin:0 0 24px;font-size:12px;font-weight:400;color:rgba(246,246,246,0.75);line-height:1.6;font-family:poppins;">Please be ready for the call or assign it to the appropriate team member.</p>
-          
-          <p style="margin:20px 0 4px;font-size:12px;color:rgba(246,246,246,0.80);font-family:poppins;">Best regards,</p>
+
+          <p style="margin:0 0 24px;font-size:12px;font-weight:400;color:#F6F6F6;line-height:1.6;font-family:poppins;">
+            Please be ready for the call or assign it to the appropriate team member.</p>
+
+          <p style="margin:20px 0 4px;font-size:12px;color:#F6F6F6;font-family:poppins;">Best regards,
+          </p>
           <p style="margin:0;font-size:16px;font-weight:600;color:#F6F6F6;font-family:poppins;">Codigo Mantra Team</p>
         </td>
       </tr>

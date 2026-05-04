@@ -1,7 +1,9 @@
 from django.db.models import Q, Count
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
-from django.core.mail import send_mail, EmailMessage
+from django.core.mail import send_mail, EmailMessage, EmailMultiAlternatives
+from email.mime.image import MIMEImage
+import requests
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.http import JsonResponse
@@ -14,8 +16,7 @@ from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
 from django.db import IntegrityError, close_old_connections, transaction
 from .zoom_meet import generate_zoom_meet_link
-
-from .google_meet import generate_google_meet_link
+from .zoho_meet import generate_zoho_meeting_link
 import logging
 import threading
 from datetime import datetime, timedelta
@@ -26,9 +27,41 @@ from django.shortcuts import redirect
 from django.http import JsonResponse
 from django.db import transaction, IntegrityError
 import threading
-# from django.http import HttpResponse
 
 logger = logging.getLogger(__name__)
+
+# Base URLs for images stored in S3
+S3_BASE_URL = "https://codigomantra.s3.ap-south-1.amazonaws.com"
+# S3_BASE_URL = "https://codigomantra.s3.ap-south-1.amazonaws.com/codigomantra.png"
+
+# Shared image map for all email templates
+EMAIL_IMAGE_MAP = {
+    "logo": f"{S3_BASE_URL}/codigomantra.png",
+    "facebook": f"{S3_BASE_URL}/facebook.png",
+    "instagram": f"{S3_BASE_URL}/instagram.png",
+    "linkedin": f"{S3_BASE_URL}/linkedin.png",
+    "youtube": f"{S3_BASE_URL}/youtube.png",
+}
+
+def _get_email_image_context(recipient_email, illustration_url=None):
+    """
+    Returns a context dictionary with image URLs and strategy for email templates.
+    Avoids code duplication (DRY).
+    """
+    is_gmail = False
+    if recipient_email:
+        domain = recipient_email.split("@")[-1].lower()
+        if domain == "gmail.com":
+            is_gmail = True
+
+    image_urls = EMAIL_IMAGE_MAP.copy()
+    if illustration_url:
+        image_urls["illustration"] = illustration_url
+
+    return {
+        "use_external_images": is_gmail,
+        "image_urls": image_urls,
+    }
 
 # Bookings are stored as calendar date + wall clock in this zone (matches Django TIME_ZONE / Zoom).
 ADMIN_BOOKING_TZ = "Asia/Kolkata"
@@ -37,12 +70,6 @@ TZ_ALIASES = {
     # Not a real IANA id; India uses Asia/Kolkata
     "Asia/India": "Asia/Kolkata",
 }
-
-
-# def zoho_callback(request):
-#     code = request.GET.get("code")
-#     return HttpResponse(f"CODE: {code}")
-
 
 def _safe_zone(tz_name: str) -> ZoneInfo:
     raw = (tz_name or "").strip()
@@ -61,18 +88,15 @@ def _safe_zone(tz_name: str) -> ZoneInfo:
     except Exception:
         return ZoneInfo(ADMIN_BOOKING_TZ)
 
-
 def _client_local_to_ist(booking_date, start_time, client_tz: str) -> datetime:
     """Interpret date + time in the client's IANA zone; return aware datetime in Asia/Kolkata."""
     z_client = _safe_zone(client_tz)
     dt_client = datetime.combine(booking_date, start_time, tzinfo=z_client)
     return dt_client.astimezone(ZoneInfo(ADMIN_BOOKING_TZ))
 
-
 def _booking_to_aware_ist(booking) -> datetime:
     naive = datetime.combine(booking.booking_date, booking.start_time)
     return naive.replace(tzinfo=ZoneInfo(ADMIN_BOOKING_TZ))
-
 
 def _format_date_time_in_zone(dt_ist: datetime, tz_name: str):
     """dt_ist must be timezone-aware (IST). Returns (date_str, time_str) in tz_name."""
@@ -81,6 +105,134 @@ def _format_date_time_in_zone(dt_ist: datetime, tz_name: str):
     date_str = local.strftime("%A, %B %d, %Y")
     time_str = local.strftime("%I:%M %p").lstrip("0")
     return date_str, time_str
+
+def _attach_images_to_email(msg, illustration_url=None, recipient_email=None):
+    """
+    Fetch images from S3 and attach them as CID for Zoho Mail compatibility.
+    If the recipient is a Gmail user, we can skip CID attachments to avoid 'noname' icons
+    as Gmail handles external URLs better than Zoho.
+    """
+    
+    # Check if recipient is using Gmail
+    is_gmail = False
+    if recipient_email:
+        domain = recipient_email.split("@")[-1].lower()
+        if domain == "gmail.com":
+            is_gmail = True
+
+    image_map = {
+        "logo": "https://codigomantra.s3.ap-south-1.amazonaws.com/codigomantra.png",
+        "facebook": "https://codigomantra.s3.ap-south-1.amazonaws.com/facebook.png",
+        "instagram": "https://codigomantra.s3.ap-south-1.amazonaws.com/instagram.png",
+        "linkedin": "https://codigomantra.s3.ap-south-1.amazonaws.com/linkedin.png",
+        "youtube": "https://codigomantra.s3.ap-south-1.amazonaws.com/youtube.png",
+    }
+    if illustration_url:
+        image_map["illustration"] = illustration_url
+
+    # Only attach CID images if NOT Gmail
+    if not is_gmail:
+        for cid, url in image_map.items():
+            try:
+                response = requests.get(url, timeout=5)
+                if response.status_code == 200:
+                    # Determine subtype
+                    ext = url.split('.')[-1].lower()
+                    if ext not in ['png', 'jpg', 'jpeg', 'gif']:
+                        ext = 'png'
+                    if ext == 'jpg':
+                        ext = 'jpeg'
+
+                    img = MIMEImage(response.content, _subtype=ext)
+                    img.add_header("Content-ID", f"<{cid}>")
+                    
+                    # Use standard inline attachment headers with filename.
+                    if "Content-Disposition" in img:
+                        del img["Content-Disposition"]
+                    img.add_header("Content-Disposition", "inline", filename=f"{cid}.{ext}")
+                    
+                    # Ensure the 'name' parameter is set in Content-Type
+                    img.set_param("name", f"{cid}.{ext}")
+                    
+                    msg.attach(img)
+            except Exception as e:
+                logger.warning("Failed to attach CID image %s: %s", cid, e)
+
+def _send_slack_notification(booking, client_name, client_email, client_tz=None):
+    """Send Slack notification using Slack Bot API."""
+    try:
+        slack_token = getattr(settings, "SLACK_BOT_TOKEN", "")
+        channel_id = getattr(settings, "SLACK_CHANNEL_ID", "")
+
+        if not slack_token or not channel_id:
+            logger.warning("Slack token or channel ID not set; skipping Slack notification")
+            return
+
+        dt_ist = _booking_to_aware_ist(booking)
+        client_tz = (client_tz or "").strip() or ADMIN_BOOKING_TZ
+
+        # client_date_str, client_time_str = _format_date_time_in_zone(dt_ist, client_tz)
+        admin_date_str, admin_time_str = _format_date_time_in_zone(dt_ist, ADMIN_BOOKING_TZ)
+
+        # Same UI you created (Blocks)
+        slack_payload = {
+            "channel": channel_id,
+            "blocks": [
+                {
+                    "type": "header",
+                    "text": {
+                        "type": "plain_text",
+                        "text": f"New Call Scheduled with {client_name}",
+                        # "text": "New Call Scheduled!",
+                        "emoji": True
+                    }
+                },
+                {
+                    "type": "section",
+                    "fields": [
+                        {"type": "mrkdwn", "text": f"*Client Name:*\n{client_name}"},
+                        {"type": "mrkdwn", "text": f"*Email:*\n{client_email}"},
+                        {"type": "mrkdwn", "text": f"*Phone:*\n{booking.phone_number or 'N/A'}"},
+                        # {"type": "mrkdwn", "text": f"*Date (Client):*\n{client_date_str}"},
+                        # {"type": "mrkdwn", "text": f"*Time (Client):*\n{client_time_str} ({client_tz})"},
+                        {"type": "mrkdwn", "text": f"*Date (IST):*\n{admin_date_str}"},
+                        {"type": "mrkdwn", "text": f"*Time (IST):*\n{admin_time_str} ({ADMIN_BOOKING_TZ})"},
+                    ]
+                },
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": f"* Meeting Link:*\n{booking.meet_link or 'N/A'}"
+                    }
+                },
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": f"*Project Brief:*\n{booking.project_brief or 'N/A'}"
+                    }
+                }
+            ]
+        }
+
+        url = "https://slack.com/api/chat.postMessage"
+
+        headers = {
+            "Authorization": f"Bearer {slack_token}",
+            "Content-Type": "application/json"
+        }
+
+        response = requests.post(url, json=slack_payload, headers=headers, timeout=10)
+        response_data = response.json()
+
+        if not response_data.get("ok"):
+            logger.error("Slack API error: %s", response_data)
+        else:
+            logger.info("Slack notification sent successfully for booking %s", booking.pk)
+
+    except Exception as e:
+        logger.warning("Failed to send Slack notification: %s", e)
 
 
 def _booking_followup_zoom_and_emails(booking_id, client_name, client_email, client_tz=None):
@@ -96,7 +248,7 @@ def _booking_followup_zoom_and_emails(booking_id, client_name, client_email, cli
 
         # Generate meeting link if not exists
         if not booking.meet_link:
-            meet_link = generate_google_meet_link(booking=booking, client_email=client_email)
+            meet_link = generate_zoho_meeting_link(booking=booking, client_email=client_email)
             if not meet_link:
                 meet_link = generate_zoom_meet_link(booking=booking, client_email=client_email)
             if meet_link:
@@ -108,6 +260,9 @@ def _booking_followup_zoom_and_emails(booking_id, client_name, client_email, cli
                     booking.pk,
                 )
 
+        # Send Slack notification
+        _send_slack_notification(booking, client_name, client_email, client_tz)
+
         dt_ist = _booking_to_aware_ist(booking)
         client_tz = (client_tz or "").strip() or ADMIN_BOOKING_TZ
 
@@ -115,8 +270,12 @@ def _booking_followup_zoom_and_emails(booking_id, client_name, client_email, cli
         admin_date_str, admin_time_str = _format_date_time_in_zone(dt_ist, ADMIN_BOOKING_TZ)
 
         client_first_name = (client_name or "").split(" ")[0]
-        # Client email: wall time in the zone they chose when booking (e.g. America/New_York).
-        # Admin email: same instant, shown in Asia/Kolkata for the team.
+        
+        # Get image context for client (Gmail check) and admin
+        illustration_url = f"{S3_BASE_URL}/scheduling-call-email-template.png"
+        client_image_ctx = _get_email_image_context(client_email, illustration_url)
+        admin_image_ctx = _get_email_image_context(None, illustration_url) # Admin usually not gmail or use CID
+
         client_html = render_to_string("call-email.html", {
             "name": client_first_name,
             "email": client_email,
@@ -124,6 +283,7 @@ def _booking_followup_zoom_and_emails(booking_id, client_name, client_email, cli
             "time": f"{client_time_str} ({client_tz})",
             "client_tz": client_tz,
             "meet_link": booking.meet_link,
+            **client_image_ctx
         })
 
         admin_html = render_to_string("call-email-admin.html", {
@@ -136,6 +296,7 @@ def _booking_followup_zoom_and_emails(booking_id, client_name, client_email, cli
             "admin_tz": ADMIN_BOOKING_TZ,
             "client_tz": client_tz,
             "meet_link": booking.meet_link,
+            **admin_image_ctx
         })
 
         # Admin recipients
@@ -155,13 +316,19 @@ def _booking_followup_zoom_and_emails(booking_id, client_name, client_email, cli
 
         # Send client email (only to the address they entered on the form)
         try:
-            client_msg = EmailMessage(
+            client_msg = EmailMultiAlternatives(
                 "Your Upcoming Call with Codigo Mantra",
-                client_html,
+                strip_tags(client_html),
                 settings.DEFAULT_FROM_EMAIL,
                 [client_email],
             )
-            client_msg.content_subtype = "html"
+            client_msg.attach_alternative(client_html, "text/html")
+            client_msg.mixed_subtype = 'related'
+            _attach_images_to_email(
+                client_msg,
+                "https://codigomantra.s3.ap-south-1.amazonaws.com/scheduling-call-email-template.png",
+                client_email
+            )
             client_msg.send(fail_silently=False)
         except Exception as e:
             logger.warning("Booking: failed to email client %s: %s", client_email, e)
@@ -171,14 +338,20 @@ def _booking_followup_zoom_and_emails(booking_id, client_name, client_email, cli
         # Send admin email
         if admin_recipients:
             try:
-                admin_msg = EmailMessage(
+                admin_msg = EmailMultiAlternatives(
                     f"New call scheduled — {client_name}",
-                    admin_html,
+                    strip_tags(admin_html),
                     settings.DEFAULT_FROM_EMAIL,
                     admin_recipients,
                     reply_to=[client_email],
                 )
-                admin_msg.content_subtype = "html"
+                admin_msg.attach_alternative(admin_html, "text/html")
+                admin_msg.mixed_subtype = 'related'
+                _attach_images_to_email(
+                    admin_msg,
+                    "https://codigomantra.s3.ap-south-1.amazonaws.com/scheduling-call-email-template.png",
+                    admin_recipients[0] if admin_recipients else None
+                )
                 admin_msg.send(fail_silently=False)
             except Exception as e:
                 logger.warning("Booking: failed to email admins %s: %s", admin_recipients, e)
@@ -195,6 +368,11 @@ def _contact_form_send_emails(name, from_email, phone, message_body, base_url, f
     """SMTP for contact form — background thread."""
     close_old_connections()
     try:
+        # Get image context for client (Gmail check) and admin
+        illustration_url = f"{S3_BASE_URL}/content-email-template.png"
+        client_image_ctx = _get_email_image_context(from_email, illustration_url)
+        admin_image_ctx = _get_email_image_context(None, illustration_url)
+
         admin_html_message = render_to_string(
             "email-contact-admin.html",
             {
@@ -203,34 +381,54 @@ def _contact_form_send_emails(name, from_email, phone, message_body, base_url, f
                 "phone": phone,
                 "message_body": message_body,
                 "base_url": base_url,
+                **admin_image_ctx
             },
         )
         html_message = render_to_string(
             "email-contact.html",
-            {"name": first_name, "base_url": base_url},
+            {
+                "name": first_name, 
+                "base_url": base_url,
+                **client_image_ctx
+            },
         )
         admin_addr = getattr(settings, "EMAIL_HOST_USER", "") or ""
         if not admin_addr:
             logger.warning("Contact form: EMAIL_HOST_USER not set; skipping admin notification")
         else:
-            email = EmailMessage(
+            email = EmailMultiAlternatives(
                 f"New Contact Form Submission from {name}",
-                admin_html_message,
+                strip_tags(admin_html_message),
                 settings.DEFAULT_FROM_EMAIL,
                 [admin_addr],
                 reply_to=[from_email],
             )
-            email.content_subtype = "html"
+            email.attach_alternative(admin_html_message, "text/html")
+            email.mixed_subtype = 'related'
+            _attach_images_to_email(
+                email,
+                "https://codigomantra.s3.ap-south-1.amazonaws.com/content-email-template.png",
+                admin_addr
+            )
             email.send(fail_silently=False)
 
-        send_mail(
-            "Thank You for Reaching Out to Codigo Mantra!",
-            strip_tags(html_message),
-            settings.DEFAULT_FROM_EMAIL,
-            [from_email],
-            html_message=html_message,
-            fail_silently=False,
-        )
+        try:
+            client_msg = EmailMultiAlternatives(
+                "Thank You for Reaching Out to Codigo Mantra!",
+                strip_tags(html_message),
+                settings.DEFAULT_FROM_EMAIL,
+                [from_email],
+            )
+            client_msg.attach_alternative(html_message, "text/html")
+            client_msg.mixed_subtype = 'related'
+            _attach_images_to_email(
+                client_msg,
+                "https://codigomantra.s3.ap-south-1.amazonaws.com/content-email-template.png",
+                from_email
+            )
+            client_msg.send(fail_silently=False)
+        except Exception as e:
+            logger.warning("Contact form client email error: %s", e)
     except Exception as e:
         logger.warning("Contact form email error: %s", e)
     finally:
@@ -249,11 +447,18 @@ def _career_application_send_emails(application_id):
         phone = application.phone
 
         applicant_first_name = (name or "").split(" ")[0]
+
+        # Get image context for client (Gmail check) and admin
+        illustration_url = f"{S3_BASE_URL}/submission-email-template.png"
+        client_image_ctx = _get_email_image_context(applicant_email, illustration_url)
+        admin_image_ctx = _get_email_image_context(None, illustration_url)
+
         user_html = render_to_string(
             "email-application.html",
             {
                 "name": applicant_first_name,
                 "job_title": job_title,
+                **client_image_ctx
             }
         )
         admin_html = render_to_string(
@@ -266,6 +471,7 @@ def _career_application_send_emails(application_id):
                     f"Phone: {phone}\n\n"
                     f"Resume is attached to this email for HR review."
                 ),
+                **admin_image_ctx
             },
         )
         hr_addr = getattr(settings, "HR_EMAIL_ADDRESS", "") or ""
@@ -273,14 +479,20 @@ def _career_application_send_emails(application_id):
             logger.warning("Career application: HR_EMAIL_ADDRESS not set; skipping HR mail")
             return
 
-        admin_msg = EmailMessage(
+        admin_msg = EmailMultiAlternatives(
             f"New job application: {name} — {job_title}",
-            admin_html,
+            strip_tags(admin_html),
             settings.DEFAULT_FROM_EMAIL,
             [hr_addr],
             reply_to=[applicant_email],
         )
-        admin_msg.content_subtype = "html"
+        admin_msg.attach_alternative(admin_html, "text/html")
+        admin_msg.mixed_subtype = 'related'
+        _attach_images_to_email(
+            admin_msg,
+            "https://codigomantra.s3.ap-south-1.amazonaws.com/submission-email-template.png",
+            hr_addr
+        )
         if application.resume:
             try:
                 admin_msg.attach_file(application.resume.path)
@@ -288,14 +500,23 @@ def _career_application_send_emails(application_id):
                 logger.warning("Career: could not attach resume: %s", e)
         admin_msg.send(fail_silently=False)
 
-        send_mail(
-            f"Application received — {job_title}",
-            strip_tags(user_html),
-            settings.DEFAULT_FROM_EMAIL,
-            [applicant_email],
-            html_message=user_html,
-            fail_silently=False,
-        )
+        try:
+            client_msg = EmailMultiAlternatives(
+                f"Application received — {job_title}",
+                strip_tags(user_html),
+                settings.DEFAULT_FROM_EMAIL,
+                [applicant_email],
+            )
+            client_msg.attach_alternative(user_html, "text/html")
+            client_msg.mixed_subtype = 'related'
+            _attach_images_to_email(
+                client_msg,
+                "https://codigomantra.s3.ap-south-1.amazonaws.com/submission-email-template.png",
+                applicant_email
+            )
+            client_msg.send(fail_silently=False)
+        except Exception as e:
+            logger.warning("Career client email error: %s", e)
     except Application.DoesNotExist:
         logger.warning("Career application: row %s not found", application_id)
     except Exception as e:
@@ -308,18 +529,32 @@ def _newsletter_welcome_email(email_to, base_url):
     """Welcome email after newsletter subscribe — background thread."""
     close_old_connections()
     try:
+        # Get image context (Gmail check)
+        illustration_url = f"{S3_BASE_URL}/newsletter-email-template.png"
+        image_ctx = _get_email_image_context(email_to, illustration_url)
+
         html_message = render_to_string(
             "email-newsletter.html",
-            {"email": email_to, "base_url": base_url},
+            {
+                "email": email_to, 
+                "base_url": base_url,
+                **image_ctx
+            },
         )
-        send_mail(
+        msg = EmailMultiAlternatives(
             "Welcome to Codigo Mantra Newsletter!",
             strip_tags(html_message),
             settings.DEFAULT_FROM_EMAIL,
             [email_to],
-            html_message=html_message,
-            fail_silently=False,
         )
+        msg.attach_alternative(html_message, "text/html")
+        msg.mixed_subtype = 'related'
+        _attach_images_to_email(
+            msg,
+            "https://codigomantra.s3.ap-south-1.amazonaws.com/newsletter-email-template.png",
+            email_to
+        )
+        msg.send(fail_silently=False)
     except Exception as e:
         logger.warning("Newsletter welcome email error for %s: %s", email_to, e)
     finally:
@@ -418,15 +653,6 @@ class ScheduleCallStep2Page(views.View):
                     role="consultant",
                     status="active"
                 )
-
-            # consultant, created = User.objects.get_or_create(
-            # email="abbas.codigo@gmail.com",
-            # defaults={
-            #     "name": "Admin Consultant",
-            #     "role": "consultant",
-            #     "status": "active",
-            # }
-            # )
 
             booking = form.save(commit=False)
             booking.client = client
@@ -527,7 +753,7 @@ class ScheduleCallStep2Page(views.View):
                     return render(request, 'website/schedule_call2.html', {'form': form, 'faqs': FAQ.objects.all()})
 
             # Create meeting link before persisting booking so meet_link is saved with booking.
-            meet_link = generate_google_meet_link(booking=booking, client_email=client_email)
+            meet_link = generate_zoho_meeting_link(booking=booking, client_email=client_email)
             if not meet_link:
                 meet_link = generate_zoom_meet_link(booking=booking, client_email=client_email)
             if not meet_link:

@@ -38,7 +38,7 @@
             </p>
 
             <div class="hero-cta-wrap">
-                <a class="btn-cm-cta btn-pill" href="{% url 'contact' %}">
+                <a class="btn-cm-cta btn-pill" href="{% url 'schedule-call' %}">
                     <span class="label-up">Let’s start a Conversation</span>
                     <span class="label-up">Let’s start a Conversation</span>
                     <!-- <span class="label-up">Book a 15 min call</span>
@@ -158,7 +158,7 @@
             </div>
             <div class="grid-item text-start">
                 <div class="result-card">
-                    <h3>200+</h3>
+                    <h3>100+</h3>
                     <h5>Projects completed</h5>
                     <p>From MVPs to full-scale platforms, we deliver solutions on time and built to scale.</p>
                 </div>
@@ -533,6 +533,17 @@
 
 {% block JavaScript %}
 <script>
+
+    window.addEventListener("pageshow", function (event) {
+        if (event.persisted) {
+            // Page loaded from back/forward cache
+            localStorage.removeItem("schedule_call_date");
+            localStorage.removeItem("schedule_call_display_date");
+            localStorage.removeItem("schedule_call_time");
+            localStorage.removeItem("schedule_call_display_time_range");
+        }
+    });
+
     $(function () {
         $('.marquee-track').slick({
             autoplay: true,

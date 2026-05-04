@@ -34,8 +34,9 @@ class ContactUs(TimeStamp):
 class CompanyContact(TimeStamp):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     email = models.EmailField()
-    phone = models.CharField(max_length=20)
-    address = models.TextField()
+    # phone = models.CharField(max_length=20)
+    address_india = models.TextField()
+    address_australia = models.TextField()
     google_map_url = models.URLField(blank=True, null=True)
 
     def __str__(self):
