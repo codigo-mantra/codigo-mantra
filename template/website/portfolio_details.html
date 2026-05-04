@@ -54,80 +54,8 @@
                             <p class="job-meta-sub">{{ case_study.team|default:"1 Designer + 4 Developers" }}</p>
                         </span>
                     </div>
-                    <!-- {% if case_study.url %}
-                                    <a href="{{ case_study.url }}" target="_blank" class="btn btn-secondary-cm">
-                                        <span class="label-up">Visit website →</span>
-                                        <span class="label-up">Visit website →</span>
-                                    </a>
-                                    {% endif %} -->
                 </div>
             </div>
-            <!-- <div class="col-lg-12">
-                            <div class="project-overview">
-                                {% if case_study.about %}
-                                <div class="project-overview-img">  
-                                    <h2 class="project-overview-heading">About the project</h2>
-                                    <div class="project-overview-desc">
-                                        {{ case_study.about|safe }}
-                                    </div>
-                                </div>
-                                {% endif %}
-
-                                {% if case_study.goal %}
-                                <div class="project-overview-img">  
-                                    <h2 class="project-overview-heading">Goal</h2>
-                                    <div class="project-overview-desc">
-                                        {{ case_study.goal|safe }}
-                                    </div>
-                                </div>
-                                {% endif %}
-
-                                {% if case_study.challenge %}
-                                <div class="project-overview-img">  
-                                    <h2 class="project-overview-heading">Challenge</h2>
-                                    <div class="project-overview-desc">
-                                        {{ case_study.challenge|safe }}
-                                    </div>
-                                </div>
-                                {% endif %}
-
-                                {% if case_study.outcome %}
-                                <div class="project-overview-img">  
-                                    <h2 class="project-overview-heading">Outcome</h2>
-                                    <div class="project-overview-desc">
-                                        {{ case_study.outcome|safe }}
-                                    </div>
-                                </div>
-                                {% endif %}
-
-                                {% if not case_study.about and not case_study.goal and not case_study.challenge and not case_study.outcome %}
-                                <div class="project-overview-img">  
-                                    <h2 class="project-overview-heading">About the project</h2>
-                                    <div class="project-overview-desc">
-                                        {{ case_study.content|safe }}
-                                    </div>
-                                </div>
-                                {% endif %}
-                            </div>   
-                        </div>
-                        
-                    </div>
-                    {% if case_study.images.all %}
-                        <div class="row image-row">
-                            {% for project_image in case_study.images.all|slice:":3" %}
-                            
-                            <div class="{% if forloop.last %}col-12{% else %}col-lg-6 col-md-6{% endif %} mb-4">
-                                <div class="project-image-section">
-                                    <img src="{{ project_image.image.url }}" 
-                                        alt="{{ case_study.title }} Gallery" 
-                                        class="img-fluid">
-                                </div>
-                            </div>
-
-                            {% endfor %}
-                        </div>
-                    {% endif %}
-                </div> -->
             <div class="col-lg-12">
                 <div class="project-overview">
                     {% if case_study.description %}

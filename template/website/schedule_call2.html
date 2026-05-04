@@ -30,28 +30,6 @@
                     <p class="info-thank">Thank you!</p>
                     <div class="info-meta">
                         <div class="info-meta-item">
-                            <!-- Google Meet icon -->
-                            <!-- <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                fill="none">
-                                <path
-                                    d="M2 18.7188C2 19.4259 2.57772 19.9987 3.28952 19.9987H3.30806C2.58536 19.9987 2 19.4259 2 18.7188Z"
-                                    fill="#FBBC05" />
-                                <path
-                                    d="M13.0827 8.79969V12.1413L17.5879 8.50744V5.27991C17.5879 4.57276 17.0101 4 16.2983 4H6.53801L6.5293 8.79969H13.0827Z"
-                                    fill="#FBBC05" />
-                                <path
-                                    d="M13.0817 15.4842H6.51741L6.50977 19.9991H16.2974C17.0102 19.9991 17.5869 19.4264 17.5869 18.7192V15.8053L13.0817 12.1426V15.4842Z"
-                                    fill="#34A853" />
-                                <path d="M6.53677 4L2 8.79969H6.52913L6.53677 4Z" fill="#EA4335" />
-                                <path
-                                    d="M2 15.4824V18.7174C2 19.4246 2.58536 19.9973 3.30806 19.9973H6.50957L6.51713 15.4824H2Z"
-                                    fill="#1967D2" />
-                                <path d="M6.52913 8.80078H2V15.4851H6.51713L6.52913 8.80078Z" fill="#4285F4" />
-                                <path
-                                    d="M21.5481 17.5809V6.59503C21.294 5.137 19.695 6.80835 19.695 6.80835L17.5879 8.50744V15.8039L20.604 18.256C21.693 18.399 21.5481 17.5809 21.5481 17.5809Z"
-                                    fill="#34A853" />
-                                <path d="M13.082 12.1406L17.5883 15.8043V8.50781L13.082 12.1406Z" fill="#188038" />
-                            </svg> -->
                             <img src="{% static 'images/Zoho-Meeting.svg' %}">
                             Zoho meet
                         </div>
@@ -85,37 +63,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- MIDDLE: Calendar -->
-            <!-- <div class="col-lg-6 col-md-8">
-                    <form id="bookingForm" class="booking-card" method="post" action="{% url 'schedule-call-2' %}">
-                        {% csrf_token %}
-                            <input type="hidden" name="booking_date" id="bookingDateInput">
-                            <input type="hidden" name="start_time" id="startTimeInput">
-                            <div class="form-group form-group-schedule-call">
-                                <label>Name</label>
-                                <input type="text" name="client_name" placeholder="Full name" required>
-                            </div>
-
-                            <div class="form-group form-group-schedule-call">
-                                <label>Email Address</label>
-                                <input type="email" name="client_email" placeholder="Email address" required>
-                            </div>
-
-                            <div class="form-group form-group-schedule-call">
-                                <label>What service do you want?</label>
-                                <input type="text" name="service_requested" placeholder="Mention service here" required>
-                            </div>
-
-                            <div class="form-group form-group-schedule-call">
-                                <label>Message</label>
-                                <textarea name="project_brief" class="text-area-schedule-call" placeholder="Message" required></textarea>
-                            </div>
-                            <div class="privacy-consent">
-                                <p>By proceeding, you agree to our <a href="{% url 'terms-conditions' %}">Terms</a>  and <a href="{% url 'privacy-policy' %}">Privacy Policy</a>.</p>
-                            </div>
-                    </form>
-                  </div> -->
             <div class="col-lg-6 col-md-8">
                 <form id="bookingForm" class="booking-card" method="post" action="{% url 'schedule-call-2' %}"
                     novalidate>
@@ -144,16 +91,6 @@
                         <div class="text-danger">{{ form.client_email.errors }}</div>
                         {% endif %}
                     </div>
-
-                    <!-- SERVICE -->
-                    <!-- <div class="form-group form-group-schedule-call">
-                            <label>What service do you want?<span style="color: #FF0000;">*</span></label>
-                            <input type="text" name="service_requested" placeholder="Mention service here"
-                                   value="{{ form.service_requested.value|default:'' }}">
-                            {% if form.service_requested.errors %}
-                                <div class="text-danger">{{ form.service_requested.errors }}</div>
-                            {% endif %}
-                        </div> -->
 
                     <div class="form-group form-group-schedule-call">
                         <label>Phone number<span style="color: #FF0000;">*</span></label>
@@ -187,13 +124,6 @@
                             to submit the form</p>
                     </div>
 
-                    <!-- <div class="privacy-consent">
-                        <p>By proceeding, you agree to our
-                            <a href="{% url 'terms-conditions' %}">Terms</a> 
-                                and 
-                                <a href="{% url 'privacy-policy' %}">Privacy policy</a>.
-                        </p>
-                    </div> -->
                 </form>
             </div>
         </div><!-- /row -->
