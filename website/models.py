@@ -324,6 +324,15 @@ class FAQ(TimeStamp):
     def __str__(self):
         return self.question
 
+class ScheduleCallFAQ(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    question = models.CharField(max_length=500)
+    answer = models.TextField()
+
+    def __str__(self):
+        return self.question
+
 class PrivacyPolicy(TimeStamp):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.TextField()

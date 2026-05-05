@@ -606,14 +606,14 @@ class TermsConditionsView(views.View):
 class ScheduleCallPage(views.View):
     def get(self, request):
         form = BookingForm()
-        faqs = FAQ.objects.all()
+        faqs = ScheduleCallFAQ.objects.all()
         return render(request, 'website/schedule_call1.html', {'form': form, 'faqs': faqs})
 
 
 class ScheduleCallStep2Page(views.View):
     def get(self, request):
         form = BookingForm()
-        faqs = FAQ.objects.all()
+        faqs = ScheduleCallFAQ.objects.all()
         show_success_modal = request.GET.get('success') == '1'
 
         now_ist = datetime.now(ZoneInfo(ADMIN_BOOKING_TZ))
@@ -673,7 +673,7 @@ class ScheduleCallStep2Page(views.View):
                         status=400,
                     )
                 messages.error(request, "Invalid timezone. Please choose a valid region.")
-                return render(request, 'website/schedule_call2.html', {'form': form, 'faqs': FAQ.objects.all()})
+                return render(request, 'website/schedule_call2.html', {'form': form, 'faqs': ScheduleCallFAQ.objects.all()})
 
             booking.booking_date = dt_ist.date()
             booking.start_time = dt_ist.time()
@@ -686,7 +686,7 @@ class ScheduleCallStep2Page(views.View):
                 if is_ajax:
                     return JsonResponse({'status': 'error', 'message': msg}, status=400)
                 messages.error(request, msg)
-                return render(request, 'website/schedule_call2.html', {'form': form, 'faqs': FAQ.objects.all()})
+                return render(request, 'website/schedule_call2.html', {'form': form, 'faqs': ScheduleCallFAQ.objects.all()})
 
             # ------------------- Check duplicate bookings (IST wall time) -------------------
             if not ignore_conflict:
@@ -750,7 +750,7 @@ class ScheduleCallStep2Page(views.View):
                         }, status=409)
                     ex_d, ex_t = _format_date_time_in_zone(ex_dt_ist, client_timezone)
                     messages.error(request, f"A booking already exists on {ex_d} at {ex_t} (your time).")
-                    return render(request, 'website/schedule_call2.html', {'form': form, 'faqs': FAQ.objects.all()})
+                    return render(request, 'website/schedule_call2.html', {'form': form, 'faqs': ScheduleCallFAQ.objects.all()})
 
             # Create meeting link before persisting booking so meet_link is saved with booking.
             meet_link = generate_zoho_meeting_link(booking=booking, client_email=client_email)
@@ -763,7 +763,7 @@ class ScheduleCallStep2Page(views.View):
                 if is_ajax:
                     return JsonResponse({"status": "error", "message": msg}, status=503)
                 messages.error(request, msg)
-                return render(request, 'website/schedule_call2.html', {'form': form, 'faqs': FAQ.objects.all()})
+                return render(request, 'website/schedule_call2.html', {'form': form, 'faqs': ScheduleCallFAQ.objects.all()})
 
             booking.meet_link = meet_link
 
