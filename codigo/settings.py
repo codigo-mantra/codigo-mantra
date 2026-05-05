@@ -16,15 +16,10 @@ from django.contrib.messages import constants as messages
 
 from dotenv import load_dotenv
 import os
-from decouple import config
 
 load_dotenv()  # loads variables from .env
 
-# --- Google Meet (Calendar API) — optional; see website/google_meet.py ---
-# Booking flow uses Zoom by default. Uncomment import + fallback in website/views.py
-# to use Meet when Zoom fails. Share the calendar with the service account email.
-GOOGLE_SERVICE_ACCOUNT_FILE = os.environ.get("GOOGLE_SERVICE_ACCOUNT_FILE")
-GOOGLE_CALENDAR_ID = os.environ.get("GOOGLE_CALENDAR_ID", "primary")
+
 
 MESSAGE_TAGS = {
         messages.DEBUG: 'alert-secondary',
@@ -96,7 +91,7 @@ JAZZMIN_SETTINGS = {
     "login_logo": "images/codigo-mantra-logo.svg",
 
     "site_logo_classes": "img-circle",
-    "site_icon": "images/favicon.png",
+    "site_icon": "images/fav-icon-logo.png",
 
     "welcome_sign": "Welcome to Codigomantra Admin",
     "copyright": "Codigomantra",
@@ -271,22 +266,21 @@ STATIC_DIR,
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 
-#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-#EMAIL_HOST = 'smtp.gmail.org'
-#EMAIL_PORT = 587
-#EMAIL_HOST_USER = 'er.rkkansal@gmail.com'
-#EMAIL_HOST_PASSWORD = ''
-#EMAIL_USE_TLS = True
 
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-DEFAULT_FROM_EMAIL = "Codigo Mantra <abbas.codigo@gmail.com>"
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = "abbas.codigo@gmail.com"
-EMAIL_HOST_PASSWORD = "mond zenp tfjj uoxy"
+EMAIL_HOST = os.getenv('EMAIL_HOST')
+EMAIL_PORT = int(os.getenv('EMAIL_PORT'))
+EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS') == 'True'
+
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+HR_EMAIL_ADDRESS = os.getenv('HR_EMAIL_ADDRESS')
+
+
 
 # Comma-separated extra admin addresses for booking notifications (optional).
 BOOKING_ADMIN_EMAILS = [
@@ -302,6 +296,9 @@ BOOKING_SINGLE_ADMIN_INBOX = os.environ.get("BOOKING_SINGLE_ADMIN_INBOX", "true"
     "true",
     "yes",
 )
+
+SLACK_BOT_TOKEN = os.getenv("SLACK_BOT_TOKEN")
+SLACK_CHANNEL_ID = os.getenv("SLACK_CHANNEL_ID")
 
 RECAPTCHA_PUBLIC_KEY = "6LfhyUUqAAAAALWtHDmDjfALmGvNkS__D9JH26Vz"
 RECAPTCHA_PRIVATE_KEY = "6LfhyUUqAAAAAEUMGWOH46qR3OIbyCm79ugcJET4"
@@ -335,60 +332,16 @@ LOGGING = {
 }
 
 
-# GOOGLE_AUTH_INFO = {
-#     "token": os.getenv("G_TOKEN"),
-#     "refresh_token": os.getenv("G_REFRESH_TOKEN"),
-#     "client_id": os.getenv("G_CLIENT_ID"),
-#     "client_secret": os.getenv("G_CLIENT_SECRET"),
-#     "token_uri": os.getenv("G_TOKEN_URI", "https://googleapis.com"),
-# }
+# ALLOWED_HOSTS = [
+#     "127.0.0.1",
+#     "localhost",
+#     ".ngrok-free.dev",   
+# ]
 
-# GOOGLE_AUTH_INFO = {
-#     "token": config("G_TOKEN"),
-#     "refresh_token": config("G_REFRESH_TOKEN"),
-#     "client_id": config("G_CLIENT_ID"),
-#     "client_secret": config("G_CLIENT_SECRET"),
-#     "token_uri": config("G_TOKEN_URI", default="https://oauth2.googleapis.com/token"),
-# }
+# CSRF_TRUSTED_ORIGINS = [
+#     "https://*.ngrok-free.dev",  
+# ]
 
-
-ALLOWED_HOSTS = [
-    "127.0.0.1",
-    "localhost",
-    ".ngrok-free.dev",   # ✅ correct wildcard for your ngrok URL
-]
-
-CSRF_TRUSTED_ORIGINS = [
-    "https://*.ngrok-free.dev",  # ✅ correct
-]
-
-# CKEDITOR_CONFIGS = {
-#     'default': {
-#         'toolbar': 'Custom',
-#         'height': 400,
-#         'width': 'auto',
-
-#         'toolbar_Custom': [
-#             ['Bold', 'Italic', 'Underline'],
-#             ['NumberedList', 'BulletedList'],
-#             ['TextColor', 'BGColor'],
-#             ['Link', 'Unlink'],
-#             ['Format'],
-#             ['Undo', 'Redo'],
-#             ['RemoveFormat'],
-#             ['Source']
-#         ],
-
-#         'format_tags': 'p;h3;h4',
-#         'line_height': '1;1.2;1.5;2;2.5;3',
-
-#         'extraPlugins': ','.join([
-#             'colorbutton',
-#             'justify',
-#             'liststyle',
-#         ])
-#     }
-# }
 
 KEDITOR_CONFIGS = {
     'default': {
@@ -440,6 +393,13 @@ KEDITOR_CONFIGS = {
                 'li { margin-bottom: 3px; }'
             )
         ],
+    }
+}
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'allowedContent': True,
+        'extraAllowedContent': '*(*); *{*}; *[*]',
     }
 }
 
