@@ -39,10 +39,12 @@
             <tr>
               <!-- Left Leaf -->
               <td style="vertical-align:bottom;padding-bottom:0;">
-                <img
-                  src="{% if use_external_images %}{{ image_urls.illustration }}{% else %}cid:illustration{% endif %}"
-                  alt="Envelope" style="display: block; margin: 0 auto; width: 200px; height: 200px;" width="200"
-                  height="200">
+                <a href="#" style="display:inline-block; cursor: pointer;">
+                  <img
+                    src="{% if use_external_images %}{{ image_urls.illustration }}{% else %}cid:illustration{% endif %}"
+                    alt="Envelope" style="display: block; margin: 0 auto; width: 200px; height: 200px;" width="200"
+                    height="200">
+                </a>
               </td>
             </tr>
           </table>
