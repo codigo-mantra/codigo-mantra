@@ -43,7 +43,7 @@ sys.path.insert(0, os.path.join(BASE_DIRR, 'apps'))
 # SECRET_KEY = '%a4-))8=7y0*z=de#zg+4vft8q9p9q27!gx9vteo6jmr#)k7y7'
 SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 
 ALLOWED_HOSTS = ['*']
@@ -203,14 +203,21 @@ SIMPLE_JWT = {
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': os.getenv('DB_NAME'),
+#         'USER': os.getenv('DB_USER'),
+#         'PASSWORD': os.getenv('DB_PASSWORD'),
+#         'HOST': os.getenv('DB_HOST', 'localhost'),
+#         'PORT': os.getenv('DB_PORT', '3306'),
+#     }
+# }
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.getenv('DB_NAME'),
-        'USER': os.getenv('DB_USER'),
-        'PASSWORD': os.getenv('DB_PASSWORD'),
-        'HOST': os.getenv('DB_HOST', 'localhost'),
-        'PORT': os.getenv('DB_PORT', '3306'),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
 
