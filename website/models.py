@@ -320,6 +320,10 @@ class FAQ(TimeStamp):
 
     question = models.CharField(max_length=500)
     answer = models.TextField()
+    display_order = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ['display_order', 'created_at']
 
     def __str__(self):
         return self.question
@@ -329,6 +333,10 @@ class ScheduleCallFAQ(TimeStamp):
 
     question = models.CharField(max_length=500)
     answer = models.TextField()
+    display_order = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ['display_order', 'created_at']
 
     def __str__(self):
         return self.question
