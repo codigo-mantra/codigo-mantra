@@ -2,6 +2,7 @@
     .hero-title {
         font-size: clamp(32px, 32px, 56px);
         font-weight: 700;
+        max-width: 100%;
     }
 
     .marquee-track {
@@ -52,7 +53,7 @@
     }
 
     .card-br {
-        top: 60%;
+        top: 66%;
         right: -10%;
         /* transform: rotate(-4deg); */
         animation-delay: 4s;
@@ -96,10 +97,10 @@
         font-size: 12px;
     }
 
-    .service-icon-box {
+    /* .service-icon-box {
         width: 30px;
         height: 30px;
-    }
+    } */
 
     .portfolio-section {
         padding: 45px 0;
@@ -418,7 +419,7 @@
 
     .job-page {
         margin: 24px 0 70px;
-        padding: 0px 20px;
+        padding: 0px 10px;
     }
 
     .job-location {
@@ -739,9 +740,9 @@
     }
 
     .navbar-collapse {
-        max-height: 80vh;
-        height: 70vh;
-        overflow-y: scroll;
+       max-height: 80vh; 
+        height: 70vh; 
+        overflow-y: scroll !important;
         display: flex;
         align-content: space-between;
         flex-direction: column;
@@ -811,7 +812,7 @@
         width: 495px;
         height: 596px;
         position: absolute;
-        left: -18%;
+        left: -11%;
         top: -47%;
     }
 
@@ -943,10 +944,10 @@
         gap: 12px !important;
     }
 
-    .service-icon-box img {
+    /* .service-icon-box img {
         width: 20px;
         height: 20px;
-    }
+    } */
 
     .cm-footer::before {
         display: none;
@@ -965,8 +966,38 @@
         max-height: 357px;
         overflow-y: scroll;
     }
-}
+    .hero-center img {
+        width: 100%;
+    }
+    .newsletter-title {
+        font-size: 18px;
+    }
+    .newsletter-desc {
+        font-size: 12px;
+    }
+    nav.navbar{
+        padding-top: 0px !important;
+    }
+    .cm-brand {
+        font-size: 12px;
+    }
 
+    /* Prevent iOS Safari auto-zoom on focused form fields */
+    input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+    select,
+    textarea,
+    .footer-input,
+    .input-glass,
+    .form-group input,
+    .form-group textarea,
+    .timezone-select,
+    textarea.text-area-schedule-call {
+        font-size: 16px !important;
+    }
+    .hero-left {
+        padding-right: 0px !important;
+    }
+}
 @media (max-width: 450px) {
     .about-hero {
         background-image: url('../images/about/for-mobile-bg-cm-about.svg');
@@ -976,4 +1007,11 @@
     .btn-mobile-cm {
         width: 100%;
     }
+    .modal {
+        top: 10% !important;
+    }
+    .modal-dialog {
+        width: 100% !important;
+    }
+
 }

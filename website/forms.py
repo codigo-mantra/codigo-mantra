@@ -10,84 +10,6 @@ from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 
 
-# class ContactUsForm(forms.Form):
-#     # name = forms.CharField(max_length=150, required=True, min_length=4)
-#     first_name = forms.CharField(max_length=100, required=True, min_length=2)
-#     last_name = forms.CharField(max_length=100, required=True, min_length=2)
-#     email = forms.EmailField( required=True)
-#     contact = forms.CharField( max_length=15, required=True, min_length=10)
-#     subject = forms.CharField( max_length=500, required=True, min_length=8)
-#     message = forms.CharField(widget=forms.Textarea(attrs={'name':'body', 'rows':3, 'cols':5}))
-#     # captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox) 
-
-#     # def clean_captcha(self):
-#     #     captcha = self.cleaned_data.get('captcha')
-#     #     if not captcha:
-#     #         self.add_error('captcha','Captcha is required')
-#     #     return captcha
-
-
-# class BookingForm(forms.ModelForm):
-
-#     client_name = forms.CharField(
-#         max_length=255,
-#         label="Full name",
-#         error_messages={"required": "Full name is required."}
-#     )
-
-#     client_email = forms.EmailField(
-#         label="Email address",
-#         error_messages={
-#             "required": "Email address is required.",
-#             "invalid": "Please enter a valid email address.",
-#         },
-#     )
-
-#     class Meta:
-#         model = Booking
-#         fields = ['booking_date', 'start_time', 'service_requested', 'project_brief']
-#         widgets = {
-#             'booking_date': forms.DateInput(attrs={'type': 'date'}),
-#             'start_time': forms.TimeInput(attrs={'type': 'time'}),
-#             'service_requested': forms.TextInput(attrs={'placeholder': 'Mention service here'}),
-#             'project_brief': forms.Textarea(
-#                 attrs={'placeholder': 'Please describe your project', 'style': 'resize: none;'}
-#             ),
-#         }
-#         error_messages = {
-#             'service_requested': {
-#                 'required': 'Please mention the service you want.'
-#             },
-#             'project_brief': {
-#                 'required': 'Please provide a message.'
-#             }
-#         }
-
-#     # -------------------------------
-#     # CUSTOM VALIDATION METHODS
-#     # -------------------------------
-
-#     def clean_client_name(self):
-#         name = self.cleaned_data.get('client_name')
-
-#         if not re.match(r'^[A-Za-z ]+$', name):
-#             raise forms.ValidationError("Name must contain letters only.")
-
-#         return name
-
-#     def clean_service_requested(self):
-#         service = self.cleaned_data.get('service_requested')
-#         if len(service) < 3:
-#             raise forms.ValidationError("Service name is too short.")
-#         return service
-
-#     def clean_project_brief(self):
-#         message = self.cleaned_data.get('project_brief')
-#         if len(message.strip()) < 5:
-#             raise forms.ValidationError("Message is too short.")
-#         return message
-
-
 class BookingForm(forms.ModelForm):
 
     client_name = forms.CharField(
@@ -177,6 +99,10 @@ class BookingForm(forms.ModelForm):
         return message
 
 class ContactUsForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['last_name'].required = False
+
 
     class Meta:
         model = ContactUs
@@ -212,7 +138,9 @@ class ContactUsForm(forms.ModelForm):
         return first_name
 
     def clean_last_name(self):
-        last_name = self.cleaned_data.get('last_name')
+        last_name = (self.cleaned_data.get('last_name') or '').strip()
+        if not last_name:
+            return ''
         if not re.match(r'^[A-Za-z ]+$', last_name):
             raise forms.ValidationError("Please enter a valid last name.")
         return last_name
@@ -259,9 +187,9 @@ class NewsletterForm(forms.ModelForm):
 class CareerApplicationForm(forms.ModelForm):
     last_name = forms.CharField(
         max_length=100,
-        required=True,
-        widget=forms.TextInput(attrs={'placeholder': 'Last name', 'required': 'required'}),
-        error_messages={'required': 'This field is required.'}
+        required=False,
+        widget=forms.TextInput(attrs={'placeholder': 'Last name'}),
+        # error_messages={'required': 'This field is required.'}
     )
 
     class Meta:
@@ -289,7 +217,9 @@ class CareerApplicationForm(forms.ModelForm):
 
     # LAST NAME VALIDATION
     def clean_last_name(self):
-        last_name = self.cleaned_data.get('last_name')
+        last_name = (self.cleaned_data.get('last_name') or '').strip()
+        if not last_name:
+            return ''
         if not re.match(r'^[A-Za-z ]+$', last_name):
             raise forms.ValidationError("Please enter a valid last name.")
         return last_name
