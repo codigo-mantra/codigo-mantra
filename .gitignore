@@ -16,6 +16,7 @@ db.sqlite3
 env/
 venv/
 ENV/
+.vscode/
 
 # Visual Studio Code #
 .history
