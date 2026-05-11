@@ -1367,9 +1367,16 @@ body {
     margin-bottom: 10px !important;
 }
 
-.service-icon-box img {
+.service-icon-box img,
+.service-icon-box svg {
     width: 33px;
     height: 33px;
+    display: block;
+    object-fit: contain;
+    transform: translate3d(0, 0, 0);
+    -webkit-transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
 }
 
 .section-subtext {
