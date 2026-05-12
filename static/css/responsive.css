@@ -1013,5 +1013,17 @@
     .modal-dialog {
         width: 100% !important;
     }
+    button.btn.btn-sm.btn-cm-cta.btn-pill.custom-footer-btn {
+        position: relative;
+        right: 0;
+    }
+    .input-group-custom {
+        flex-direction: column;
+        gap: 10px;
+
+    }
+    .input-group-custom .form-control {
+        width: 100%;
+    }
 
 }
