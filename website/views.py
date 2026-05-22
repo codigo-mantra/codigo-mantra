@@ -1124,3 +1124,11 @@ def newsletter_subscribe(request):
             messages.error(request, "Invalid email.")
 
     return redirect(request.META.get("HTTP_REFERER", "/"))
+
+class ServiceDetailsView(views.View):
+    def get(self,request):
+        return render(request, 'website/service-details.html')        
+
+class IndustryDetailsView(views.View):
+    def get(self,request):
+        return render(request, 'website/industry-detail.html')        

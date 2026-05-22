@@ -21,6 +21,8 @@ urlpatterns = [
     
     path('privacy-policy/', PrivacyPolicyView.as_view(), name='privacy-policy'),
     path('terms-and-conditions/', TermsConditionsView.as_view(), name='terms-conditions'),
+    path('service-details/', ServiceDetailsView.as_view(), name='service-details'),
+    path('industry-detail/',IndustryDetailsView.as_view(), name='industry-details'),
 
     # path("zoho/callback/", zoho_callback),
 

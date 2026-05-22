@@ -1913,3 +1913,8 @@ a.btn-close.modal-close-btn {
 .cm-ul {
   margin-top: 16px !important;
 }
+::selection {
+  background-color: #F05D35; /* Highlights text with Tomato red */
+  color: white;   
+  opacity: 1;           /* Changes selected text to white */
+}

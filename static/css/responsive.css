@@ -997,6 +997,38 @@
     .hero-left {
         padding-right: 0px !important;
     }
+
+    /* new version   */
+    section.sd-capabilities {
+    padding: 20px;
+}
+.container.service-hero-container {
+    padding: 20px;
+    border-radius: 10px;
+}
+.sd-value-grid {
+    margin: 10px;
+}
+.Background-fixed-cm-col .col-first {
+    min-height: auto !important;
+    
+}
+section.how-we-work-sec {
+    margin: 10px;
+    padding: 20px;
+    margin-bottom: 70px;
+}
+.info-company-cm {
+    margin-top: 20px;
+}
+.sideimg-col img {
+    width: 100%;
+}
+.Background-fixed-cm-col {
+    gap: 40px;
+    padding: 10px;
+}
+    
 }
 @media (max-width: 450px) {
     .about-hero {
