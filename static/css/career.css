@@ -527,11 +527,13 @@ section.no-openings {
     background: #FFF;
     width: 100%;
 }
+
 .hero-right-industry {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
 }
+
 .hero-left-industry {
     background-image: url(../images/industry-bg.png);
     background-repeat: no-repeat;
@@ -541,6 +543,7 @@ section.no-openings {
     border-radius: 20px;
     padding: 20px 0 45px;
 }
+
 .challenges-right-img img {
     width: 100%;
     border-radius: 20px;
@@ -556,12 +559,14 @@ section.no-openings {
     border-radius: 50%;
     margin-right: 6px;
 }
+
 /* .ind-section-padding {
     padding: 80px 0;
 } */
-.industry-challenges{
+.industry-challenges {
     margin: 103px 0px 130px;
 }
+
 /* Impact Grid styling */
 /* .ind-impact-container {
     position: relative;
@@ -574,32 +579,39 @@ section.no-openings {
     margin-bottom: 22px;
     max-width: 320px;
 }
-.impact-card:nth-child(odd){
+
+.impact-card:nth-child(odd) {
     margin-bottom: 50px;
 }
-.impact-card:nth-child(even){
+
+.impact-card:nth-child(even) {
     float: right;
 }
+
 .impact-card h4 {
     color: #F6F6F6;
     font-family: Poppins;
     font-size: 20px;
     font-style: normal;
     font-weight: 600;
-    line-height: 150%; /* 30px */
+    line-height: 150%;
+    /* 30px */
     letter-spacing: 0.4px;
     margin-bottom: 14px;
 }
+
 .impact-card p {
     color: #F6F6F6;
     font-family: Poppins;
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
-    line-height: 150%; /* 24px */
+    line-height: 150%;
+    /* 24px */
     opacity: 0.7;
     margin: 0;
 }
+
 .para-text-regular {
     color: var(--white, #F6F6F6);
     text-align: center;
@@ -615,12 +627,13 @@ section.no-openings {
 /* Crosshair lines styling */
 .impact-card-h-line {
     position: absolute;
-    left: 0; 
+    left: 0;
     right: -20px;
     bottom: 0;
     height: 2px;
-   background: linear-gradient(90deg, #171717 0%, #D2522F 84.62%, #FFF 91.73%, #F45D34 100%);
+    background: linear-gradient(90deg, #171717 0%, #D2522F 84.62%, #FFF 91.73%, #F45D34 100%);
 }
+
 .impact-card-v-line {
     position: absolute;
     top: -20px;
@@ -629,6 +642,7 @@ section.no-openings {
     width: 2px;
     background: linear-gradient(237deg, #171717 0%, #D2522F 84.62%, #FFF 91.73%, #F45D34 100%);
 }
+
 .impact-card-dot {
     position: absolute;
     bottom: -2px;
@@ -649,6 +663,7 @@ section.no-openings {
     opacity: 0.5;
     filter: blur(1px);
 }
+
 /* .dust-1 { width: 14px; height: 14px; opacity: 0.4; }
 .dust-2 { width: 8px; height: 8px; }
 .dust-3 { width: 5px; height: 5px; opacity: 0.8; } */
@@ -668,6 +683,7 @@ section.no-openings {
     background-position: center;
     background-repeat: no-repeat;
 }
+
 .offset-card-col {
     gap: 24px;
     /* max-height: 600px; */
@@ -682,11 +698,17 @@ section.no-openings {
     scroll-behavior: smooth;
     overscroll-behavior-y: auto;
 }
+
 .ind-impact-container {
     margin-top: 20px;
 }
+
 @media (max-width: 768px) {
-    .node-1, .node-2, .node-3, .node-4 {
+
+    .node-1,
+    .node-2,
+    .node-3,
+    .node-4 {
         margin-top: 20px;
         max-width: 100%;
         margin-left: 0;
@@ -701,6 +723,7 @@ section.no-openings {
     padding: 50px 0;
     min-height: 490px;
 }
+
 .ind-watermark {
     position: absolute;
     bottom: -2%;
@@ -709,6 +732,7 @@ section.no-openings {
     pointer-events: none;
     line-height: 0.7;
 }
+
 .ind-watermark svg {
     width: 100%;
 }
@@ -727,6 +751,7 @@ section.no-openings {
     flex: 0 0 152px;
     scroll-snap-align: end;
 }
+
 /* .ind-provide-card::before {
     content: "";
     position: absolute;
@@ -745,13 +770,15 @@ section.no-openings {
     letter-spacing: 0.4px;
     margin-bottom: 14px;
 }
+
 .ind-provide-card p {
     color: #F6F6F6;
     font-family: Poppins;
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
-    line-height: 150%; /* 24px */
+    line-height: 150%;
+    /* 24px */
     margin-bottom: 0;
     opacity: 0.7;
 }
@@ -768,9 +795,11 @@ section.no-openings {
     align-items: flex-start;
     width: 100%;
 }
+
 .ind-why-card.gradient-bg {
-   background: linear-gradient(119deg, rgba(0, 0, 0, 0.00) 23.34%, rgba(255, 60, 0, 0.30) 96.36%), rgba(39, 40, 41, 0.70);
+    background: linear-gradient(119deg, rgba(0, 0, 0, 0.00) 23.34%, rgba(255, 60, 0, 0.30) 96.36%), rgba(39, 40, 41, 0.70);
 }
+
 .ind-number-badge {
     width: 50.007px;
     height: 50px;
@@ -781,13 +810,15 @@ section.no-openings {
     font-size: 32px;
     font-style: normal;
     font-weight: 600;
-    line-height: 150%; /* 48px */
+    line-height: 150%;
+    /* 48px */
     letter-spacing: 0.64px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
 }
+
 h5.why-card-text {
     color: var(--white, #F6F6F6);
     font-family: "Bricolage Grotesque";
@@ -798,12 +829,15 @@ h5.why-card-text {
     letter-spacing: 0.64px;
     margin: 0;
 }
+
 section.ind-why-choose-us {
     padding-top: 130px;
 }
-.ind-section-padding-new{
+
+.ind-section-padding-new {
     /* height: 840px; */
 }
+
 section.services-section.services-section-career {
     padding-bottom: 120px;
 }
