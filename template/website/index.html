@@ -49,16 +49,16 @@
         <div class="marquee-track" dir="ltr">
             <!-- Set 1 -->
             {%for industry in industries%}
-            <span class="marquee-item">
+            <a href="{% url 'industry_detail' slug=industry.slug %}" class="marquee-item text-decoration-none">
                 {{industry.svg_icon|safe}}
                 {{ industry.name }}
-            </span>
+            </a>
             {%endfor%}
             {%for industry in industries%}
-            <span class="marquee-item">
+            <a href="{% url 'industry_detail' slug=industry.slug %}" class="marquee-item text-decoration-none">
                 {{industry.svg_icon|safe}}
                 {{ industry.name }}
-            </span>
+            </a>
             {%endfor%}
         </div>
     </div>
@@ -87,7 +87,7 @@
             Everything your product needs to<br> go from idea to market
         </h2>
 
-        <div class="row g-4 text-start services-row-new" style="margin-bottom: 30px;">
+        <!-- <div class="row g-4 text-start services-row-new" style="margin-bottom: 30px;">
             {% for service in services %}
             <div class="col-lg-3 mb-1">
                 <div class="service-card-wrapper h-100">
@@ -95,9 +95,7 @@
                         <div class="service-top">
                             <div class="service-icon-box">
                                 <!-- <img loading="lazy" src="{{ service.icon }}" alt=""> -->
-                                <img loading="lazy" src="{{ service.icon.url }}" alt="{{ service.name }} Icon"
-                                    class="w-12 h-12 service-icon-img">
-                                <i class="{{ service.icon }} text-orange"></i>
+        <!-- <i class="{{ service.icon }} text-orange"></i>
                             </div>
 
                             <h5 class="service-title">{{ service.name }}</h5>
@@ -116,6 +114,54 @@
                 </div>
             </div>
             {% endfor %}
+        </div> -->
+
+        <div class="row g-4 text-start services-row-new" style="margin-bottom: 30px;">
+
+            {% for service in services %}
+
+            <div class="col-lg-3 mb-1">
+
+                <a href="{% url 'service-details-slug' slug=service.slug %}" class="text-decoration-none text-reset">
+
+                    <div class="service-card-wrapper h-100">
+
+                        <div class="service-card-new service-card-new-mobile">
+
+                            <div class="service-top">
+
+                                <div class="service-icon-box">
+                                    <i class="{{ service.icon }} text-orange"></i>
+                                </div>
+
+                                <h5 class="service-title">
+                                    {{ service.name }}
+                                </h5>
+
+                                <p class="service-desc">
+                                    {{ service.description }}
+                                </p>
+
+                            </div>
+
+                            <div class="service-mockup">
+
+                                {% if service.cover_image %}
+                                <img loading="lazy" src="{{ service.cover_image.url }}" alt="{{ service.name }}">
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+            {% endfor %}
+
         </div>
         <div class="text-center mt-5">
             <a href="{% url 'services' %}" class="btn btn-secondary-cm">

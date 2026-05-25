@@ -145,6 +145,7 @@ class CaseStudy(TimeStamp):
     url = models.URLField(blank=True, null=True)
     cover_image = models.ImageField(upload_to="case_studies/", blank=True, null=True)
     # product_image = models.ImageField(upload_to="case_studies/", blank=True, null=True)
+    display_order = models.PositiveIntegerField(default=0)
 
     services = models.ManyToManyField(Service, through="CaseStudyService")
     industries = models.ManyToManyField(Industry, through="CaseStudyIndustry")
@@ -403,3 +404,215 @@ class Booking(TimeStamp):
 
     def __str__(self):
         return f"Booking - {self.client.name} with {self.consultant.name}"
+
+
+# ===========================
+# DYNAMIC SERVICE DETAILS MODELS
+# ===========================
+
+class ServiceDetail(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    service_page = models.OneToOneField(Service_page, on_delete=models.CASCADE, related_name="detail")
+    
+    # Hero Section
+    hero_title = RichTextField(blank=True)
+    hero_description = RichTextField(blank=True)
+    hero_image = models.ImageField(upload_to="services/hero/", blank=True, null=True)
+    # hero_button_text = models.CharField(max_length=100, default="Book a Strategy Call")
+    # hero_button_url = models.CharField(max_length=255, default="schedule-call")
+
+    # Problems Section
+    problems_title = models.CharField(max_length=255, default="Where things break down")
+    problems_description = RichTextField(blank=True)
+    problems_list_title = models.CharField(max_length=255, default="Common challenges we see:")
+
+    # Solution Section
+    solution_title = models.CharField(max_length=255, default="How we solve this")
+    solution_description = RichTextField(blank=True)
+    solution_list_title = models.CharField(max_length=255, default="What we typically implement:")
+
+    # Capabilities Section
+    capabilities_title = models.CharField(max_length=255, default="Key capabilities")
+    capabilities_image = models.ImageField(upload_to="services/capabilities/", blank=True, null=True)
+
+    # Why Choose Us Section
+    why_choose_title = models.CharField(max_length=255, default="Why choose us")
+    why_choose_description = RichTextField(blank=True)
+
+    # CTA Section
+    cta_title = models.CharField(max_length=255, default="Let’s build something great together")
+    cta_subtitle = models.TextField(blank=True)
+    # cta_button_text = models.CharField(max_length=100, default="Book a Strategy Call")
+    # cta_button_url = models.CharField(max_length=255, default="contact")
+
+    def __str__(self):
+        return f"Details for {self.service_page.name}"
+
+class ServiceProblemItem(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    service_detail = models.ForeignKey(ServiceDetail, on_delete=models.CASCADE, related_name="problem_list_items")
+    content = models.CharField(max_length=255)
+    display_order = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ['display_order']
+
+class ServiceProblemCard(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    service_detail = models.ForeignKey(ServiceDetail, on_delete=models.CASCADE, related_name="problem_cards")
+    title = models.CharField(max_length=255)
+    description = models.TextField(blank=True)
+    image = models.ImageField(upload_to="services/problems/")
+    display_order = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ['display_order']
+
+class ServiceSolutionItem(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    service_detail = models.ForeignKey(ServiceDetail, on_delete=models.CASCADE, related_name="solution_items")
+    content = models.CharField(max_length=255)
+    display_order = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ['display_order']
+
+class ServiceCapabilityItem(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    service_detail = models.ForeignKey(ServiceDetail, on_delete=models.CASCADE, related_name="capability_items")
+    content = models.CharField(max_length=255)
+    display_order = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ['display_order']
+
+class ServiceWhyChooseItem(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    service_detail = models.ForeignKey(ServiceDetail, on_delete=models.CASCADE, related_name="why_choose_items")
+    title = models.CharField(max_length=255)
+    description = models.TextField(blank=True)
+    icon = models.CharField(max_length=100, blank=True, help_text="SVG or icon class")
+    display_order = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ['display_order']
+
+
+class IndustryDetail(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    industry = models.OneToOneField(
+        Industry,
+        on_delete=models.CASCADE,
+        related_name="detail"
+    )
+
+    # Hero Section
+    hero_title = RichTextField(blank=True)
+    hero_description = RichTextField(blank=True)
+    hero_image = models.ImageField(upload_to="industries/hero/", blank=True, null=True)
+
+    # Challenges Section
+    challenges_title = models.CharField(max_length=255, default="Operational Challenges")
+    challenges_description = RichTextField(blank=True)
+    challenges_image = models.ImageField(upload_to="industries/challenges/", blank=True, null=True)
+    challenges_image_caption = models.CharField(max_length=255, blank=True)
+
+    # Impact Section
+    impact_title = models.CharField(max_length=255, default="Operational Impact")
+
+    # Solutions Section
+    solutions_title = models.CharField(max_length=255, default="Solutions Built Around Real Workflows")
+    solutions_description = RichTextField(blank=True)
+
+    # What We Provide Section
+    provide_title = models.CharField(max_length=255, default="What We Provide")
+    provide_description = RichTextField(blank=True)
+
+    # Why Choose Us Section
+    why_choose_title = models.CharField(max_length=255, default="Why Choose Us")
+    why_choose_description = RichTextField(blank=True)
+
+    # CTA Section
+    cta_title = models.CharField(max_length=255, blank=True)
+    cta_subtitle = RichTextField(blank=True)
+    # cta_image = models.ImageField(upload_to="industries/cta/", blank=True, null=True)
+
+    # Badge Texts
+    challenges_badge_text = models.CharField(max_length=100, default="Challenges")
+    impact_badge_text = models.CharField(max_length=100, default="Impact")
+    solutions_badge_text = models.CharField(max_length=100, default="Solutions")
+    provide_badge_text = models.CharField(max_length=100, default="What We Provide")
+    why_choose_badge_text = models.CharField(max_length=100, default="Why choose us")
+
+    def __str__(self):
+        return f"Details for {self.industry.name}"
+
+
+class IndustryImpactItem(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    industry_detail = models.ForeignKey(
+        IndustryDetail,
+        on_delete=models.CASCADE,
+        related_name="impact_items"
+    )
+    title = models.CharField(max_length=255)
+    description = RichTextField(blank=True)
+    display_order = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ['display_order']
+
+    def __str__(self):
+        return self.title
+
+
+class IndustrySolutionItem(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    industry_detail = models.ForeignKey(
+        IndustryDetail,
+        on_delete=models.CASCADE,
+        related_name="solution_items"
+    )
+    content = RichTextField(blank=True)
+    display_order = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ['display_order']
+
+    def __str__(self):
+        return str(self.content)[:50]
+
+
+class IndustryProvideItem(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    industry_detail = models.ForeignKey(
+        IndustryDetail,
+        on_delete=models.CASCADE,
+        related_name="provide_items"
+    )
+    title = models.CharField(max_length=255)
+    description = RichTextField(blank=True)
+    display_order = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ['display_order']
+
+    def __str__(self):
+        return self.title
+
+
+class IndustryWhyChooseItem(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    industry_detail = models.ForeignKey(
+        IndustryDetail,
+        on_delete=models.CASCADE,
+        related_name="why_choose_items"
+    )
+    title = models.CharField(max_length=255)
+    display_order = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ['display_order']
+
+    def __str__(self):
+        return self.title

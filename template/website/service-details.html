@@ -8,7 +8,7 @@
     <!-- ══════════════════════════════════
          HERO SECTION
     ══════════════════════════════════ -->
-    <section class="hero service-hero">
+    <!-- <section class="hero service-hero">
     <div class="container service-hero-container">
         <div class="row align-items-center hero-row">
             <div class="col-lg-7 hero-left">
@@ -26,12 +26,44 @@
             </div>
         </div>
     </div>
-</section>
+</section> -->
 
+    <section class="hero service-hero">
+        <div class="container service-hero-container " {% if detail and detail.hero_image %}
+            style="background: linear-gradient(270deg, rgba(0, 0, 0, 0.02) -20.52%, rgba(23, 23, 23, 0.90) 100%), url('{{ detail.hero_image.url }}') lightgray 0.227px 0.386px / 108.807% 99.927% no-repeat;"
+            {% endif %}>
+
+            <div class="row align-items-center hero-row">
+                <div class="col-lg-7 hero-left">
+                    <h1 class="hero-title service-hero-title" style="margin-left: 0 !important;">
+                        {% if detail and detail.hero_title %}
+                        {{ detail.hero_title|safe }}
+                        {% else %}
+                        <span class="text-orange">AI & Automation</span> built for <span class="text-orange">real</span>
+                        business operations.
+                        {% endif %}
+                    </h1>
+                    <p class="hero-sub service-hero-sub">
+                        {{ detail.hero_description|safe}}
+                    </p>
+                    <div class="sd-button-col">
+                        <!-- <a class="btn-cm-cta btn-pill"
+                            href="{% if detail and detail.hero_button_url %}{% url detail.hero_button_url %}{% else %}{% url 'schedule-call' %}{% endif %}"> -->
+                        <a class="btn-cm-cta btn-pill" href="{% url 'schedule-call' %}">
+                            <!-- <span class="label-up">{{ detail.hero_button_text|default:"Book a Strategy Call" }}</span> -->
+                            <!-- <span class="label-up">{{ detail.hero_button_text|default:"Book a Strategy Call" }}</span> -->
+                            <span class="label-up">Book a Strategy Call</span>
+                            <span class="label-up">Book a Strategy Call</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
     <!-- ══════════════════════════════════
          PROBLEM SECTION
     ══════════════════════════════════ -->
-    <section class="sd-problem sd-section-padding">
+    <!-- <section class="sd-problem sd-section-padding">
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
@@ -47,18 +79,34 @@
                         PROBLEMS
                     </div>
                     <div class="heading-text-container heading-container-services-details">
-                        <h2 class="sub-heading-new">Where things break down</h2>
+                        <h2 class="sub-heading-new">{% if detail.problems_title %}{{ detail.problems_title }}{% else
+                            %}Where things break down{% endif %}</h2>
                         <p class="sub-pera-new">
-                        As businesses grow, operations become harder to manage. Teams start relying on manual coordination, multiple tools, and constant follow-ups to keep things moving. This leads to delays, inefficiencies, and limited visibility into what’s actually happening.
-                    </p>
+                            {% if detail.problems_description %}
+                            {{ detail.problems_description|safe }}
+                            {% else %}
+                            As businesses grow, operations become harder to manage. Teams start relying on manual
+                            coordination, multiple tools, and constant follow-ups to keep things moving. This leads to
+                            delays, inefficiencies, and limited visibility into what’s actually happening.
+                            {% endif %}
+                        </p>
                     </div>
                 </div>
-                <div class="col-md-2">
-                <!-- empty -->
-                </div>
+                <div class="col-md-2"> -->
+    <!-- empty -->
+    <!-- </div>
                 <div class="col-lg-4 mt-4 mt-lg-0 d-flex flex-column justify-content-center">
-                    <h4 class="sd-heading-small">Common challenges we see:</h4>
+                    <h4 class="sd-heading-small">{% if detail.problems_list_title %}{{ detail.problems_list_title }}{%
+                        else %}Common challenges we see:{% endif %}</h4>
                     <ul class="sd-checklist">
+                        {% if detail.problem_list_items.exists %}
+                        {% for item in detail.problem_list_items.all %}
+                        <li class="sd-checklist-item">
+                            <span class="sd-checklist-icon-red">.</span>
+                            <span class="sd-text-muted">{{ item.content }}</span>
+                        </li>
+                        {% endfor %}
+                        {% else %}
                         <li class="sd-checklist-item">
                             <span class="sd-checklist-icon-red">.</span>
                             <span class="sd-text-muted">Repetitive manual processes across teams</span>
@@ -75,44 +123,241 @@
                             <span class="sd-checklist-icon-red">.</span>
                             <span class="sd-text-muted">Lack of real-time visibility</span>
                         </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div> -->
+
+    <!-- Problem Cards -->
+    <!-- <div class="sd-problem-grid">
+                {% if detail.problem_cards.exists %}
+                {% for card in detail.problem_cards.all %}
+                <div class="sd-glass-card sd-problem-card">
+                    <div class="sd-problem-card-bg" style="background-image: url('{{ card.image.url }}');"></div>
+                    <div class="sd-problem-card-content">
+                        <h4 class="sd-heading-small-2">{{ card.title }}</h4>
+                        <p class="sd-text-muted mb-0" style="font-size: 14px;">{{ card.description }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %} -->
+    <!-- Card 1 -->
+    <!-- <div class="sd-glass-card sd-problem-card">
+                    <div class="sd-problem-card-bg"
+                        style="background-image: url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&q=80&w=400');">
+                    </div>
+                    <div class="sd-problem-card-content">
+
+                        <h4 class="sd-heading-small-2">Manual repeat work</h4>
+                        <p class="sd-text-muted mb-0" style="font-size: 14px;">Too much manual effort slows down
+                            everything.</p>
+                    </div>
+                </div> -->
+    <!-- Card 2 -->
+    <!-- <div class="sd-glass-card sd-problem-card">
+                    <div class="sd-problem-card-bg"
+                        style="background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=400');">
+                    </div>
+                    <div class="sd-problem-card-content">
+                        <h4 class="sd-heading-small-2">Disconnected tools</h4>
+                        <p class="sd-text-muted mb-0" style="font-size: 14px;">Tools don't talk to each other, creating
+                            data silos.</p>
+                    </div>
+                </div> -->
+    <!-- Card 3 -->
+    <!-- <div class="sd-glass-card sd-problem-card">
+                    <div class="sd-problem-card-bg"
+                        style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=400');">
+                    </div>
+                    <div class="sd-problem-card-content">
+                        <h4 class="sd-heading-small-2">Limited visibility</h4>
+                        <p class="sd-text-muted mb-0" style="font-size: 14px;">Hard to track what's happening across the
+                            business.</p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </section> -->
+
+
+    <section class="sd-problem sd-section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="primary-badge" style="width: fit-content;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" viewBox="0 0 18 20" fill="none">
+                            <path
+                                d="M11.5 6.5C11.5 6.5 11.1317 10.3846 12.67 11.895C14.1868 13.3843 18 13 18 13C18 13 14.0968 13.0922 12.67 14.7556C11.4276 16.204 11.5 19.5 11.5 19.5C11.5 19.5 11.3338 16.1726 10.005 14.7556C8.58811 13.2447 5 13 5 13C5 13 8.51659 13.2334 10.005 11.895C11.6307 10.4332 11.5 6.5 11.5 6.5Z"
+                                fill="#F05D35" />
+                            <path
+                                d="M5 0C5 0 4.7167 2.98814 5.9 4.15C7.06678 5.29564 10 5 10 5C10 5 6.99755 5.07093 5.9 6.35045C4.94427 7.46464 5 10 5 10C5 10 4.87219 7.44047 3.85 6.35045C2.76008 5.18822 0 5 0 5C0 5 2.70507 5.17951 3.85 4.15C5.10054 3.02553 5 0 5 0Z"
+                                fill="#F16535" />
+                        </svg>
+                        PROBLEMS
+                    </div>
+                    <div class="heading-text-container heading-container-services-details">
+                        <h2 class="sub-heading-new">{{ detail.problems_title|default:"Where things break down" }}</h2>
+                        <p class="sub-pera-new">
+                            {{ detail.problems_description|safe }}
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <!-- empty -->
+                </div>
+                <div class="col-lg-4 mt-4 mt-lg-0 d-flex flex-column justify-content-center">
+                    <h4 class="sd-heading-small">{{ detail.problems_list_title|default:"Without AI & automation:" }}
+                    </h4>
+                    <ul class="sd-checklist">
+                        {% if detail and detail.problem_list_items.all %}
+                        {% for item in detail.problem_list_items.all %}
+                        <li class="sd-checklist-item">
+                            <span class="sd-checklist-icon-red">.</span>
+                            <span class="sd-text-muted">{{ item.content }}</span>
+                        </li>
+                        {% endfor %}
+                        {% else %}
+                        <li class="sd-checklist-item">
+                            <span class="sd-checklist-icon-red">.</span>
+                            <span class="sd-text-muted">Repetitive manual processes across teams</span>
+                        </li>
+                        <li class="sd-checklist-item">
+                            <span class="sd-checklist-icon-red">.</span>
+                            <span class="sd-text-muted">Decisions based on assumptions, not data</span>
+                        </li>
+                        <li class="sd-checklist-item">
+                            <span class="sd-checklist-icon-red">.</span>
+                            <span class="sd-text-muted">Disconnected tools and workflows</span>
+                        </li>
+                        <li class="sd-checklist-item">
+                            <span class="sd-checklist-icon-red">.</span>
+                            <span class="sd-text-muted">Lack of real-time visibility</span>
+                        </li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
 
             <!-- Problem Cards -->
             <div class="sd-problem-grid">
-                <!-- Card 1 -->
+                {% if detail and detail.problem_cards.all %}
+                {% for card in detail.problem_cards.all %}
                 <div class="sd-glass-card sd-problem-card">
-                    <div class="sd-problem-card-bg" style="background-image: url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&q=80&w=400');"></div>
+                    <div class="sd-problem-card-bg" style="background-image: url('{{ card.image.url }}');"></div>
                     <div class="sd-problem-card-content">
-                        
-                        <h4 class="sd-heading-small-2">Manual repeat work</h4>
-                        <p class="sd-text-muted mb-0" style="font-size: 14px;">Too much manual effort slows down everything.</p>
+                        <h4 class="sd-heading-small-2">{{ card.title }}</h4>
+                        <p class="sd-text-muted mb-0" style="font-size: 14px;">{{ card.description }}</p>
                     </div>
                 </div>
-                <!-- Card 2 -->
+                {% endfor %}
+                {% else %}
+                <!-- Default Static Cards -->
                 <div class="sd-glass-card sd-problem-card">
-                    <div class="sd-problem-card-bg" style="background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=400');"></div>
+                    <div class="sd-problem-card-bg"
+                        style="background-image: url('https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&q=80&w=400');">
+                    </div>
+                    <div class="sd-problem-card-content">
+                        <h4 class="sd-heading-small-2">Manual repeat work</h4>
+                        <p class="sd-text-muted mb-0" style="font-size: 14px;">Too much manual effort slows down
+                            everything.</p>
+                    </div>
+                </div>
+                <div class="sd-glass-card sd-problem-card">
+                    <div class="sd-problem-card-bg"
+                        style="background-image: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&q=80&w=400');">
+                    </div>
                     <div class="sd-problem-card-content">
                         <h4 class="sd-heading-small-2">Disconnected tools</h4>
-                        <p class="sd-text-muted mb-0" style="font-size: 14px;">Tools don't talk to each other, creating data silos.</p>
+                        <p class="sd-text-muted mb-0" style="font-size: 14px;">Tools don't talk to each other, creating
+                            data silos.</p>
                     </div>
                 </div>
-                <!-- Card 3 -->
                 <div class="sd-glass-card sd-problem-card">
-                    <div class="sd-problem-card-bg" style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=400');"></div>
+                    <div class="sd-problem-card-bg"
+                        style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=400');">
+                    </div>
                     <div class="sd-problem-card-content">
                         <h4 class="sd-heading-small-2">Limited visibility</h4>
-                        <p class="sd-text-muted mb-0" style="font-size: 14px;">Hard to track what's happening across the business.</p>
+                        <p class="sd-text-muted mb-0" style="font-size: 14px;">Hard to track what's happening across the
+                            business.</p>
                     </div>
                 </div>
+                {% endif %}
             </div>
         </div>
     </section>
 
+
+
     <!-- ══════════════════════════════════
          SOLUTION SECTION
     ══════════════════════════════════ -->
+    <!-- <section class="sd-solution sd-section-padding">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="primary-badge" style="width: fit-content;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" viewBox="0 0 18 20" fill="none">
+                            <path
+                                d="M11.5 6.5C11.5 6.5 11.1317 10.3846 12.67 11.895C14.1868 13.3843 18 13 18 13C18 13 14.0968 13.0922 12.67 14.7556C11.4276 16.204 11.5 19.5 11.5 19.5C11.5 19.5 11.3338 16.1726 10.005 14.7556C8.58811 13.2447 5 13 5 13C5 13 8.51659 13.2334 10.005 11.895C11.6307 10.4332 11.5 6.5 11.5 6.5Z"
+                                fill="#F05D35" />
+                            <path
+                                d="M5 0C5 0 4.7167 2.98814 5.9 4.15C7.06678 5.29564 10 5 10 5C10 5 6.99755 5.07093 5.9 6.35045C4.94427 7.46464 5 10 5 10C5 10 4.87219 7.44047 3.85 6.35045C2.76008 5.18822 0 5 0 5C0 5 2.70507 5.17951 3.85 4.15C5.10054 3.02553 5 0 5 0Z"
+                                fill="#F16535" />
+                        </svg>
+                        SOLUTION
+                    </div>
+                    <div class="heading-text-container heading-container-services-details">
+                        <h2 class="sub-heading-new">{% if detail.solution_title %}{{ detail.solution_title }}{% else
+                            %}How we solve this{% endif %}</h2>
+                        <p class="sub-pera-new">
+                            {% if detail.solution_description %}
+                            {{ detail.solution_description|safe }}
+                            {% else %}
+                            We focus on building systems that remove these inefficiencies and simplify how work flows
+                            across your business. <span class="text-orange" style="font-weight: 600;">Each solution is
+                                designed around your actual processes</span>, not a generic template.
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-lg-5 mt-4 mt-lg-0">
+                    <h4 class="sd-heading-small">{% if detail.solution_list_title %}{{ detail.solution_list_title }}{%
+                        else %}What we typically implement:{% endif %}</h4>
+                    <ul class="sd-checklist">
+                        {% if detail.solution_items.exists %}
+                        {% for item in detail.solution_items.all %}
+                        <li class="sd-checklist-item">
+                            <span class="sd-checklist-icon-red">.</span>
+                            <span class="sd-text-muted">{{ item.content }}</span>
+                        </li>
+                        {% endfor %}
+                        {% else %}
+                        <li class="sd-checklist-item">
+                            <span class="sd-checklist-icon-red">.</span>
+                            <span class="sd-text-muted">Workflow automation to remove repetitive tasks</span>
+                        </li>
+                        <li class="sd-checklist-item">
+                            <span class="sd-checklist-icon-red">.</span>
+                            <span class="sd-text-muted">AI copilots to assist teams in real-time</span>
+                        </li>
+                        <li class="sd-checklist-item">
+                            <span class="sd-checklist-icon-red">.</span>
+                            <span class="sd-text-muted">Chatbots and internal tools for routine operations</span>
+                        </li>
+                        <li class="sd-checklist-item">
+                            <span class="sd-checklist-icon-red">.</span>
+                            <span class="sd-text-muted">Data systems for reporting and decision-making</span>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section> -->
+
     <section class="sd-solution sd-section-padding">
         <div class="container">
             <div class="row align-items-center">
@@ -125,36 +370,46 @@
                             <path
                                 d="M5 0C5 0 4.7167 2.98814 5.9 4.15C7.06678 5.29564 10 5 10 5C10 5 6.99755 5.07093 5.9 6.35045C4.94427 7.46464 5 10 5 10C5 10 4.87219 7.44047 3.85 6.35045C2.76008 5.18822 0 5 0 5C0 5 2.70507 5.17951 3.85 4.15C5.10054 3.02553 5 0 5 0Z"
                                 fill="#F16535" />
-                        </svg> 
+                        </svg>
                         SOLUTION
                     </div>
                     <div class="heading-text-container heading-container-services-details">
-                        <h2 class="sub-heading-new">How we solve this</h2>
+                        <h2 class="sub-heading-new">{{ detail.solution_title|default:"How we solve this" }}</h2>
                         <p class="sub-pera-new">
-                            We focus on building systems that remove these inefficiencies and simplify how work flows across your business. <span class="text-orange" style="font-weight: 600;">Each solution is designed around your actual processes</span>, not a generic template.
-                    </p>
-                    </div>   
+                            {{ detail.solution_description|safe }}
+                        </p>
+                    </div>
                 </div>
                 <div class="col-md-1"></div>
                 <div class="col-lg-5 mt-4 mt-lg-0">
-                    <h4 class="sd-heading-small">What we typically implement:</h4>
+                    <h4 class="sd-heading-small">{{ detail.solution_list_title|default:"What we typically implement:" }}
+                    </h4>
                     <ul class="sd-checklist">
+                        {% if detail and detail.solution_items.all %}
+                        {% for item in detail.solution_items.all %}
                         <li class="sd-checklist-item">
-                             <span class="sd-checklist-icon-red">.</span>
+                            <span class="sd-checklist-icon-red">.</span>
+                            <span class="sd-text-muted">{{ item.content }}</span>
+                        </li>
+                        {% endfor %}
+                        {% else %}
+                        <li class="sd-checklist-item">
+                            <span class="sd-checklist-icon-red">.</span>
                             <span class="sd-text-muted">Workflow automation to remove repetitive tasks</span>
                         </li>
                         <li class="sd-checklist-item">
-                             <span class="sd-checklist-icon-red">.</span>
+                            <span class="sd-checklist-icon-red">.</span>
                             <span class="sd-text-muted">AI copilots to assist teams in real-time</span>
                         </li>
                         <li class="sd-checklist-item">
-                             <span class="sd-checklist-icon-red">.</span>
+                            <span class="sd-checklist-icon-red">.</span>
                             <span class="sd-text-muted">Chatbots and internal tools for routine operations</span>
                         </li>
                         <li class="sd-checklist-item">
-                             <span class="sd-checklist-icon-red">.</span>
+                            <span class="sd-checklist-icon-red">.</span>
                             <span class="sd-text-muted">Data systems for reporting and decision-making</span>
                         </li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
@@ -164,6 +419,71 @@
     <!-- ══════════════════════════════════
          CAPABILITIES SECTION
     ══════════════════════════════════ -->
+    <!-- <section class="sd-capabilities sd-section-padding">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="primary-badge" style="width: fit-content;">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" viewBox="0 0 18 20" fill="none">
+                            <path
+                                d="M11.5 6.5C11.5 6.5 11.1317 10.3846 12.67 11.895C14.1868 13.3843 18 13 18 13C18 13 14.0968 13.0922 12.67 14.7556C11.4276 16.204 11.5 19.5 11.5 19.5C11.5 19.5 11.3338 16.1726 10.005 14.7556C8.58811 13.2447 5 13 5 13C5 13 8.51659 13.2334 10.005 11.895C11.6307 10.4332 11.5 6.5 11.5 6.5Z"
+                                fill="#F05D35" />
+                            <path
+                                d="M5 0C5 0 4.7167 2.98814 5.9 4.15C7.06678 5.29564 10 5 10 5C10 5 6.99755 5.07093 5.9 6.35045C4.94427 7.46464 5 10 5 10C5 10 4.87219 7.44047 3.85 6.35045C2.76008 5.18822 0 5 0 5C0 5 2.70507 5.17951 3.85 4.15C5.10054 3.02553 5 0 5 0Z"
+                                fill="#F16535" />
+                        </svg>
+                        CAPABILITIES
+                    </div>
+                    <div class="heading-text-container heading-container-services-details">
+                        <h2 class="sub-heading-new">{% if detail.capabilities_title %}{{ detail.capabilities_title }}{%
+                            else %}Key capabilities{% endif %}</h2>
+                        <ul class="sd-checklist">
+                            {% if detail.capability_items.exists %}
+                            {% for item in detail.capability_items.all %}
+                            <li class="sd-checklist-item">
+                                <span class="sd-checklist-icon-red">.</span>
+                                <span class="sd-text-muted">{{ item.content }}</span>
+                            </li>
+                            {% endfor %}
+                            {% else %}
+                            <li class="sd-checklist-item">
+                                <span class="sd-checklist-icon-red">.</span>
+                                <span class="sd-text-muted">Workflow automation across tools</span>
+                            </li>
+                            <li class="sd-checklist-item">
+                                <span class="sd-checklist-icon-red">.</span>
+                                <span class="sd-text-muted">AI-assisted decision support</span>
+                            </li>
+                            <li class="sd-checklist-item">
+                                <span class="sd-checklist-icon-red">.</span>
+                                <span class="sd-text-muted">Centralized reporting systems</span>
+                            </li>
+                            <li class="sd-checklist-item">
+                                <span class="sd-checklist-icon-red">.</span>
+                                <span class="sd-text-muted">Scalable system architecture</span>
+                            </li>
+                            <li class="sd-checklist-item">
+                                <span class="sd-checklist-icon-red">.</span>
+                                <span class="sd-text-muted">Integration with existing tools</span>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6 mt-5 mt-lg-0"> -->
+    <!-- Capabilities panel with mockup toggle triggers -->
+    <!-- <div class="sd-toggles-panel">
+                        {% if detail.capabilities_image %}
+                        <img src="{{ detail.capabilities_image.url }}" alt="Capabilities">
+                        {% else %}
+                        <img src="{% static 'images/capabilities-side.png' %}">
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> -->
+
     <section class="sd-capabilities sd-section-padding">
         <div class="container">
             <div class="row align-items-center">
@@ -176,39 +496,53 @@
                             <path
                                 d="M5 0C5 0 4.7167 2.98814 5.9 4.15C7.06678 5.29564 10 5 10 5C10 5 6.99755 5.07093 5.9 6.35045C4.94427 7.46464 5 10 5 10C5 10 4.87219 7.44047 3.85 6.35045C2.76008 5.18822 0 5 0 5C0 5 2.70507 5.17951 3.85 4.15C5.10054 3.02553 5 0 5 0Z"
                                 fill="#F16535" />
-                        </svg> 
+                        </svg>
                         CAPABILITIES
                     </div>
                     <div class="heading-text-container heading-container-services-details">
-                        <h2 class="sub-heading-new">Key capabilities</h2>
+                        <h2 class="sub-heading-new">{{ detail.capabilities_title|default:"Key capabilities" }}</h2>
                         <ul class="sd-checklist">
-                        <li class="sd-checklist-item">
-                             <span class="sd-checklist-icon-red">.</span>
-                            <span class="sd-text-muted">Workflow automation across tools</span>
-                        </li>
-                        <li class="sd-checklist-item">
-                             <span class="sd-checklist-icon-red">.</span>
-                            <span class="sd-text-muted">AI-assisted decision support</span>
-                        </li>
-                        <li class="sd-checklist-item">
-                             <span class="sd-checklist-icon-red">.</span>
-                            <span class="sd-text-muted">Centralized reporting systems</span>
-                        </li>
-                        <li class="sd-checklist-item">
-                             <span class="sd-checklist-icon-red">.</span>
-                            <span class="sd-text-muted">Scalable system architecture</span>
-                        </li>
-                        <li class="sd-checklist-item">
-                             <span class="sd-checklist-icon-red">.</span>
-                            <span class="sd-text-muted">Integration with existing tools</span>
-                        </li>
-                    </ul>
-                    </div> 
+                            {% if detail and detail.capability_items.all %}
+                            {% for item in detail.capability_items.all %}
+                            <li class="sd-checklist-item">
+                                <span class="sd-checklist-icon-red">.</span>
+                                <span class="sd-text-muted">{{ item.content }}</span>
+                            </li>
+                            {% endfor %}
+                            {% else %}
+                            <li class="sd-checklist-item">
+                                <span class="sd-checklist-icon-red">.</span>
+                                <span class="sd-text-muted">Workflow automation across tools</span>
+                            </li>
+                            <li class="sd-checklist-item">
+                                <span class="sd-checklist-icon-red">.</span>
+                                <span class="sd-text-muted">AI-assisted decision support</span>
+                            </li>
+                            <li class="sd-checklist-item">
+                                <span class="sd-checklist-icon-red">.</span>
+                                <span class="sd-text-muted">Centralized reporting systems</span>
+                            </li>
+                            <li class="sd-checklist-item">
+                                <span class="sd-checklist-icon-red">.</span>
+                                <span class="sd-text-muted">Scalable system architecture</span>
+                            </li>
+                            <li class="sd-checklist-item">
+                                <span class="sd-checklist-icon-red">.</span>
+                                <span class="sd-text-muted">Integration with existing tools</span>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </div>
                 </div>
                 <div class="col-lg-6 mt-5 mt-lg-0">
                     <!-- Capabilities panel with mockup toggle triggers -->
                     <div class="sd-toggles-panel">
+                        {% if detail and detail.capabilities_image %}
+                        <img src="{{ detail.capabilities_image.url }}" alt="{{ detail.capabilities_title }}"
+                            class="img-fluid">
+                        {% else %}
                         <img src="{% static 'images/capabilities-side.png' %}">
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -218,74 +552,117 @@
     <!-- ══════════════════════════════════
          WHY CHOOSE US SECTION
     ══════════════════════════════════ -->
-    <section class="sd-why-choose sd-section-padding">
+    <!-- <section class="sd-why-choose sd-section-padding">
         <div class="container">
             <div class="col-md-6">
                 <div class="primary-badge" style="width: fit-content;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" viewBox="0 0 18 20" fill="none">
-                            <path
-                                d="M11.5 6.5C11.5 6.5 11.1317 10.3846 12.67 11.895C14.1868 13.3843 18 13 18 13C18 13 14.0968 13.0922 12.67 14.7556C11.4276 16.204 11.5 19.5 11.5 19.5C11.5 19.5 11.3338 16.1726 10.005 14.7556C8.58811 13.2447 5 13 5 13C5 13 8.51659 13.2334 10.005 11.895C11.6307 10.4332 11.5 6.5 11.5 6.5Z"
-                                fill="#F05D35" />
-                            <path
-                                d="M5 0C5 0 4.7167 2.98814 5.9 4.15C7.06678 5.29564 10 5 10 5C10 5 6.99755 5.07093 5.9 6.35045C4.94427 7.46464 5 10 5 10C5 10 4.87219 7.44047 3.85 6.35045C2.76008 5.18822 0 5 0 5C0 5 2.70507 5.17951 3.85 4.15C5.10054 3.02553 5 0 5 0Z"
-                                fill="#F16535" />
-                        </svg> 
-                        WHY CHOOSE US
-                    </div>
-                    <div class="heading-text-container heading-container-services-details">
-                        <h2 class="sub-heading-new">Why choose us</h2>
-                        <p class="sub-pera-new">
-                            We don't approach automation as just a technical implementation. Our focus is on building systems that actually improve how your business operates.
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" viewBox="0 0 18 20" fill="none">
+                        <path
+                            d="M11.5 6.5C11.5 6.5 11.1317 10.3846 12.67 11.895C14.1868 13.3843 18 13 18 13C18 13 14.0968 13.0922 12.67 14.7556C11.4276 16.204 11.5 19.5 11.5 19.5C11.5 19.5 11.3338 16.1726 10.005 14.7556C8.58811 13.2447 5 13 5 13C5 13 8.51659 13.2334 10.005 11.895C11.6307 10.4332 11.5 6.5 11.5 6.5Z"
+                            fill="#F05D35" />
+                        <path
+                            d="M5 0C5 0 4.7167 2.98814 5.9 4.15C7.06678 5.29564 10 5 10 5C10 5 6.99755 5.07093 5.9 6.35045C4.94427 7.46464 5 10 5 10C5 10 4.87219 7.44047 3.85 6.35045C2.76008 5.18822 0 5 0 5C0 5 2.70507 5.17951 3.85 4.15C5.10054 3.02553 5 0 5 0Z"
+                            fill="#F16535" />
+                    </svg>
+                    WHY CHOOSE US
+                </div>
+                <div class="heading-text-container heading-container-services-details">
+                    <h2 class="sub-heading-new">{% if detail.why_choose_title %}{{ detail.why_choose_title }}{% else
+                        %}Why choose us{% endif %}</h2>
+                    <p class="sub-pera-new">
+                        {% if detail.why_choose_description %}
+                        {{ detail.why_choose_description|safe }}
+                        {% else %}
+                        We don't approach automation as just a technical implementation. Our focus is on building
+                        systems that actually improve how your business operates.
+                        {% endif %}
                     </p>
-                    </div>
+                </div>
             </div>
 
             <div class="sd-value-grid">
+                {% if detail.why_choose_items.exists %}
+                {% for item in detail.why_choose_items.all %}
+                <div class="sd-value-card">
+                    <span class="sd-value-icon">
+                        {% if item.icon %}
+                        {{ item.icon|safe }}
+                        {% else %}
+                        <svg xmlns="http://www.w3.org/2000/svg" width="31" height="23" viewBox="0 0 31 23" fill="none">
+                            <path
+                                d="M25.8172 1.59155C26.6217 0.697878 27.9986 0.626012 28.8924 1.43042C29.7859 2.23493 29.8579 3.61091 29.0535 4.50464L15.576 19.4812C13.5698 21.7103 10.1727 21.9875 7.83086 20.114L1.68829 15.2C0.749381 14.4487 0.597252 13.0784 1.34844 12.1394C2.09973 11.2007 3.47006 11.0484 4.40899 11.7996L10.5516 16.7136C11.0919 17.1459 11.8757 17.0823 12.3387 16.5681L25.8172 1.59155Z"
+                                fill="#F16535" stroke="#F16535" stroke-width="1.74193" stroke-linecap="round"
+                                stroke-linejoin="round" />
+                        </svg>
+                        {% endif %}
+                    </span>
+                    <h4 class="sd-heading-small-new">{{ item.title }}</h4>
+                    <p class="sub-pera-new" style="text-align: left;">{{ item.description }}</p>
+                </div>
+                {% endfor %}
+                {% else %}
                 <!-- Col 1 -->
-                <div class="sd-value-card">
-                    <span class="sd-value-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="31" height="23" viewBox="0 0 31 23" fill="none">
-                            <path d="M25.8172 1.59155C26.6217 0.697878 27.9986 0.626012 28.8924 1.43042C29.7859 2.23493 29.8579 3.61091 29.0535 4.50464L15.576 19.4812C13.5698 21.7103 10.1727 21.9875 7.83086 20.114L1.68829 15.2C0.749381 14.4487 0.597252 13.0784 1.34844 12.1394C2.09973 11.2007 3.47006 11.0484 4.40899 11.7996L10.5516 16.7136C11.0919 17.1459 11.8757 17.0823 12.3387 16.5681L25.8172 1.59155Z" fill="#F16535" stroke="#F16535" stroke-width="1.74193" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </span>
-                    <h4 class="sd-heading-small-new">Focused on real operational problems</h4>
-                    <p class="sub-pera-new" style="text-align: left;">We look at how your workflows actually run and fix where time is being lost.</p>
-                </div>
-                <!-- Col 2 -->
-                <div class="sd-value-card">
-                    <span class="sd-value-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="31" height="23" viewBox="0 0 31 23" fill="none">
-                            <path d="M25.8172 1.59155C26.6217 0.697878 27.9986 0.626012 28.8924 1.43042C29.7859 2.23493 29.8579 3.61091 29.0535 4.50464L15.576 19.4812C13.5698 21.7103 10.1727 21.9875 7.83086 20.114L1.68829 15.2C0.749381 14.4487 0.597252 13.0784 1.34844 12.1394C2.09973 11.2007 3.47006 11.0484 4.40899 11.7996L10.5516 16.7136C11.0919 17.1459 11.8757 17.0823 12.3387 16.5681L25.8172 1.59155Z" fill="#F16535" stroke="#F16535" stroke-width="1.74193" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </span>
-                    <h4 class="sd-heading-small-new">Built around your workflows</h4>
-                    <p class="sub-pera-new" style="text-align: left;">Solutions are designed to fit your process - not forced templates.</p>
-                </div>
-                <!-- Col 3 -->
-                <div class="sd-value-card">
-                    <span class="sd-value-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="31" height="23" viewBox="0 0 31 23" fill="none">
-                            <path d="M25.8172 1.59155C26.6217 0.697878 27.9986 0.626012 28.8924 1.43042C29.7859 2.23493 29.8579 3.61091 29.0535 4.50464L15.576 19.4812C13.5698 21.7103 10.1727 21.9875 7.83086 20.114L1.68829 15.2C0.749381 14.4487 0.597252 13.0784 1.34844 12.1394C2.09973 11.2007 3.47006 11.0484 4.40899 11.7996L10.5516 16.7136C11.0919 17.1459 11.8757 17.0823 12.3387 16.5681L25.8172 1.59155Z" fill="#F16535" stroke="#F16535" stroke-width="1.74193" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </span>
-                    <h4 class="sd-heading-small-new">Fast execution, clear direction</h4>
-                    <p class="sub-pera-new" style="text-align: left;">We move quickly and focus on delivering something usable, not over-planning.</p>
-                </div>
-                <!-- Col 4 -->
-                <div class="sd-value-card">
-                    <span class="sd-value-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="31" height="23" viewBox="0 0 31 23" fill="none">
-                            <path d="M25.8172 1.59155C26.6217 0.697878 27.9986 0.626012 28.8924 1.43042C29.7859 2.23493 29.8579 3.61091 29.0535 4.50464L15.576 19.4812C13.5698 21.7103 10.1727 21.9875 7.83086 20.114L1.68829 15.2C0.749381 14.4487 0.597252 13.0784 1.34844 12.1394C2.09973 11.2007 3.47006 11.0484 4.40899 11.7996L10.5516 16.7136C11.0919 17.1459 11.8757 17.0823 12.3387 16.5681L25.8172 1.59155Z" fill="#F16535" stroke="#F16535" stroke-width="1.74193" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                    </span>
-                    <h4 class="sd-heading-small-new">Scales without added complexity</h4>
-                    <p class="sub-pera-new" style="text-align: left;">Our systems grow with your business while keeping operations simple.</p>
-                </div>
-            </div>
-        </div>
-    </section>
+    <div class="sd-value-card">
+        <span class="sd-value-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="31" height="23" viewBox="0 0 31 23" fill="none">
+                <path
+                    d="M25.8172 1.59155C26.6217 0.697878 27.9986 0.626012 28.8924 1.43042C29.7859 2.23493 29.8579 3.61091 29.0535 4.50464L15.576 19.4812C13.5698 21.7103 10.1727 21.9875 7.83086 20.114L1.68829 15.2C0.749381 14.4487 0.597252 13.0784 1.34844 12.1394C2.09973 11.2007 3.47006 11.0484 4.40899 11.7996L10.5516 16.7136C11.0919 17.1459 11.8757 17.0823 12.3387 16.5681L25.8172 1.59155Z"
+                    fill="#F16535" stroke="#F16535" stroke-width="1.74193" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>
+        </span>
+        <h4 class="sd-heading-small-new">Focused on real operational problems</h4>
+        <p class="sub-pera-new" style="text-align: left;">We look at how your workflows actually run and fix
+            where time is being lost.</p>
+    </div>
+    <!-- Col 2 -->
+    <div class="sd-value-card">
+        <span class="sd-value-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="31" height="23" viewBox="0 0 31 23" fill="none">
+                <path
+                    d="M25.8172 1.59155C26.6217 0.697878 27.9986 0.626012 28.8924 1.43042C29.7859 2.23493 29.8579 3.61091 29.0535 4.50464L15.576 19.4812C13.5698 21.7103 10.1727 21.9875 7.83086 20.114L1.68829 15.2C0.749381 14.4487 0.597252 13.0784 1.34844 12.1394C2.09973 11.2007 3.47006 11.0484 4.40899 11.7996L10.5516 16.7136C11.0919 17.1459 11.8757 17.0823 12.3387 16.5681L25.8172 1.59155Z"
+                    fill="#F16535" stroke="#F16535" stroke-width="1.74193" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>
+        </span>
+        <h4 class="sd-heading-small-new">Built around your workflows</h4>
+        <p class="sub-pera-new" style="text-align: left;">Solutions are designed to fit your process - not
+            forced templates.</p>
+    </div>
+    <!-- Col 3 -->
+    <div class="sd-value-card">
+        <span class="sd-value-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="31" height="23" viewBox="0 0 31 23" fill="none">
+                <path
+                    d="M25.8172 1.59155C26.6217 0.697878 27.9986 0.626012 28.8924 1.43042C29.7859 2.23493 29.8579 3.61091 29.0535 4.50464L15.576 19.4812C13.5698 21.7103 10.1727 21.9875 7.83086 20.114L1.68829 15.2C0.749381 14.4487 0.597252 13.0784 1.34844 12.1394C2.09973 11.2007 3.47006 11.0484 4.40899 11.7996L10.5516 16.7136C11.0919 17.1459 11.8757 17.0823 12.3387 16.5681L25.8172 1.59155Z"
+                    fill="#F16535" stroke="#F16535" stroke-width="1.74193" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>
+        </span>
+        <h4 class="sd-heading-small-new">Fast execution, clear direction</h4>
+        <p class="sub-pera-new" style="text-align: left;">We move quickly and focus on delivering something
+            usable, not over-planning.</p>
+    </div>
+    <!-- Col 4 -->
+    <div class="sd-value-card">
+        <span class="sd-value-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="31" height="23" viewBox="0 0 31 23" fill="none">
+                <path
+                    d="M25.8172 1.59155C26.6217 0.697878 27.9986 0.626012 28.8924 1.43042C29.7859 2.23493 29.8579 3.61091 29.0535 4.50464L15.576 19.4812C13.5698 21.7103 10.1727 21.9875 7.83086 20.114L1.68829 15.2C0.749381 14.4487 0.597252 13.0784 1.34844 12.1394C2.09973 11.2007 3.47006 11.0484 4.40899 11.7996L10.5516 16.7136C11.0919 17.1459 11.8757 17.0823 12.3387 16.5681L25.8172 1.59155Z"
+                    fill="#F16535" stroke="#F16535" stroke-width="1.74193" stroke-linecap="round"
+                    stroke-linejoin="round" />
+            </svg>
+        </span>
+        <h4 class="sd-heading-small-new">Scales without added complexity</h4>
+        <p class="sub-pera-new" style="text-align: left;">Our systems grow with your business while keeping
+            operations simple.</p>
+    </div>
+    {% endif %}
+</div>
+</div>
+</section> -
 
-    <!-- ══════════════════════════════════
+<!-- ══════════════════════════════════
                  CTA SECTION REDESIGNED
             ══════════════════════════════════ -->
 <section class="cta-refined-section">
@@ -293,9 +670,9 @@
         <div class="cta-refined-box">
             <div class="row align-items-center">
                 <div class="col-lg-6">
-                    <h1 class="cta-title-refined">Let’s build something great together</h1>
-                    <p class="cta-subtitle-refined">Partner with us to build scalable digital products and systems that
-                        drive efficiency, innovation, and long-term growth.</p>
+                    <h1 class="cta-title-refined">{% if detail.cta_title %}{{ detail.cta_title }}{% else %}Let’s
+                        build something great together{% endif %}</h1>
+                    <p class="cta-subtitle-refined">{{ detail.cta_subtitle }}</p>
                     <a href="{% url 'contact' %}" class="btn-cta-refined">
                         <span class="label-up">Book a Strategy Call</span>
                         <span class="label-up">Book a Strategy Call</span>

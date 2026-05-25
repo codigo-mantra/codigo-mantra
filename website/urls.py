@@ -6,8 +6,8 @@ urlpatterns = [
     path('about-us/', AboutUsPage.as_view(), name='about-us'),
     path('services/', ServicePage.as_view(), name='services'),
     
-    # 2. FIX: Change the name here to 'service_detail'
-    path('services/<slug:slug>/', ServicePage.as_view(), name='service_detail'),    
+    path('services/<slug:slug>/', ServiceDetailsView.as_view(), name='service_detail'),
+    path('industry/<slug:slug>/', IndustryDetailsView.as_view(), name='industry_detail'),    
     path('contact-us/', ContactPage.as_view(), name=    'contact'),
     path('schedule-call/', ScheduleCallPage.as_view(), name='schedule-call'),
     path('schedule-call/step-2/', ScheduleCallStep2Page.as_view(), name='schedule-call-2'),
@@ -22,7 +22,10 @@ urlpatterns = [
     path('privacy-policy/', PrivacyPolicyView.as_view(), name='privacy-policy'),
     path('terms-and-conditions/', TermsConditionsView.as_view(), name='terms-conditions'),
     path('service-details/', ServiceDetailsView.as_view(), name='service-details'),
-    path('industry-detail/',IndustryDetailsView.as_view(), name='industry-details'),
+    path('service-details/<slug:slug>/', ServiceDetailsView.as_view(), name='service-details-slug'),
+    path('industry-details/',IndustryDetailsView.as_view(), name='industry-details'),
+    path('industry-details/<slug:slug>/', IndustryDetailsView.as_view(), name='industry-details-slug'),
+    
 
     # path("zoho/callback/", zoho_callback),
 
