@@ -1151,12 +1151,12 @@ class ServiceDetailsView(views.View):
 
         if slug:
             service = get_object_or_404(
-                Service_page.objects.prefetch_related(detail_prefetch), 
+                Service_index.objects.prefetch_related(detail_prefetch), 
                 slug=slug
             )
         else:
             # Default fallback or first service if no slug provided
-            service = Service_page.objects.prefetch_related(detail_prefetch).first()
+            service = Service_index.objects.prefetch_related(detail_prefetch).first()
         
         detail = getattr(service, 'detail', None)
         return render(request, 'website/service-details.html', {

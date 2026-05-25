@@ -412,7 +412,7 @@ class Booking(TimeStamp):
 
 class ServiceDetail(TimeStamp):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    service_page = models.OneToOneField(Service_page, on_delete=models.CASCADE, related_name="detail")
+    service_page = models.OneToOneField(Service_index, on_delete=models.CASCADE, related_name="detail")
     
     # Hero Section
     hero_title = RichTextField(blank=True)
