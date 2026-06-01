@@ -1593,3 +1593,17 @@ img.industries-img {
     background: #F05736;
     border-radius: 10px;
 }
+.hero-subtitle-wrap {
+    color: #F6F6F6;
+    text-align: center;
+    font-family: Poppins;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 160%;
+    opacity: 0.6;
+    position: absolute;
+    bottom: 82px;
+    left: 0;
+    right: 0;
+}

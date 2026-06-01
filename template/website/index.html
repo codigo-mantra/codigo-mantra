@@ -36,16 +36,28 @@
                 Simplify your operations, improve decision-making, and accelerate growth with technology built for real
                 business impact.
             </p>
+            <div class="schedule-call-footer">
 
-            <div class="hero-cta-wrap">
-                <a class="btn-cm-cta btn-pill" href="{% url 'schedule-call' %}">
-                    <span class="label-up">Let’s start a conversation</span>
-                    <span class="label-up">Let’s start a conversation</span>
+            <a class="btn-cm-cta btn-pill" href="{% url 'schedule-call' %}">
+                    <span class="label-up">Book a Strategy Call</span>
+                    <span class="label-up">Book a Strategy Call</span>
                     <!-- <span class="label-up">Book a 15 min call</span>
                     <span class="label-up">Book a 15 min call</span> -->
                 </a>
+            <a class="btn-secondary-cm" href="{% url 'portfolio' %}">
+                <span class="label-up">View Case Studies</span>
+                <span class="label-up">View Case Studies</span>
+            </a>
             </div>
+            <!-- <div class="hero-cta-wrap">
+                <a class="btn-cm-cta btn-pill" href="{% url 'schedule-call' %}">
+                    <span class="label-up">Let’s start a conversation</span>
+                    <span class="label-up">Let’s start a conversation</span>
+                
+                </a>
+            </div> -->
         </div>
+        <div class="hero-subtitle-wrap">Trusted by teams building operations-heavy products</div>
         <div class="marquee-track" dir="ltr">
             <!-- Set 1 -->
             {%for industry in industries%}
