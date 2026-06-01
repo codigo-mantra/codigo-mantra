@@ -650,7 +650,7 @@ body {
 .portfolio-list {
     display: flex;
     flex-direction: column;
-    gap: 17px;
+    gap: 38px;
 }
 
 .portfolio-card-refined {

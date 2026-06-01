@@ -1139,7 +1139,7 @@ class ServiceDetailsView(views.View):
     def get(self, request, slug=None):
         # Base queryset for ServiceDetail with all related items prefetched
         detail_prefetch = Prefetch(
-            'detail',
+            'details',
             queryset=ServiceDetail.objects.prefetch_related(
                 'problem_list_items',
                 'problem_cards',
@@ -1149,16 +1149,40 @@ class ServiceDetailsView(views.View):
             )
         )
 
+        source_type = request.GET.get('type')
+
         if slug:
-            service = get_object_or_404(
-                Service_index.objects.prefetch_related(detail_prefetch), 
-                slug=slug
-            )
+            # If coming from a specific page, prioritize that table
+            if source_type == 'page':
+                service = Service_page.objects.prefetch_related(detail_prefetch).filter(slug=slug, details__isnull=False).first()
+                if not service:
+                    service = Service_index.objects.prefetch_related(detail_prefetch).filter(slug=slug, details__isnull=False).first()
+            else:
+                service = Service_index.objects.prefetch_related(detail_prefetch).filter(slug=slug, details__isnull=False).first()
+                if not service:
+                    service = Service_page.objects.prefetch_related(detail_prefetch).filter(slug=slug, details__isnull=False).first()
+            
+            # If still not found with details, try without details filter as fallback
+            if not service:
+                if source_type == 'page':
+                    service = Service_page.objects.prefetch_related(detail_prefetch).filter(slug=slug).first()
+                    if not service:
+                        service = Service_index.objects.prefetch_related(detail_prefetch).filter(slug=slug).first()
+                else:
+                    service = Service_index.objects.prefetch_related(detail_prefetch).filter(slug=slug).first()
+                    if not service:
+                        service = Service_page.objects.prefetch_related(detail_prefetch).filter(slug=slug).first()
+            
+            # Final 404 check if absolutely no service matches this slug
+            if not service:
+                from django.http import Http404
+                raise Http404("Service not found")
         else:
-            # Default fallback or first service if no slug provided
+            # Default fallback or first service from Service_index
             service = Service_index.objects.prefetch_related(detail_prefetch).first()
         
-        detail = getattr(service, 'detail', None)
+        # Get the first detail from the 'details' related manager
+        detail = service.details.first() if service and hasattr(service, 'details') else None
         return render(request, 'website/service-details.html', {
             'service': service, 
             'detail': detail
@@ -1168,7 +1192,7 @@ class IndustryDetailsView(views.View):
     def get(self, request, slug=None):
         # Base queryset for IndustryDetail with all related items prefetched
         detail_prefetch = Prefetch(
-            'detail',
+            'details',
             queryset=IndustryDetail.objects.prefetch_related(
                 'impact_items',
                 'solution_items',
@@ -1183,10 +1207,18 @@ class IndustryDetailsView(views.View):
                 slug=slug
             )
         else:
-            # Default fallback or first industry if no slug provided
-            industry = Industry.objects.prefetch_related(detail_prefetch).first()
+            # Prefer the first industry that actually has a detail record
+            industry = Industry.objects.filter(details__isnull=False).prefetch_related(detail_prefetch).first()
+            if not industry:
+                # Fallback to the absolute first if no details exist anywhere
+                industry = Industry.objects.prefetch_related(detail_prefetch).first()
         
-        detail = getattr(industry, 'detail', None)
+        # Get the first detail from the 'details' related manager
+        detail = industry.details.first() if industry and hasattr(industry, 'details') else None
+        
+        # If we have an industry but no detail record, and we're on the generic URL,
+        # we might still see a blank page. For specific slugs, we show what we have.
+        
         return render(request, 'website/industry-detail.html', {
             'industry': industry, 
             'detail': detail

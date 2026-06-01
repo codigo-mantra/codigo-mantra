@@ -8,15 +8,13 @@
         <div class="row hero-row">
             <div class="col-lg-7 hero-left-industry h-auto d-flex align-items-center">
                 <div class="hero-left-content">
-                    <h1 class="hero-title service-hero-title" style="margin-left: 0 !important;"> <span
-                            class="text-orange">Modern healthcare</span> systems built for <span
-                            class="text-orange">operational</span> efficiency
-                    </h1>
-                    <p class="hero-sub service-hero-sub">
-                        Healthcare Automation Solutions for Healthcare Providers Australia help clinics, healthcare
-                        organizations, and operational teams reduce manual work, improve reporting, and streamline
-                        healthcare workflows through centralized digital systems.
-                    </p>
+                    <div class="service-hero-title" style="margin-left: 0 !important;">
+                        {{ detail.hero_title|safe }}
+                    </div>
+                    <div class="hero-sub service-hero-sub">
+                        <!-- <div class="hero-sub service-hero"> -->
+                        {{ detail.hero_description|safe }}
+                    </div>
                     <div class="sd-button-col">
                         <a class="btn-cm-cta btn-pill" href="{% url 'schedule-call' %}">
                             <span class="label-up">Book a Strategy Call</span>
@@ -27,8 +25,9 @@
             </div>
             <div class="col-lg-5 h-100">
                 <div class="hero-right-industry">
-                    <img src="{% static 'images/team-young-specialist-doctors-reviewing-documents-corridor-hospital 2.png' %}"
-                        alt="">
+                    {% if detail.hero_image %}
+                    <img src="{{ detail.hero_image.url }}" alt="">
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -47,31 +46,21 @@
                             d="M5 0C5 0 4.7167 2.98814 5.9 4.15C7.06678 5.29564 10 5 10 5C10 5 6.99755 5.07093 5.9 6.35045C4.94427 7.46464 5 10 5 10C5 10 4.87219 7.44047 3.85 6.35045C2.76008 5.18822 0 5 0 5C0 5 2.70507 5.17951 3.85 4.15C5.10054 3.02553 5 0 5 0Z"
                             fill="#F16535" />
                     </svg>
-                    Challenges
+                    {{ detail.challenges_badge_text }}
                 </div>
                 <div class="heading-text-container heading-container-services-details">
-                    <h2 class="sub-heading-new" style="text-align: left;">Operational Challenges in Healthcare</h2>
-                    <p class="sub-pera-new">
-                        Many healthcare providers still rely on spreadsheets, disconnected tools, and manual
-                        administrative workflows to manage operations, reporting, scheduling, and communication.
-                    </p>
+                    <h2 class="sub-heading-new" style="text-align: left;">{{ detail.challenges_title }}</h2>
+                    <div class="sub-pera-new">
+                        {{ detail.challenges_description|safe }}
+                    </div>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="challenges-right-img">
-                    <img src="{% static 'images/challenges-siide-img.jpg' %}" alt="">
+                    {% if detail.challenges_image %}
+                    <img src="{{ detail.challenges_image.url }}" alt="">
+                    {% endif %}
                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12 text-center">
-                <p class="para-text-regular">
-                    As healthcare organizations grow, these systems become harder to manage and create delays across
-                    departments. Staff spend more time handling repetitive tasks instead of improving operational
-                    efficiency and patient experience. Healthcare organizations across Australia continue investing in
-                    healthcare automation systems to improve operational visibility and long-term scalability according
-                    to World Health Organization.
-                </p>
             </div>
         </div>
     </div>
@@ -109,58 +98,44 @@
                             d="M5 0C5 0 4.7167 2.98814 5.9 4.15C7.06678 5.29564 10 5 10 5C10 5 6.99755 5.07093 5.9 6.35045C4.94427 7.46464 5 10 5 10C5 10 4.87219 7.44047 3.85 6.35045C2.76008 5.18822 0 5 0 5C0 5 2.70507 5.17951 3.85 4.15C5.10054 3.02553 5 0 5 0Z"
                             fill="#F16535" />
                     </svg>
-                    Impact
+                    {{ detail.impact_badge_text }}
                 </div>
             </div>
             <h2 class="display-heading">
-                Operational Impact
+                {{ detail.impact_title }}
             </h2>
         </div>
         <div class="ind-impact-container">
             <div class="row">
                 <div class="col-md-6">
-                    <!-- Column 1 -->
                     <div class="impact-card-grid">
-                        <div class="impact-card">
-                            <h4>40% Reduction in repetitive administrative work</h4>
-                            <p>Automation systems reduce manual operational processes and improve team productivity.</p>
+                        {% for item in detail.impact_items.all %}
+                        {% if forloop.counter <= 2 %} <div class="impact-card">
+                            <h4>{{ item.title }}</h4>
+                            <div>{{ item.description|safe }}</div>
                             <div class="impact-card-h-line"></div>
                             <div class="impact-card-v-line"></div>
-
-                        </div>
-
-                        <div class="impact-card">
-                            <h4>Faster reporting and visibility</h4>
-                            <p>Centralized dashboards help healthcare teams access operational insights in real time.
-                            </p>
-                            <div class="impact-card-h-line"></div>
-                            <div class="impact-card-v-line"></div>
-
-                        </div>
                     </div>
+                    {% endif %}
+                    {% endfor %}
                 </div>
-                <div class="col-md-6">
-                    <!-- Column 2 -->
-                    <div class="impact-card-grid">
-                        <div class="impact-card">
-                            <h4>Better coordination across departments</h4>
-                            <p>Improve communication between healthcare staff, operations teams, and administrators.</p>
-                            <div class="impact-card-h-line"></div>
-                            <div class="impact-card-v-line"></div>
-
-                        </div>
-
-                        <div class="impact-card">
-                            <h4>Scalable operational infrastructure</h4>
-                            <p>Build systems that support long-term healthcare growth and operational management.</p>
-                            <div class="impact-card-h-line"></div>
-                            <div class="impact-card-v-line"></div>
-
-                        </div>
+            </div>
+            <div class="col-md-6">
+                <div class="impact-card-grid">
+                    {% for item in detail.impact_items.all %}
+                    {% if forloop.counter > 2 %}
+                    <div class="impact-card">
+                        <h4>{{ item.title }}</h4>
+                        <div>{{ item.description|safe }}</div>
+                        <div class="impact-card-h-line"></div>
+                        <div class="impact-card-v-line"></div>
                     </div>
+                    {% endif %}
+                    {% endfor %}
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </section>
 
@@ -296,24 +271,19 @@
                                     d="M5 0C5 0 4.7167 2.98814 5.9 4.15C7.06678 5.29564 10 5 10 5C10 5 6.99755 5.07093 5.9 6.35045C4.94427 7.46464 5 10 5 10C5 10 4.87219 7.44047 3.85 6.35045C2.76008 5.18822 0 5 0 5C0 5 2.70507 5.17951 3.85 4.15C5.10054 3.02553 5 0 5 0Z"
                                     fill="#F16535" />
                             </svg>
-                            Solutions
+                            {{ detail.solutions_badge_text }}
                         </div>
                         <div class="heading-text-container heading-container-services-details">
-                            <h2 class="sub-heading-new" style="text-align: left;">Healthcare Solutions<br>Built Around
-                                Real<br>Workflows</h2>
-                            <p class="sub-pera-new">
-                                We design healthcare systems that simplify operational management and improve day-to-day
-                                workflows.
-                            </p>
+                            <h2 class="sub-heading-new" style="text-align: left;">{{ detail.solutions_title }}</h2>
+                            <div class="sub-pera-new">
+                                {{ detail.solutions_description|safe }}
+                            </div>
                         </div>
                     </div>
-                    <div class="col-lg-5 offset-lg-1 gap-2 d-flex flex-column">
-                        <p class="sub-pera-new" style="text-align: left;">From compliance management and reporting
-                            systems to workflow automation and operational dashboards, our solutions are built around
-                            how healthcare organizations actually operate.</p>
-                        <p class="sub-pera-new" style="text-align: left;">Healthcare providers continue adopting digital
-                            healthcare systems and automation technologies to improve operational efficiency according
-                            to HealthIT.gov.</p>
+                    <div class="col-lg-6 gap-2 d-flex flex-column">
+                        {% for item in detail.solution_items.all %}
+                        <div class="sub-pera-new" style="text-align: left;">{{ item.content|safe }}</div>
+                        {% endfor %}
                     </div>
                 </div>
             </div>
@@ -335,38 +305,23 @@
                             d="M5 0C5 0 4.7167 2.98814 5.9 4.15C7.06678 5.29564 10 5 10 5C10 5 6.99755 5.07093 5.9 6.35045C4.94427 7.46464 5 10 5 10C5 10 4.87219 7.44047 3.85 6.35045C2.76008 5.18822 0 5 0 5C0 5 2.70507 5.17951 3.85 4.15C5.10054 3.02553 5 0 5 0Z"
                             fill="#F16535" />
                     </svg>
-                    Solutions
+                    {{ detail.provide_badge_text }}
                 </div>
                 <div class="heading-text-container heading-container-services-details">
-                    <h2 class="sub-heading-new" style="text-align: left;">What We Provide</h2>
-                    <p class="sub-pera-new">
-                        We design healthcare systems that simplify operational management and improve day-to-day
-                        workflows.
-                    </p>
+                    <h2 class="sub-heading-new" style="text-align: left;">{{ detail.provide_title }}</h2>
+                    <div class="sub-pera-new">
+                        {{ detail.provide_description|safe }}
+                    </div>
                 </div>
             </div>
             <div class="col-lg-6 offset-lg-1">
                 <div class="d-flex flex-column offset-card-col">
+                    {% for item in detail.provide_items.all %}
                     <div class="ind-provide-card">
-                        <h5>Healthcare Reporting Dashboards</h5>
-                        <p>Track operations, reporting metrics, compliance workflows, and organizational performance
-                            through real-time dashboards.</p>
+                        <h5>{{ item.title }}</h5>
+                        <div>{{ item.description|safe }}</div>
                     </div>
-                    <div class="ind-provide-card">
-                        <h5>Compliance & Documentation Systems</h5>
-                        <p>Simplify compliance management, operational tracking, and healthcare documentation processes.
-                        </p>
-                    </div>
-                    <div class="ind-provide-card">
-                        <h5>Operational Management Platforms</h5>
-                        <p>Centralize communication, operational workflows, scheduling, and healthcare management
-                            systems.</p>
-                    </div>
-                    <div class="ind-provide-card">
-                        <h5>Scalable Healthcare Infrastructure</h5>
-                        <p>Build flexible digital systems that support healthcare growth, visibility, and operational
-                            scalability.</p>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
@@ -386,46 +341,25 @@
                             d="M5 0C5 0 4.7167 2.98814 5.9 4.15C7.06678 5.29564 10 5 10 5C10 5 6.99755 5.07093 5.9 6.35045C4.94427 7.46464 5 10 5 10C5 10 4.87219 7.44047 3.85 6.35045C2.76008 5.18822 0 5 0 5C0 5 2.70507 5.17951 3.85 4.15C5.10054 3.02553 5 0 5 0Z"
                             fill="#F16535" />
                     </svg>
-                    Why choose us
+                    {{ detail.why_choose_badge_text }}
                 </div>
                 <div class="heading-text-container heading-container-services-details">
-                    <h2 class="sub-heading-new" style="text-align: left;">Why Healthcare Providers Choose Us</h2>
-                    <p class="sub-pera-new" style="line-height: 1.6; max-width: 600px;">
-                        We design healthcare systems that simplify operational management and improve day-to-day
-                        workflows.
-                    </p>
-                    <p class="sub-pera-new" style="line-height: 1.6; max-width: 100%;">Our approach combines workflow
-                        optimization, operational clarity, and scalable system design to help healthcare providers
-                        improve efficiency and simplify operations. Modern healthcare organizations increasingly rely on
-                        healthcare automation systems and centralized operational platforms according to McKinsey &
-                        Company.</p>
+                    <h2 class="sub-heading-new" style="text-align: left;">{{ detail.why_choose_title }}</h2>
+                    <div class="sub-pera-new">
+                        {{ detail.why_choose_description|safe }}
+                    </div>
                 </div>
             </div>
             <div class="row g-4">
-                <div class="col-md-5">
-                    <div class="ind-why-card gradient-bg  ">
-                        <h5 class="why-card-text">Simplified healthcare<br>workflows</h5>
-                        <div class="ind-number-badge">1</div>
+                {% for item in detail.why_choose_items.all %}
+                <div class="col-md-{% if forloop.counter == 1 or forloop.counter == 4 %}5{% else %}7{% endif %}">
+                    <div
+                        class="ind-why-card {% if forloop.counter == 1 or forloop.counter == 4 %}gradient-bg{% endif %}">
+                        <h5 class="why-card-text">{{ item.title|safe }}</h5>
+                        <div class="ind-number-badge">{{ forloop.counter }}</div>
                     </div>
                 </div>
-                <div class="col-md-7">
-                    <div class="ind-why-card  ">
-                        <h5 class="why-card-text">Better operational visibility</h5>
-                        <div class="ind-number-badge">2</div>
-                    </div>
-                </div>
-                <div class="col-md-7">
-                    <div class="ind-why-card  ">
-                        <h5 class="why-card-text">Faster reporting systems</h5>
-                        <div class="ind-number-badge">3</div>
-                    </div>
-                </div>
-                <div class="col-md-5">
-                    <div class="ind-why-card gradient-bg ">
-                        <h5 class="why-card-text">Improved team<br>coordination</h5>
-                        <div class="ind-number-badge">4</div>
-                    </div>
-                </div>
+                {% endfor %}
             </div>
         </div>
 </section>
@@ -437,11 +371,9 @@
         <div class="cta-refined-box">
             <div class="row align-items-center">
                 <div class="col-lg-6">
-                    <h1 class="cta-title-refined">Build Smarter Healthcare Operations</h1>
-                    <p class="cta-subtitle-refined">Talk with our team about improving workflows, reducing manual
-                        operations, and building scalable healthcare systems for healthcare providers across Australia.
-                    </p>
-                    <a href="{% url 'contact' %}" class="btn-cta-refined">
+                    <h1 class="cta-title-refined">{{ detail.cta_title }}</h1>
+                    <div class="cta-subtitle-refined">{{ detail.cta_subtitle|safe }}</div>
+                    <a href="{% url 'schedule-call' %}" class="btn-cta-refined">
                         <span class="label-up">Book a Strategy Call</span>
                         <span class="label-up">Book a Strategy Call</span>
                     </a>

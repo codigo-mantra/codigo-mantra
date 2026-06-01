@@ -68,20 +68,25 @@
             <!-- Card 1 -->
             {%for service in services%}
             <div class="col-lg-4">
-                <div class="service-card-new service-card-new-2">
-                    <div class="service-top">
-                        <div class="mobile-view">
-                            <div class="service-icon-box">
-                                <img loading="lazy" src="{{ service.icon.url }}" alt="{{ service.name }} Icon">
-                            </div>
-                            <div>
-                                <h5 class="service-title">{{ service.name }}</h5>
+                <a href="{% url 'service-details-slug' slug=service.slug %}?type=page"
+                    class="text-decoration-none text-reset">
+                    <div class="service-card-new service-card-new-2">
+                        <div class="service-top">
+                            <div class="mobile-view">
+                                <div class="service-icon-box">
+                                    {% if service.icon %}
+                                    <img loading="lazy" src="{{ service.icon.url }}" alt="{{ service.name }} Icon">
+                                    {% endif %}
+                                </div>
+                                <div>
+                                    <h5 class="service-title">{{ service.name }}</h5>
 
-                                <p class="service-desc">{{ service.description }}</p>
+                                    <p class="service-desc">{{ service.description }}</p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                </a>
             </div>
             {%endfor%}
         </div>

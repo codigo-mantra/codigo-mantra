@@ -412,7 +412,8 @@ class Booking(TimeStamp):
 
 class ServiceDetail(TimeStamp):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    service_page = models.OneToOneField(Service_index, on_delete=models.CASCADE, related_name="detail")
+    service_page = models.ForeignKey(Service_index, on_delete=models.CASCADE, related_name="details", null=True, blank=True)
+    service_main_page = models.ForeignKey(Service_page, on_delete=models.CASCADE, related_name="details", null=True, blank=True)
     
     # Hero Section
     hero_title = RichTextField(blank=True)
@@ -422,7 +423,8 @@ class ServiceDetail(TimeStamp):
     # hero_button_url = models.CharField(max_length=255, default="schedule-call")
 
     # Problems Section
-    problems_title = models.CharField(max_length=255, default="Where things break down")
+    # problems_title = RichTextField(blank=True, default="Where things break down")
+    problems_title = models.TextField(max_length=255, default="Where things break down")
     problems_description = RichTextField(blank=True)
     problems_list_title = models.CharField(max_length=255, default="Common challenges we see:")
 
@@ -446,7 +448,11 @@ class ServiceDetail(TimeStamp):
     # cta_button_url = models.CharField(max_length=255, default="contact")
 
     def __str__(self):
-        return f"Details for {self.service_page.name}"
+        if self.service_page:
+            return f"Details for {self.service_page.name} (Index)"
+        elif self.service_main_page:
+            return f"Details for {self.service_main_page.name} (Service Page)"
+        return f"Service Detail {self.id}"
 
 class ServiceProblemItem(TimeStamp):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -500,10 +506,10 @@ class ServiceWhyChooseItem(TimeStamp):
 
 class IndustryDetail(TimeStamp):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    industry = models.OneToOneField(
+    industry = models.ForeignKey(
         Industry,
         on_delete=models.CASCADE,
-        related_name="detail"
+        related_name="details"
     )
 
     # Hero Section

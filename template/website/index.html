@@ -122,7 +122,7 @@
 
             <div class="col-lg-3 mb-1">
 
-                <a href="{% url 'service-details-slug' slug=service.slug %}" class="text-decoration-none text-reset">
+                <a href="{% url 'service-details-slug' slug=service.slug %}?type=index" class="text-decoration-none text-reset">
 
                     <div class="service-card-wrapper h-100">
 
@@ -479,14 +479,22 @@
                                 {{ case.content }}
                             </p>
 
-                            <div class="project-meta-grid">
+                            <h4>Solution</h4>
+                            <p class="project-description">
+                                {{ case.description|safe}}
+                            </p>
+
+                            <!-- <div class="project-meta-grid">
                                 <div class="meta-item">
-                                    <h4>Services</h4>
-                                    <ul>
+                                    <h4>Solution</h4>
+                                    <p class="project-description">
+                                        {{ case.description|safe}}
+                                    </p> -->
+                            <!-- <ul>
                                         {% for service in case.services.all %}
                                         <li>{{ service.name }}</li>
                                         {% endfor %}
-                                    </ul>
+                                        </ul>
                                 </div>
                                 <div class="meta-item">
                                     <h4>Industry</h4>
@@ -500,8 +508,10 @@
                                     <h4>Timeline</h4>
                                     <span class="meta-value">{{ case.timeline }}</span>
                                 </div>
-                            </div>
-                            <!-- <a href="{% url 'case_study_detail' case.id %}" class="btn btn-secondary-cm"> -->
+                            </div> -->
+                            <!-- <a href="{% if case.url and 'test.com' not in case.url %}{{ case.url }}{% else %}{% url 'case_study_detail' case.id %}{% endif %}" 
+                               {% if case.url and 'test.com' not in case.url %}target="_blank"{% endif %}
+                               class="btn btn-secondary-cm"> -->
                             <a href="{{ case.url }}" target="_blank" class="btn btn-secondary-cm">
                                 <span class="label-up">Visit case study</span>
                                 <span class="label-up">Visit case study</span>
