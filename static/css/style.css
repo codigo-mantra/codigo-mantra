@@ -410,10 +410,15 @@ a:hover {
 .custom-postion-accoding {
   position: relative !important;
 }
-
-.custom-drop-sw {
+.custom-postion-accoding .custom-drop-sw {
+    transform: translateY(42px) !important;
+}
+/* .custom-drop-sw .show{
   top: 95px !important;
 }
+.custom-drop-sw-new-about.show{
+  top: 95px !important;
+} */
 
 .border-custom- {
   border-radius: 13px;
