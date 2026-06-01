@@ -29,25 +29,25 @@
             </div>
 
             <h1 class="hero-title">
-                <span class="text-orange">AI-Powered</span> solutions for <span class="text-orange">modern business
-                </span> to scale with <span class="text-orange">confidence</span>
+                <span class="text-orange">Automate</span> operations and <span class="text-orange">build
+                </span> scalable systems for <span class="text-orange">growing businesses</span>
             </h1>
             <p class="hero-sub mobile-spacing">
-                Simplify your operations, improve decision-making, and accelerate growth with technology built for real
-                business impact.
+                We design and build systems that reduce manual work, improve decision-making, <br>and scale your
+                operations.
             </p>
             <div class="schedule-call-footer">
 
-            <a class="btn-cm-cta btn-pill" href="{% url 'schedule-call' %}">
+                <a class="btn-cm-cta btn-pill" href="{% url 'schedule-call' %}">
                     <span class="label-up">Book a Strategy Call</span>
                     <span class="label-up">Book a Strategy Call</span>
                     <!-- <span class="label-up">Book a 15 min call</span>
                     <span class="label-up">Book a 15 min call</span> -->
                 </a>
-            <a class="btn-secondary-cm" href="{% url 'portfolio' %}">
-                <span class="label-up">View Case Studies</span>
-                <span class="label-up">View Case Studies</span>
-            </a>
+                <a class="btn-secondary-cm" href="{% url 'portfolio' %}">
+                    <span class="label-up">View Case Studies</span>
+                    <span class="label-up">View Case Studies</span>
+                </a>
             </div>
             <!-- <div class="hero-cta-wrap">
                 <a class="btn-cm-cta btn-pill" href="{% url 'schedule-call' %}">
@@ -95,9 +95,15 @@
                 Services
             </div>
         </div>
-        <h2 class="display-heading">
-            Everything your product needs to<br> go from idea to market
-        </h2>
+
+        <div class="heading-text-container service-heading-new-container">
+            <h2 class="sub-heading-new">From Manual Workflows to Intelligent Systems</h2>
+            <p class="sub-pera-new">
+                We don’t just build software—we design systems that eliminate inefficiencies, reduce manual<br> work,
+                and
+                help your business scale faster.
+            </p>
+        </div>
 
         <!-- <div class="row g-4 text-start services-row-new" style="margin-bottom: 30px;">
             {% for service in services %}
@@ -134,7 +140,8 @@
 
             <div class="col-lg-3 mb-1">
 
-                <a href="{% url 'service-details-slug' slug=service.slug %}?type=index" class="text-decoration-none text-reset">
+                <a href="{% url 'service-details-slug' slug=service.slug %}?type=index"
+                    class="text-decoration-none text-reset">
 
                     <div class="service-card-wrapper h-100">
 
@@ -492,9 +499,9 @@
                             </p>
 
                             <h4>Solution</h4>
-                            <p class="project-description">
+                            <div class="project-description">
                                 {{ case.description|safe}}
-                            </p>
+                            </div>
 
                             <!-- <div class="project-meta-grid">
                                 <div class="meta-item">

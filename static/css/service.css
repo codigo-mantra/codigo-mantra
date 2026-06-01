@@ -628,7 +628,7 @@ u.sd-checklist {
     /* color: rgba(246, 246, 246, 0.8); */
     color: #F6F6F6;
     font-family: "Poppins", sans-serif;
-    font-size: 16px;
+    font-size: 20px;
     line-height: 1.6;
     max-width: 700px;
     margin-bottom: 40px;
@@ -641,8 +641,8 @@ u.sd-checklist {
     font-family: "Poppins", sans-serif;
     font-size: 16px;
     line-height: 1.6;
-    max-width: 700px;
-    /* margin-bottom: 40px; */
+    /* max-width: 700px; */
+    margin-bottom: 14px;
     letter-spacing: 0.4px;
 }
 

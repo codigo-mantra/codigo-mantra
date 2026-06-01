@@ -410,9 +410,11 @@ a:hover {
 .custom-postion-accoding {
   position: relative !important;
 }
+
 .custom-postion-accoding .custom-drop-sw {
-    transform: translateY(42px) !important;
+  transform: translateY(42px) !important;
 }
+
 /* .custom-drop-sw .show{
   top: 95px !important;
 }
@@ -1918,8 +1920,19 @@ a.btn-close.modal-close-btn {
 .cm-ul {
   margin-top: 16px !important;
 }
+
 ::selection {
-  background-color: #F05D35; /* Highlights text with Tomato red */
-  color: white;   
-  opacity: 1;           /* Changes selected text to white */
+  background-color: #F05D35;
+  /* Highlights text with Tomato red */
+  color: white;
+  opacity: 1;
+  /* Changes selected text to white */
+}
+
+.cutom-bottom-space {
+  margin-bottom: 11px;
+}
+
+ul.sd-checklist {
+  padding-left: 8px;
 }

@@ -521,7 +521,7 @@ class IndustryDetail(TimeStamp):
     challenges_title = models.CharField(max_length=255, default="Operational Challenges")
     challenges_description = RichTextField(blank=True)
     challenges_image = models.ImageField(upload_to="industries/challenges/", blank=True, null=True)
-    challenges_image_caption = models.CharField(max_length=255, blank=True)
+    challenges_image_caption = models.CharField(max_length=500, blank=True)
 
     # Impact Section
     impact_title = models.CharField(max_length=255, default="Operational Impact")

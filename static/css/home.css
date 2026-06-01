@@ -1400,7 +1400,7 @@ body {
 
 .sub-heading-new {
     color: var(--white, #F6F6F6);
-    text-align: center;
+    /* text-align: center; */
     font-family: "Bricolage Grotesque";
     font-size: 32px;
     font-style: normal;
@@ -1408,6 +1408,9 @@ body {
     line-height: 150%;
     letter-spacing: 0.64px;
     margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14PX;
 }
 
 .sub-pera-new {
@@ -1524,6 +1527,7 @@ section.how-we-work-sec::after {
 img.industries-img {
     width: 100%;
     height: 422px;
+    object-fit: contain;
 }
 
 /* .Background-fixed-cm-col {
@@ -1593,6 +1597,7 @@ img.industries-img {
     background: #F05736;
     border-radius: 10px;
 }
+
 .hero-subtitle-wrap {
     color: #F6F6F6;
     text-align: center;
@@ -1606,4 +1611,18 @@ img.industries-img {
     bottom: 82px;
     left: 0;
     right: 0;
+}
+
+.service-heading-new-container {
+    margin-bottom: 50px;
+}
+
+.project-content-side h4 {
+    color: #F6F6F6;
+    font-family: Poppins;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 150%;
+    margin-bottom: 10px;
 }
