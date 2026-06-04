@@ -452,10 +452,11 @@
 
                 const isOpen = dropdown.classList.contains('show');
 
-                if (!isOpen) {
-                    e.preventDefault();
-                    e.stopPropagation();
+                e.preventDefault();
+                e.stopPropagation();
 
+                if (!isOpen) {
+                    // Close all other dropdowns
                     dropdownItems.forEach(otherItem => {
                         const otherDropdown = otherItem.querySelector('.dropdown-menu');
                         if (otherDropdown && otherDropdown !== dropdown) {
@@ -464,8 +465,13 @@
                         }
                     });
 
+                    // Open this dropdown
                     dropdown.classList.add('show');
                     item.classList.add('mobile-open');
+                } else {
+                    // ✅ Toggle close if already open
+                    dropdown.classList.remove('show');
+                    item.classList.remove('mobile-open');
                 }
             });
         });

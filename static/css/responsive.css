@@ -997,6 +997,9 @@
     .hero-left {
         padding-right: 0px !important;
     }
+    .menu-btn-cm {
+        width: 100%;
+    }
 }
 @media (max-width: 450px) {
     .about-hero {
@@ -1010,9 +1013,9 @@
     .modal {
         top: 10% !important;
     }
-    .modal-dialog {
+    /* .modal-dialog {
         width: 100% !important;
-    }
+    } */
     button.btn.btn-sm.btn-cm-cta.btn-pill.custom-footer-btn {
         position: relative;
         right: 0;
