@@ -112,7 +112,7 @@
                     <div class="service-card-new service-card-new-mobile">
                         <div class="service-top">
                             <div class="service-icon-box">
-                                <!-- <img loading="lazy" src="{{ service.icon }}" alt=""> -->
+                                <img loading="lazy" src="{{ service.icon }}" alt=""> -->
         <!-- <i class="{{ service.icon }} text-orange"></i>
                             </div>
 
@@ -499,9 +499,9 @@
                             </p>
 
                             <h4>Solution</h4>
-                            <div class="project-description">
-                                {{ case.description|safe}}
-                            </div>
+                            <p class="project-description">
+                                {{ case.solution|safe}}
+                            </p>
 
                             <!-- <div class="project-meta-grid">
                                 <div class="meta-item">
@@ -528,10 +528,8 @@
                                     <span class="meta-value">{{ case.timeline }}</span>
                                 </div>
                             </div> -->
-                            <!-- <a href="{% if case.url and 'test.com' not in case.url %}{{ case.url }}{% else %}{% url 'case_study_detail' case.id %}{% endif %}" 
-                               {% if case.url and 'test.com' not in case.url %}target="_blank"{% endif %}
-                               class="btn btn-secondary-cm"> -->
-                            <a href="{{ case.url }}" target="_blank" class="btn btn-secondary-cm">
+                            <!-- <a href="{{ case.url }}" target="_blank" class="btn btn-secondary-cm"> -->
+                            <a href="{% url 'case_study_detail' case.pk %}" class="btn btn-secondary-cm">
                                 <span class="label-up">Visit case study</span>
                                 <span class="label-up">Visit case study</span>
                             </a>
@@ -755,11 +753,9 @@
         <div class="cta-refined-box">
             <div class="row align-items-center">
                 <div class="col-lg-7">
-                    <h1 class="cta-title-refined">Build impactful solutions with a tech
-                        catalyst</h1>
-                    <p class="cta-subtitle-refined">Partner with a team that focuses on meaningful outcomes, not
-                        just
-                        deliverables.</p>
+                    <h1 class="cta-title-refined">Let’s build something great together</h1>
+                    <p class="cta-subtitle-refined">Partner with us to build scalable digital products and systems that
+                        drive efficiency, innovation, and long-term growth.</p>
                     <a href="{% url 'contact' %}" class="btn-cta-refined">
                         <span class="label-up">Get in touch</span>
                         <span class="label-up">Get in touch</span>

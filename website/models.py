@@ -139,6 +139,7 @@ class CaseStudy(TimeStamp):
     # goal = models.TextField(blank=True, null=True)
     # challenge = models.TextField(blank=True, null=True)
     # outcome = models.TextField(blank=True, null=True)
+    solution = models.TextField(blank=True, null=True)
     description = RichTextField(blank=True, null=True)
     timeline = models.CharField(max_length=255, blank=True)
     team = models.CharField(max_length=255, blank=True)
@@ -146,6 +147,7 @@ class CaseStudy(TimeStamp):
     cover_image = models.ImageField(upload_to="case_studies/", blank=True, null=True)
     # product_image = models.ImageField(upload_to="case_studies/", blank=True, null=True)
     display_order = models.PositiveIntegerField(default=0)
+    show_on_other_projects = models.BooleanField(default=True)
 
     services = models.ManyToManyField(Service, through="CaseStudyService")
     industries = models.ManyToManyField(Industry, through="CaseStudyIndustry")

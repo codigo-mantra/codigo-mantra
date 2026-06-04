@@ -989,7 +989,7 @@ class PortfolioPage(views.View):
         
         # Exclude the first 2 projects (which are shown on the index page)
         # We start from index 2
-        case_studies = all_case_studies[2:8] 
+        case_studies = all_case_studies[0:6] 
         featured_projects = all_case_studies[2:5] # Show next 3 as featured on this page
         
         industries = Industry.objects.all()
@@ -1006,7 +1006,7 @@ class PortfolioPage(views.View):
 class CaseStudyDetailPage(views.View):
     def get(self,request, pk):
 
-        case_studies = CaseStudy.objects.all().order_by('display_order').prefetch_related(
+        case_studies = CaseStudy.objects.filter(show_on_other_projects=True).order_by('display_order').prefetch_related(
             "services", "industries", "technologies", "images"
         )
         try:
