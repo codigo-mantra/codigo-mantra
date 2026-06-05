@@ -305,7 +305,9 @@
                         unlockScroll();
                     }
 
-                    closeonnonhover()
+                    if (typeof closeonnonhover === 'function') {
+                        closeonnonhover();
+                    }
                 }, 250);
             }
 
@@ -332,10 +334,13 @@
                 e.stopPropagation();
                 
                 const isOpen = dropdown.classList.contains('show');
+                console.log('Mobile dropdown toggle clicked! isOpen:', isOpen);
                 
                 if (!isOpen) {
+                    console.log('Opening menu');
                     openMenu();
                 } else {
+                    console.log('Closing menu');
                     closeMenu();
                 }
             });

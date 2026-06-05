@@ -209,15 +209,17 @@ const toggle = document.getElementById("cs-toggle-input");
 const industriesList = document.getElementById("list-industries");
 const techList = document.getElementById("list-technologies");
 
-toggle.addEventListener("change", function () {
-    if (this.checked) {
-        industriesList.classList.remove("active");
-        techList.classList.add("active");
-    } else {
-        industriesList.classList.add("active");
-        techList.classList.remove("active");
-    }
-});
+if (toggle && industriesList && techList) {
+    toggle.addEventListener("change", function () {
+        if (this.checked) {
+            industriesList.classList.remove("active");
+            techList.classList.add("active");
+        } else {
+            industriesList.classList.add("active");
+            techList.classList.remove("active");
+        }
+    });
+}
 
 
 document.addEventListener("DOMContentLoaded", function () {
