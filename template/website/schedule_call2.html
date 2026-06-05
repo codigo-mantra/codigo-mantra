@@ -220,7 +220,7 @@
 </section>
 
 
-<div class="modal fade" id="bookingSuccessModal" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="bookingSuccessModal" tabindex="-1" aria-labelledby="bookingSuccessModalTitle">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content newsletter-modal">
             <!-- Illustration Area -->
@@ -243,7 +243,7 @@
 
             <!-- Text Content -->
             <div class="newsletter-body">
-                <h2 class="newsletter-title">Your Call is Confirmed!</h2>
+                <h2 class="newsletter-title" id="bookingSuccessModalTitle">Your Call is Confirmed!</h2>
                 <p class="newsletter-desc">Your meeting has been successfully scheduled. We look forward to speaking
                     with you and learning more about your goals.</p>
             </div>
@@ -254,7 +254,8 @@
 
 
 
-<div class="modal fade" id="bookingConflictModal" tabindex="-1" aria-hidden="true">
+
+<div class="modal fade" id="bookingConflictModal" tabindex="-1" aria-labelledby="bookingConflictModalTitle">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content newsletter-modal">
 
@@ -278,7 +279,7 @@
 
             <!-- Text Content -->
             <div class="newsletter-body">
-                <h2 class="newsletter-title">You already have a call scheduled</h2>
+                <h2 class="newsletter-title" id="bookingConflictModalTitle">You already have a call scheduled</h2>
 
                 <p class="newsletter-desc">
                     It looks like you already have a call scheduled at
