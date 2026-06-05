@@ -200,29 +200,33 @@ body {
 
 .card-tl {
     top: 23%;
-    left: -2.2%;
-    /* transform: rotate(-8deg); */
+    left: 6%;
+    transform: rotate(-8deg);
     animation-delay: 0s;
+    opacity: 0.4;
 }
 
 .card-tr {
     top: 19%;
-    right: -3%;
-    /* transform: rotate(6deg); */
+    right: 0%;
+    transform: rotate(351deg);
     animation-delay: 1.5s;
 }
 
 .card-bl {
     top: 77%;
-    left: -2.7%;
+    left: 6%;
     animation-delay: 2.5s;
+    transform: rotate(10deg);
+    opacity: 0.4;
 }
 
 .card-br {
     top: 67%;
-    right: -3%;
+    right: 0%;
     /* transform: rotate(-4deg); */
     animation-delay: 4s;
+    opacity: 0.4;
 }
 
 @keyframes floating-subtle {

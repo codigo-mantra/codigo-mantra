@@ -539,7 +539,7 @@ section.no-openings {
     background-position: center;
     height: 100%;
     border-radius: 20px;
-    padding: 20px 45px;
+    padding: 20px 0 45px;
 }
 .challenges-right-img img {
     width: 100%;

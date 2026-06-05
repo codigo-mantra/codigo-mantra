@@ -349,10 +349,10 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    padding: 55px;
+    padding: 55px auto 55px;
     border-radius: 30px;
     margin: 63px auto 84px;
-    /* max-width: 1370px; */
+    max-width: 1370px;
 }
 
 .heading-container-services-details {
@@ -499,7 +499,7 @@ u.sd-checklist {
     height: 100%;
     background-size: cover;
     background-position: center;
-    opacity: 0.3;
+    opacity: 0.9;
     transition: opacity 0.3s ease;
     z-index: 1;
     background: linear-gradient(180deg, rgba(0, 0, 0, 0.01) -44.78%, rgba(0, 0, 0, 0.70) 100%), lightgray 0px -1.667px / 100% 118.841% no-repeat;
@@ -655,3 +655,6 @@ u.sd-checklist {
     margin-bottom: 40px;
     letter-spacing: 0.4px;
 } */
+ .hero-sub.service-hero-sub{
+margin-left: 0 !important;
+ }
