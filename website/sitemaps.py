@@ -20,7 +20,7 @@ class ServiceSitemap(Sitemap):
         return Service_page.objects.all()
 
     def location(self, obj):
-        return reverse('service_detail', kwargs={'slug': obj.slug})
+        return f'/service-details/{obj.slug}/'
 
 class JobSitemap(Sitemap):
     priority = 0.5

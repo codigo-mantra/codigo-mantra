@@ -2,6 +2,9 @@
 {% block title %}Portfolio | CodigoMantra{% endblock %}
 {% load static %}
 {% block content %}
+<head>
+    <link rel="canonical" href="{{ canonical_url }}">
+</head>
 <section class="case-study-hero">
     <div class="container">
         <!-- Hero Header -->
@@ -123,8 +126,10 @@
                     <div class="cs-card"
                         data-industries="{% for industry in case_study.industries.all %}{{ industry.slug }} {% endfor %}"
                         data-technologies="{% for tech in case_study.technologies.all %}{{ tech.slug }} {% endfor %}">
-                        <div class="cs-card-img"><img src="{{ case_study.cover_image.url }}"
-                                alt="{{ case_study.title }}"></div>
+                        <div class="cs-card-img">
+                            <img src="{{ case_study.cover_image.url }}"
+                                alt="{{ case_study.title }}"> 
+                            </div>
                         <div class="cs-card-body">
                             <div>
                                 <div class="cm-card-header-text">

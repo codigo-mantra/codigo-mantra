@@ -2,6 +2,10 @@ from website.models import Industry, Service, CaseStudy , CompanyContact, Social
 from django.shortcuts import render, redirect
 from django.conf import settings
 from .forms import NewsletterForm
+from decouple import config
+
+BASE_URL = config("BASE_URL")
+
 def navbar_context(request):
     """Global context available in all templates"""
     # Fetch top-level services (categories) and their children
@@ -63,3 +67,12 @@ def navbar_context(request):
 #     }
 
 
+def canonical_url(request):
+    if request.path == "/":
+        url = BASE_URL
+    else:
+        url = f"{BASE_URL}{request.path}"
+
+    return {
+        "canonical_url": url
+    }
