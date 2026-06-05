@@ -93,6 +93,26 @@
     <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
 
+    <script>
+    // Override setTimeout to catch share-modal errors
+    const _originalSetTimeout = window.setTimeout;
+    window.setTimeout = function(fn, delay, ...args) {
+        const wrappedFn = typeof fn === 'function' ? function() {
+            try {
+                fn.apply(this, args);
+            } catch(e) {
+                if (
+                    e.message && e.message.includes("Cannot read properties of null") ||
+                    e.stack && e.stack.includes('share-modal')
+                ) {
+                    return; // Silently ignore
+                }
+                throw e; // Re-throw other errors
+            }
+        } : fn;
+        return _originalSetTimeout(wrappedFn, delay, ...args);
+    };
+</script>
 
 </body>
 

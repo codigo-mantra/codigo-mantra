@@ -244,6 +244,44 @@
         const OPEN_DELAY = 200;
         const CLOSE_DELAY = 250;
 
+        function isDesktop() {
+            return window.innerWidth > DESKTOP_WIDTH;
+        }
+        
+        function isMobile() {
+            return window.innerWidth <= DESKTOP_WIDTH;
+        }
+
+        function lockScroll() {
+            document.body.classList.add('menu-open');
+        }
+
+        function unlockScroll() {
+            const anyOpen = document.querySelector('.dropdown-menu.show');
+            if (!anyOpen) {
+                document.body.classList.remove('menu-open');
+            }
+        }
+
+        function closeDropdown(target) {
+            if (!target) return;
+            target.style.opacity = '0';
+            target.style.transform = 'translateY(8px)';
+            target.style.pointerEvents = 'none';
+            target.classList.remove('show');
+
+            setTimeout(() => {
+                if (!target.classList.contains('show')) {
+                    target.style.display = 'none';
+                    unlockScroll();
+                }
+
+                if (typeof closeonnonhover === 'function') {
+                    closeonnonhover();
+                }
+            }, 250);
+        }
+
         megaMenus.forEach(menu => {
             const toggle = menu.querySelector('.dropdown-toggle');
             const dropdown = menu.querySelector('.dropdown-menu');
@@ -252,25 +290,6 @@
 
             let openTimer;
             let closeTimer;
-
-            function isDesktop() {
-                return window.innerWidth > DESKTOP_WIDTH;
-            }
-            
-            function isMobile() {
-                return window.innerWidth <= DESKTOP_WIDTH;
-            }
-
-            function lockScroll() {
-                document.body.classList.add('menu-open');
-            }
-
-            function unlockScroll() {
-                const anyOpen = document.querySelector('.dropdown-menu.show');
-                if (!anyOpen) {
-                    document.body.classList.remove('menu-open');
-                }
-            }
 
             function openMenu() {
                 megaMenus.forEach(otherMenu => {
@@ -290,25 +309,6 @@
                     dropdown.style.pointerEvents = 'auto';
                     lockScroll();
                 });
-            }
-
-            function closeDropdown(target) {
-                if (!target) return;
-                target.style.opacity = '0';
-                target.style.transform = 'translateY(8px)';
-                target.style.pointerEvents = 'none';
-                target.classList.remove('show');
-
-                setTimeout(() => {
-                    if (!target.classList.contains('show')) {
-                        target.style.display = 'none';
-                        unlockScroll();
-                    }
-
-                    if (typeof closeonnonhover === 'function') {
-                        closeonnonhover();
-                    }
-                }, 250);
             }
 
             function closeMenu() {
@@ -335,13 +335,10 @@
                     e.stopPropagation();
                     
                     const isOpen = dropdown.classList.contains('show');
-                    console.log('Mobile dropdown toggle clicked! isOpen:', isOpen);
                     
                     if (!isOpen) {
-                        console.log('Opening menu');
                         openMenu();
                     } else {
-                        console.log('Closing menu');
                         closeMenu();
                     }
                 } else {
@@ -388,17 +385,7 @@
             megaMenus.forEach(menu => {
                 const dropdown = menu.querySelector('.dropdown-menu');
                 if (dropdown && !menu.contains(e.target)) {
-                    dropdown.classList.remove('show');
-                    dropdown.style.opacity = '0';
-                    dropdown.style.transform = 'translateY(8px)';
-                    dropdown.style.pointerEvents = 'none';
-
-                    setTimeout(() => {
-                        if (!dropdown.classList.contains('show')) {
-                            dropdown.style.display = 'none';
-                            document.body.classList.remove('menu-open');
-                        }
-                    }, 250);
+                    closeDropdown(dropdown);
                 }
             });
         });

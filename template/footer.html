@@ -675,7 +675,7 @@
     </div>
 </footer>
 
-<div class="modal fade" id="subscribeSuccessModal" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="subscribeSuccessModal" tabindex="-1" aria-labelledby="subscribeSuccessModalTitle">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content newsletter-modal">
             <!-- Illustration Area -->
@@ -697,7 +697,7 @@
 
             <!-- Text Content -->
             <div class="newsletter-body">
-                <h2 class="newsletter-title">You're Subscribed!</h2>
+                <h2 class="newsletter-title" id="subscribeSuccessModalTitle">You're Subscribed!</h2>
                 <p class="newsletter-desc">Thanks for joining our newsletter. You'll now receive updates, insights, and
                     the latest from CodigoMantra.</p>
             </div>
@@ -706,6 +706,22 @@
     </div>
 </div>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Fix accessibility warning: when modal closes, move focus away
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => {
+            modal.addEventListener('hidden.bs.modal', function () {
+                // If the modal is hidden and has aria-hidden, make sure nothing inside is focused
+                if (document.activeElement && modal.contains(document.activeElement)) {
+                    // Move focus to body or a safe element
+                    document.body.focus();
+                    // Or you could focus the element that triggered the modal if you tracked it
+                }
+            });
+        });
+    });
+</script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const footerForm = document.querySelector('.footer-form');
