@@ -179,6 +179,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'website.context_processor.navbar_context',
+                'website.context_processor.canonical_url',
             ],
         },
     },

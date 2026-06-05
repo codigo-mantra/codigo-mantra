@@ -2,6 +2,10 @@
 {% load static %}
 {% block content %}
 
+<head>
+    <link rel="canonical" href="{{ canonical_url }}">
+</head>
+
 <section class="hero">
     <!-- Background Grid -->
     <!-- <div class="hero-grid-bg"></div> -->
@@ -211,8 +215,9 @@
                 <div class="row align-items-center">
                     <div class="col-lg-6">
                         <div class="project-mockup-side">
-                            <img loading="lazy" src="{{ case.cover_image.url }}" alt="{{ case.title }}"
-                                class="img-fluid">
+                           
+                            <img loading="lazy" src="{{ image.image.url }}" alt="{{ case.title }}" class="img-fluid">
+                           
                         </div>
                     </div>
                     <div class="col-lg-6">
