@@ -76,13 +76,13 @@ const menuBtn = document.querySelector('.menu-btn');
 const closeBtn = document.querySelector('.close-btn');
 
 function toggleMobileMenu() {
-    mobileMenu.classList.toggle('active');
-    menuBtn.classList.toggle('hidden');
-    closeBtn.classList.toggle('hidden');
+    if (mobileMenu) mobileMenu.classList.toggle('active');
+    if (menuBtn) menuBtn.classList.toggle('hidden');
+    if (closeBtn) closeBtn.classList.toggle('hidden');
 }
 
-menuBtn.addEventListener('click', toggleMobileMenu);
-closeBtn.addEventListener('click', toggleMobileMenu);
+if (menuBtn) menuBtn.addEventListener('click', toggleMobileMenu);
+if (closeBtn) closeBtn.addEventListener('click', toggleMobileMenu);
 
 
 // ── ACCORDION ──

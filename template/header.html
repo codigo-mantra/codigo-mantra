@@ -256,6 +256,10 @@
             function isDesktop() {
                 return window.innerWidth > DESKTOP_WIDTH;
             }
+            
+            function isMobile() {
+                return window.innerWidth <= DESKTOP_WIDTH;
+            }
 
             function lockScroll() {
                 document.body.classList.add('menu-open');
@@ -320,6 +324,21 @@
                 clearTimeout(closeTimer);
                 closeTimer = setTimeout(closeMenu, CLOSE_DELAY);
             }
+            
+            // Toggle on mobile click
+            toggle.addEventListener('click', function (e) {
+                if (!isMobile()) return;
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const isOpen = dropdown.classList.contains('show');
+                
+                if (!isOpen) {
+                    openMenu();
+                } else {
+                    closeMenu();
+                }
+            });
 
             menu.addEventListener('mouseenter', function () {
                 if (!isDesktop()) return;
@@ -343,7 +362,15 @@
         });
 
         document.addEventListener('click', function (e) {
-            if (window.innerWidth <= 991) return;
+            if (window.innerWidth <= 991) {
+                megaMenus.forEach(menu => {
+                    const dropdown = menu.querySelector('.dropdown-menu');
+                    if (dropdown && !menu.contains(e.target)) {
+                        closeDropdown(dropdown);
+                    }
+                });
+                return;
+            }
 
             megaMenus.forEach(menu => {
                 const dropdown = menu.querySelector('.dropdown-menu');
@@ -430,70 +457,6 @@
                 clearActive();
             }
         })();
-    });
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const dropdownItems = document.querySelectorAll('.nav-item.dropdown');
-        const MOBILE_WIDTH = 991;
-
-        function isMobile() {
-            return window.innerWidth <= MOBILE_WIDTH;
-        }
-
-        dropdownItems.forEach(item => {
-            const toggle = item.querySelector('.dropdown-toggle');
-            const dropdown = item.querySelector('.dropdown-menu');
-
-            if (!toggle || !dropdown) return;
-            toggle.addEventListener('click', function (e) {
-                if (!isMobile()) return;
-
-                const isOpen = dropdown.classList.contains('show');
-
-                e.preventDefault();
-                e.stopPropagation();
-
-                if (!isOpen) {
-                    // Close all other dropdowns
-                    dropdownItems.forEach(otherItem => {
-                        const otherDropdown = otherItem.querySelector('.dropdown-menu');
-                        if (otherDropdown && otherDropdown !== dropdown) {
-                            otherDropdown.classList.remove('show');
-                            otherItem.classList.remove('mobile-open');
-                        }
-                    });
-
-                    // Open this dropdown
-                    dropdown.classList.add('show');
-                    item.classList.add('mobile-open');
-                } else {
-                    // ✅ Toggle close if already open
-                    dropdown.classList.remove('show');
-                    item.classList.remove('mobile-open');
-                }
-            });
-        });
-
-        document.addEventListener('click', function (e) {
-            if (!isMobile()) return;
-
-            dropdownItems.forEach(item => {
-                const dropdown = item.querySelector('.dropdown-menu');
-                if (!item.contains(e.target)) {
-                    dropdown.classList.remove('show');
-                    item.classList.remove('mobile-open');
-                }
-            });
-        });
-
-        window.addEventListener('resize', function () {
-            dropdownItems.forEach(item => {
-                const dropdown = item.querySelector('.dropdown-menu');
-                dropdown.classList.remove('show');
-                item.classList.remove('mobile-open');
-            });
-        });
     });
 </script>
 <script>
