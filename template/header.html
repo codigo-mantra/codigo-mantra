@@ -346,7 +346,9 @@
                         unlockScroll();
                     }
 
-                    closeonnonhover()
+                    if (typeof closeonnonhover === 'function') {
+                        closeonnonhover();
+                    }
                 }, 250);
             }
 
