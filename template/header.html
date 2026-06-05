@@ -491,7 +491,6 @@
             const dropdown = item.querySelector('.dropdown-menu');
 
             if (!toggle || !dropdown) return;
-
             toggle.addEventListener('click', function (e) {
                 if (!isMobile()) return;
 
@@ -647,23 +646,21 @@
         }
     }
     function closeonnonhover() {
-        // Run ONLY on desktop
-        // if (window.innerWidth < 1024) return;
-
         const tab1 = document.getElementById("productsTab");
         const tab2 = document.getElementById("productsTab2");
         const grid = document.querySelector(".cm-mega__grid-2");
         const addwidth = document.querySelector(".cm-mega__panel-2");
         const aboutNavItem = document.querySelector('[data-cm-nav="about"]');
         const productsLink = document.querySelector('.cm-mega__link[onclick="openProductsTab()"]');
-        const customDrop = document.querySelector('.dropdown-menu.cm-mega'); // dropdown element
+        const customDrop = document.querySelector('.dropdown-menu.cm-mega');
 
-
-        customDrop.classList.add("custom-drop-sw");
-        customDrop.style.top = "";
-        aboutNavItem.classList.add("custom-postion-accoding");
-        productsLink.classList.remove("active-product-tab");
-
+        // ✅ null checks on every element
+        if (customDrop) {
+            customDrop.classList.add("custom-drop-sw");
+            customDrop.style.top = "";
+        }
+        if (aboutNavItem) aboutNavItem.classList.add("custom-postion-accoding");
+        if (productsLink) productsLink.classList.remove("active-product-tab");
         if (tab1) tab1.style.display = "none";
         if (tab2) tab2.style.display = "none";
         if (grid) grid.style.gridTemplateColumns = "";
