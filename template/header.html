@@ -142,7 +142,7 @@
                         <li class="nav-item" data-cm-nav="case-studies"><a class="nav-link"
                                 href="{% url 'portfolio' %}">Where we specialised</a></li>
                         <li class="nav-item dropdown custom-postion-accoding" data-cm-nav="about">
-                            <a class="nav-link dropdown-toggle" href="{% url 'about-us' %}" role="button"
+                            <a class="nav-link dropdown-toggle" href="javascript:void(0)" data-href="{% url 'about-us' %}" role="button"
                                 aria-expanded="false">Who
                                 we are</a>
                             <div class="dropdown-menu cm-mega custom-drop-sw" aria-label="Who we are menu">
@@ -327,21 +327,29 @@
                 closeTimer = setTimeout(closeMenu, CLOSE_DELAY);
             }
             
-            // Toggle on mobile click
+            // Toggle on mobile click / Navigate on desktop
             toggle.addEventListener('click', function (e) {
-                if (!isMobile()) return;
-                e.preventDefault();
-                e.stopPropagation();
-                
-                const isOpen = dropdown.classList.contains('show');
-                console.log('Mobile dropdown toggle clicked! isOpen:', isOpen);
-                
-                if (!isOpen) {
-                    console.log('Opening menu');
-                    openMenu();
+                if (isMobile()) {
+                    // Mobile: toggle dropdown
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    const isOpen = dropdown.classList.contains('show');
+                    console.log('Mobile dropdown toggle clicked! isOpen:', isOpen);
+                    
+                    if (!isOpen) {
+                        console.log('Opening menu');
+                        openMenu();
+                    } else {
+                        console.log('Closing menu');
+                        closeMenu();
+                    }
                 } else {
-                    console.log('Closing menu');
-                    closeMenu();
+                    // Desktop: navigate to the about page
+                    const href = toggle.getAttribute('data-href');
+                    if (href) {
+                        window.location.href = href;
+                    }
                 }
             });
 
