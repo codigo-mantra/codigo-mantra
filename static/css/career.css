@@ -657,16 +657,16 @@ section.no-openings {
 .bg-glow-orb {
     position: absolute;
     border-radius: 940px;
-    /* background: conic-gradient(from 180deg at 50% 50%, rgba(250, 84, 36, 0.30) 84.7712105512619deg, rgba(194, 44, 0, 0.30) 183.79708528518677deg, rgba(152, 35, 0, 0.30) 271.9095826148987deg, rgba(251, 30, 30, 0.30) 360deg); */
+    background: conic-gradient(from 180deg at 50% 50%, rgba(250, 84, 36, 0.30) 84.7712105512619deg, rgba(194, 44, 0, 0.30) 183.79708528518677deg, rgba(152, 35, 0, 0.30) 271.9095826148987deg, rgba(251, 30, 30, 0.30) 360deg);
     filter: blur(200px);
     z-index: 0;
     width: 940px;
     height: 812px;
-    left: -36%;
+    left: -20%;
 }
 .offset-card-col {
     gap: 24px;
-    height: 200px;
+    max-height: 600px;
     overflow-y: auto !important;
     overflow-x: hidden;
     display: flex;
