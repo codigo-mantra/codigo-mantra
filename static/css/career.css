@@ -718,7 +718,7 @@ section.no-openings {
     border-radius: 20px;
     border-left: 2px solid #F45D34;
     background: #000;
-    min-height: 152px;
+    /* min-height: 152px; */
     width: 100%;
     flex: 0 0 152px;
     scroll-snap-align: end;
