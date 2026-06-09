@@ -677,7 +677,8 @@ body {
     width: 100%;
     border-radius: 15px;
     display: block;
-    height: 421px;
+    /* height: 421px; */
+    object-fit: contain;
 }
 
 .project-content-side {

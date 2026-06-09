@@ -349,7 +349,7 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    padding: 55px auto 55px;
+    padding: 55px 0 55px;
     border-radius: 30px;
     margin: 63px auto 84px;
     /* max-width: 1370px; */
@@ -476,7 +476,7 @@ h4.sd-heading-small-new {
 }
 
 .sd-problem-card {
-    padding: 32px;
+    padding: 16px;
     position: relative;
     overflow: hidden;
     min-height: 220px;

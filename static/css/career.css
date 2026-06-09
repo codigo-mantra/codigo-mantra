@@ -802,5 +802,8 @@ section.ind-why-choose-us {
     padding-top: 130px;
 }
 .ind-section-padding-new{
-    height: 840px;
+    /* height: 840px; */
+}
+section.services-section.services-section-career {
+    padding-bottom: 120px;
 }
