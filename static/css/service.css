@@ -352,7 +352,7 @@
     padding: 55px auto 55px;
     border-radius: 30px;
     margin: 63px auto 84px;
-    max-width: 1370px;
+    /* max-width: 1370px; */
 }
 
 .heading-container-services-details {
