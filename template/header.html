@@ -128,7 +128,7 @@
                         </li> -->
 
 
-                        <li class="nav-item dropdown" data-cm-nav="industries">
+                        <!-- <li class="nav-item dropdown" data-cm-nav="industries">
                             <a class="nav-link dropdown-toggle" href="{% url 'industry-details' %}" role="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">Industries</a>
                             <div class="dropdown-menu cm-mega" aria-label="Industries menu">
@@ -142,21 +142,21 @@
                                                 <a class="cm-mega__link"
                                                     href="{% url 'industry_detail' slug=industry.slug %}?industry={{ industry.name|lower }}">
                                                     {{industry.name }}</a>
-                                                <!-- <a class="cm-mega__link" href="#">{{ industry.name }}</a> -->
+                                                <a class="cm-mega__link" href="#">{{ industry.name }}</a> -->
 
-                                                {% endfor %}
+                        <!-- {% endfor %}
                                             </div>
 
                                             <div class="cm-mega__col mt-0 cm-mega__col--mid ps-5">
-                                                <!--<div class="cm-mega__h">&nbsp;</div> -->
-                                                {% for industry in industries_nav|slice:"6:12" %}
+                                                <div class="cm-mega__h">&nbsp;</div> -->
+                        <!-- {% for industry in industries_nav|slice:"6:12" %}
                                                 <a class="cm-mega__link"
                                                     href="{% url 'industry_detail' slug=industry.slug %}?industry={{ industry.name|lower }}">
-                                                    {{industry.name }}</a>
-                                                <!-- <a class="cm-mega__link" href="#">{{ industry.name }}</a> -->
-                                                {% endfor %}
-                                            </div>
-                                            <!-- <div class="cm-mega__col cm-mega__col--product">
+                                                    {{industry.name }}</a> -->
+                        <!-- <a class="cm-mega__link" href="#">{{ industry.name }}</a> -->
+                        <!-- {% endfor %}
+                                            </div> -->
+                        <!-- <div class="cm-mega__col cm-mega__col--product">
                                             <div class="cm-mega__h">Our Product</div>
 
                                             <span class="cm-mega__thumb" aria-hidden="true">
@@ -171,7 +171,7 @@
                                             </span>
 
                                         </div> -->
-                                        </div>
+                        <!-- </div>
                                     </div>
                                     <div class="cm-mega__bottom">
                                         <span class="cm-mega__bottomText">Want to know more about us ?</span>
@@ -180,10 +180,10 @@
                                     </div>
                                 </div>
                             </div>
-                        </li>
-                        <!-- <li class="nav-item" data-cm-nav="industries">
-                            <a class="nav-link" href="{% url 'industry-details' %}">Industries</a>
                         </li> -->
+                        <li class="nav-item" data-cm-nav="industries">
+                            <a class="nav-link" href="{% url 'industry-details' %}">Industries</a>
+                        </li>
                         <li class="nav-item" data-cm-nav="case-studies"><a class="nav-link"
                                 href="{% url 'portfolio' %}">Where we specialised</a></li>
                         <li class="nav-item dropdown custom-postion-accoding" data-cm-nav="about">
