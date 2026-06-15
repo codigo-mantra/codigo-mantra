@@ -804,14 +804,14 @@ class LandingPage(views.View):
         # Ensure image testimonials appear before video testimonials (preserve recency within each group)
         testimonials = sorted(testimonials_qs, key=lambda t: t.media_type == "video")
         # industries = Industry.objects.all().values("name", "svg_icon")  # all industries with svg icons
-        # industry_names = [
-        #     'Healthcare & MedTech', 'EdTech & E-Learning', 'Fintech & Banking',
-        #     'E-Commerce & Retail', 'Real Estate & PropTech', 'Logistics & Supply Chain',
-        #     'Legal & LegalTech', 'Media & Entertainment', 'Travel & Hospitality',
-        #     'SaaS & Software Products', 'Startups & SMBs'
-        # ]
-        # industries = Industry.objects.filter(name__in=industry_names).values("name", "svg_icon")
-        industries = Industry.objects.all().values("name", "svg_icon", "slug")
+        industry_names = [
+            'Healthcare & MedTech', 'EdTech & E-Learning', 'Fintech & Banking',
+            'E-Commerce & Retail', 'Real Estate & PropTech', 'Logistics & Supply Chain',
+            'Legal & LegalTech', 'Media & Entertainment', 'Travel & Hospitality',
+            'SaaS & Software Products', 'Startups & SMBs', 'Analytics'
+        ]
+        industries = Industry.objects.filter(name__in=industry_names).values("name", "svg_icon", "slug")
+        # industries = Industry.objects.all().values("name", "svg_icon", "slug")
         case_studies = CaseStudy.objects.all().order_by('display_order')[:2].prefetch_related(
             "services", "industries", "images"
         )  # last 2 case studies

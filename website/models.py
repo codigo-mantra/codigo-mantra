@@ -135,6 +135,7 @@ class CaseStudy(TimeStamp):
     project_name = models.CharField(max_length=255,blank=True, null=True)
     slug = models.SlugField(unique=True)
     content = models.TextField()
+    index_content=models.TextField(blank=True, null=True)
     # about = models.TextField(blank=True, null=True)
     # goal = models.TextField(blank=True, null=True)
     # challenge = models.TextField(blank=True, null=True)

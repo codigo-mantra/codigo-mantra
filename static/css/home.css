@@ -1576,9 +1576,9 @@ img.industries-img {
     scroll-snap-type: y mandatory;
     scroll-behavior: smooth;
     overscroll-behavior-y: auto;
-    position: static;
+    /* position: sticky;
     width: 100%;
-    top: 150px;
+    top: 150px; */
 
 }
 

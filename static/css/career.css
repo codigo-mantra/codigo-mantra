@@ -677,7 +677,7 @@ section.no-openings {
     flex-direction: column;
     padding: 20px;
     border-radius: 20px;
-    background: #151515;
+    /* background: #151515; */
     scroll-snap-type: y mandatory;
     scroll-behavior: smooth;
     overscroll-behavior-y: auto;
