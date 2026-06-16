@@ -15,15 +15,6 @@
                         <!-- <div class="hero-sub service-hero"> -->
                         {{ detail.hero_description|safe }}
                     </div>
-                    <!-- <h1 class="hero-title service-hero-title" style="margin-left: 0 !important;"> <span
-                            class="text-orange">Modern healthcare</span> systems built for <span
-                            class="text-orange">operational</span> efficiency
-                    </h1>
-                    <p class="hero-sub service-hero-sub">
-                        Healthcare Automation Solutions for Healthcare Providers Australia help clinics, healthcare
-                        organizations, and operational teams reduce manual work, improve reporting, and streamline
-                        healthcare workflows through centralized digital systems.
-                    </p> -->
                     <div class="sd-button-col">
                         <a class="btn-cm-cta btn-pill" href="{% url 'schedule-call' %}">
                             <span class="label-up">Book a Strategy Call</span>
@@ -34,10 +25,9 @@
             </div>
             <div class="col-lg-5 h-100">
                 <div class="hero-right-industry">
-                    {% if detail.hero_image %} <img src="{{ detail.hero_image.url }}" alt="">
+                    {% if detail.hero_image %}
+                    <img src="{{ detail.hero_image.url }}" alt="">
                     {% endif %}
-                    <img src="{% static 'images/team-young-specialist-doctors-reviewing-documents-corridor-hospital 2.png' %}"
-                        alt="">
                 </div>
             </div>
         </div>
@@ -48,66 +38,41 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="primary-badge cutom-bottom-space" style="width: fit-content;">
-                    <div class="primary-badge" style="width: fit-content;">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" viewBox="0 0 18 20" fill="none">
-                            <path
-                                d="M11.5 6.5C11.5 6.5 11.1317 10.3846 12.67 11.895C14.1868 13.3843 18 13 18 13C18 13 14.0968 13.0922 12.67 14.7556C11.4276 16.204 11.5 19.5 11.5 19.5C11.5 19.5 11.3338 16.1726 10.005 14.7556C8.58811 13.2447 5 13 5 13C5 13 8.51659 13.2334 10.005 11.895C11.6307 10.4332 11.5 6.5 11.5 6.5Z"
-                                fill="#F05D35" />
-                            <path
-                                d="M5 0C5 0 4.7167 2.98814 5.9 4.15C7.06678 5.29564 10 5 10 5C10 5 6.99755 5.07093 5.9 6.35045C4.94427 7.46464 5 10 5 10C5 10 4.87219 7.44047 3.85 6.35045C2.76008 5.18822 0 5 0 5C0 5 2.70507 5.17951 3.85 4.15C5.10054 3.02553 5 0 5 0Z"
-                                fill="#F16535" />
-                        </svg>
-                        <div>{{ detail.challenges_badge_text }} </div>
-                        <div class="heading-text-container heading-container-services-details">
-                            <h2 class="sub-heading-new" style="text-align: left;">{{ detail.challenges_title }}</h2>
-                            <div class="sub-pera-new">
-                                {{ detail.challenges_description|safe }}
-                            </div>
-                            Challenges
-                        </div>
-                        <!-- <div class="heading-text-container heading-container-services-details">
-                                <h2 class="sub-heading-new" style="text-align: left;">Operational Challenges in
-                                    Healthcare</h2>
-                                <p class="sub-pera-new">
-                                    Many healthcare providers still rely on spreadsheets, disconnected tools, and manual
-                                    administrative workflows to manage operations, reporting, scheduling, and
-                                    communication.
-                                </p>
-
-                            </div> -->
-                    </div>
-                    <div class="col-md-6">
-                        <div class="challenges-right-img">
-                            {% if detail.challenges_image %} <img src="{{ detail.challenges_image.url }}" alt="">
-                            {% endif %}
-                        </div>
-                        <!-- <img src="{% static 'images/challenges-siide-img.jpg' %}" alt=""> -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" viewBox="0 0 18 20" fill="none">
+                        <path
+                            d="M11.5 6.5C11.5 6.5 11.1317 10.3846 12.67 11.895C14.1868 13.3843 18 13 18 13C18 13 14.0968 13.0922 12.67 14.7556C11.4276 16.204 11.5 19.5 11.5 19.5C11.5 19.5 11.3338 16.1726 10.005 14.7556C8.58811 13.2447 5 13 5 13C5 13 8.51659 13.2334 10.005 11.895C11.6307 10.4332 11.5 6.5 11.5 6.5Z"
+                            fill="#F05D35" />
+                        <path
+                            d="M5 0C5 0 4.7167 2.98814 5.9 4.15C7.06678 5.29564 10 5 10 5C10 5 6.99755 5.07093 5.9 6.35045C4.94427 7.46464 5 10 5 10C5 10 4.87219 7.44047 3.85 6.35045C2.76008 5.18822 0 5 0 5C0 5 2.70507 5.17951 3.85 4.15C5.10054 3.02553 5 0 5 0Z"
+                            fill="#F16535" />
+                    </svg>
+                    {{ detail.challenges_badge_text }}
+                </div>
+                <div class="heading-text-container heading-container-services-details">
+                    <h2 class="sub-heading-new" style="text-align: left;">{{ detail.challenges_title }}</h2>
+                    <div class="sub-pera-new">
+                        {{ detail.challenges_description|safe }}
                     </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-12 text-center">
-                    <p class="para-text-regular">
-                        As healthcare organizations grow, these systems become harder to manage and create delays across
-                        departments. Staff spend more time handling repetitive tasks instead of improving operational
-                        efficiency and patient experience. Healthcare organizations across Australia continue investing
-                        in
-                        healthcare automation systems to improve operational visibility and long-term scalability
-                        according
-                        to World Health Organization.
-                    </p>
+            <div class="col-md-6">
+                <div class="challenges-right-img">
+                    {% if detail.challenges_image %}
+                    <img src="{{ detail.challenges_image.url }}" alt="">
+                    {% endif %}
                 </div>
             </div>
-            {% if detail.challenges_image_caption %}
-            <div class="row">
-                <div class="col-12 text-center">
-                    <div class="para-text-regular">
-                        {{ detail.challenges_image_caption|safe }}
-                    </div>
-                </div>
-            </div>
-            {% endif %}
         </div>
+        {% if detail.challenges_image_caption %}
+        <div class="row">
+            <div class="col-12 text-center">
+                <div class="para-text-regular">
+                    {{ detail.challenges_image_caption|safe }}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
 </section>
 <section class="ind-impact ind-section-padding position-relative">
     <div class="dust-dot dust-1" style="top: 25%; left: 35%;">
@@ -134,24 +99,19 @@
         <div class="text-center mb-5">
             <div class="hero-badge-wrap">
                 <div class="primary-badge cutom-bottom-space">
-                    <div class="primary-badge">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" viewBox="0 0 18 20" fill="none">
-                            <path
-                                d="M11.5 6.5C11.5 6.5 11.1317 10.3846 12.67 11.895C14.1868 13.3843 18 13 18 13C18 13 14.0968 13.0922 12.67 14.7556C11.4276 16.204 11.5 19.5 11.5 19.5C11.5 19.5 11.3338 16.1726 10.005 14.7556C8.58811 13.2447 5 13 5 13C5 13 8.51659 13.2334 10.005 11.895C11.6307 10.4332 11.5 6.5 11.5 6.5Z"
-                                fill="#F05D35" />
-                            <path
-                                d="M5 0C5 0 4.7167 2.98814 5.9 4.15C7.06678 5.29564 10 5 10 5C10 5 6.99755 5.07093 5.9 6.35045C4.94427 7.46464 5 10 5 10C5 10 4.87219 7.44047 3.85 6.35045C2.76008 5.18822 0 5 0 5C0 5 2.70507 5.17951 3.85 4.15C5.10054 3.02553 5 0 5 0Z"
-                                fill="#F16535" />
-                        </svg>
-                        <div>{{ detail.impact_badge_text }} </div>
-                    </div>
-                    <h2 class="display-heading">
-                        {{ detail.impact_title }}
-                        Impact
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="20" viewBox="0 0 18 20" fill="none">
+                        <path
+                            d="M11.5 6.5C11.5 6.5 11.1317 10.3846 12.67 11.895C14.1868 13.3843 18 13 18 13C18 13 14.0968 13.0922 12.67 14.7556C11.4276 16.204 11.5 19.5 11.5 19.5C11.5 19.5 11.3338 16.1726 10.005 14.7556C8.58811 13.2447 5 13 5 13C5 13 8.51659 13.2334 10.005 11.895C11.6307 10.4332 11.5 6.5 11.5 6.5Z"
+                            fill="#F05D35" />
+                        <path
+                            d="M5 0C5 0 4.7167 2.98814 5.9 4.15C7.06678 5.29564 10 5 10 5C10 5 6.99755 5.07093 5.9 6.35045C4.94427 7.46464 5 10 5 10C5 10 4.87219 7.44047 3.85 6.35045C2.76008 5.18822 0 5 0 5C0 5 2.70507 5.17951 3.85 4.15C5.10054 3.02553 5 0 5 0Z"
+                            fill="#F16535" />
+                    </svg>
+                    {{ detail.impact_badge_text }}
                 </div>
             </div>
             <h2 class="display-heading">
-                Operational Impact
+                {{ detail.impact_title }}
             </h2>
         </div>
         <div class="ind-impact-container">
@@ -165,58 +125,26 @@
                             <div class="impact-card-h-line"></div>
                             <div class="impact-card-v-line"></div>
                     </div>
-
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="impact-card-grid">
+                    {% for item in detail.impact_items.all %}
+                    {% if forloop.counter > 2 %}
                     <div class="impact-card">
-                        <h4>Faster reporting and visibility</h4>
-                        <p>Centralized dashboards help healthcare teams access operational insights in real
-                            time.
-                        </p>
+                        <h4>{{ item.title }}</h4>
+                        <div>{{ item.description|safe }}</div>
                         <div class="impact-card-h-line"></div>
                         <div class="impact-card-v-line"></div>
-
                     </div>
-                </div>
-                {% endif %}
-                {% endfor %}
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="impact-card-grid">
-                {% for item in detail.impact_items.all %}
-                {% if forloop.counter > 2 %}
-                <div class="impact-card">
-                    <h4>{{ item.title }}</h4>
-                    <div>{{ item.description|safe }}</div>
-                    <div class="impact-card-h-line"></div>
-                    <div class="impact-card-v-line"></div>
-                    =======
-                    <div class="col-md-6">
-                        <!-- Column 2 -->
-                        <div class="impact-card-grid">
-                            <div class="impact-card">
-                                <h4>Better coordination across departments</h4>
-                                <p>Improve communication between healthcare staff, operations teams, and
-                                    administrators.</p>
-                                <div class="impact-card-h-line"></div>
-                                <div class="impact-card-v-line"></div>
-
-                            </div>
-
-                            <div class="impact-card">
-                                <h4>Scalable operational infrastructure</h4>
-                                <p>Build systems that support long-term healthcare growth and operational
-                                    management.</p>
-                                <div class="impact-card-h-line"></div>
-                                <div class="impact-card-v-line"></div>
-
-                            </div>
-                        </div>
-                        {% endif %}
-                        {% endfor %}
-                    </div>
+                    {% endif %}
+                    {% endfor %}
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </section>
 

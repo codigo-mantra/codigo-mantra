@@ -187,8 +187,8 @@
                         <li class="nav-item" data-cm-nav="case-studies"><a class="nav-link"
                                 href="{% url 'portfolio' %}">Where we specialised</a></li>
                         <li class="nav-item dropdown custom-postion-accoding" data-cm-nav="about">
-                            <a class="nav-link dropdown-toggle" href="javascript:void(0)"
-                                data-href="{% url 'about-us' %}" role="button" aria-expanded="false">Who
+                            <a class="nav-link dropdown-toggle" href="{% url 'about-us' %}" role="button"
+                                aria-expanded="false">Who
                                 we are</a>
                             <div class="dropdown-menu cm-mega custom-drop-sw" aria-label="Who we are menu">
                                 <div class="cm-mega__panel-2">
@@ -289,44 +289,6 @@
         const OPEN_DELAY = 200;
         const CLOSE_DELAY = 250;
 
-        function isDesktop() {
-            return window.innerWidth > DESKTOP_WIDTH;
-        }
-
-        function isMobile() {
-            return window.innerWidth <= DESKTOP_WIDTH;
-        }
-
-        function lockScroll() {
-            document.body.classList.add('menu-open');
-        }
-
-        function unlockScroll() {
-            const anyOpen = document.querySelector('.dropdown-menu.show');
-            if (!anyOpen) {
-                document.body.classList.remove('menu-open');
-            }
-        }
-
-        function closeDropdown(target) {
-            if (!target) return;
-            target.style.opacity = '0';
-            target.style.transform = 'translateY(8px)';
-            target.style.pointerEvents = 'none';
-            target.classList.remove('show');
-
-            setTimeout(() => {
-                if (!target.classList.contains('show')) {
-                    target.style.display = 'none';
-                    unlockScroll();
-                }
-
-                if (typeof closeonnonhover === 'function') {
-                    closeonnonhover();
-                }
-            }, 250);
-        }
-
         megaMenus.forEach(menu => {
             const toggle = menu.querySelector('.dropdown-toggle');
             const dropdown = menu.querySelector('.dropdown-menu');
@@ -369,6 +331,23 @@
                     dropdown.style.pointerEvents = 'auto';
                     lockScroll();
                 });
+            }
+
+            function closeDropdown(target) {
+                if (!target) return;
+                target.style.opacity = '0';
+                target.style.transform = 'translateY(8px)';
+                target.style.pointerEvents = 'none';
+                target.classList.remove('show');
+
+                setTimeout(() => {
+                    if (!target.classList.contains('show')) {
+                        target.style.display = 'none';
+                        unlockScroll();
+                    }
+
+                    closeonnonhover()
+                }, 250);
             }
 
             function closeMenu() {
@@ -414,7 +393,17 @@
             megaMenus.forEach(menu => {
                 const dropdown = menu.querySelector('.dropdown-menu');
                 if (dropdown && !menu.contains(e.target)) {
-                    closeDropdown(dropdown);
+                    dropdown.classList.remove('show');
+                    dropdown.style.opacity = '0';
+                    dropdown.style.transform = 'translateY(8px)';
+                    dropdown.style.pointerEvents = 'none';
+
+                    setTimeout(() => {
+                        if (!dropdown.classList.contains('show')) {
+                            dropdown.style.display = 'none';
+                            document.body.classList.remove('menu-open');
+                        }
+                    }, 250);
                 }
             });
         });
@@ -502,6 +491,7 @@
             const dropdown = item.querySelector('.dropdown-menu');
 
             if (!toggle || !dropdown) return;
+
             toggle.addEventListener('click', function (e) {
                 if (!isMobile()) return;
 
@@ -657,21 +647,23 @@
         }
     }
     function closeonnonhover() {
+        // Run ONLY on desktop
+        // if (window.innerWidth < 1024) return;
+
         const tab1 = document.getElementById("productsTab");
         const tab2 = document.getElementById("productsTab2");
         const grid = document.querySelector(".cm-mega__grid-2");
         const addwidth = document.querySelector(".cm-mega__panel-2");
         const aboutNavItem = document.querySelector('[data-cm-nav="about"]');
         const productsLink = document.querySelector('.cm-mega__link[onclick="openProductsTab()"]');
-        const customDrop = document.querySelector('.dropdown-menu.cm-mega');
+        const customDrop = document.querySelector('.dropdown-menu.cm-mega'); // dropdown element
 
-        // ✅ null checks on every element
-        if (customDrop) {
-            customDrop.classList.add("custom-drop-sw");
-            customDrop.style.top = "";
-        }
-        if (aboutNavItem) aboutNavItem.classList.add("custom-postion-accoding");
-        if (productsLink) productsLink.classList.remove("active-product-tab");
+
+        customDrop.classList.add("custom-drop-sw");
+        customDrop.style.top = "";
+        aboutNavItem.classList.add("custom-postion-accoding");
+        productsLink.classList.remove("active-product-tab");
+
         if (tab1) tab1.style.display = "none";
         if (tab2) tab2.style.display = "none";
         if (grid) grid.style.gridTemplateColumns = "";
