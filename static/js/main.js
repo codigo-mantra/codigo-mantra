@@ -240,8 +240,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         cards.forEach(card => {
 
-            const industries = card.dataset.industries || "";
-            const technologies = card.dataset.technologies || "";
+            const industries = (card.dataset.industries || "").toLowerCase();
+            const technologies = (card.dataset.technologies || "").toLowerCase();
 
             // If no filters selected → show all
             if (selected.length === 0) {

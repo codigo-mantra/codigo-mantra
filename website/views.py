@@ -1,4 +1,4 @@
-from django.db.models import Q, Count
+from django.db.models import Q, Count, Prefetch
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.core.mail import send_mail, EmailMessage, EmailMultiAlternatives
@@ -798,23 +798,23 @@ class ScheduleCallStep2Page(views.View):
 class LandingPage(views.View):
     def get(self,request):
         form = ContactUsForm()
-        services = Service_index.objects.all().order_by('display_order')[:6]  # last 6 services
+        services = Service_index.objects.all().order_by('display_order')[:4]  # last 6 services
         insights = Insight.objects.all().order_by('-created_at')[:3]  # last 3 insights
         testimonials_qs = list(Testimonial.objects.all().order_by('-created_at')[:6])  # last 6 testimonials
         # Ensure image testimonials appear before video testimonials (preserve recency within each group)
         testimonials = sorted(testimonials_qs, key=lambda t: t.media_type == "video")
         # industries = Industry.objects.all().values("name", "svg_icon")  # all industries with svg icons
-        # industry_names = [
-        #     'Healthcare & MedTech', 'EdTech & E-Learning', 'Fintech & Banking',
-        #     'E-Commerce & Retail', 'Real Estate & PropTech', 'Logistics & Supply Chain',
-        #     'Legal & LegalTech', 'Media & Entertainment', 'Travel & Hospitality',
-        #     'SaaS & Software Products', 'Startups & SMBs'
-        # ]
-        # industries = Industry.objects.filter(name__in=industry_names).values("name", "svg_icon")
-        industries = Industry.objects.all().values("name", "svg_icon")
-        case_studies = CaseStudy.objects.all().order_by('-created_at')[:3].prefetch_related(
+        industry_names = [
+            'Healthcare & MedTech', 'EdTech & E-Learning', 'Fintech & Banking',
+            'E-Commerce & Retail', 'Real Estate & PropTech', 'Logistics & Supply Chain',
+            'Legal & LegalTech', 'Media & Entertainment', 'Travel & Hospitality',
+            'SaaS & Software Products', 'Startups & SMBs', 'Analytics'
+        ]
+        industries = Industry.objects.filter(name__in=industry_names).values("name", "svg_icon", "slug")
+        # industries = Industry.objects.all().values("name", "svg_icon", "slug")
+        case_studies = CaseStudy.objects.all().order_by('display_order')[:2].prefetch_related(
             "services", "industries", "images"
-        )  # last 3 case studies
+        )  # last 2 case studies
         return render(request,'website/index.html',{'form':form, 'services':services, 'insights':insights, 'testimonials':testimonials, 'industries':industries, 'case_studies':case_studies})
     def post(self, request):
         is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
@@ -880,7 +880,7 @@ class ServicePage(views.View):
         #     'SaaS & Software Products', 'Startups & SMBs'
         # ]
         # industries = Industry.objects.filter(name__in=industry_names).values("name", "svg_icon")
-        industries = Industry.objects.all().values("name", "svg_icon")
+        industries = Industry.objects.all().values("name", "svg_icon", "slug")
         services = Service_page.objects.all().order_by('display_order')[:9]
         return render(request,'website/services.html',{'services':services, 'industries':industries})
     
@@ -982,21 +982,31 @@ class CareerFormPage(views.View):
 
 class PortfolioPage(views.View):
     def get(self,request):
-        case_studies = CaseStudy.objects.all().order_by('-created_at').prefetch_related(
+        # Fetch all projects ordered by display_order
+        all_case_studies = CaseStudy.objects.all().order_by('display_order').prefetch_related(
             "services", "industries", "technologies", "images"
-        )[:6]
+        )
+        
+        # Exclude the first 2 projects (which are shown on the index page)
+        # We start from index 2
+        case_studies = all_case_studies[0:6] 
+        featured_projects = all_case_studies[2:5] # Show next 3 as featured on this page
+        
         industries = Industry.objects.all()
         technologies = Technology.objects.all()
-        featured_projects = case_studies.all()[:3]
-        print(industries, "industries")
-
-        return render(request,'website/portfolio.html',{'case_studies':case_studies, 'industries':industries, 'technologies': technologies,'featured_projects': featured_projects})
+        
+        return render(request,'website/portfolio.html',{
+            'case_studies': case_studies, 
+            'industries': industries, 
+            'technologies': technologies,
+            'featured_projects': featured_projects
+        })
     
 
 class CaseStudyDetailPage(views.View):
     def get(self,request, pk):
 
-        case_studies = CaseStudy.objects.all().order_by('-created_at').prefetch_related(
+        case_studies = CaseStudy.objects.filter(show_on_other_projects=True).order_by('display_order').prefetch_related(
             "services", "industries", "technologies", "images"
         )
         try:
@@ -1124,3 +1134,92 @@ def newsletter_subscribe(request):
             messages.error(request, "Invalid email.")
 
     return redirect(request.META.get("HTTP_REFERER", "/"))
+
+class ServiceDetailsView(views.View):
+    def get(self, request, slug=None):
+        # Base queryset for ServiceDetail with all related items prefetched
+        detail_prefetch = Prefetch(
+            'details',
+            queryset=ServiceDetail.objects.prefetch_related(
+                'problem_list_items',
+                'problem_cards',
+                'solution_items',
+                'capability_items',
+                'why_choose_items'
+            )
+        )
+
+        source_type = request.GET.get('type')
+
+        if slug:
+            # If coming from a specific page, prioritize that table
+            if source_type == 'page':
+                service = Service_page.objects.prefetch_related(detail_prefetch).filter(slug=slug, details__isnull=False).first()
+                if not service:
+                    service = Service_index.objects.prefetch_related(detail_prefetch).filter(slug=slug, details__isnull=False).first()
+            else:
+                service = Service_index.objects.prefetch_related(detail_prefetch).filter(slug=slug, details__isnull=False).first()
+                if not service:
+                    service = Service_page.objects.prefetch_related(detail_prefetch).filter(slug=slug, details__isnull=False).first()
+            
+            # If still not found with details, try without details filter as fallback
+            if not service:
+                if source_type == 'page':
+                    service = Service_page.objects.prefetch_related(detail_prefetch).filter(slug=slug).first()
+                    if not service:
+                        service = Service_index.objects.prefetch_related(detail_prefetch).filter(slug=slug).first()
+                else:
+                    service = Service_index.objects.prefetch_related(detail_prefetch).filter(slug=slug).first()
+                    if not service:
+                        service = Service_page.objects.prefetch_related(detail_prefetch).filter(slug=slug).first()
+            
+            # Final 404 check if absolutely no service matches this slug
+            if not service:
+                from django.http import Http404
+                raise Http404("Service not found")
+        else:
+            # Default fallback or first service from Service_index
+            service = Service_index.objects.prefetch_related(detail_prefetch).first()
+        
+        # Get the first detail from the 'details' related manager
+        detail = service.details.first() if service and hasattr(service, 'details') else None
+        return render(request, 'website/service-details.html', {
+            'service': service, 
+            'detail': detail
+        })
+
+class IndustryDetailsView(views.View):
+    def get(self, request, slug=None):
+        # Base queryset for IndustryDetail with all related items prefetched
+        detail_prefetch = Prefetch(
+            'details',
+            queryset=IndustryDetail.objects.prefetch_related(
+                'impact_items',
+                'solution_items',
+                'provide_items',
+                'why_choose_items'
+            )
+        )
+
+        if slug:
+            industry = get_object_or_404(
+                Industry.objects.prefetch_related(detail_prefetch), 
+                slug=slug
+            )
+        else:
+            # Prefer the first industry that actually has a detail record
+            industry = Industry.objects.filter(details__isnull=False).prefetch_related(detail_prefetch).first()
+            if not industry:
+                # Fallback to the absolute first if no details exist anywhere
+                industry = Industry.objects.prefetch_related(detail_prefetch).first()
+        
+        # Get the first detail from the 'details' related manager
+        detail = industry.details.first() if industry and hasattr(industry, 'details') else None
+        
+        # If we have an industry but no detail record, and we're on the generic URL,
+        # we might still see a blank page. For specific slugs, we show what we have.
+        
+        return render(request, 'website/industry-detail.html', {
+            'industry': industry, 
+            'detail': detail
+        })        

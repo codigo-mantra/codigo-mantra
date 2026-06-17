@@ -411,9 +411,16 @@ a:hover {
   position: relative !important;
 }
 
-.custom-drop-sw {
+.custom-postion-accoding .custom-drop-sw {
+  transform: translateY(42px) !important;
+}
+
+/* .custom-drop-sw .show{
   top: 95px !important;
 }
+.custom-drop-sw-new-about.show{
+  top: 95px !important;
+} */
 
 .border-custom- {
   border-radius: 13px;
@@ -1359,7 +1366,7 @@ span.cm-mega__thumb img {
 .footer-input {
   flex: 1;
   display: flex;
-  padding: 4px 3.839px 5px 12px;
+  padding: 4px 100px 5px 12px;
   justify-content: flex-end;
   align-items: center;
   gap: 135px;
@@ -1912,4 +1919,20 @@ a.btn-close.modal-close-btn {
 
 .cm-ul {
   margin-top: 16px !important;
+}
+
+::selection {
+  background-color: #F05D35;
+  /* Highlights text with Tomato red */
+  color: white;
+  opacity: 1;
+  /* Changes selected text to white */
+}
+
+.cutom-bottom-space {
+  margin-bottom: 11px;
+}
+
+ul.sd-checklist {
+  padding-left: 8px;
 }

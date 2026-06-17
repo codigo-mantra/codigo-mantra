@@ -1,4 +1,4 @@
-@media screen and (max-width: 991px) {
+@media screen and (max-width: 768px) {
     .hero-title {
         font-size: clamp(32px, 32px, 56px);
         font-weight: 700;
@@ -740,8 +740,8 @@
     }
 
     .navbar-collapse {
-       max-height: 80vh; 
-        height: 70vh; 
+        max-height: 80vh;
+        height: 70vh;
         overflow-y: scroll !important;
         display: flex;
         align-content: space-between;
@@ -966,18 +966,23 @@
         max-height: 357px;
         overflow-y: scroll;
     }
+
     .hero-center img {
         width: 100%;
     }
+
     .newsletter-title {
         font-size: 18px;
     }
+
     .newsletter-desc {
         font-size: 12px;
     }
-    nav.navbar{
+
+    nav.navbar {
         padding-top: 0px !important;
     }
+
     .cm-brand {
         font-size: 12px;
     }
@@ -994,13 +999,82 @@
     textarea.text-area-schedule-call {
         font-size: 16px !important;
     }
+
     .hero-left {
         padding-right: 0px !important;
     }
-    .menu-btn-cm {
+
+    /* new version   */
+    section.sd-capabilities {
+        padding: 20px;
+    }
+
+    .container.service-hero-container {
+        padding: 20px;
+        border-radius: 10px;
+    }
+
+    .sd-value-grid {
+        margin: 10px;
+    }
+
+    .Background-fixed-cm-col .col-first {
+        min-height: auto !important;
+
+    }
+
+    section.how-we-work-sec {
+        margin: 10px;
+        padding: 20px;
+        margin-bottom: 70px;
+    }
+
+    .info-company-cm {
+        margin-top: 20px;
+    }
+
+    .sideimg-col img {
         width: 100%;
     }
+
+    .Background-fixed-cm-col {
+        gap: 40px;
+        padding: 10px;
+    }
+
+    .hero-left-industry {
+        padding: 10px;
+    }
+
+    h5.why-card-text {
+        font-size: 24px;
+    }
+
+    .ind-number-badge {
+        width: 40.007px;
+        height: 40px;
+        font-size: 25px;
+    }
+
+    .para-text-regular {
+        font-size: 20px;
+        margin: 30px 0;
+    }
+
+    .industry-challenges {
+        margin: 30px 0;
+    }
+
+    .footer-input {
+        padding: 4px 12px 5px 12px;
+    }
+
+    .offset-card-col {
+        max-height: 100%;
+    }
+
 }
+
 @media (max-width: 450px) {
     .about-hero {
         background-image: url('../images/about/for-mobile-bg-cm-about.svg');
@@ -1010,9 +1084,11 @@
     .btn-mobile-cm {
         width: 100%;
     }
+
     .modal {
         top: 10% !important;
     }
+
     /* .modal-dialog {
         width: 100% !important;
     } */
@@ -1020,11 +1096,13 @@
         position: relative;
         right: 0;
     }
+
     .input-group-custom {
         flex-direction: column;
         gap: 10px;
 
     }
+
     .input-group-custom .form-control {
         width: 100%;
     }
