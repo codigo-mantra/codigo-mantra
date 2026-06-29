@@ -283,8 +283,13 @@
     border-radius: 10px;
 }
 
+.ws-slide {
+    min-height: 180px;
+}
+
 .ws-slide img {
     width: 100%;
+    height: auto;
     border-radius: 10px;
 }
 

@@ -8,6 +8,12 @@
     <title>{% block title %}Home{% endblock %}
 
     </title>
+    {% block meta_description %}
+    <meta name="description" content="We don't just build software, we build business growth. Codigo Mantra is your strategic tech partner for Custom Software, Mobile Apps, and AI Solutions.">
+    {% endblock %}
+    {% block meta_canonical %}
+    <link rel="canonical" href="https://codigomantra.com/" />
+    {% endblock %}
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/fav-icon-logo.png' %}">
     <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">

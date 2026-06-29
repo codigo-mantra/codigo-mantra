@@ -1,10 +1,14 @@
 {%extends 'base.html' %}
-{% block title %}Portfolio | CodigoMantra{% endblock %}
+{% block title %}Our Portfolio | HealthTech, SaaS & Enterprise Solutions | Codigo Mantra{% endblock %}
+{% block meta_description %}
+<meta name="description" content="Innovate the future with our tech. Explore our portfolio of market-ready products, including intelligent platforms, HealthTech solutions, and scalable SaaS.">
+{% endblock %}
+{% block meta_canonical %}
+<link rel="canonical" href="https://codigomantra.com/portfolio/" />
+{% endblock %}
 {% load static %}
 {% block content %}
-<head>
-    <link rel="canonical" href="{{ canonical_url }}">
-</head>
+
 <section class="case-study-hero">
     <div class="container">
         <!-- Hero Header -->
@@ -29,11 +33,11 @@
                     <a href="{% url 'case_study_detail' case_study.id %}" class="case-study-link">
                         <div class="case-study-image" aria-hidden="true">
                             {% if case_study.cover_image %}
-                            <img src="{{ case_study.cover_image.url }}" alt="{{ case_study.title }}">
+                            <img loading="lazy" src="{{ case_study.cover_image.url }}" alt="{{ case_study.title }}">
                             {% elif case_study.images.first %}
-                            <img src="{{ case_study.images.first.image.url }}" alt="{{ case_study.title }}">
+                            <img loading="lazy" src="{{ case_study.images.first.image.url }}" alt="{{ case_study.title }}">
                             {% else %}
-                            <img src="{% static 'images/case-studies/project-1.jpg' %}" alt="Placeholder">
+                            <img loading="lazy" src="{% static 'images/case-studies/project-1.jpg' %}" alt="Placeholder">
                             {% endif %}
                         </div>
                     </a>
@@ -127,7 +131,7 @@
                         data-industries="{% for industry in case_study.industries.all %}{{ industry.slug }} {% endfor %}"
                         data-technologies="{% for tech in case_study.technologies.all %}{{ tech.slug }} {% endfor %}">
                         <div class="cs-card-img">
-                            <img src="{{ case_study.cover_image.url }}"
+                            <img loading="lazy" src="{{ case_study.cover_image.url }}"
                                 alt="{{ case_study.title }}"> 
                             </div>
                         <div class="cs-card-body">
@@ -173,7 +177,7 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="tech-stack-container">
-                        <img src="{% static 'images/orange-cn.png' %}" alt="Tech Stack">
+                        <img loading="lazy" src="{% static 'images/orange-cn.png' %}" alt="Tech Stack">
                     </div>
                 </div>
             </div>
@@ -387,9 +391,9 @@
                 {
                     breakpoint: 767,
                     settings: {
-                        slidesToShow: 1,
+                        slidesToShow: .99,
                         centerMode: false,
-                        centerPadding: '0',
+                        centerPadding: '10',
                     }
                 }
             ]

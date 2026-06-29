@@ -89,7 +89,7 @@
     }
 
     .hero-right {
-        margin-top: 40px;
+        margin-top: 0px;
     }
 }
 
@@ -345,7 +345,7 @@
 } */
 /* .service-hero-container { */
 .container.service-hero-container {
-    background: linear-gradient(270deg, rgba(0, 0, 0, 0.02) -20.52%, rgba(23, 23, 23, 0.90) 100%), url('../images/services-details-bg.png') lightgray 0.227px 0.386px / 108.807% 99.927% no-repeat;
+    background: linear-gradient(270deg, rgb(0 0 0 / 20%) -20.52%, rgba(23, 23, 23, 0.90) 100%), url(../images/services-details-bg.png) lightgray 0.227px 0.386px / 108.807% 99.927% no-repeat;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -354,6 +354,7 @@
     margin: 63px auto 84px;
     /* max-width: 1370px; */
 }
+
 
 .heading-container-services-details {
     align-items: flex-start;
@@ -406,6 +407,7 @@
     background: lightgray 50% / cover no-repeat;
     width: 100%;
     height: 319px;
+
 }
 
 section.sd-capabilities {

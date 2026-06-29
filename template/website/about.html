@@ -1,7 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}About Us - CodigoMantra{% endblock %}
+{% block title %}About Us | 100+ Projects & 10+ Years Experience | Codigo {% endblock %}
+{%block meta_description%}
+<meta name="description" content="Your Tech Partner for Business Growth. With 10+ years of experience and a 50+ in-house team, we have delivered 100+ scalable projects for 50+ satisfied clients.">
+{%endblock%}
+{%block meta_canonical%}
+<link rel="canonical" href="https://codigomantra.com/about-us/" />
+{%endblock%}
 
 {% block content %}
 
@@ -137,7 +143,7 @@
             <!-- Left: image card -->
             <div class="col-lg-6 left-card-about-cm" style="padding-right: 7px;">
                 <div class="about-cap-img-card">
-                    <img src="{% static 'images/about/business-cm.jpg' %}" alt="Our Team at Work" class="about-cap-img">
+                    <img loading="lazy" src="{% static 'images/about/business-cm.jpg' %}" alt="Our Team at Work" class="about-cap-img">
                 </div>
             </div>
             <!-- Right: stacked info cards -->
@@ -215,7 +221,7 @@
                 <div class="service-card-wrapper">
                     <div class="service-card-new">
                         <div class="about-services-cm">
-                            <img src="{% static 'images/about/goals-cm-one.svg' %}" alt="Product Design">
+                            <img loading="lazy" src="{% static 'images/about/goals-cm-one.svg' %}" alt="Product Design">
                         </div>
                         <div class="service-top">
                             <h5 class="service-title">Industry recognition </h5>
@@ -231,7 +237,7 @@
                 <div class="service-card-wrapper">
                     <div class="service-card-new">
                         <div class="about-services-cm">
-                            <img src="{% static 'images/about/goals-cm-two.svg' %}" alt="Product Design">
+                            <img loading="lazy" src="{% static 'images/about/goals-cm-two.svg' %}" alt="Product Design">
                         </div>
                         <div class="service-top">
                             <h5 class="service-title">Competitive advantage</h5>
@@ -246,7 +252,7 @@
                 <div class="service-card-wrapper">
                     <div class="service-card-new">
                         <div class="about-services-cm-last">
-                            <img src="{% static 'images/about/goals-cm-last.svg' %}" alt="Product Design">
+                            <img loading="lazy" src="{% static 'images/about/goals-cm-last.svg' %}" alt="Product Design">
                         </div>
                         <div class="service-top">
                             <h5 class="service-title">Commit to professionalism</h5>
@@ -291,7 +297,7 @@
             {% for team_member in team_members|slice:":4" %}
             <div class="col-lg-3 col-md-6">
                 <div class="team-member-card">
-                    <img src="{{team_member.image.url}}" alt="Team Member 1" class="team-member-img">
+                    <img loading="lazy" src="{{team_member.image.url}}" alt="Team Member 1" class="team-member-img">
                 </div>
             </div>
             {% endfor %}
@@ -311,7 +317,7 @@
             {% for team_member in team_members|slice:"4:7" %}
             <div class="col-lg-3 col-md-6">
                 <div class="team-member-card">
-                    <img src="{{team_member.image.url}}" alt="Team Member 1" class="team-member-img">
+                    <img loading="lazy" src="{{team_member.image.url}}" alt="Team Member 1" class="team-member-img">
                 </div>
             </div>
             {% endfor %}
@@ -353,7 +359,7 @@
     <div class="ws-slider-outer">
         <div class="ws-track" id="wsTrack">
             {% for workspace_image in workspace_images %}
-            <div class="ws-slide"><img src="{{ workspace_image.image.url }}"
+            <div class="ws-slide"><img loading="lazy" src="{{ workspace_image.image.url }}"
                     alt="Workspace moment {{ forloop.counter }}"></div>
             {% endfor %}
         </div>
@@ -377,7 +383,7 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="tech-stack-container">
-                        <img src="{% static 'images/orange-cn.png' %}" alt="Tech Stack">
+                        <img loading="lazy" src="{% static 'images/orange-cn.png' %}" alt="Tech Stack">
                     </div>
                 </div>
             </div>

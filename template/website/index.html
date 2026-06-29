@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
 {% load static %}
+
+{% block title %}
+Codigo Mantra | Tech Partner for Business Growth | Custom Software & AI
+{% endblock %}
 {% block content %}
 
-<head>
-    <link rel="canonical" href="{{ canonical_url }}">
-</head>
 
 <section class="hero">
     <!-- Background Grid -->
@@ -26,7 +27,8 @@
             <div class="hero-badge-wrap">
                 <div class="hero-badge">
                     <span class="badge-avatar">
-                        <img src="{% static 'images/hero-group-img.png' %}" alt="Client">
+                        <img src="{% static 'images/hero-group-img.png' %}" alt="Client" fetchpriority="high"
+                            decoding="async" width="49" height="30">
                     </span>
                     <span class="badge-text">Trusted by 50+ fast-scaling startups</span>
                 </div>
@@ -42,13 +44,13 @@
             </p>
             <div class="schedule-call-footer">
 
-                <a class="btn-cm-cta btn-pill" href="{% url 'schedule-call' %}">
+                <a class="btn-cm-cta btn-pill mob-w-f-content" href="{% url 'schedule-call' %}">
                     <span class="label-up">Book a Strategy Call</span>
                     <span class="label-up">Book a Strategy Call</span>
                     <!-- <span class="label-up">Book a 15 min call</span>
                     <span class="label-up">Book a 15 min call</span> -->
                 </a>
-                <a class="btn-secondary-cm" href="{% url 'portfolio' %}">
+                <a class="btn-secondary-cm mob-w-f-content" href="{% url 'portfolio' %}">
                     <span class="label-up">View Case Studies</span>
                     <span class="label-up">View Case Studies</span>
                 </a>
@@ -65,16 +67,16 @@
         <div class="marquee-track" dir="ltr">
             <!-- Set 1 -->
             {%for industry in industries%}
-            <a href="{% url 'industry_detail' slug=industry.slug %}" class="marquee-item text-decoration-none">
+            <div class="marquee-item text-decoration-none">
                 {{industry.svg_icon|safe}}
                 {{ industry.name }}
-            </a>
+            </div>
             {%endfor%}
             {%for industry in industries%}
-            <a href="{% url 'industry_detail' slug=industry.slug %}" class="marquee-item text-decoration-none">
+            <div class="marquee-item text-decoration-none">
                 {{industry.svg_icon|safe}}
                 {{ industry.name }}
-            </a>
+            </div>
             {%endfor%}
         </div>
     </div>
@@ -292,7 +294,7 @@
             </div>
             <div class="col-md-7">
                 <div class="sideimg-col">
-                    <img src="{%static 'images/why-choose-side-img.png'  %}" </div>
+                    <img src="{%static 'images/why-choose-side-img.png'  %}" loading="lazy" alt="Why Choose Us">
                 </div>
             </div>
         </div>
@@ -323,7 +325,7 @@
         </div>
         <div class="Background-fixed-cm-col ">
             <div class="col-first row">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="col-number-info">
                         <h6>
                             01
@@ -343,17 +345,15 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-md-2"></div>
                 <div class="col-md-6">
-                    <img class="industries-img" src="{% static 'images/industries-one.png'  %}" alt="">
+                    <img class="industries-img" src="{% static 'images/industries-one.png'  %}" alt="Healthcare operations dashboard" width="2462" height="1490" loading="lazy">
                 </div>
             </div>
             <div class="col-first row">
                 <div class="col-md-6">
-                    <img class="industries-img" src="{% static 'images/industries-three.png'  %}" alt="">
+                    <img class="industries-img" src="{% static 'images/industries-three.png'  %}" alt="Logistics operations platform" width="1847" height="1118" loading="lazy">
                 </div>
-                <div class="col-md-2"></div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="col-number-info">
                         <h6>
                             02
@@ -377,7 +377,7 @@
 
             </div>
             <div class="col-first row">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="col-number-info">
                         <h6>
                             03
@@ -397,9 +397,8 @@
                         </ul>
                     </div>
                 </div>
-                <div class="col-md-2"></div>
                 <div class="col-md-6">
-                    <img class="industries-img" src="{% static 'images/industries-two.png'  %}" alt="">
+                    <img class="industries-img" src="{% static 'images/industries-two.png'  %}" alt="Education workflow platform" width="1847" height="1118" loading="lazy">
                 </div>
             </div>
 
@@ -582,7 +581,8 @@
                 {% for t in testimonials|slice:":2" %}
                 {% if t.media_type == 'video' %}
                 <div class="testimonial-video-card">
-                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=600&h=800"
+                    <img loading="lazy"
+                        src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=600&h=800"
                         alt="Video Review" class="video-preview-img">
                     <div class="video-overlay">
                         <!-- <a href="#" class="btn-video-review">
@@ -605,7 +605,7 @@
                         <div class="t-company-logo">
                             <div class="up-logo-badge">
                                 {% if t.platform_image %}
-                                <img src="{{ t.platform_image.url }}" alt="Platform"
+                                <img loading="lazy" src="{{ t.platform_image.url }}" alt="Platform"
                                     style="width: 44px; height: 44px; object-fit: contain;">
                                 {% else %}
                                 {% endif %}
@@ -620,7 +620,8 @@
                 {% for t in testimonials|slice:"2:4" %}
                 {% if t.media_type == 'video' %}
                 <div class="testimonial-video-card">
-                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=600&h=800"
+                    <img loading="lazy"
+                        src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=600&h=800"
                         alt="Video Review" class="video-preview-img">
                     <div class="video-overlay">
                         <!-- <a href="#" class="btn-video-review">
@@ -644,7 +645,7 @@
                         <div class="t-company-logo">
                             <div class="up-logo-badge">
                                 {% if t.platform_image %}
-                                <img src="{{ t.platform_image.url }}" alt="Platform"
+                                <img loading="lazy" src="{{ t.platform_image.url }}" alt="Platform"
                                     style="width: 44px; height: 44px; object-fit: contain;">
                                 {% else %}
                                 {% endif %}
@@ -660,7 +661,8 @@
 
                 {% if t.media_type == 'video' %}
                 <div class="testimonial-video-card">
-                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=600&h=800"
+                    <img loading="lazy"
+                        src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=600&h=800"
                         alt="Video Review" class="video-preview-img">
                     <div class="video-overlay">
                         <!-- <a href="#" class="btn-video-review">
@@ -683,7 +685,7 @@
                         <div class="t-company-logo">
                             <div class="up-logo-badge">
                                 {% if t.platform_image %}
-                                <img src="{{ t.platform_image.url }}" alt="Platform"
+                                <img loading="lazy" src="{{ t.platform_image.url }}" alt="Platform"
                                     style="width: 44px; height: 44px; object-fit: contain;">
                                 {% else %}
                                 {% endif %}
@@ -770,7 +772,7 @@
                 </div>
                 <div class="col-lg-5">
                     <div class="tech-stack-container">
-                        <img src="{% static 'images/orange-cn.png' %}" alt="Tech Stack">
+                        <img loading="lazy" src="{% static 'images/orange-cn.png' %}" alt="Tech Stack">
                     </div>
                 </div>
             </div>
@@ -847,9 +849,44 @@
         });
     });
 
-
-
     // Custom scroll logic for .Background-fixed-cm-col has been removed to turn auto scrolling off
+
+
+
+
+    
 </script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+    const target = document.querySelectorAll(".Background-fixed-cm-col .col-first")[2];
+
+    if (!target) {
+        console.log("Target element not found");
+        return;
+    }
+
+    function checkCenterPosition() {
+        const rect = target.getBoundingClientRect();
+        const viewportMiddle = window.innerHeight * 0.5;
+
+        if (rect.top <= viewportMiddle) {
+            target.classList.add("active");
+        } else {
+            target.classList.remove("active");
+        }
+    }
+
+    window.addEventListener("scroll", checkCenterPosition, { passive: true });
+    document.addEventListener("scroll", checkCenterPosition, { passive: true, capture: true });
+    window.addEventListener("resize", checkCenterPosition);
+    window.addEventListener("load", checkCenterPosition);
+    window.addEventListener("pageshow", checkCenterPosition);
+
+    checkCenterPosition();
+});
+</script>
+
 
 {% endblock JavaScript %}

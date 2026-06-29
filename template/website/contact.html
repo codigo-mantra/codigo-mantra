@@ -1,6 +1,12 @@
 {%extends 'base.html'%}
 {% load static %}
-{% block title %}Contact - CodigoMantra{% endblock %}
+{% block title %}Contact Us | Start Your Business Transformation | Codigo Mantra{% endblock %}
+{%block meta_description%}
+<meta name="description" content="Take the first step towards business transformation. Contact Codigo Mantra's expert team to discuss your vision, launch your MVP, or scale your enterprise.">
+{%endblock%}
+{%block meta_canonical%}
+<link rel="canonical" href="https://codigomantra.com/contact-us/" />
+{%endblock%}
 {% block content %}
 <section class="contact-page-hero">
     <div class="container">
@@ -249,7 +255,7 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="tech-stack-container">
-                        <img src="{% static 'images/orange-cn.png' %}" alt="Tech Stack">
+                        <img loading="lazy" src="{% static 'images/orange-cn.png' %}" alt="Tech Stack">
                     </div>
                 </div>
             </div>
@@ -274,7 +280,7 @@
 
                 <!-- Balloons + Envelope -->
                 <div class="balloon-envelope-wrap">
-                    <img src="{% static 'images/contact-us-modal.svg' %}" alt="Contact Us Modal">
+                    <img loading="lazy" src="{% static 'images/contact-us-modal.svg' %}" alt="Contact Us Modal">
                 </div>
             </div>
 

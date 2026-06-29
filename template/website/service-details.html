@@ -9,9 +9,9 @@
          HERO SECTION
     ══════════════════════════════════ -->
 
-    <section class="hero service-hero">
+    <section class="hero service-hero mobile">
         <div class="container service-hero-container " {% if detail and detail.hero_image %}
-            style="background: linear-gradient(270deg, rgba(0, 0, 0, 0.02) -20.52%, rgba(23, 23, 23, 0.90) 100%), url('{{ detail.hero_image.url }}') lightgray 0.227px 0.386px / 108.807% 99.927% no-repeat;"
+            
             {% endif %}>
 
             <div class="row align-items-center hero-row">
@@ -34,6 +34,10 @@
                 </div>
             </div>
         </div>
+    </section>
+
+    <section class="mobile-app-dev-hero-mob">
+        
     </section>
     <!-- ══════════════════════════════════
          PROBLEM SECTION
@@ -267,10 +271,10 @@
                     <!-- Capabilities panel with mockup toggle triggers -->
                     <div class="sd-toggles-panel">
                         {% if detail and detail.capabilities_image %}
-                        <img src="{{ detail.capabilities_image.url }}" alt="{{ detail.capabilities_title }}"
-                            class="img-fluid">
+                        <img loading="lazy" src="{{ detail.capabilities_image.url }}"
+                            alt="{{ detail.capabilities_title }}" class="img-fluid">
                         {% else %}
-                        <img src="{% static 'images/capabilities-side.png' %}">
+                        <img loading="lazy" alt="capabilities-side" src="{% static 'images/capabilities-side.png' %}">
                         {% endif %}
                     </div>
                 </div>
@@ -401,7 +405,7 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="tech-stack-container">
-                            <img src="{% static 'images/orange-cn.png' %}" alt="Tech Stack">
+                            <img loading="lazy" src="{% static 'images/orange-cn.png' %}" alt="Tech Stack">
                         </div>
                     </div>
                 </div>

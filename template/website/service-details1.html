@@ -269,10 +269,10 @@
                     <!-- Capabilities panel with mockup toggle triggers -->
                     <div class="sd-toggles-panel">
                         {% if detail and detail.capabilities_image %}
-                        <img src="{{ detail.capabilities_image.url }}" alt="{{ detail.capabilities_title }}"
+                        <img loading="lazy" src="{{ detail.capabilities_image.url }}" alt="{{ detail.capabilities_title }}"
                             class="img-fluid">
                         {% else %}
-                        <img src="{% static 'images/capabilities-side.png' %}">
+                        <img loading="lazy" alt="capabilities-side" src="{% static 'images/capabilities-side.png' %}">
                         {% endif %}
                     </div>
                 </div>
@@ -405,7 +405,7 @@
                     </div>
                     <div class="col-lg-6">
                         <div class="tech-stack-container">
-                            <img src="{% static 'images/orange-cn.png' %}" alt="Tech Stack">
+                            <img loading="lazy" src="{% static 'images/orange-cn.png' %}" alt="Tech Stack">
                         </div>
                     </div>
                 </div>
@@ -451,7 +451,7 @@ stroke-linejoin="round" />
                 </div>
                 <div class="col-lg-6">
                     <div class="tech-stack-container">
-                        <img src="{% static 'images/orange-cn.png' %}" alt="Tech Stack">
+                        <img loading="lazy" src="{% static 'images/orange-cn.png' %}" alt="Tech Stack">
                     </div>
                 </div>
             </div>
@@ -527,7 +527,7 @@ where time is being lost.</p>
                 </div>
                 <div class="col-lg-6">
                     <div class="tech-stack-container">
-                        <img src="{% static 'images/orange-cn.png' %}" alt="Tech Stack">
+                        <img loading="lazy" src="{% static 'images/orange-cn.png' %}" alt="Tech Stack">
                     </div>
                 </div>
             </div>

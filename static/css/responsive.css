@@ -6,7 +6,7 @@
     }
 
     .marquee-track {
-        margin-top: 48px;
+        margin-top: 80px;
         gap: 12px;
     }
 
@@ -47,16 +47,28 @@
     }
 
     .card-bl {
-        top: 68%;
+        top: 51%;
         left: -10%;
         animation-delay: 2.5s;
     }
 
     .card-br {
-        top: 66%;
+        top: 52%;
         right: -10%;
         /* transform: rotate(-4deg); */
         animation-delay: 4s;
+    }
+    .Background-fixed-cm-col .col-first:nth-child(2){
+        transform: none !important;
+    }
+    img.industries-img{
+        height: 215px !important;
+    }
+    .col-first.row.active{
+        transform: none !important;
+    }
+    .Background-fixed-cm-col .col-first:nth-child(3){
+        margin-bottom: auto !important;
     }
 
     .hero {
@@ -145,6 +157,8 @@
     .project-mockup-side img {
         border-radius: 12px;
         height: 151px;
+        object-fit: cover;
+        object-position: top;
     }
 
     .portfolio-list {
@@ -291,6 +305,17 @@
         padding: 20px 12px;
     }
 
+    .non-sticky-col {
+        position: relative !important;
+        top: 0 !important;
+    }
+
+    .hero-subtitle-wrap {
+        bottom: 114px;
+        padding: 0 10px;
+    }
+
+
     .about-capabilities-section {
         padding: 70px 20px;
     }
@@ -383,6 +408,7 @@
     .btn-cm-cta {
         height: 48px;
         line-height: 48px;
+        width: 100% !important;
     }
 
     .btn-toggle {
@@ -558,8 +584,8 @@
 
     .schedule-call-footer {
         display: flex;
-        flex-direction: column-reverse;
         gap: 14px;
+        flex-direction: column;
         margin-top: 30px;
         width: 100%;
     }
@@ -578,6 +604,17 @@
         align-items: center;
         gap: 11px;
         /* margin-bottom: 50px; */
+    }
+    .hero.service-hero.mobile{
+        padding-bottom: 0px !important;
+
+    }
+    .col-lg-6.hero-left{
+        z-index: 22;
+    }
+    .marquee-track-service.slick-initialized.slick-slider{
+        z-index: 22;
+        position: relative;
     }
 
     .cs-slider::before {
@@ -727,8 +764,14 @@
 
     .cm-mega__panel-2 {
         margin: 0 !important;
-        height: 300px;
+        max-height: 290px;
+        transition: .3s;
         overflow-y: scroll;
+    }
+
+    .cm-logo img {
+        width: 26.663px;
+        height: 27.01px;
     }
 
     .grid-container {
@@ -739,9 +782,21 @@
         overflow: hidden;
     }
 
+    .menu-btn-cm {
+        width: 100%;
+    }
+
+    .mob-w-f-content {
+        width: 100%;
+        margin: 0 auto;
+                height: 48px;
+        line-height: 48px;
+        
+    }
+
     .navbar-collapse {
-        max-height: 80vh;
-        height: 70vh;
+        max-height: 78vh;
+        height: 78vh;
         overflow-y: scroll !important;
         display: flex;
         align-content: space-between;
@@ -788,6 +843,7 @@
 
     .ws-slide.slick-slide {
         width: 150px !important;
+        min-height: 113px;
     }
 
     .left-card-about-cm {
@@ -808,12 +864,25 @@
         margin-top: 16px;
     }
 
+    .hero-right-industry img {
+        height: 100%;
+    }
+
+    .hero-sub .service-hero-sub {
+        position: relative;
+        z-index: 11;
+    }
+
     .right-server-col-img img {
         width: 495px;
         height: 596px;
         position: absolute;
-        left: -11%;
-        top: -47%;
+
+        left: 50%;
+        top: 50%;
+
+        transform: translate(-50%, -50%) scale(1.5);
+
     }
 
     .hero-right {
@@ -984,7 +1053,7 @@
     }
 
     .cm-brand {
-        font-size: 12px;
+        font-size: 14px;
     }
 
     /* Prevent iOS Safari auto-zoom on focused form fields */
@@ -1012,6 +1081,27 @@
     .container.service-hero-container {
         padding: 20px;
         border-radius: 10px;
+        background-position: left;
+        margin-top: 0px !important;
+        background: none;
+        margin-bottom: 10px;
+    }
+    .mobile-app-dev-hero-mob{
+        background: linear-gradient(270deg, rgb(0 0 0 / 20%) -20.52%, rgba(23, 23, 23, 0.90) 100%), url(../images/8527c49de4359630ff7c2156cb86c79d63f17b41.png) lightgray 0.227px 0.386px / 108.807% 99.927% no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 30px;
+    height: 25vh;
+    margin-bottom: 40px;
+
+    }
+
+
+
+    .sd-toggles-panel img {
+        height: 200px;
+        object-fit: cover;
     }
 
     .sd-value-grid {
@@ -1020,6 +1110,12 @@
 
     .Background-fixed-cm-col .col-first {
         min-height: auto !important;
+        position: relative;
+        top: auto;
+        margin-bottom: 18px;
+        padding: 14px;
+        border-radius: 16px;
+        flex-direction: column;
 
     }
 
@@ -1038,8 +1134,8 @@
     }
 
     .Background-fixed-cm-col {
-        gap: 40px;
-        padding: 10px;
+        gap: 0;
+        padding: 0;
     }
 
     .hero-left-industry {
@@ -1071,7 +1167,21 @@
 
     .offset-card-col {
         max-height: 100%;
+        padding: 0;
     }
+    .ind-section-padding-new::after {
+     background: conic-gradient(from 180deg at 50% 50%, rgb(250 84 36 / 0%) 84.7712105512619deg, rgb(194 44 0 / 0%) 183.79708528518677deg, rgb(152 35 0 / 0%) 271.9095826148987deg, rgb(251 30 30 / 0%) 360deg);
+    
+    }
+    .ind-provide-card {
+        padding: 20px;
+    }
+    .service-hero-sub p {
+    /* color: rgba(246, 246, 246, 0.8); */
+    color: #F6F6F6;
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+}
 
 }
 
@@ -1106,5 +1216,27 @@
     .input-group-custom .form-control {
         width: 100%;
     }
+
+}
+
+@media (min-width:787px) {
+    .Background-fixed-cm-col {
+        transform: translateY(34px);
+    }
+    .mobile-app-dev-hero-mob{
+ display: none;
+
+}
+
+}
+
+
+@media (max-width: 390px) {
+ .custom-postion-accoding .custom-drop-sw{
+    transform: translateY(10px) !important;
+ }
+ .cm-headerbar{
+    max-height: 98dvh;
+ }
 
 }

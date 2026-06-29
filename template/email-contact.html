@@ -40,7 +40,7 @@
               <td style="vertical-align:bottom;padding-bottom:0;">
                 <a href="#" style="display:inline-block; cursor: pointer;">
                   <img
-                    src="{% if use_external_images %}{{ image_urls.illustration }}{% else %}cid:illustration{% endif %}"
+                    loading="lazy" src="{% if use_external_images %}{{ image_urls.illustration }}{% else %}cid:illustration{% endif %}"
                     alt="Envelope" style="display:block; margin: 0 auto;" width="280">
                 </a>
               </td>

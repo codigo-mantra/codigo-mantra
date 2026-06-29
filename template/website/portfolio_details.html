@@ -18,9 +18,9 @@
             <div class="col-lg-12">
                 <div class="project-img">
                     {% if case_study.cover_image %}
-                    <img src="{{ case_study.cover_image.url }}" alt="{{ case_study.title }}" class="img-fluid">
+                    <img loading="lazy" src="{{ case_study.cover_image.url }}" alt="{{ case_study.title }}" class="img-fluid">
                     {% elif case_study.images.all %}
-                    <img src="{{ case_study.images.first.image.url }}" alt="{{ case_study.title }}" class="img-fluid">
+                    <img loading="lazy" src="{{ case_study.images.first.image.url }}" alt="{{ case_study.title }}" class="img-fluid">
                     {% endif %}
                 </div>
                 <div class="project-specsfications">
@@ -117,12 +117,12 @@
                         <div class="cs-card-img">
                             <a href="{% url 'case_study_detail' other_study.pk %}">
                                 {% if other_study.cover_image %}
-                                <img src="{{ other_study.cover_image.url }}" alt="{{ other_study.project_name }}">
+                                <img loading="lazy" src="{{ other_study.cover_image.url }}" alt="{{ other_study.project_name }}">
                                 {% elif other_study.images.all %}
-                                <img src="{{ other_study.images.first.image.url }}"
+                                <img loading="lazy" src="{{ other_study.images.first.image.url }}"
                                     alt="{{ other_study.project_name }}">
                                 {% else %}
-                                <img src="{% static 'images/case-studies/project-1.jpg' %}" alt="Placeholder">
+                                <img loading="lazy" src="{% static 'images/case-studies/project-1.jpg' %}" alt="Placeholder">
                                 {% endif %}
                             </a>
                         </div>
@@ -168,7 +168,7 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="tech-stack-container">
-                        <img src="{% static 'images/orange-cn.png' %}" alt="Tech Stack">
+                        <img loading="lazy" src="{% static 'images/orange-cn.png' %}" alt="Tech Stack">
                     </div>
                 </div>
 </section>
