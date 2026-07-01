@@ -27,6 +27,7 @@ from django.shortcuts import redirect
 from django.http import JsonResponse
 from django.db import transaction, IntegrityError
 import threading
+from django.http import Http404
 
 logger = logging.getLogger(__name__)
 
@@ -1136,8 +1137,29 @@ def newsletter_subscribe(request):
     return redirect(request.META.get("HTTP_REFERER", "/"))
 
 class ServiceDetailsView(views.View):
+
+    OLD_SERVICE_SLUGS = {
+        "auto-1766": "growth",
+        "auto-1767": "ai",
+        "auto-1768": "digital",
+        "auto-1769": "custom",
+        "auto-1770": "brand",
+        "auto-1771": "webs",
+        "auto-1772": "ux",
+        "auto-1773": "architecture",
+        "auto-1774": "web",
+    }
+
     def get(self, request, slug=None):
-        # Base queryset for ServiceDetail with all related items prefetched
+
+        # 301 Redirect old auto-generated URLs to new SEO-friendly URLs
+        if slug and slug in self.OLD_SERVICE_SLUGS:
+            return redirect(
+                "service-details-slug",
+                slug=self.OLD_SERVICE_SLUGS[slug],
+                permanent=True
+            )
+
         detail_prefetch = Prefetch(
             'details',
             queryset=ServiceDetail.objects.prefetch_related(
@@ -1154,40 +1176,65 @@ class ServiceDetailsView(views.View):
         if slug:
             # If coming from a specific page, prioritize that table
             if source_type == 'page':
-                service = Service_page.objects.prefetch_related(detail_prefetch).filter(slug=slug, details__isnull=False).first()
+                service = Service_page.objects.prefetch_related(detail_prefetch).filter(
+                    slug=slug,
+                    details__isnull=False
+                ).first()
+
                 if not service:
-                    service = Service_index.objects.prefetch_related(detail_prefetch).filter(slug=slug, details__isnull=False).first()
+                    service = Service_index.objects.prefetch_related(detail_prefetch).filter(
+                        slug=slug,
+                        details__isnull=False
+                    ).first()
             else:
-                service = Service_index.objects.prefetch_related(detail_prefetch).filter(slug=slug, details__isnull=False).first()
+                service = Service_index.objects.prefetch_related(detail_prefetch).filter(
+                    slug=slug,
+                    details__isnull=False
+                ).first()
+
                 if not service:
-                    service = Service_page.objects.prefetch_related(detail_prefetch).filter(slug=slug, details__isnull=False).first()
-            
-            # If still not found with details, try without details filter as fallback
+                    service = Service_page.objects.prefetch_related(detail_prefetch).filter(
+                        slug=slug,
+                        details__isnull=False
+                    ).first()
+
+            # Fallback without details filter
             if not service:
                 if source_type == 'page':
-                    service = Service_page.objects.prefetch_related(detail_prefetch).filter(slug=slug).first()
+                    service = Service_page.objects.prefetch_related(detail_prefetch).filter(
+                        slug=slug
+                    ).first()
+
                     if not service:
-                        service = Service_index.objects.prefetch_related(detail_prefetch).filter(slug=slug).first()
+                        service = Service_index.objects.prefetch_related(detail_prefetch).filter(
+                            slug=slug
+                        ).first()
                 else:
-                    service = Service_index.objects.prefetch_related(detail_prefetch).filter(slug=slug).first()
+                    service = Service_index.objects.prefetch_related(detail_prefetch).filter(
+                        slug=slug
+                    ).first()
+
                     if not service:
-                        service = Service_page.objects.prefetch_related(detail_prefetch).filter(slug=slug).first()
-            
-            # Final 404 check if absolutely no service matches this slug
+                        service = Service_page.objects.prefetch_related(detail_prefetch).filter(
+                            slug=slug
+                        ).first()
+
             if not service:
-                from django.http import Http404
                 raise Http404("Service not found")
+
         else:
-            # Default fallback or first service from Service_index
             service = Service_index.objects.prefetch_related(detail_prefetch).first()
-        
-        # Get the first detail from the 'details' related manager
+
         detail = service.details.first() if service and hasattr(service, 'details') else None
+
         return render(request, 'website/service-details.html', {
-            'service': service, 
-            'detail': detail
+            'service': service,
+            'detail': detail,
         })
 
+
+
+        
 class IndustryDetailsView(views.View):
     def get(self, request, slug=None):
         # Base queryset for IndustryDetail with all related items prefetched

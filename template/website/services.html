@@ -329,8 +329,28 @@
             localStorage.removeItem("schedule_call_display_time_range");
         }
     });
+
+    function fixSlickAccessibility($slider) {
+        // Make all slides unfocusable
+        $slider.find('.slick-slide').attr('tabindex', '-1');
+
+        // Only active slides should be focusable
+        $slider.find('.slick-active').attr('tabindex', '0');
+
+        // Hidden slides and their focusable children should not receive focus
+        $slider.find('[aria-hidden="true"]').attr('tabindex', '-1');
+        $slider.find('[aria-hidden="true"] a, [aria-hidden="true"] button, [aria-hidden="true"] input, [aria-hidden="true"] select, [aria-hidden="true"] textarea')
+            .attr('tabindex', '-1');
+    }
+
     $(function () {
-        $('.marquee-track-service').slick({
+        const $serviceSlider = $('.marquee-track-service');
+
+        $serviceSlider.on('init afterChange setPosition', function () {
+            fixSlickAccessibility($(this));
+        });
+
+        $serviceSlider.slick({
             autoplay: true,
             autoplaySpeed: 0,
             speed: 5000,
@@ -345,11 +365,14 @@
                 {
                     breakpoint: 768,
                     settings: {
-                        slidesToShow: 1.7
+                        slidesToShow: 1.5
                     }
                 }
             ]
         });
+
+        // Initial fix
+        fixSlickAccessibility($serviceSlider);
     });
 </script>
 {% endblock JavaScript %}

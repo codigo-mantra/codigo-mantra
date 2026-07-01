@@ -361,44 +361,67 @@
 
 
 
-    $(document).ready(function () {
-        $('.case-study-slider').slick({
-            slidesToShow: 1,
-            centerMode: true,
-            centerPadding: '33.333%',
-            slidesToScroll: 1,
-            arrows: false,
-            dots: true,
-            speed: 1000,
-            infinite: true,
-            autoplaySpeed: 1000,
-            autoplay: true,
-            responsive: [
-                {
-                    breakpoint: 1199,
-                    settings: {
-                        centerPadding: '28%',
-                    }
-                },
-                {
-                    breakpoint: 991,
-                    settings: {
-                        slidesToShow: 1,
-                        centerMode: true,
-                        centerPadding: '15%',
-                    }
-                },
-                {
-                    breakpoint: 767,
-                    settings: {
-                        slidesToShow: .99,
-                        centerMode: false,
-                        centerPadding: '10',
-                    }
-                }
-            ]
-        });
+function fixSlickAccessibility($slider) {
+    // Remove focus from all slides
+    $slider.find('.slick-slide').attr('tabindex', '-1');
+
+    // Only active slides are focusable
+    $slider.find('.slick-active').attr('tabindex', '0');
+
+    // Hidden slides and their interactive elements should never be focusable
+    $slider.find('[aria-hidden="true"]').attr('tabindex', '-1');
+    $slider.find('[aria-hidden="true"] a, [aria-hidden="true"] button, [aria-hidden="true"] input, [aria-hidden="true"] select, [aria-hidden="true"] textarea')
+        .attr('tabindex', '-1');
+}
+
+$(document).ready(function () {
+
+    const $caseSlider = $('.case-study-slider');
+
+    $caseSlider.on('init afterChange setPosition', function () {
+        fixSlickAccessibility($(this));
     });
+
+    $caseSlider.slick({
+        slidesToShow: 1,
+        centerMode: true,
+        centerPadding: '33.333%',
+        slidesToScroll: 1,
+        arrows: false,
+        dots: true,
+        speed: 1000,
+        infinite: true,
+        autoplaySpeed: 1000,
+        autoplay: true,
+        responsive: [
+            {
+                breakpoint: 1199,
+                settings: {
+                    centerPadding: '28%',
+                }
+            },
+            {
+                breakpoint: 991,
+                settings: {
+                    slidesToShow: 1,
+                    centerMode: true,
+                    centerPadding: '15%',
+                }
+            },
+            {
+                breakpoint: 767,
+                settings: {
+                    slidesToShow: 0.99,
+                    centerMode: false,
+                    centerPadding: '10',
+                }
+            }
+        ]
+    });
+
+    // Initial accessibility fix
+    fixSlickAccessibility($caseSlider);
+});
 </script>
 <script>
     document.querySelectorAll(".cs-card").forEach(card => {

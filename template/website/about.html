@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}About Us | 100+ Projects & 10+ Years Experience | Codigo {% endblock %}
+{% block title %}About Us | 100+ Projects & 10+ Years Experience | Codigo Mantra  {% endblock %}
 {%block meta_description%}
 <meta name="description" content="Your Tech Partner for Business Growth. With 10+ years of experience and a 50+ in-house team, we have delivered 100+ scalable projects for 50+ satisfied clients.">
 {%endblock%}
@@ -391,42 +391,56 @@
     </div>
 </section>
 <script>
-    window.addEventListener("pageshow", function (event) {
-        if (event.persisted) {
-            // Page loaded from back/forward cache
-            localStorage.removeItem("schedule_call_date");
-            localStorage.removeItem("schedule_call_display_date");
-            localStorage.removeItem("schedule_call_time");
-            localStorage.removeItem("schedule_call_display_time_range");
+  function fixSlickAccessibility($slider) {
+    // All slides not focusable by default
+    $slider.find('.slick-slide').attr('tabindex', '-1');
+
+    // Only visible/active slides focusable
+    $slider.find('.slick-active').attr('tabindex', '0');
+
+    // Hidden slides and focusable children must not be focusable
+    $slider.find('[aria-hidden="true"]').attr('tabindex', '-1');
+    $slider.find('[aria-hidden="true"] a, [aria-hidden="true"] button, [aria-hidden="true"] input, [aria-hidden="true"] select, [aria-hidden="true"] textarea')
+      .attr('tabindex', '-1');
+  }
+
+  $(document).ready(function () {
+    const $workspaceSlider = $('.ws-track');
+
+    // Run fix when slick starts and after slide changes
+    $workspaceSlider.on('init afterChange setPosition', function () {
+      fixSlickAccessibility($(this));
+    });
+
+    $workspaceSlider.slick({
+      slidesToShow: 5.4,
+      slidesToScroll: 2,
+      arrows: false,
+      dots: false,
+      speed: 500,
+      infinite: true,
+      autoplaySpeed: 1000,
+      autoplay: true,
+      pauseOnHover: true,
+      cssEase: 'linear',
+      responsive: [
+        {
+          breakpoint: 991,
+          settings: {
+            slidesToShow: 3,
+          }
+        },
+        {
+          breakpoint: 450,
+          settings: {
+            slidesToShow: 3,
+          }
         }
+      ]
     });
-    $(document).ready(function () {
-        $('.ws-track').slick({
-            slidesToShow: 5.4,
-            slidesToScroll: 2,
-            arrows: false,
-            dots: false,
-            speed: 500,
-            infinite: true,
-            autoplaySpeed: 1000,
-            autoplay: true,
-            pauseOnHover: true,
-            cssEase: 'linear',
-            responsive: [
-                {
-                    breakpoint: 991,
-                    settings: {
-                        slidesToShow: 3,
-                    }
-                },
-                {
-                    breakpoint: 450,
-                    settings: {
-                        slidesToShow: 3,
-                    }
-                }
-            ]
-        });
-    });
+
+    // Extra safety after init
+    fixSlickAccessibility($workspaceSlider);
+  });
 </script>
 {% endblock %}

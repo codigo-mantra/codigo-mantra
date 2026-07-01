@@ -26,7 +26,6 @@ from website.sitemaps import StaticViewSitemap, ServiceSitemap, JobSitemap
 sitemaps = {
     'static': StaticViewSitemap,
     'services': ServiceSitemap,
-    'jobs': JobSitemap,
 }
 
 # Proper Django error handlers

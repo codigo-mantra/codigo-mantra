@@ -784,77 +784,93 @@ Codigo Mantra | Tech Partner for Business Growth | Custom Software & AI
 
 {% block JavaScript %}
 <script>
+  window.addEventListener("pageshow", function (event) {
+    if (event.persisted) {
+      localStorage.removeItem("schedule_call_date");
+      localStorage.removeItem("schedule_call_display_date");
+      localStorage.removeItem("schedule_call_time");
+      localStorage.removeItem("schedule_call_display_time_range");
+    }
+  });
 
-    window.addEventListener("pageshow", function (event) {
-        if (event.persisted) {
-            // Page loaded from back/forward cache
-            localStorage.removeItem("schedule_call_date");
-            localStorage.removeItem("schedule_call_display_date");
-            localStorage.removeItem("schedule_call_time");
-            localStorage.removeItem("schedule_call_display_time_range");
-        }
+  function fixSlickAccessibility($slider) {
+    $slider.find('.slick-slide').attr('tabindex', '-1');
+    $slider.find('.slick-active').attr('tabindex', '0');
+
+    $slider.find('[aria-hidden="true"]').attr('tabindex', '-1');
+    $slider.find('[aria-hidden="true"] a, [aria-hidden="true"] button, [aria-hidden="true"] input, [aria-hidden="true"] select, [aria-hidden="true"] textarea')
+      .attr('tabindex', '-1');
+  }
+
+  $(function () {
+    const $marquee = $('.marquee-track');
+
+    $marquee.on('init afterChange setPosition', function () {
+      fixSlickAccessibility($(this));
     });
 
-    $(function () {
-        $('.marquee-track').slick({
-            autoplay: true,
-            autoplaySpeed: 0,
-            speed: 5000,
+    $marquee.slick({
+      autoplay: true,
+      autoplaySpeed: 0,
+      speed: 5000,
+      arrows: false,
+      swipe: false,
+      slidesToShow: 5.5,
+      cssEase: 'linear',
+      pauseOnFocus: false,
+      pauseOnHover: false,
+      ltr: true,
+      responsive: [
+        {
+          breakpoint: 768,
+          settings: {
+            slidesToShow: 1.5
+          }
+        }
+      ]
+    });
+
+    fixSlickAccessibility($marquee);
+  });
+
+  $(document).ready(function () {
+    function initCaseStudySlider() {
+      const $caseSlider = $('.case-study-slider');
+
+      if ($(window).width() <= 767) {
+        if (!$caseSlider.hasClass('slick-initialized')) {
+          $caseSlider.on('init afterChange setPosition', function () {
+            fixSlickAccessibility($(this));
+          });
+
+          $caseSlider.slick({
+            slidesToShow: 1,
+            slidesToScroll: 1,
             arrows: false,
-            swipe: false,
-            slidesToShow: 5.5,
-            cssEase: 'linear',
-            pauseOnFocus: false,
-            pauseOnHover: false,
-            ltr: true,
-            responsive: [
-                {
-                    breakpoint: 768,
-                    settings: {
-                        slidesToShow: 1.7
-                    }
-                }
-            ]
-        });
-    });
+            dots: true,
+            speed: 600,
+            infinite: true,
+            autoplay: true,
+            autoplaySpeed: 1500,
+            centerMode: false,
+            centerPadding: '0px'
+          });
 
-    $(document).ready(function () {
-        function initCaseStudySlider() {
-            if ($(window).width() <= 767) {
-                if (!$('.case-study-slider').hasClass('slick-initialized')) {
-                    $('.case-study-slider').slick({
-                        slidesToShow: 1,
-                        slidesToScroll: 1,
-                        arrows: false,
-                        dots: true,
-                        speed: 600,
-                        infinite: true,
-                        autoplay: true,
-                        autoplaySpeed: 1500,
-                        centerMode: false,
-                        centerPadding: '0px'
-                    });
-                }
-            } else {
-                if ($('.case-study-slider').hasClass('slick-initialized')) {
-                    $('.case-study-slider').slick('unslick');
-                }
-            }
+          fixSlickAccessibility($caseSlider);
         }
+      } else {
+        if ($caseSlider.hasClass('slick-initialized')) {
+          $caseSlider.slick('unslick');
+        }
+      }
+    }
 
-        initCaseStudySlider();
+    initCaseStudySlider();
 
-        $(window).on('resize', function () {
-            initCaseStudySlider();
-        });
+    $(window).on('resize', function () {
+      initCaseStudySlider();
     });
-
-    // Custom scroll logic for .Background-fixed-cm-col has been removed to turn auto scrolling off
-
-
-
-
-    
+  });
 </script>
 
 <script>
