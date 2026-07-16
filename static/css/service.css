@@ -50,7 +50,7 @@
 }
 
 .right-server-col-img {
-    background-image: url(../images/services-banner-image.png);
+    background-image: url(../images/services-banner-image.avif);
     background-size: auto;
     background-position: center;
     background-repeat: no-repeat;
@@ -165,7 +165,7 @@
     right: -72px;
     bottom: 0;
     width: 100%;
-    background-image: url('../images/server-orange-map.svg');
+    background-image: url('../images/server-orange-map.avif');
     background-size: contain;
     background-position: bottom;
     background-repeat: no-repeat;
@@ -345,7 +345,7 @@
 } */
 /* .service-hero-container { */
 .container.service-hero-container {
-    background: linear-gradient(270deg, rgb(0 0 0 / 20%) -20.52%, rgba(23, 23, 23, 0.90) 100%), url(../images/services-details-bg.png) lightgray 0.227px 0.386px / 108.807% 99.927% no-repeat;
+    background: linear-gradient(270deg, rgb(0 0 0 / 20%) -20.52%, rgba(23, 23, 23, 0.90) 100%), url(../images/services-details-bg.avif) lightgray 0.227px 0.386px / 108.807% 99.927% no-repeat;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

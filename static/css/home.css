@@ -23,7 +23,7 @@ body {
     flex-direction: column;
     justify-content: center;
     padding: 257px 0 0px;
-    background-image: url(../images/hero-bg.png);
+    background-image: url(../images/hero-bg.avif);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -1116,7 +1116,7 @@ body {
     right: 0;
     bottom: 0;
     width: 100%;
-    background-image: url('../images/footer-bg-cm.webp');
+    background-image: url('../images/footer-bg-cm_compressed.avif');
     background-size: contain;
     background-position: right;
     background-repeat: no-repeat;

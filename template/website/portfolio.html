@@ -37,7 +37,7 @@
                             {% elif case_study.images.first %}
                             <img loading="lazy" src="{{ case_study.images.first.image.url }}" alt="{{ case_study.title }}">
                             {% else %}
-                            <img loading="lazy" src="{% static 'images/case-studies/project-1.jpg' %}" alt="Placeholder">
+                            <img loading="lazy" src="{% static 'images/case-studies/project-1.avif' %}" alt="Placeholder">
                             {% endif %}
                         </div>
                     </a>
@@ -177,7 +177,7 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="tech-stack-container">
-                        <img loading="lazy" src="{% static 'images/orange-cn.png' %}" alt="Tech Stack">
+                        <img loading="lazy" src="{% static 'images/orange-cn.avif' %}" alt="Tech Stack">
                     </div>
                 </div>
             </div>
