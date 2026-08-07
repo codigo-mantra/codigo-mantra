@@ -1270,3 +1270,18 @@ class IndustryDetailsView(views.View):
             'industry': industry, 
             'detail': detail
         })        
+
+
+
+
+class BlogIndexPage(views.View):
+    def get(self, request):
+        insights = Insight.objects.all().order_by('-created_at')[:6] 
+        return render(request, 'website/blog.html', {'insights': insights})
+
+
+class BlogDetailsView(views.View):
+    def get(self, request, slug=None):
+        insights = Insight.objects.all().order_by('-created_at')[:3] 
+        insight = get_object_or_404(Insight, slug=slug)
+        return render(request, 'website/blog_detail.html', {'insight': insight, 'insights': insights})

@@ -1182,7 +1182,25 @@
     font-family: "Poppins", sans-serif;
     font-size: 16px;
 }
-
+.blog-detail-title {
+    font-size: 34px;
+    width: 100%;
+}
+.blog-content-body h3 {
+    font-size: 18px;
+}
+.blog-content-body p {
+    font-size: 14px;
+}
+.blog-banner-wrapper img {
+    object-position: center !important;
+}
+.newsletter-widget {
+    display: none;
+}
+.blog-content-body img {
+    object-position: center !important;
+}
 }
 
 @media (max-width: 450px) {

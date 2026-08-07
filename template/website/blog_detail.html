@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Blog Details - CodigoMantra{% endblock %}
+
+{% block content %}
+<section class="blog-detail-section">
+    <div class="container">
+        <!-- Title & Meta Header -->
+        <div class="blog-header">
+            <h1 class="blog-detail-title">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+            </h1>
+            
+            <p class="blog-detail-subtitle">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            </p>
+
+            <div class="d-flex align-items-center flex-wrap gap-4">
+                <div class="user-info align-items-center">
+                    <img src="{% static 'images/user-img.jpg' %}" alt="Author">
+                    <div class="user-details-blog ms-2">
+                        <div class="user-name">
+                            Gustavo Culhane
+                        </div>
+                        <div class="user-bio">
+                            Sales head
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="blog-meta-right d-flex align-items-center gap-3" style="color: rgba(246, 246, 246, 0.6); font-size: 13px;">
+                    <span>10 mins read</span>
+                    <span>|</span>
+                    <span>Jul 2nd, 2026</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Banner Image -->
+        <div class="blog-banner-wrapper">
+            <img src="{% static 'images/blog-image.png' %}" alt="Blog Header Image">
+        </div>
+
+        <!-- Blog Body Content & Sidebar Grid -->
+        <div class="row position-relative g-4">
+            <div class="col-lg-8">
+                <div class="blog-content-body text-start">
+                    <p>
+                        Local lead generation describes methods and processes for attracting and/or retaining the attention of potential customers/clients who are geographically co-located with the business. Local lead generation offers various advantages including: a targeted approach, better ROI, and brand awareness.
+                    </p>
+                    <p>
+                        This article will discuss local lead generation, its definition, strategies, and advantages.
+                    </p>
+
+                    <h3>
+                        What is local lead generation?
+                    </h3>
+                    <p>
+                        Local business lead generation is a marketing strategy intent on attracting new or repeat customers or clients who are within the locale of a business or service provider. It is designed to drive foot traffic and inquiries or conversions from individuals or businesses within the local area.
+                    </p>
+                    <p>
+                        This approach utilizes assorted digital marketing tactics: boosting online presence for local SEO by utilizing local keywords and references in content to emphasize closeness, maintaining up-to-date and relevant business listings on directories, running geo-targeted advertising campaigns, and encouraging/rewarding customer reviews.
+                    </p>
+                    <p>
+                        The goal is to connect with nearby prospects who are actively seeking products or services within their community or to stand out in a crowded field of browsing customers.<br>
+                        Let's cover the top five.
+                    </p>
+                    <h3>
+                        • Niche directories
+                    </h3>
+                    <p>
+                        Niche sector, specialized, or industry-specific directories, are online listing and directory platforms for products or services. These cater to specific interests, demographics, or the specific needs of users. Curated and concentrated content provides resources for finding relevant businesses or information. Niche directories are numerous and diverse and include: industry-specific associations, trade directories, local business associations, and niche review sites. They can be a surprisingly valuable and effective part of an online marketing and lead generation strategy.
+                    </p>
+
+                    <!-- Section Image 1 -->
+                    <div>
+                        <img src="{% static 'images/blog-image.png' %}" alt="Niche Directories" class="w-100 img-fluid rounded-4" style="max-height: 380px; object-fit: cover; border-radius: 16px;">
+                    </div>
+
+                    <!-- Section 2: Local SEO -->
+                    <h3>
+                        • Local SEO
+                    </h3>
+                    <p>
+                        Local search engine optimization (SEO) is a very commonly applied digital marketing strategy that can dramatically boost online presence. It seeks to attract and appeal to local customers and generate high-quality leads. The advantages of local SEO in lead generation are: enhanced ranking in local searches, higher website traffic, enhanced customer trust/engagement through positive reviews, and amplified opportunities to connect with nearby prospects.
+                    </p>
+
+                    <!-- Section Image 2 -->
+                    <div>
+                        <img src="{% static 'images/blog-image.png' %}" alt="Local SEO" class="w-100 img-fluid rounded-4" style="max-height: 380px; object-fit: cover; border-radius: 16px;">
+                    </div>
+
+                    <!-- Section 3: Local SEM -->
+                    <h3>
+                        • Local SEM
+                    </h3>
+                    <p style="margin-bottom: 32px; color: rgba(246, 246, 246, 0.75);">
+                        Local search engine marketing (SEM) is aimed at generating leads and increasing the ranking and resultant connection rate of local businesses as presented in search engine results pages (SERPs). It complements local SEO efforts by committing to paid advertising that targets a region or market sector.
+                    </p>
+
+                    <!-- Section 4: Social media -->
+                    <h3>
+                        • Social media
+                    </h3>
+                    <p>
+                        Social media plays a pivotal role in lead generation. It provides a powerful platform to connect with potential customers, build relationships, and drive inquiries or conversions. Social media platforms have enormous user bases. They allow businesses to connect with a broader audience, amplifying brand visibility and awareness. They offer advanced targeting options, allowing businesses to reach specific demographics and well-defined sub-groups relating to interests and behaviors.
+                    </p>
+
+                    <!-- Section 5: Hosting local events or webinars -->
+                    <h3>
+                        • Hosting local events or webinars
+                    </h3>
+                    <p>
+                        Hosting local events and webinars is a great way to establish yourself as an area's go-to resource on a specific topic. Plus, target leads must submit their contact info to attend the event.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Sticky Newsletter Sidebar Widget -->
+            <div class="col-lg-4">
+                <div class="footer-news newsletter-widget">
+                        <div class="footer-h">Subscribe our newsletter</div>
+                        <div class="footer-sub">Stay up to date with the latest industry insights and company news.
+                        </div>
+                        <form class="footer-form" action="{% url 'newsletter-subscribe' %}" method="post" novalidate>
+                            {% csrf_token %}
+                            <div id="newsletterErrors" style="text-align: right;">
+                                <p id="err-email-format" style="display:none;"
+                                    class="contact-form-error error-newsletter-email">Please enter a valid email address
+                                    in the format</p>
+                                <p id="err-sub-failed" style="display:none;"
+                                    class="contact-form-error error-newsletter-email">Subscription failed, please try
+                                    again later</p>
+                                <p id="err-sub-network" style="display:none;"
+                                    class="contact-form-error error-newsletter-email">Unable to connect, please check
+                                    your internet connection and try again</p>
+                            </div>
+                            <div class="footer-form-2">
+                                <label class="visually-hidden" for="footerEmail">Email</label>
+                                <div class="input-group-custom" style="flex-shrink: 0;">
+                                    <input id="footerEmail" class="form-control footer-input" name="email" type="email"
+                                        placeholder="Email address" autocomplete="email" required>
+                                    <button class="btn btn-sm btn-cm-cta btn-pill custom-footer-btn" type="submit">
+                                        <span class="label-up">Subscribe</span>
+                                        <span class="label-up">Subscribe</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="insights-section blog-list-sec">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="display-heading mt-3 testimonials-section-cm-heading">You might also like</h2>
+        </div>
+        <div class="row g-4 insights-section-cm-row case-study-slider">
+            {% for insight in insights %}
+            <div class="col-lg-4">
+                <div class="insight-card h-100" style="max-height: 100%;">
+                    <div class="insight-img">
+                        <img loading="lazy" src="{{ insight.image.url }}" alt="{{ insight.title }}" class="img-fluid">
+                    </div>
+                    <div class="insight-body">
+                        <div>
+                            <h3 class="insight-title">{{ insight.title }}</h3>
+                            <p class="insight-desc">{{ insight.content|truncatechars:150 }}</p>
+                        </div>
+                        <div class="insight-footer">
+                            <div class="insight-author">
+                                <img loading="lazy" src="{{ insight.author.image.url }}" alt="{{ insight.author.name }}"
+                                    class="author-img">
+                                <span class="author-name">{{ insight.author.name }}</span>
+                            </div>
+                            <div class="read-time-pill">{{ insight.read_time_minutes }} min Read</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

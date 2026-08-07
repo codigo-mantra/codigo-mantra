@@ -24,6 +24,9 @@ urlpatterns = [
     path('service-details/<slug:slug>/', ServiceDetailsView.as_view(), name='service-details-slug'),
     path('industry-details/',IndustryDetailsView.as_view(), name='industry-details'),
     path('industry-details/<slug:slug>/', IndustryDetailsView.as_view(), name='industry-details-slug'),
+    path('blog/', BlogIndexPage.as_view(), name='blog'),
+    path('blog/<slug:slug>/', BlogDetailsView.as_view(), name='blog_detail'),
+    
     
 
     # path("zoho/callback/", zoho_callback),/
