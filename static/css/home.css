@@ -1051,6 +1051,19 @@ body {
     overflow: hidden;
 }
 
+/* Keep blog listing and "You might also like" card descriptions uniform. */
+.blog-hero .insight-desc,
+.blog-list-sec .insight-desc {
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+}
+
+/* #view-more-blogs {
+    width: 250px;
+    height: 66px;
+    line-height: 66px;
+} */
+
 .insight-footer {
     display: flex;
     justify-content: space-between;

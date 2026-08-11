@@ -1276,12 +1276,62 @@ class IndustryDetailsView(views.View):
 
 class BlogIndexPage(views.View):
     def get(self, request):
-        insights = Insight.objects.all().order_by('-created_at')[:6] 
-        return render(request, 'website/blog.html', {'insights': insights})
+        blogs = Blog.objects.filter(display_on_website=True).select_related("author")
+        featured_blog = blogs.filter(is_featured=True).first() or blogs.order_by("-published_at").first()
+        blog_list = blogs.exclude(pk=featured_blog.pk) if featured_blog else blogs
+        return render(request, 'website/blog.html', {
+            'featured_blog': featured_blog,
+            'blogs': blog_list,
+        })
 
 
 class BlogDetailsView(views.View):
     def get(self, request, slug=None):
-        insights = Insight.objects.all().order_by('-created_at')[:3] 
-        insight = get_object_or_404(Insight, slug=slug)
-        return render(request, 'website/blog_detail.html', {'insight': insight, 'insights': insights})
+        public_blogs = Blog.objects.filter(display_on_website=True).select_related("author").prefetch_related(
+            Prefetch(
+                "details",
+                queryset=BlogDetails.objects.filter(display_on_website=True),
+            )
+        )
+        selected_blog = get_object_or_404(public_blogs, slug=slug)
+        has_own_details = any(d.display_on_website for d in selected_blog.details.all())
+        if has_own_details:
+            blog = selected_blog
+        else:
+            featured = public_blogs.filter(is_featured=True).first() or public_blogs.order_by("-published_at").first()
+            blog = featured if featured else selected_blog
+        excluded_slugs = {selected_blog.slug, blog.slug}
+        public_excl = public_blogs.exclude(slug__in=excluded_slugs).select_related("author")
+
+        MAX_RELATED = 3
+        same_cat_ids = set()
+        related_ids = []
+
+        if selected_blog.category:
+            same_cat_qs = (
+                public_excl.filter(category=selected_blog.category)
+                .order_by("-published_at")
+                .values_list("pk", flat=True)
+            )
+            same_cat_ids = set(same_cat_qs[:MAX_RELATED])
+            related_ids = list(same_cat_qs[:MAX_RELATED])
+
+        if len(related_ids) < MAX_RELATED:
+            other_qs = (
+                public_excl.exclude(pk__in=same_cat_ids)
+                .order_by("-published_at")
+                .values_list("pk", flat=True)
+            )
+            slots_remaining = MAX_RELATED - len(related_ids)
+            related_ids.extend(other_qs[:slots_remaining])
+
+        related_blogs = []
+        if related_ids:
+            order_map = {pk: idx for idx, pk in enumerate(related_ids)}
+            related_blogs = sorted(
+                public_excl.filter(pk__in=related_ids), key=lambda b: order_map[b.pk]
+            )
+        return render(request, 'website/blog_detail.html', {
+            'blog': blog,
+            'related_blogs': related_blogs,
+        })

@@ -1,7 +1,10 @@
+import math
+import re
 import uuid
 from django.db import models
 from ckeditor.fields import RichTextField
 from django.core.validators import RegexValidator
+from django.utils.html import strip_tags
 
 class TimeStamp(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -221,7 +224,7 @@ class TeamMember(TimeStamp):
     name = models.CharField(max_length=255)
     designation = models.CharField(max_length=255)
     bio = models.TextField(blank=True)
-    image = models.ImageField(upload_to="team/")
+    image = models.FileField(upload_to="team/")
     linkedin_url = models.URLField(blank=True, null=True)
     display_order = models.IntegerField(default=0)
     display_on_website = models.BooleanField(default=True)
@@ -258,6 +261,117 @@ class Insight(TimeStamp):
 
     def __str__(self):
         return self.title
+
+
+class Blog(TimeStamp):
+    """A publishable blog article displayed on the public insights pages."""
+
+    READING_WORDS_PER_MINUTE = 238
+
+    class Category(models.TextChoices):
+        DEVELOPMENT = "development", "Development"
+        AI = "ai", "AI"
+        CLOUD = "cloud", "Cloud"
+        CYBERSECURITY = "cybersecurity", "Cybersecurity"
+        DATA_SCIENCE = "data_science", "Data Science"
+        BUSINESS = "business", "Business"
+        SALES = "sales", "Sales"
+        MARKETING = "marketing", "Marketing"
+        SEO = "seo", "SEO"
+        HEALTHCARE = "healthcare", "Healthcare"
+        FINANCE = "finance", "Finance"
+        E_COMMERCE = "e_commerce", "E-commerce"
+        UI_UX_DESIGN = "ui_ux_design", "UI/UX Design"
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    blog_name = models.CharField(max_length=255)
+    title = models.CharField(max_length=255)
+    short_description = models.TextField(blank=True)
+    slug = models.SlugField(unique=True)
+    image = models.ImageField(upload_to="blogs/", blank=True, null=True)
+    author = models.ForeignKey(
+        TeamMember,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="blogs",
+    )
+    read_time_minutes = models.PositiveIntegerField(
+        default=1,
+        help_text="Auto-calculated from blog content at 238 WPM. Do not edit manually.",
+    )
+    category = models.CharField(
+        max_length=50,
+        choices=Category.choices,
+        blank=True,
+        default="",
+    )
+    published_at = models.DateTimeField()
+    is_featured = models.BooleanField(default=False)
+    display_on_website = models.BooleanField(default=True)
+    display_order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ["display_order", "-published_at"]
+
+    def __str__(self):
+        return self.blog_name
+
+    def get_visible_content_blocks(self):
+        return self.details.filter(display_on_website=True)
+
+    def get_total_word_count(self):
+        blocks = self.get_visible_content_blocks() if self.pk else []
+        combined = " ".join(block.content or "" for block in blocks)
+        if not combined:
+            return 0
+        spaced = re.sub(r"<[^>]+>", " ", combined, flags=re.DOTALL)
+        plain_text = strip_tags(spaced)
+        words = re.findall(r"[^\W_]+", plain_text, flags=re.UNICODE)
+        return len(words)
+
+    def calculate_reading_time_minutes(self):
+        word_count = self.get_total_word_count()
+        if word_count <= 0:
+            return 1
+        return math.ceil(word_count / self.READING_WORDS_PER_MINUTE)
+
+    def update_reading_time(self, save=False, update_fields=None):
+        new_rt = self.calculate_reading_time_minutes()
+        if new_rt != self.read_time_minutes:
+            self.read_time_minutes = new_rt
+            if save:
+                fields_to_update = ["read_time_minutes"]
+                if update_fields is not None:
+                    fields_to_update = [
+                        f for f in update_fields if f != "read_time_minutes"
+                    ] + ["read_time_minutes"]
+                super().save(update_fields=fields_to_update)
+        return new_rt
+
+    def save(self, *args, **kwargs):
+        self.update_reading_time(save=False)
+        super().save(*args, **kwargs)
+
+
+class BlogDetails(TimeStamp):
+    """An ordered rich-text block belonging to a :class:`Blog`."""
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    blog = models.ForeignKey(Blog, on_delete=models.CASCADE, related_name="details")
+    # The project currently uses django-ckeditor (CKEditor 4), so keep this field
+    # compatible with the installed editor rather than introducing an unavailable
+    # django-ckeditor-5 dependency.
+    content = RichTextField(blank=True)
+    image = models.ImageField(upload_to="blogs/content/", blank=True, null=True)
+    display_order = models.PositiveIntegerField(default=0)
+    display_on_website = models.BooleanField(default=True)
+
+    class Meta:
+        ordering = ["display_order"]
+
+    def __str__(self):
+        return f"{self.blog.title} - Block {self.display_order}"
 
 
 class Newsletter(TimeStamp):

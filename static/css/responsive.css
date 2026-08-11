@@ -1183,7 +1183,7 @@
     font-size: 16px;
 }
 .blog-detail-title {
-    font-size: 34px;
+    font-size: 28px;
     width: 100%;
 }
 .blog-content-body h3 {
@@ -1233,6 +1233,12 @@
 
     .input-group-custom .form-control {
         width: 100%;
+    }
+    .blog-list-sec {
+        padding:0px 0px 50px !important;
+    }
+    .blog-content {
+        margin-top: 20px;
     }
 
 }
