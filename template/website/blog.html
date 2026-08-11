@@ -23,7 +23,13 @@
             <div class="col-lg-7">
                 {% if featured_blog.image %}
                 <a href="{% url 'blog_detail' featured_blog.slug %}">
-                    <img class="blog-img w-100" src="{{ featured_blog.image.url }}" alt="{{ featured_blog.title }}" loading="lazy">
+                    <!-- 1. Featured hero image: NOT lazy, gets priority since it's above the fold -->
+                    <img class="blog-img w-100" 
+                        src="{{ featured_blog.image.url }}" 
+                        alt="{{ featured_blog.title }}" 
+                        fetchpriority="high"
+                        width="800" height="450"
+                        style="aspect-ratio: 16/9; object-fit: cover; background: #f2f2f2;">
                 </a>
                 {% endif %}
             </div>
@@ -55,7 +61,15 @@
             {% for blog in blogs %}
             <div class="col-lg-4 blog-item {% if forloop.counter > 6 %}d-none{% endif %}">
                 <a href="{% url 'blog_detail' blog.slug %}" class="insight-card h-100" style="max-height: 100%;">
-                    {% if blog.image %}<div class="insight-img"><img loading="lazy" src="{{ blog.image.url }}" alt="{{ blog.title }}" class="img-fluid"></div>{% endif %}
+                    {% if blog.image %}<!-- 2. Grid card images: keep lazy, but add dimensions + low priority + skeleton bg -->
+                    <div class="insight-img" >
+                        <img loading="lazy" 
+                            fetchpriority="low"
+                            decoding="async"
+                            src="{{ blog.image.url }}" 
+                            alt="{{ blog.title }}" 
+                            class="img-fluid">
+                    </div>{% endif %}
                     <div class="insight-body">
                         <div>
                             <h2 class="insight-title">{{ blog.blog_name }}</h2>
@@ -64,7 +78,7 @@
                         <div class="insight-footer">
                             {% if blog.author %}
                             <div class="insight-author">
-                                {% if blog.author.image %}<img loading="lazy" src="{{ blog.author.image.url }}" alt="{{ blog.author.name }}" class="author-img">{% endif %}
+                                {% if blog.author.image %}<img decoding="async" src="{{ blog.author.image.url }}" alt="{{ blog.author.name }}" class="author-img">{% endif %}
                                 <span class="author-name">{{ blog.author.name }}</span>
                             </div>
                             {% endif %}
@@ -106,7 +120,7 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="tech-stack-container">
-                        <img loading="lazy" src="{% static 'images/orange-cn.avif' %}" alt="Tech Stack">
+                        <img decoding="async" src="{% static 'images/orange-cn.avif' %}" alt="Tech Stack">
                     </div>
                 </div>
             </div>
@@ -157,9 +171,22 @@
         if (mode === 'more') {
             const step = Math.min(BLOGS_PER_LOAD, total - visible);
             const end = visible + step;
-            for (let i = visible; i < end; i++) {
-                items[i].classList.remove('d-none');
+            //for (let i = visible; i < end; i++) {
+             //   items[i].classList.remove('d-none');
+           // }
+                for (let i = visible; i < end; i++) {
+                const item = items[i];
+                item.classList.remove('d-none');
+                const img = item.querySelector('img[data-src]');
+                if (img) {
+                    // stagger slightly so the browser doesn't choke on 3 at once
+                    requestAnimationFrame(() => {
+                        img.src = img.dataset.src;
+                        img.removeAttribute('data-src');
+                    });
+                }
             }
+
         } else {
             const extraVisible = visible - INITIAL_LIMIT;
             const remainder = extraVisible % BLOGS_PER_LOAD;

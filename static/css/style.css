@@ -2100,3 +2100,11 @@ ul.sd-checklist {
 .blog-list-row {
     margin-top: 16px;
 }
+/* Fade-in once loaded, instead of a hard pop */
+.insight-img img {
+    opacity: 0;
+    transition: opacity .3s ease;
+}
+.insight-img img[src]:not([src=""]) {
+    opacity: 1;
+}
