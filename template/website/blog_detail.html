@@ -65,8 +65,8 @@
             {% for related_blog in related_blogs %}
             <div class="col-lg-4">
                 <a href="{% url 'blog_detail' related_blog.slug %}" class="insight-card h-100" style="max-height: 100%;">
-                    {% if related_blog.image %}<div class="insight-img"><img loading="lazy" src="{{ related_blog.image.url }}" alt="{{ related_blog.blog_name }}" class="img-fluid"></div>{% endif %}
-                    <div class="insight-body"><div><h3 class="insight-title">{{ related_blog.blog_name }}</h3><p class="insight-desc">{{ related_blog.short_description|truncatechars:150 }}</p></div><div class="insight-footer">{% if related_blog.author %}<div class="insight-author">{% if related_blog.author.image %}<img loading="lazy" src="{{ related_blog.author.image.url }}" alt="{{ related_blog.author.name }}" class="author-img">{% endif %}<span class="author-name">{{ related_blog.author.name }}</span></div>{% endif %}<div class="read-time-pill">{{ related_blog.read_time_minutes }} min Read</div></div></div>
+                    {% if related_blog.image %}<div class="insight-img"><img  src="{{ related_blog.image.url }}" alt="{{ related_blog.blog_name }}" class="img-fluid"></div>{% endif %}
+                    <div class="insight-body"><div><h3 class="insight-title">{{ related_blog.blog_name }}</h3><p class="insight-desc">{{ related_blog.short_description|truncatechars:150 }}</p></div><div class="insight-footer">{% if related_blog.author %}<div class="insight-author">{% if related_blog.author.image %}<img  src="{{ related_blog.author.image.url }}" alt="{{ related_blog.author.name }}" class="author-img">{% endif %}<span class="author-name">{{ related_blog.author.name }}</span></div>{% endif %}<div class="read-time-pill">{{ related_blog.read_time_minutes }} min Read</div></div></div>
                 </a>
             </div>
             {% endfor %}
