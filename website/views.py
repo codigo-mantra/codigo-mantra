@@ -1331,7 +1331,11 @@ class BlogDetailsView(views.View):
             related_blogs = sorted(
                 public_excl.filter(pk__in=related_ids), key=lambda b: order_map[b.pk]
             )
+        faqs = BlogFAQ.objects.filter(
+            Q(blog=blog) | Q(blog__isnull=True)
+        ).order_by('display_order', 'created_at')
         return render(request, 'website/blog_detail.html', {
             'blog': blog,
             'related_blogs': related_blogs,
+            'faqs': faqs,
         })

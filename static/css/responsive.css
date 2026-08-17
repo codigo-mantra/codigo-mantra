@@ -533,7 +533,7 @@
     }
 
     .faq-section {
-        padding: 0 20px;
+        padding: 0 0px;
     }
 
     .faq-header p {
@@ -1201,6 +1201,22 @@
 .blog-content-body img {
     object-position: center !important;
 }
+.insight-img img {
+    object-fit: fill;
+}
+.blog-img {
+    object-fit: fill;
+    height: 256px;
+}
+.blog-content-body li {
+    font-size: 14px;
+}
+.blog-detail-accordion {
+    margin-top: -20px;
+}
+.insights-section-cm-row.case-study-slider {
+    margin-top: 30px;
+}
 }
 
 @media (max-width: 450px) {
@@ -1249,8 +1265,11 @@
     }
     .mobile-app-dev-hero-mob{
  display: none;
-
 }
+
+ .column-media-query{
+  padding-right: 40px !important;
+ }
 
 }
 

@@ -3,6 +3,63 @@
 
 {% block title %}{{ blog.title }} - CodigoMantra{% endblock %}
 
+{% block structured_data %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "{{ blog.title|escapejs }}",
+    "description": "{{ blog.short_description|escapejs }}",
+    {% if blog.image %}
+    "image": {
+        "@type": "ImageObject",
+        "url": "{{ request.scheme }}://{{ request.get_host }}{{ blog.image.url }}"{% if blog.image_alt_text %},
+        "caption": "{{ blog.image_alt_text|escapejs }}"{% endif %}
+    },
+    {% endif %}
+    "author": {
+        "@type": "Organization",
+        "name": "CodigoMantra",
+        "url": "https://codigomantra.com"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "CodigoMantra",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://codigomantra.com/images/logo.png"
+        }
+    },
+    "datePublished": "{{ blog.published_at|date:"c" }}",
+    "dateModified": "{{ blog.updated_at|date:"c" }}",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "{{ request.scheme }}://{{ request.get_host }}{% url 'blog_detail' blog.slug %}"
+    }
+}
+</script>
+{% if faqs %}
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+        {% for faq in faqs %}
+        {
+            "@type": "Question",
+            "name": "{{ faq.question|escapejs }}",
+            "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "{{ faq.answer|escapejs }}"
+            }
+        }{% if not forloop.last %},{% endif %}
+        {% endfor %}
+    ]
+}
+</script>
+{% endif %}
+{% endblock %}
+
 {% block content %}
 <section class="blog-detail-section">
     <div class="container">
@@ -15,7 +72,7 @@
                     {% if blog.author.image %}<img src="{{ blog.author.image.url }}" alt="{{ blog.author.name }}">{% endif %}
                     <div class="user-details-blog ms-2">
                         <div class="user-name">{{ blog.author.name }}</div>
-                        <div class="user-bio">{{ blog.author.designation }}</div>
+                        <!-- <div class="user-bio">{{ blog.author.designation }}</div> -->
                     </div>
                 </div>
                 {% endif %}
@@ -25,10 +82,10 @@
             </div>
         </div>
 
-        {% if blog.image %}<div class="blog-banner-wrapper"><img src="{{ blog.image.url }}" alt="{{ blog.title }}"></div>{% endif %}
+        {% if blog.image %}<div class="blog-banner-wrapper"><img src="{{ blog.image.url }}" alt="{% if blog.image_alt_text %}{{ blog.image_alt_text }}{% else %}{{ blog.title }}{% endif %}"></div>{% endif %}
 
         <div class="row position-relative g-4">
-            <div class="col-lg-8">
+            <div class="col-lg-8 column-media-query">
                 <article class="blog-content-body text-start">
                     {% for detail in blog.details.all %}
                         {% if detail.content %}{{ detail.content|safe }}{% endif %}
@@ -37,6 +94,7 @@
                     <p>Content for this article will be available soon.</p>
                     {% endfor %}
                 </article>
+               
             </div>
             <div class="col-lg-4">
                 <div class="footer-news newsletter-widget">
@@ -57,6 +115,56 @@
         </div>
     </div>
 </section>
+{% if faqs %}
+ <section class="faq-section">
+    <div class="container">
+        <!-- Header -->
+        <div class="faq-header mb-5">
+            <h1>CodigoMantra FAQs</h1>
+            <p class="text-start" style="max-width: 560px;">
+                Welcome to the CodigoMantra FAQ page! find quick answers here about {{ blog.title }}.
+            </p>
+        </div>
+        <!-- Accordion -->
+        <div class="accordion faq-accordion blog-detail-accordion" id="faqAccordion">
+            {% for faq in faqs %}
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}" type="button"
+                        data-bs-toggle="collapse" data-bs-target="#faq{{ forloop.counter }}"
+                        aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}"
+                        aria-controls="faq{{ forloop.counter }}">
+                        {{ faq.question }}
+                        <span class="faq-icon ms-auto flex-shrink-0">
+                            <svg class="icon-minus" xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                                viewBox="0 0 22 22" fill="none">
+                                <path
+                                    d="M7 11H15M21 11C21 16.5228 16.5228 21 11 21C5.47715 21 1 16.5228 1 11C1 5.47715 5.47715 1 11 1C16.5228 1 21 5.47715 21 11Z"
+                                    stroke="#F05D35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <svg class="icon-plus" xmlns="http://www.w3.org/2000/svg" width="22" height="22"
+                                viewBox="0 0 22 22" fill="none">
+                                <path
+                                    d="M11 7V15M7 11H15M21 11C21 16.5228 16.5228 21 11 21C5.47715 21 1 16.5228 1 11C1 5.47715 5.47715 1 11 1C16.5228 1 21 5.47715 21 11Z"
+                                    stroke="#F05D35" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </span>
+                    </button>
+                </h2>
+                <div id="faq{{ forloop.counter }}"
+                    class="accordion-collapse collapse {% if forloop.first %}show{% endif %}"
+                    data-bs-parent="#faqAccordion">
+                    <div class="accordion-body">
+                        {{ faq.answer }}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
 
 <section class="insights-section blog-list-sec">
     <div class="container">
@@ -65,7 +173,7 @@
             {% for related_blog in related_blogs %}
             <div class="col-lg-4">
                 <a href="{% url 'blog_detail' related_blog.slug %}" class="insight-card h-100" style="max-height: 100%;">
-                    {% if related_blog.image %}<div class="insight-img"><img  src="{{ related_blog.image.url }}" alt="{{ related_blog.blog_name }}" class="img-fluid"></div>{% endif %}
+                    {% if related_blog.image %}<div class="insight-img"><img  src="{{ related_blog.image.url }}" alt="{% if related_blog.image_alt_text %}{{ related_blog.image_alt_text }}{% else %}{{ related_blog.blog_name }}{% endif %}" class="img-fluid"></div>{% endif %}
                     <div class="insight-body"><div><h3 class="insight-title">{{ related_blog.blog_name }}</h3><p class="insight-desc">{{ related_blog.short_description|truncatechars:150 }}</p></div><div class="insight-footer">{% if related_blog.author %}<div class="insight-author">{% if related_blog.author.image %}<img  src="{{ related_blog.author.image.url }}" alt="{{ related_blog.author.name }}" class="author-img">{% endif %}<span class="author-name">{{ related_blog.author.name }}</span></div>{% endif %}<div class="read-time-pill">{{ related_blog.read_time_minutes }} min Read</div></div></div>
                 </a>
             </div>

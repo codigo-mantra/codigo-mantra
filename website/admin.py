@@ -6,7 +6,7 @@ from .models import (
     ServiceCapabilityItem, ServiceWhyChooseItem,
     IndustryDetail, IndustryImpactItem, IndustrySolutionItem,
     IndustryProvideItem, IndustryWhyChooseItem,
-    Service_index, Industry, Service_page, Blog, BlogDetails
+    Service_index, Industry, Service_page, Blog, BlogDetails, BlogFAQ
 )
 
 
@@ -16,9 +16,15 @@ class BlogDetailsInline(admin.StackedInline):
     fields = ("content", "image", "display_order", "display_on_website")
 
 
+class BlogFAQInline(admin.TabularInline):
+    model = BlogFAQ
+    extra = 1
+    fields = ("question", "answer", "display_order")
+
+
 @admin.register(Blog)
 class BlogAdmin(admin.ModelAdmin):
-    inlines = [BlogDetailsInline]
+    inlines = [BlogDetailsInline, BlogFAQInline]
     list_display = (
         "blog_name", "title", "category", "author", "read_time_minutes", "published_at",
         "is_featured", "display_on_website", "display_order",
@@ -27,6 +33,14 @@ class BlogAdmin(admin.ModelAdmin):
     search_fields = ("blog_name", "title", "short_description")
     prepopulated_fields = {"slug": ("title",)}
     readonly_fields = ("read_time_minutes",)
+
+
+@admin.register(BlogFAQ)
+class BlogFAQAdmin(admin.ModelAdmin):
+    list_display = ("question", "blog", "display_order", "created_at")
+    list_filter = ("blog", "created_at")
+    search_fields = ("question", "answer")
+    ordering = ("display_order", "created_at")
 
 # --- ServiceDetail Inlines ---
 class ServiceProblemItemInline(admin.TabularInline):
@@ -144,7 +158,7 @@ manual_models = [
     ServiceCapabilityItem, ServiceWhyChooseItem,
     IndustryDetail, IndustryImpactItem, IndustrySolutionItem,
     IndustryProvideItem, IndustryWhyChooseItem,
-    Service_index, Industry, Service_page, Blog, BlogDetails
+    Service_index, Industry, Service_page, Blog, BlogDetails, BlogFAQ
 ]
 
 for model in app_models:

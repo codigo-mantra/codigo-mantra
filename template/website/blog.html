@@ -23,28 +23,30 @@
             <div class="col-lg-7">
                 {% if featured_blog.image %}
                 <a href="{% url 'blog_detail' featured_blog.slug %}">
-                    <img class="blog-img w-100" src="{{ featured_blog.image.url }}" alt="{{ featured_blog.title }}" >
+                    <img class="blog-img w-100" src="{{ featured_blog.image.url }}" alt="{{ featured_blog. }}" >
                 </a>
                 {% endif %}
             </div>
-            <div class="col-lg-5 blog-content">
-                <div class="job-hero-meta">
-                    <span>{{ featured_blog.read_time_minutes }} mins read</span>
-                    <span>{{ featured_blog.published_at|date:"M jS, Y" }}</span>
-                </div>
-                <div>
-                    <h2 class="display-heading m-0 text-start font-size-t"><a href="{% url 'blog_detail' featured_blog.slug %}">{{ featured_blog.title }}</a></h2>
-                    <p class="section-subtext">{{ featured_blog.short_description }}</p>
-                </div>
-                {% if featured_blog.author %}
-                <div class="user-info">
-                    {% if featured_blog.author.image %}<img src="{{ featured_blog.author.image.url }}" alt="{{ featured_blog.author.name }}">{% endif %}
-                    <div class="user-details-blog">
-                        <div class="user-name">{{ featured_blog.author.name }}</div>
-                        <div class="user-bio">{{ featured_blog.author.designation }}</div>
+            <div class="col-lg-5 ">
+                <div class="blog-content h-100">
+                    <div class="job-hero-meta">
+                        <span>{{ featured_blog.read_time_minutes }} mins read</span>
+                        <span>{{ featured_blog.published_at|date:"M jS, Y" }}</span>
                     </div>
+                    <div>
+                        <h2 class="display-heading m-0 text-start font-size-t"><a href="{% url 'blog_detail' featured_blog.slug %}">{{ featured_blog.title }}</a></h2>
+                        <p class="section-subtext">{{ featured_blog.short_description }}</p>
+                    </div>
+                    {% if featured_blog.author %}
+                    <div class="user-info">
+                        {% if featured_blog.author.image %}<img src="{{ featured_blog.author.image.url }}" alt="{{ featured_blog.author.name }}">{% endif %}
+                        <div class="user-details-blog">
+                            <div class="user-name">{{ featured_blog.author.name }}</div>
+                            <!-- <div class="user-bio">{{ featured_blog.author.designation }}</div> -->
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
-                {% endif %}
             </div>
         </div>
     </div>

@@ -289,12 +289,30 @@ class Blog(TimeStamp):
     short_description = models.TextField(blank=True)
     slug = models.SlugField(unique=True)
     image = models.ImageField(upload_to="blogs/", blank=True, null=True)
+    image_alt_text = models.CharField(
+        max_length=125,
+        blank=True,
+        help_text="Enter descriptive ALT text for the blog image.",
+    )
     author = models.ForeignKey(
         TeamMember,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name="blogs",
+    )
+    seo_title = models.CharField(
+        max_length=60,
+        blank=True,
+        default="",
+        help_text="SEO title tag. Recommended maximum: 60 characters.",
+    )
+
+    meta_description = models.CharField(
+        max_length=156,
+        blank=True,
+        default="",
+        help_text="Meta description. Recommended maximum: 156 characters.",
     )
     read_time_minutes = models.PositiveIntegerField(
         default=1,
@@ -449,6 +467,27 @@ class FAQ(TimeStamp):
 class ScheduleCallFAQ(TimeStamp):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
+    question = models.CharField(max_length=500)
+    answer = models.TextField()
+    display_order = models.IntegerField(default=0)
+
+    class Meta:
+        ordering = ['display_order', 'created_at']
+
+    def __str__(self):
+        return self.question
+
+class BlogFAQ(TimeStamp):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+
+    blog = models.ForeignKey(
+        Blog,
+        on_delete=models.CASCADE,
+        related_name="faqs",
+        null=True,
+        blank=True,
+        help_text="Leave blank for a global FAQ that appears on every blog post.",
+    )
     question = models.CharField(max_length=500)
     answer = models.TextField()
     display_order = models.IntegerField(default=0)
