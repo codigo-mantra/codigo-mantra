@@ -26,14 +26,14 @@
                         {{ detail.hero_description|safe}}
                     </div>
                     <div class="sd-button-col">
-                        <!-- <a class="btn-cm-cta btn-pill" href="{% url 'schedule-call' %}">
+                        <a class="btn-cm-cta btn-pill" href="{% url 'schedule-call' %}">
                             <span class="label-up">Book a Strategy Call</span>
                             <span class="label-up">Book a Strategy Call</span>
-                        </a> -->
-                        <a class="btn-cm-cta btn-pill mob-w-f-content" href="{% url 'contact' %}">
-                            <span class="label-up">Contact us</span>
-                            <span class="label-up">Contact us</span>
                         </a>
+                        <!-- <a class="btn-cm-cta btn-pill mob-w-f-content" href="{% url 'contact' %}">
+                            <span class="label-up">Contact us</span>
+                            <span class="label-up">Contact us</span>
+                        </a> -->
                     </div>
                 </div>
             </div>
@@ -402,9 +402,9 @@
                         <h1 class="cta-title-refined">{% if detail.cta_title %}{{ detail.cta_title }}{% else %}Let’s
                             build something great together{% endif %}</h1>
                         <p class="cta-subtitle-refined">{{ detail.cta_subtitle }}</p>
-                        <a href="{% url 'contact' %}" class="btn-cta-refined">
-                            <span class="label-up">Contact us</span>
-                            <span class="label-up">Contact us</span>
+                        <a href="{% url 'schedule-call' %}" class="btn-cta-refined">
+                            <span class="label-up">Book a Strategy Call</span>
+                            <span class="label-up">Book a Strategy Call</span>
                         </a>
                     </div>
                     <div class="col-lg-6">
