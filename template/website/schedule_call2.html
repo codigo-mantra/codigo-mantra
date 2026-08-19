@@ -220,47 +220,13 @@
 </section>
 
 
-<div class="modal fade" id="bookingSuccessModal" tabindex="-1" aria-labelledby="bookingSuccessModalTitle">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content newsletter-modal">
-            <!-- Illustration Area -->
-            <div class="newsletter-illustration position-relative">
-
-
-                <a type="button" class="btn-close modal-close-btn" data-bs-dismiss="modal" aria-label="Close"
-                    onclick="redirectWithDelay()">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M15.692 17.6039C16.22 18.1319 17.076 18.1319 17.604 17.6039C18.132 17.076 18.132 16.2199 17.604 15.6919L10.912 8.99999L17.604 2.30806C18.132 1.78008 18.132 0.924049 17.604 0.396066C17.076 -0.131916 16.22 -0.131916 15.692 0.396066L9.00004 7.088L2.30801 0.395987C1.78002 -0.131996 0.923989 -0.131995 0.396004 0.395987C-0.13198 0.92397 -0.131981 1.78 0.396004 2.30798L7.08804 8.99999L0.395989 15.692C-0.131997 16.22 -0.131996 17.076 0.395989 17.604C0.923973 18.132 1.78 18.132 2.30799 17.604L9.00004 10.912L15.692 17.6039Z"
-                            fill="#F6F6F6" />
-                    </svg>
-                </a>
-                <!-- Balloons + Envelope -->
-                <div class="balloon-envelope-wrap">
-                    <img loading="lazy" src="{% static 'images/contact-us-modal.svg' %}" alt="Contact Us Modal">
-                </div>
-            </div>
-
-            <!-- Text Content -->
-            <div class="newsletter-body">
-                <h2 class="newsletter-title" id="bookingSuccessModalTitle">Your Call is Confirmed!</h2>
-                <p class="newsletter-desc">Your meeting has been successfully scheduled. We look forward to speaking
-                    with you and learning more about your goals.</p>
-            </div>
-
-        </div>
-    </div>
-</div>
-
-
-
-
-<div class="modal fade" id="bookingConflictModal" tabindex="-1" aria-labelledby="bookingConflictModalTitle">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content newsletter-modal">
-
-            <!-- Illustration Area -->
-            <div class="newsletter-illustration position-relative">
+<!-- ══════════════════════════════════
+     OTP VERIFICATION MODAL
+══════════════════════════════════ -->
+<div class="modal fade" id="otpVerifyModal" tabindex="-1" aria-labelledby="otpVerifyModalTitle" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered newsletter-max-w">
+        <div class="modal-content newsletter-modal position-relative" >
+                        <div class="newsletter-illustration position-relative">
 
                 <a type="button" class="btn-close modal-close-btn" data-bs-dismiss="modal" aria-label="Close">
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
@@ -270,14 +236,164 @@
                     </svg>
                 </a>
 
-                <!-- REPLACED IMAGE HERE -->
+            </div>
+            <div class="newsletter-body text-start p-0">
+                <span class="verify-email-text">Verify your email</span>
+                <h3 class="newsletter-title text-start" id="otpVerifyModalTitle">Confirm your email address</h3>
+                <p class="newsletter-desc text-start" style="max-width: fit-content;">
+                    We’ve sent a 6 digit verification code to <span id="otpModalEmail">j*@pcompany.com**</span>. Enter the code below to confirm your email and schedule your call.
+                </p>
+
+                <!-- 6 OTP Inputs -->
+                <div class="otp-box-wrap" id="otpInputsContainer">
+                    <input type="text" maxlength="1" class="otp-box-input" data-index="0" inputmode="numeric">
+                    <input type="text" maxlength="1" class="otp-box-input" data-index="1" inputmode="numeric">
+                    <input type="text" maxlength="1" class="otp-box-input" data-index="2" inputmode="numeric">
+                    <input type="text" maxlength="1" class="otp-box-input" data-index="3" inputmode="numeric">
+                    <input type="text" maxlength="1" class="otp-box-input" data-index="4" inputmode="numeric">
+                    <input type="text" maxlength="1" class="otp-box-input" data-index="5" inputmode="numeric">
+                </div>
+
+                <div class="d-flex flex-column align-items-start gap-1" style="font-size: 13px; font-family: 'Poppins', sans-serif; color: rgba(246, 246, 246, 0.7);">
+                    <div>
+                        Didn't receive the code? 
+                        <button type="button" id="resendOtpBtn" class="btn p-0 border-0 shadow-none align-baseline" style="font-size: 13px; text-decoration: none; font-weight: 500; background: none; color: #F05D35;" disabled>Resend code</button>
+                    </div>
+                    <div id="resendTimerWrap" class="d-flex align-items-center gap-2 mt-1" style="font-size: 12px; color: rgba(246, 246, 246, 0.5);">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
+                        </svg>
+                        Resend code in <span id="resendTimerCountdown">00:42</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════
+     REQUEST ACCEPTED MODAL
+══════════════════════════════════ -->
+<div class="modal fade" id="bookingSuccessModal" tabindex="-1" aria-labelledby="bookingSuccessModalTitle">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content newsletter-modal position-relative text-center">
+                      <div class="newsletter-illustration position-relative">
+
+                <a type="button" class="btn-close modal-close-btn" data-bs-dismiss="modal" aria-label="Close">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M15.692 17.6039C16.22 18.1319 17.076 18.1319 17.604 17.6039C18.132 17.076 18.132 16.2199 17.604 15.6919L10.912 8.99999L17.604 2.30806C18.132 1.78008 18.132 0.924049 17.604 0.396066C17.076 -0.131916 16.22 -0.131916 15.692 0.396066L9.00004 7.088L2.30801 0.395987C1.78002 -0.131996 0.923989 -0.131995 0.396004 0.395987C-0.13198 0.92397 -0.131981 1.78 0.396004 2.30798L7.08804 8.99999L0.395989 15.692C-0.131997 16.22 -0.131996 17.076 0.395989 17.604C0.923973 18.132 1.78 18.132 2.30799 17.604L9.00004 10.912L15.692 17.6039Z"
+                            fill="#F6F6F6" />
+                    </svg>
+                </a>
                 <div class="balloon-envelope-wrap">
                     <img loading="lazy" src="{% static 'images/call-scheduled.svg' %}" alt="Call Scheduled Image">
                 </div>
 
             </div>
 
-            <!-- Text Content -->
+            <!-- Success Check Icon Badge -->
+            <div class="mb-4 d-flex justify-content-center align-items-center">
+                <div class="success-checkmark-circle d-flex align-items-center justify-content-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="newsletter-body p-0">
+                <h2 class="newsletter-title text-center mb-3" id="bookingSuccessModalTitle" style="font-family: 'Cabinet Grotesk', sans-serif; font-size: 24px; font-weight: 800; color: #fff;">Your request has been accepted!</h2>
+                <p class="newsletter-desc text-center mx-auto" style="max-width: 380px; font-size: 14px; color: rgba(246, 246, 246, 0.7); line-height: 1.6;">
+                    Our team will review your request and send the final meeting confirmation, along with the Google Meet link, to your email shortly.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .otp-box-wrap{
+        display: flex;
+        gap:20px;
+        margin: 38px 0px;
+    }
+.verify-email-text{
+    color: #F16535;
+    font-family: "Cabinet Grotesk";
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 40px; /* 200% */
+}
+.newsletter-max-w{
+    max-width: 592px;
+}
+.otp-box-input {
+    display: flex;
+    width: 73px;
+    height: 78px;
+    padding: 24px 0;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    background: #212121;
+    color: #FFFFFF;
+    font-size: 24px;
+    font-weight: 600;
+    text-align: center;
+    outline: none !important;
+    transition: all 0.2s ease-in-out;
+    border: none !important;
+}
+.otp-box-input:focus {
+    border-color: #F05D35;
+    box-shadow: 0 0 0 2px rgba(240, 93, 53, 0.25);
+    background: #282828;
+}
+.otp-box-input.error {
+    border-color: #FF0000 !important;
+    box-shadow: 0 0 0 2px rgba(255, 0, 0, 0.25) !important;
+    color: #FF0000;
+}
+.success-checkmark-circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: #F05D35;
+    box-shadow: 0 0 40px rgba(240, 93, 53, 0.6);
+}
+@media (max-width: 576px) {
+    .otp-box-input {
+        width: 44px;
+        height: 44px;
+        font-size: 18px;
+        border-radius: 8px;
+    }
+}
+</style>
+
+
+
+
+<!-- <div class="modal fade" id="bookingConflictModal" tabindex="-1" aria-labelledby="bookingConflictModalTitle">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content newsletter-modal">
+            <div class="newsletter-illustration position-relative">
+
+                <a type="button" class="btn-close modal-close-btn" data-bs-dismiss="modal" aria-label="Close">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M15.692 17.6039C16.22 18.1319 17.076 18.1319 17.604 17.6039C18.132 17.076 18.132 16.2199 17.604 15.6919L10.912 8.99999L17.604 2.30806C18.132 1.78008 18.132 0.924049 17.604 0.396066C17.076 -0.131916 16.22 -0.131916 15.692 0.396066L9.00004 7.088L2.30801 0.395987C1.78002 -0.131996 0.923989 -0.131995 0.396004 0.395987C-0.13198 0.92397 -0.131981 1.78 0.396004 2.30798L7.08804 8.99999L0.395989 15.692C-0.131997 16.22 -0.131996 17.076 0.395989 17.604C0.923973 18.132 1.78 18.132 2.30799 17.604L9.00004 10.912L15.692 17.6039Z"
+                            fill="#F6F6F6" />
+                    </svg>
+                </a>
+                <div class="balloon-envelope-wrap">
+                    <img loading="lazy" src="{% static 'images/call-scheduled.svg' %}" alt="Call Scheduled Image">
+                </div>
+
+            </div>
             <div class="newsletter-body">
                 <h2 class="newsletter-title" id="bookingConflictModalTitle">You already have a call scheduled</h2>
 
@@ -303,7 +419,7 @@
 
         </div>
     </div>
-</div>
+</div> -->
 
 <script>
     function redirectWithDelay() {
