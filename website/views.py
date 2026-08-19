@@ -2,6 +2,7 @@ from django.db.models import Q, Count, Prefetch
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.core.mail import send_mail, EmailMessage, EmailMultiAlternatives
+from django.core.exceptions import ValidationError
 from email.mime.image import MIMEImage
 import requests
 from django.template.loader import render_to_string
@@ -19,6 +20,10 @@ from .zoom_meet import generate_zoom_meet_link
 from .zoho_meet import generate_zoho_meeting_link
 import logging
 import threading
+import hashlib
+import hmac
+import secrets
+import time
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 
@@ -30,6 +35,111 @@ import threading
 from django.http import Http404
 
 logger = logging.getLogger(__name__)
+
+BOOKING_OTP_TTL_SECONDS = 10 * 60
+BOOKING_OTP_RESEND_SECONDS = 42
+BOOKING_OTP_MAX_ATTEMPTS = 5
+
+
+def _booking_otp_digest(email, otp):
+    value = f"{email.strip().lower()}:{otp}".encode()
+    return hmac.new(settings.SECRET_KEY.encode(), value, hashlib.sha256).hexdigest()
+
+
+def _send_booking_otp_email(client_email, otp):
+    illustration_url = f"{S3_BASE_URL}/scheduling-call-email-template.png"
+    image_context = _get_email_image_context(client_email, illustration_url)
+    html = render_to_string("email-otp.html", {
+        "otp": otp,
+        **image_context,
+    })
+    message = EmailMultiAlternatives(
+        "Verify your email address",
+        strip_tags(html),
+        settings.DEFAULT_FROM_EMAIL,
+        [client_email],
+    )
+    message.attach_alternative(html, "text/html")
+    message.mixed_subtype = "related"
+    _attach_images_to_email(
+        message,
+        illustration_url=illustration_url,
+        recipient_email=client_email,
+    )
+    message.send(fail_silently=False)
+
+
+class SendBookingOTP(views.View):
+    def post(self, request):
+        client_email = (request.POST.get("client_email") or "").strip().lower()
+        try:
+            from django.core.validators import validate_email
+            validate_email(client_email)
+        except ValidationError:
+            return JsonResponse({"status": "error", "message": "Please enter a valid email address."}, status=400)
+
+        now = int(time.time())
+        current = request.session.get("booking_otp") or {}
+        if current.get("email") == client_email:
+            retry_after = BOOKING_OTP_RESEND_SECONDS - (now - int(current.get("sent_at", 0)))
+            if retry_after > 0:
+                return JsonResponse({
+                    "status": "error",
+                    "message": f"Please wait {retry_after} seconds before requesting another code.",
+                    "retry_after": retry_after,
+                }, status=429)
+
+        otp = f"{secrets.randbelow(1_000_000):06d}"
+        try:
+            _send_booking_otp_email(client_email, otp)
+        except Exception as exc:
+            logger.warning("Booking OTP: failed to email %s: %s", client_email, exc)
+            return JsonResponse({"status": "error", "message": "We could not send the verification code. Please try again."}, status=503)
+
+        request.session["booking_otp"] = {
+            "email": client_email,
+            "digest": _booking_otp_digest(client_email, otp),
+            "expires_at": now + BOOKING_OTP_TTL_SECONDS,
+            "sent_at": now,
+            "attempts": 0,
+        }
+        request.session.modified = True
+        return JsonResponse({"status": "success", "resend_after": BOOKING_OTP_RESEND_SECONDS})
+
+
+class VerifyBookingOTP(views.View):
+    def post(self, request):
+        client_email = (request.POST.get("client_email") or "").strip().lower()
+        otp = (request.POST.get("otp") or "").strip()
+        state = request.session.get("booking_otp") or {}
+        now = int(time.time())
+
+        if not state or state.get("email") != client_email:
+            return JsonResponse({"status": "error", "message": "Request a new verification code."}, status=400)
+        if now > int(state.get("expires_at", 0)):
+            request.session.pop("booking_otp", None)
+            return JsonResponse({"status": "error", "message": "This code has expired. Please resend it."}, status=400)
+        if int(state.get("attempts", 0)) >= BOOKING_OTP_MAX_ATTEMPTS:
+            request.session.pop("booking_otp", None)
+            return JsonResponse({"status": "error", "message": "Too many attempts. Please request a new code."}, status=429)
+
+        state["attempts"] = int(state.get("attempts", 0)) + 1
+        request.session["booking_otp"] = state
+        if not (len(otp) == 6 and otp.isdigit() and hmac.compare_digest(
+            state.get("digest", ""), _booking_otp_digest(client_email, otp)
+        )):
+            request.session.modified = True
+            return JsonResponse({"status": "error", "message": "The verification code is incorrect."}, status=400)
+
+        token = secrets.token_urlsafe(32)
+        request.session.pop("booking_otp", None)
+        request.session["booking_email_verification"] = {
+            "email": client_email,
+            "token_digest": hashlib.sha256(token.encode()).hexdigest(),
+            "expires_at": now + BOOKING_OTP_TTL_SECONDS,
+        }
+        request.session.modified = True
+        return JsonResponse({"status": "success", "verification_token": token})
 
 # Base URLs for images stored in S3
 S3_BASE_URL = "https://codigomantra.s3.ap-south-1.amazonaws.com"
@@ -277,7 +387,17 @@ def _booking_followup_zoom_and_emails(booking_id, client_name, client_email, cli
         client_image_ctx = _get_email_image_context(client_email, illustration_url)
         admin_image_ctx = _get_email_image_context(None, illustration_url) # Admin usually not gmail or use CID
 
-        client_html = render_to_string("call-email.html", {
+        # Previous confirmed-meeting email retained for the later admin-confirmation flow:
+        # client_html = render_to_string("call-email.html", {
+        #     "name": client_first_name,
+        #     "email": client_email,
+        #     "date": client_date_str,
+        #     "time": f"{client_time_str} ({client_tz})",
+        #     "client_tz": client_tz,
+        #     "meet_link": booking.meet_link,
+        #     **client_image_ctx
+        # })
+        client_html = render_to_string("email-call-schedule.html", {
             "name": client_first_name,
             "email": client_email,
             "date": client_date_str,
@@ -318,7 +438,8 @@ def _booking_followup_zoom_and_emails(booking_id, client_name, client_email, cli
         # Send client email (only to the address they entered on the form)
         try:
             client_msg = EmailMultiAlternatives(
-                "Your Upcoming Call with Codigo Mantra",
+                # Previous subject: "Your Upcoming Call with Codigo Mantra"
+                "Your call request has been received",
                 strip_tags(client_html),
                 settings.DEFAULT_FROM_EMAIL,
                 [client_email],
@@ -634,6 +755,27 @@ class ScheduleCallStep2Page(views.View):
         form = BookingForm(request.POST)
         ignore_conflict = request.POST.get('ignore_conflict') == 'true'
 
+        verification = request.session.get("booking_email_verification") or {}
+        posted_email = (request.POST.get("client_email") or "").strip().lower()
+        verification_token = (request.POST.get("otp_verification_token") or "").strip()
+        token_is_valid = bool(
+            verification_token
+            and verification.get("email") == posted_email
+            and int(verification.get("expires_at", 0)) >= int(time.time())
+            and hmac.compare_digest(
+                verification.get("token_digest", ""),
+                hashlib.sha256(verification_token.encode()).hexdigest(),
+            )
+        )
+        if not token_is_valid:
+            if is_ajax:
+                return JsonResponse({
+                    "status": "verification_required",
+                    "message": "Please verify your email address before scheduling the call.",
+                }, status=403)
+            messages.error(request, "Please verify your email address before scheduling the call.")
+            return render(request, 'website/schedule_call2.html', {'form': form, 'faqs': ScheduleCallFAQ.objects.all()})
+
         if form.is_valid():
             client_name = form.cleaned_data.get('client_name')
             client_email = form.cleaned_data.get('client_email')
@@ -771,6 +913,7 @@ class ScheduleCallStep2Page(views.View):
             # ------------------- Save booking & trigger follow-up -------------------
             # Removed duplicate delete logic to allow multiple bookings
             booking.save()
+            request.session.pop("booking_email_verification", None)
             _bid = booking.pk
             _ctz = client_timezone
             transaction.on_commit(

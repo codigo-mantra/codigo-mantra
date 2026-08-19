@@ -2,21 +2,15 @@
 {% load static %}
 
 
-{% block title %}Schedule Call OTP{% endblock %}
+{% block title %}Schedule Call{% endblock %}
 
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
 
-    * {
-      font-family: 'Poppins', Arial, sans-serif !important;
-    }
-  </style>
 {% block content %}
 <!-- ── HERO TITLE ── -->
 <tr>
   <td style="background-color:#171717;padding:30px 32px 0;text-align:center;">
     <h1 style="margin:0 0 28px;font-size:24px;font-weight:400;color:#F6F6F6;line-height:140%;font-family:poppins;">
-      Verify your email address
+      Your call request has been received
     </h1>
   </td>
 </tr>
@@ -52,9 +46,8 @@
 <tr>
   <td style="padding:32px 32px 28px;background-color:#171717;">
     <p style="margin:0 0 12px;font-size:16px;font-weight:400;color:#F6F6F6;font-family:poppins;">Hi {{ name }},</p>
-    {% comment %}Previous conditional retained: {% if meet_link_failed %}{% endcomment %}
     <p style="margin:0 0 24px;font-size:12px;font-weight:400;color:#F6F6F6;line-height:1.6;font-family:poppins;">
-      Thank you for scheduling a call with Codigo Mantra.
+        Thank you for scheduling a call with Codigo Mantra.
     </p>
   </td>
 </tr>
@@ -77,18 +70,22 @@
       <tr>
         <td style="padding:18px;">
           <p style="margin:0 0 24px;font-size:12px;font-weight:400;color:#F6F6F6;line-height:1.6;font-family:poppins;">
-           To continue with your call request, please use the verification code below to confirm your email address. 
+            We have received your call request and noted your preferred availability. Our team will review the requested timing and confirm the final date and time with you.
           </p>
-          <p style="margin:0 0 14px;font-size:14px;font-weight:600;color:#F6F6F6;font-family:poppins;">Your verification code
+          <p style="margin:0 0 24px;font-size:12px;font-weight:400;color:#F6F6F6;line-height:1.6;font-family:poppins;">
+            Once confirmed, we will send another email with your confirmed meeting date, time, and Google Meet link.
           </p>
-          <h4 style="margin:0 0 20px;font-size:28px;font-weight:600;color:#F45D34;line-height:1.6;font-family:poppins;">{{ otp }}</h4>
+
+          <p style="margin:0 0 14px;font-size:14px;font-weight:600;color:#F6F6F6;font-family:poppins;">
+            What happens next
+          </p>
 
           <p style="margin:0 0 24px;font-size:12px;font-weight:400;color:#F6F6F6;line-height:1.6;font-family:poppins;">
-            This code is valid for 10 minutes. Please do not share this code with anyone.</p>
-        
+            Our team will confirm your availability and share the final meeting details with you via email.
+          </p>
           <p style="margin:0 0 24px;font-size:12px;font-weight:400;color:#F6F6F6;line-height:1.6;font-family:poppins;">
-           If you did not request this verification code, you can safely ignore this email.</p>
-          
+            We look forward to speaking with you and learning more about your requirements.
+          </p>
 
           <p style="margin:20px 0 4px;font-size:12px;color:#F6F6F6;font-family:poppins;">Regards
           </p>

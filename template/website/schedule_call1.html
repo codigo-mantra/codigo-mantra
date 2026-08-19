@@ -31,8 +31,8 @@
           <div class="info-meta">
             <div class="info-meta-item">
               <!-- Google Meet icon -->
-              <img loading="lazy" alt="Zoho Meeting" src="{% static 'images/Zoho-Meeting.svg' %}">
-              Zoho meet
+              <img loading="lazy" alt="Google Meet" src="{% static 'images/google_meet.svg' %}">
+              Google meet
             </div>
             <div class="info-meta-item">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -715,7 +715,7 @@
       const selectedText = document.getElementById('timezoneSelectedText');
       if (selectedText) selectedText.textContent = `(GMT${offset}) ${zone}`;
 
-      console.log(`✅ Detected timezone: ${zone} (GMT${offset})`);
+      console.log(`Detected timezone: ${zone} (GMT${offset})`);
       return { zone, offset };
     } catch (e) {
       console.error('WorldTimeAPI IP detect error:', e);

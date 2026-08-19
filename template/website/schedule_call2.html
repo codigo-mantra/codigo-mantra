@@ -30,8 +30,8 @@
                     <p class="info-thank">Thank you!</p>
                     <div class="info-meta">
                         <div class="info-meta-item">
-                            <img loading="lazy" alt="Zoho Meeting" src="{% static 'images/Zoho-Meeting.svg' %}">
-                            Zoho meet
+                            <img loading="lazy" alt="Google Meet" src="{% static 'images/google_meet.svg' %}">
+                            Google meet
                         </div>
                         <div class="info-meta-item">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -71,6 +71,7 @@
                     <input type="hidden" name="start_time" id="startTimeInput">
                     <input type="hidden" name="client_timezone" id="clientTimezoneInput" value="">
                     <input type="hidden" name="ignore_conflict" id="ignoreConflictInput" value="false">
+                    <input type="hidden" name="otp_verification_token" id="otpVerificationToken" value="">
 
                     <!-- NAME -->
                     <div class="form-group form-group-schedule-call">
@@ -253,6 +254,7 @@
                     <input type="text" maxlength="1" class="otp-box-input" data-index="4" inputmode="numeric">
                     <input type="text" maxlength="1" class="otp-box-input" data-index="5" inputmode="numeric">
                 </div>
+                <p id="otpModalError" class="contact-form-error text-start" style="display:none; margin-top:-24px;"></p>
 
                 <div class="d-flex flex-column align-items-start gap-1" style="font-size: 13px; font-family: 'Poppins', sans-serif; color: rgba(246, 246, 246, 0.7);">
                     <div>
@@ -763,6 +765,174 @@
         // Handle Booking Form (AJAX errors match contact.html: .ajax-error under .form-group)
         const bookingForm = document.getElementById('bookingForm');
         const confirmScheduleAnyway = document.getElementById('confirmScheduleAnyway');
+        const otpModalElement = document.getElementById('otpVerifyModal');
+        const otpInputs = Array.from(document.querySelectorAll('.otp-box-input'));
+        const otpError = document.getElementById('otpModalError');
+        const resendOtpBtn = document.getElementById('resendOtpBtn');
+        const resendTimerWrap = document.getElementById('resendTimerWrap');
+        const resendTimerCountdown = document.getElementById('resendTimerCountdown');
+        const otpVerificationToken = document.getElementById('otpVerificationToken');
+        let emailVerified = false;
+        let emailBeingVerified = '';
+        let otpRequestInProgress = false;
+        let otpVerifyInProgress = false;
+        let resendInterval = null;
+
+        function csrfToken() {
+            return bookingForm.querySelector('[name=csrfmiddlewaretoken]').value;
+        }
+
+        function maskEmail(email) {
+            const parts = String(email).split('@');
+            if (parts.length !== 2) return email;
+            const local = parts[0];
+            const visible = local.slice(0, Math.min(2, local.length));
+            return `${visible}${'*'.repeat(Math.max(2, local.length - visible.length))}@${parts[1]}`;
+        }
+
+        function showOtpError(message) {
+            if (!otpError) return;
+            otpError.textContent = message || '';
+            otpError.style.display = message ? 'block' : 'none';
+            otpInputs.forEach(input => input.classList.toggle('error', Boolean(message)));
+        }
+
+        function startResendTimer(seconds) {
+            clearInterval(resendInterval);
+            let remaining = Number(seconds) || 42;
+            if (resendOtpBtn) resendOtpBtn.disabled = true;
+            if (resendTimerWrap) resendTimerWrap.style.display = 'flex';
+            const render = () => {
+                if (resendTimerCountdown) {
+                    resendTimerCountdown.textContent = `00:${String(Math.max(0, remaining)).padStart(2, '0')}`;
+                }
+                if (remaining <= 0) {
+                    clearInterval(resendInterval);
+                    if (resendOtpBtn) resendOtpBtn.disabled = false;
+                    if (resendTimerWrap) resendTimerWrap.style.display = 'none';
+                    return;
+                }
+                remaining -= 1;
+            };
+            render();
+            resendInterval = setInterval(render, 1000);
+        }
+
+        async function requestBookingOtp(showModal = true) {
+            if (otpRequestInProgress) return;
+            otpRequestInProgress = true;
+            showOtpError('');
+            emailBeingVerified = bookingForm.querySelector('[name=client_email]').value.trim().toLowerCase();
+            const emailLabel = document.getElementById('otpModalEmail');
+            if (emailLabel) emailLabel.textContent = maskEmail(emailBeingVerified);
+            otpInputs.forEach(input => {
+                input.value = '';
+                input.disabled = true;
+                input.classList.remove('error');
+            });
+
+            // Show immediately instead of waiting for the SMTP request to finish.
+            if (showModal && otpModalElement) {
+                bootstrap.Modal.getOrCreateInstance(otpModalElement).show();
+            }
+
+            const payload = new FormData();
+            payload.append('client_email', emailBeingVerified);
+            try {
+                const response = await fetch("{% url 'schedule-call-send-otp' %}", {
+                    method: 'POST',
+                    headers: {'X-CSRFToken': csrfToken(), 'X-Requested-With': 'XMLHttpRequest'},
+                    body: payload,
+                });
+                const data = await response.json();
+                if (!response.ok || data.status !== 'success') throw data;
+                otpInputs.forEach(input => {
+                    input.disabled = false;
+                    input.classList.remove('error');
+                });
+                startResendTimer(data.resend_after || 42);
+                // Previous behavior opened the modal here, after the email request completed.
+                // It is now opened before fetch() so SMTP latency does not block the UI.
+                setTimeout(() => otpInputs[0]?.focus(), 250);
+            } catch (error) {
+                if (error.retry_after) {
+                    // An OTP is already active. Keep using it and show only the normal countdown.
+                    otpInputs.forEach(input => { input.disabled = false; });
+                    showOtpError('');
+                    startResendTimer(error.retry_after);
+                    setTimeout(() => otpInputs[0]?.focus(), 100);
+                } else {
+                    otpInputs.forEach(input => { input.disabled = true; });
+                    showOtpError(error.message || 'We could not send the verification code. Please try again.');
+                }
+                if (showModal && otpModalElement) {
+                    bootstrap.Modal.getOrCreateInstance(otpModalElement).show();
+                }
+            } finally {
+                otpRequestInProgress = false;
+                const submitBtn = bookingForm.querySelector('[type=submit]');
+                if (submitBtn) submitBtn.disabled = false;
+            }
+        }
+
+        async function verifyBookingOtp() {
+            const otp = otpInputs.map(input => input.value).join('');
+            if (otp.length !== 6 || otpVerifyInProgress) return;
+            otpVerifyInProgress = true;
+            showOtpError('');
+            const payload = new FormData();
+            payload.append('client_email', emailBeingVerified);
+            payload.append('otp', otp);
+            try {
+                const response = await fetch("{% url 'schedule-call-verify-otp' %}", {
+                    method: 'POST',
+                    headers: {'X-CSRFToken': csrfToken(), 'X-Requested-With': 'XMLHttpRequest'},
+                    body: payload,
+                });
+                const data = await response.json();
+                if (!response.ok || data.status !== 'success') throw data;
+                otpVerificationToken.value = data.verification_token;
+                emailVerified = true;
+                clearInterval(resendInterval);
+                bootstrap.Modal.getOrCreateInstance(otpModalElement).hide();
+                bookingForm.requestSubmit ? bookingForm.requestSubmit() : bookingForm.submit();
+            } catch (error) {
+                showOtpError(error.message || 'The verification code is incorrect.');
+                otpInputs.forEach(input => { input.value = ''; });
+                otpInputs[0]?.focus();
+            } finally {
+                otpVerifyInProgress = false;
+            }
+        }
+
+        otpInputs.forEach((input, index) => {
+            input.setAttribute('autocomplete', index === 0 ? 'one-time-code' : 'off');
+            input.addEventListener('input', () => {
+                input.value = input.value.replace(/\D/g, '').slice(-1);
+                showOtpError('');
+                if (input.value && index < otpInputs.length - 1) otpInputs[index + 1].focus();
+                if (otpInputs.every(item => item.value.length === 1)) verifyBookingOtp();
+            });
+            input.addEventListener('keydown', event => {
+                if (event.key === 'Backspace' && !input.value && index > 0) otpInputs[index - 1].focus();
+            });
+            input.addEventListener('paste', event => {
+                const digits = event.clipboardData.getData('text').replace(/\D/g, '').slice(0, 6);
+                if (!digits) return;
+                event.preventDefault();
+                digits.split('').forEach((digit, digitIndex) => {
+                    if (otpInputs[digitIndex]) otpInputs[digitIndex].value = digit;
+                });
+                if (digits.length === 6) verifyBookingOtp();
+            });
+        });
+
+        resendOtpBtn?.addEventListener('click', () => requestBookingOtp(false));
+
+        bookingForm?.querySelector('[name=client_email]')?.addEventListener('input', () => {
+            emailVerified = false;
+            if (otpVerificationToken) otpVerificationToken.value = '';
+        });
 
         if (bookingForm) {
             if (confirmScheduleAnyway) {
@@ -830,6 +1000,16 @@
 
                     if (hasError) return;
                 }
+
+                if (!emailVerified) {
+                    if (submitBtn) submitBtn.disabled = true;
+                    requestBookingOtp(true);
+                    return;
+                }
+
+                /* Previous behavior submitted the booking immediately after form validation:
+                   fetch(bookingForm.action, { method: 'POST', ... })
+                   It is intentionally retained below, but now runs only after OTP verification. */
 
                 if (submitBtn) submitBtn.disabled = true;
 

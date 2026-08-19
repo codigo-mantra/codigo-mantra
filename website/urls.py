@@ -11,6 +11,8 @@ urlpatterns = [
     path('contact-us/', ContactPage.as_view(), name='contact'),
     path('schedule-call/', ScheduleCallPage.as_view(), name='schedule-call'),
     path('schedule-call/step-2/', ScheduleCallStep2Page.as_view(), name='schedule-call-2'),
+    path('schedule-call/send-otp/', SendBookingOTP.as_view(), name='schedule-call-send-otp'),
+    path('schedule-call/verify-otp/', VerifyBookingOTP.as_view(), name='schedule-call-verify-otp'),
     path('career/', CareerPage.as_view(), name='career'),
     path('career/apply/<str:job_id>/', CareerFormPage.as_view(), name='career-apply'),
     path('portfolio/', PortfolioPage.as_view(), name='portfolio'),
@@ -33,4 +35,3 @@ urlpatterns = [
 
 
 ]
-
