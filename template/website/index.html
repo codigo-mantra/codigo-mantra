@@ -12,13 +12,17 @@ Codigo Mantra | Tech Partner for Business Growth | Custom Software & AI
     <!-- <div class="hero-grid-bg"></div> -->
     <!-- Floating Cards -->
     <div class="hero-floating-elements d-none d-lg-flex">
-        <div class="hero-floating-card card-tl"><img src="{% static 'images/backend-card.avif' %}" alt="Card 1">
+        <div class="hero-floating-card card-tl"><img src="{% static 'images/backend-card.avif' %}" width="205"
+                height="122" loading="lazy" decoding="async" alt="Card 1">
         </div>
-        <div class="hero-floating-card card-bl"><img src="{% static 'images/growth-card.avif' %}" alt="Card 2">
+        <div class="hero-floating-card card-bl"><img src="{% static 'images/growth-card.avif' %}" width="205"
+                height="122" loading="lazy" decoding="async" alt="Card 2">
         </div>
-        <div class="hero-floating-card card-tr"><img src="{% static 'images/ui-card.avif' %}" alt="Card 3">
+        <div class="hero-floating-card card-tr"><img src="{% static 'images/ui-card.avif' %}" width="205"
+                height="122" loading="lazy" decoding="async" alt="Card 3">
         </div>
-        <div class="hero-floating-card card-br"><img src="{% static 'images/frontend-card.avif' %}" alt="Card 4">
+        <div class="hero-floating-card card-br"><img src="{% static 'images/frontend-card.avif' %}" width="205"
+                height="122" loading="lazy" decoding="async" alt="Card 4">
         </div>
     </div>
 
@@ -148,7 +152,7 @@ Codigo Mantra | Tech Partner for Business Growth | Custom Software & AI
 
             <div class="col-lg-3 mb-1">
 
-                <a href="{% url 'service-details-slug' slug=service.slug %}?type=index"
+                <a href="{% url 'service-details-slug' slug=service.slug %}"
                     class="text-decoration-none text-reset">
 
                     <div class="service-card-wrapper h-100">
