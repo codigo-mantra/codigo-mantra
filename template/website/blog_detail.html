@@ -9,7 +9,7 @@
 
 {% block meta_description %}
 <meta name="description"
-    content="{{ blog.meta_description|default:blog.hero_description|striptags|truncatewords:25|truncatechars:160 }}">
+    content="{{ blog.meta_description|striptags|truncatewords:25|truncatechars:160 }}">
 {% endblock %}
 
 {% block structured_data %}
