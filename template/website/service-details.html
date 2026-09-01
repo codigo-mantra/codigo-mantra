@@ -4,6 +4,34 @@
 
 {% block content %}
 
+{% block meta_canonical %}
+<link rel="canonical" href="https://codigomantra.com{{ request.path }}">
+{% endblock %}
+
+{% block meta_description %}
+<meta name="description"
+    content="{{ detail.meta_description|default:detail.hero_description|striptags|truncatewords:25|truncatechars:160 }}">
+{% endblock %}
+
+{% block page_schema %}
+<script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "{{ detail.hero_title|safe|striptags }}",
+        "serviceType": "{{ detail.hero_title|safe|striptags }}",
+        "provider": {
+            "@type": "Organization",
+            "name": "Codigo Mantra",
+            "url": "https://codigomantra.com/"
+        },
+        "description": "{{ detail.hero_description|safe|striptags }}",
+        "image": "{{ detail.hero_image.url|default:'' }}",
+        "url": "https://codigomantra.com{{ request.path }}"
+    }
+</script>
+{% endblock %}
+
 <div class="sd-wrapper">
     <!-- ══════════════════════════════════
          HERO SECTION

@@ -3,6 +3,15 @@
 
 {% block title %}{{ blog.title }} - CodigoMantra{% endblock %}
 
+{% block meta_canonical %}
+<link rel="canonical" href="https://codigomantra.com{{ request.path }}">
+{% endblock %}
+
+{% block meta_description %}
+<meta name="description"
+    content="{{ blog.meta_description|default:blog.hero_description|striptags|truncatewords:25|truncatechars:160 }}">
+{% endblock %}
+
 {% block structured_data %}
 <script type="application/ld+json">
 {

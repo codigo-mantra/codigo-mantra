@@ -4,6 +4,17 @@
 {% block title %}Blog - CodigoMantra{% endblock %}
 
 {% block content %}
+
+{% block meta_canonical %}
+<link rel="canonical" href="https://codigomantra.com{{ request.path }}">
+{% endblock %}
+
+{% block meta_description %}
+<meta name="description"
+    content="{% if detail.meta_description %}{{ detail.meta_description|default:''|truncatechars:160 }}{% else %}{{ detail.hero_description|striptags|truncatewords:25|truncatechars:160 }}{% endif %}">
+{% endblock %}
+
+
 <section class="blog-hero">
     <div class="container">
         <div class="row">
