@@ -287,20 +287,40 @@ EMAIL_HOST = os.getenv('EMAIL_HOST')
 EMAIL_PORT = int(os.getenv('EMAIL_PORT'))
 EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS') == 'True'
 
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+# Use the primary Codigo Mantra mailbox for SMTP authentication and all
+# application-generated messages. This prevents a stale environment value from
+# changing the visible sender to another account.
+EMAIL_HOST_USER = "jai@codigomantra.com"
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
+# Public sender used for all client and admin notification emails.
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = EMAIL_HOST_USER
 HR_EMAIL_ADDRESS = os.getenv('HR_EMAIL_ADDRESS')
 
 
 
-# Comma-separated extra admin addresses for booking notifications (optional).
-BOOKING_ADMIN_EMAILS = [
-    e.strip()
-    for e in os.environ.get("BOOKING_ADMIN_EMAILS", "").split(",")
-    if e.strip()
+# Team inboxes that receive client details from inquiry forms.
+CLIENT_INQUIRY_ADMIN_EMAILS = [
+    "jai@codigomantra.com",
+    "info@codigomantra.com",
 ]
+
+# Comma-separated environment variables can add more recipients without
+# removing the two required team inboxes above.
+def _inquiry_admin_emails(env_name):
+    extra_emails = (
+        email.strip()
+        for email in os.environ.get(env_name, "").split(",")
+    )
+    return list(dict.fromkeys([
+        *CLIENT_INQUIRY_ADMIN_EMAILS,
+        *(email for email in extra_emails if email),
+    ]))
+
+
+BOOKING_ADMIN_EMAILS = _inquiry_admin_emails("BOOKING_ADMIN_EMAILS")
+CONTACT_ADMIN_EMAILS = _inquiry_admin_emails("CONTACT_ADMIN_EMAILS")
 
 # True: client + admin booking mails use only EMAIL_HOST_USER / BOOKING_ADMIN_EMAILS (no consultant CC).
 # Set env BOOKING_SINGLE_ADMIN_INBOX=false when multiple admins need consultant copies.
@@ -415,4 +435,3 @@ CKEDITOR_CONFIGS = {
         'extraAllowedContent': '*(*); *{*}; *[*]',
     }
 }
-

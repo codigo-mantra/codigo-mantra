@@ -44,6 +44,18 @@ EMAIL_IMAGE_MAP = {
     "youtube": f"{S3_BASE_URL}/youtube.png",
 }
 
+
+def _admin_recipients(setting_name, extra_emails=()):
+    """Return a normalized, duplicate-free admin recipient list."""
+    configured = list(getattr(settings, setting_name, []) or [])
+    recipients = [*configured, *extra_emails]
+    if not recipients:
+        recipients.append(getattr(settings, "EMAIL_HOST_USER", "") or "")
+
+    return list(dict.fromkeys(
+        email.strip() for email in recipients if email and email.strip()
+    ))
+
 def _get_email_image_context(recipient_email, illustration_url=None):
     """
     Returns a context dictionary with image URLs and strategy for email templates.
@@ -300,20 +312,15 @@ def _booking_followup_zoom_and_emails(booking_id, client_name, client_email, cli
             **admin_image_ctx
         })
 
-        # Admin recipients
-        admin_recipients = list(getattr(settings, "BOOKING_ADMIN_EMAILS", []) or [])
-        if not admin_recipients:
-            host_user = getattr(settings, "EMAIL_HOST_USER", "")
-            if host_user:
-                admin_recipients = [host_user]
-
+        consultant_recipients = []
         if not getattr(settings, "BOOKING_SINGLE_ADMIN_INBOX", True):
             if consultant and consultant.email:
-                ce = consultant.email.strip()
-                if ce and ce not in admin_recipients:
-                    admin_recipients.append(ce)
+                consultant_recipients.append(consultant.email)
 
-        admin_recipients = [e for e in admin_recipients if e]
+        admin_recipients = _admin_recipients(
+            "BOOKING_ADMIN_EMAILS",
+            consultant_recipients,
+        )
 
         # Send client email (only to the address they entered on the form)
         try:
@@ -393,15 +400,16 @@ def _contact_form_send_emails(name, from_email, phone, message_body, base_url, f
                 **client_image_ctx
             },
         )
-        admin_addr = getattr(settings, "EMAIL_HOST_USER", "") or ""
-        if not admin_addr:
-            logger.warning("Contact form: EMAIL_HOST_USER not set; skipping admin notification")
+        admin_recipients = _admin_recipients("CONTACT_ADMIN_EMAILS")
+
+        if not admin_recipients:
+            logger.warning("Contact form: no admin recipients configured; skipping admin notification")
         else:
             email = EmailMultiAlternatives(
                 f"New Contact Form Submission from {name}",
                 strip_tags(admin_html_message),
                 settings.DEFAULT_FROM_EMAIL,
-                [admin_addr],
+                admin_recipients,
                 reply_to=[from_email],
             )
             email.attach_alternative(admin_html_message, "text/html")
@@ -409,7 +417,7 @@ def _contact_form_send_emails(name, from_email, phone, message_body, base_url, f
             _attach_images_to_email(
                 email,
                 "https://codigomantra.s3.ap-south-1.amazonaws.com/content-email-template.png",
-                admin_addr
+                admin_recipients[0]
             )
             email.send(fail_silently=False)
 
@@ -530,9 +538,12 @@ def _newsletter_welcome_email(email_to, base_url):
     """Welcome email after newsletter subscribe — background thread."""
     close_old_connections()
     try:
-        # Get image context (Gmail check)
+        # Build the hosted image URLs used by the newsletter template.
         illustration_url = f"{S3_BASE_URL}/newsletter-email-template.png"
         image_ctx = _get_email_image_context(email_to, illustration_url)
+        # Newsletter images are hosted on S3 and should never be included as
+        # MIME attachments in the welcome email.
+        image_ctx["use_external_images"] = True
 
         html_message = render_to_string(
             "email-newsletter.html",
@@ -549,12 +560,6 @@ def _newsletter_welcome_email(email_to, base_url):
             [email_to],
         )
         msg.attach_alternative(html_message, "text/html")
-        msg.mixed_subtype = 'related'
-        _attach_images_to_email(
-            msg,
-            "https://codigomantra.s3.ap-south-1.amazonaws.com/newsletter-email-template.png",
-            email_to
-        )
         msg.send(fail_silently=False)
     except Exception as e:
         logger.warning("Newsletter welcome email error for %s: %s", email_to, e)
