@@ -331,7 +331,6 @@ def _booking_followup_zoom_and_emails(booking_id, client_name, client_email, cli
                 [client_email],
             )
             client_msg.attach_alternative(client_html, "text/html")
-            client_msg.mixed_subtype = 'related'
             _attach_images_to_email(
                 client_msg,
                 "https://codigomantra.s3.ap-south-1.amazonaws.com/scheduling-call-email-template.png",
@@ -354,7 +353,6 @@ def _booking_followup_zoom_and_emails(booking_id, client_name, client_email, cli
                     reply_to=[client_email],
                 )
                 admin_msg.attach_alternative(admin_html, "text/html")
-                admin_msg.mixed_subtype = 'related'
                 _attach_images_to_email(
                     admin_msg,
                     "https://codigomantra.s3.ap-south-1.amazonaws.com/scheduling-call-email-template.png",
@@ -413,7 +411,6 @@ def _contact_form_send_emails(name, from_email, phone, message_body, base_url, f
                 reply_to=[from_email],
             )
             email.attach_alternative(admin_html_message, "text/html")
-            email.mixed_subtype = 'related'
             _attach_images_to_email(
                 email,
                 "https://codigomantra.s3.ap-south-1.amazonaws.com/content-email-template.png",
@@ -429,7 +426,6 @@ def _contact_form_send_emails(name, from_email, phone, message_body, base_url, f
                 [from_email],
             )
             client_msg.attach_alternative(html_message, "text/html")
-            client_msg.mixed_subtype = 'related'
             _attach_images_to_email(
                 client_msg,
                 "https://codigomantra.s3.ap-south-1.amazonaws.com/content-email-template.png",
@@ -496,7 +492,6 @@ def _career_application_send_emails(application_id):
             reply_to=[applicant_email],
         )
         admin_msg.attach_alternative(admin_html, "text/html")
-        admin_msg.mixed_subtype = 'related'
         _attach_images_to_email(
             admin_msg,
             "https://codigomantra.s3.ap-south-1.amazonaws.com/submission-email-template.png",
@@ -517,7 +512,6 @@ def _career_application_send_emails(application_id):
                 [applicant_email],
             )
             client_msg.attach_alternative(user_html, "text/html")
-            client_msg.mixed_subtype = 'related'
             _attach_images_to_email(
                 client_msg,
                 "https://codigomantra.s3.ap-south-1.amazonaws.com/submission-email-template.png",
