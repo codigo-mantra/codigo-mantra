@@ -30,11 +30,27 @@ def context(request):
 def client_ip(request):
     # Forwarded headers are accepted only from explicitly configured trusted peers.
     peer = ip_address(request.META.get('REMOTE_ADDR') or '0.0.0.0')
-    if any(peer in ip_network(cidr) for cidr in settings.CONTACT_TRUSTED_PROXY_CIDRS):
+    trusted_peer = False
+    for cidr in settings.CONTACT_TRUSTED_PROXY_CIDRS:
         try:
-            return str(ip_address(request.META.get('HTTP_CF_CONNECTING_IP', str(peer))))
+            if peer in ip_network(cidr):
+                trusted_peer = True
+                break
         except ValueError:
-            pass
+            continue
+
+    if trusted_peer:
+        forwarded_values = (
+            request.META.get('HTTP_CF_CONNECTING_IP', ''),
+            request.META.get('HTTP_X_REAL_IP', ''),
+            request.META.get('HTTP_X_FORWARDED_FOR', '').split(',', 1)[0],
+        )
+        for value in forwarded_values:
+            try:
+                if value.strip():
+                    return str(ip_address(value.strip()))
+            except ValueError:
+                continue
     return str(peer)
 
 
@@ -65,4 +81,3 @@ def preflight(request):
         valid = False
     if not valid:
         raise ContactRejected('Please wait at least 3 seconds after loading the form. Reload if it has expired.')
-
