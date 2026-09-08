@@ -333,8 +333,8 @@ BOOKING_SINGLE_ADMIN_INBOX = os.environ.get("BOOKING_SINGLE_ADMIN_INBOX", "true"
 SLACK_BOT_TOKEN = os.getenv("SLACK_BOT_TOKEN")
 SLACK_CHANNEL_ID = os.getenv("SLACK_CHANNEL_ID")
 
-RECAPTCHA_PUBLIC_KEY = "6LfhyUUqAAAAALWtHDmDjfALmGvNkS__D9JH26Vz"
-RECAPTCHA_PRIVATE_KEY = "6LfhyUUqAAAAAEUMGWOH46qR3OIbyCm79ugcJET4"
+RECAPTCHA_PUBLIC_KEY = os.getenv("RECAPTCHA_PUBLIC_KEY")
+RECAPTCHA_PRIVATE_KEY = os.getenv("RECAPTCHA_PRIVATE_KEY")
 
 
 
@@ -435,3 +435,6 @@ CKEDITOR_CONFIGS = {
         'extraAllowedContent': '*(*); *{*}; *[*]',
     }
 }
+
+# Only configure peers that overwrite CF-Connecting-IP and cannot be bypassed.
+CONTACT_TRUSTED_PROXY_CIDRS = [value.strip() for value in os.getenv('CONTACT_TRUSTED_PROXY_CIDRS', '').split(',') if value.strip()]

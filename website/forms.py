@@ -1,6 +1,6 @@
 from django import forms
-# from django_recaptcha.fields import ReCaptchaField
-# from django_recaptcha.widgets import ReCaptchaV2Checkbox 
+from django_recaptcha.fields import ReCaptchaField
+from django_recaptcha.widgets import ReCaptchaV2Checkbox
 from .models import ContactUs, Newsletter, Application, Booking, User
 import datetime
 import re
@@ -99,9 +99,20 @@ class BookingForm(forms.ModelForm):
         return message
 
 class ContactUsForm(forms.ModelForm):
+    captcha = ReCaptchaField(
+        widget=ReCaptchaV2Checkbox,
+        label="",
+        error_messages={
+            "required": "Please confirm that you are not a robot.",
+            "captcha_invalid": "CAPTCHA verification failed. Please try again.",
+            "captcha_error": "CAPTCHA verification is temporarily unavailable. Please try again.",
+        },
+    )
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['last_name'].required = False
+        self.fields['phone'].required = True
 
 
     class Meta:
@@ -151,6 +162,8 @@ class ContactUsForm(forms.ModelForm):
         if not phone:
             raise forms.ValidationError("Phone number is required.")
 
+        if not re.fullmatch(r'[0-9+() .-]+', phone):
+            raise forms.ValidationError("Please enter a valid phone number.")
         digits = "".join(c for c in phone if c.isdigit())
         if len(digits) != 10:
             raise forms.ValidationError("Phone number must be exactly 10 digits.")
@@ -161,6 +174,8 @@ class ContactUsForm(forms.ModelForm):
 
     def clean_message(self):
         message = self.cleaned_data.get('message')
+        if not 10 <= len(message) <= 5000:
+            raise forms.ValidationError('Message must contain between 10 and 5000 characters.')
         # allow numbers + alphabets + punctuation
         if not re.search(r'[A-Za-z0-9]', message):
             raise forms.ValidationError("Please enter a valid message.")

@@ -778,3 +778,9 @@ class IndustryWhyChooseItem(TimeStamp):
 
     def __str__(self):
         return self.title
+
+
+class ContactSubmissionGuard(models.Model):
+    key = models.CharField(max_length=40, primary_key=True)
+    count = models.PositiveIntegerField(default=0)
+    expires_at = models.DateTimeField(db_index=True)

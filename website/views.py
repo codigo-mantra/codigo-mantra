@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.core.mail import send_mail, EmailMessage, EmailMultiAlternatives
 from email.mime.image import MIMEImage
+from email.utils import formataddr
 import requests
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
@@ -12,7 +13,8 @@ from .forms import ContactUsForm, CareerApplicationForm, NewsletterForm, Booking
 from django import views
 from django.contrib import messages
 from .models import * 
-from django.views.decorators.cache import cache_page
+from django.views.decorators.cache import cache_page, never_cache
+from . import contact_security
 from django.utils.decorators import method_decorator
 from django.db import IntegrityError, close_old_connections, transaction
 from .zoom_meet import generate_zoom_meet_link
@@ -55,6 +57,13 @@ def _admin_recipients(setting_name, extra_emails=()):
     return list(dict.fromkeys(
         email.strip() for email in recipients if email and email.strip()
     ))
+
+
+def _submission_sender(name, fallback_label):
+    """Build a safe From header using the submitted name and SMTP mailbox."""
+    sender_label = " ".join((name or fallback_label).split())
+    sender_address = getattr(settings, "EMAIL_HOST_USER", "") or settings.DEFAULT_FROM_EMAIL
+    return formataddr((sender_label, sender_address))
 
 def _get_email_image_context(recipient_email, illustration_url=None):
     """
@@ -403,10 +412,11 @@ def _contact_form_send_emails(name, from_email, phone, message_body, base_url, f
         if not admin_recipients:
             logger.warning("Contact form: no admin recipients configured; skipping admin notification")
         else:
+            admin_sender = _submission_sender(name, "Client")
             email = EmailMultiAlternatives(
                 f"New Contact Form Submission from {name}",
                 strip_tags(admin_html_message),
-                settings.DEFAULT_FROM_EMAIL,
+                admin_sender,
                 admin_recipients,
                 reply_to=[from_email],
             )
@@ -484,10 +494,12 @@ def _career_application_send_emails(application_id):
             logger.warning("Career application: HR_EMAIL_ADDRESS not set; skipping HR mail")
             return
 
+        hr_sender = _submission_sender(name, "Candidate")
+
         admin_msg = EmailMultiAlternatives(
             f"New job application: {name} — {job_title}",
             strip_tags(admin_html),
-            settings.DEFAULT_FROM_EMAIL,
+            hr_sender,
             [hr_addr],
             reply_to=[applicant_email],
         )
@@ -817,49 +829,9 @@ class LandingPage(views.View):
         )  # last 2 case studies
         return render(request,'website/index.html',{'form':form, 'services':services, 'insights':insights, 'testimonials':testimonials, 'industries':industries, 'case_studies':case_studies})
     def post(self, request):
-        is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
-        form = ContactUsForm(request.POST)
+        # All contact submissions must use the protected contact endpoint.
+        return redirect("contact")
 
-        if form.is_valid():
-            with transaction.atomic():
-                contact_instance = form.save()
-                name = f"{contact_instance.first_name} {contact_instance.last_name}"
-                from_email = contact_instance.email
-                phone = contact_instance.phone
-                message_body = contact_instance.message
-                base_url = request.build_absolute_uri("/")[:-1]
-                fn = contact_instance.first_name
-                transaction.on_commit(
-                    lambda n=name, fe=from_email, ph=phone, mb=message_body, bu=base_url, f=fn: threading.Thread(
-                        target=_contact_form_send_emails,
-                        args=(n, fe, ph, mb, bu, f),
-                        daemon=True,
-                    ).start()
-                )
-
-            if is_ajax:
-                return JsonResponse({"status": "success"})
-
-            messages.success(request, "Your message has been sent successfully!")
-            return redirect("contact")
-
-        # Form invalid
-        if is_ajax:
-            errors = {
-                field: [{"message": str(e)} for e in errs]
-                for field, errs in form.errors.items()
-            }
-            return JsonResponse({"status": "error", "errors": errors}, status=400)
-
-        return render(
-            request,
-            "website/contact.html",
-            {
-                "form": form,
-                "faqs": FAQ.objects.all(),
-                "contact": ContactInfo.objects.first(),
-            },
-        )
 
 class AboutUsPage(views.View):
     def get(self,request):
@@ -1022,15 +994,21 @@ class CaseStudyDetailPage(views.View):
 
     
 
+@method_decorator(never_cache, name="dispatch")
 class ContactPage(views.View):
     def get(self,request):
         form = ContactUsForm()
         faqs = FAQ.objects.all()
-        return render(request,'website/contact.html',{'form':form, 'faqs':faqs})
+        return render(request,'website/contact.html',{'form':form, 'faqs':faqs, **contact_security.context(request)})
     
     def post(self, request):
         is_ajax = request.headers.get('X-Requested-With') == 'XMLHttpRequest'
         form = ContactUsForm(request.POST)
+
+        try:
+            contact_security.preflight(request)
+        except contact_security.ContactRejected as exc:
+            return self.invalid_response(request, form, exc.status, exc.message)
 
         if form.is_valid():
             with transaction.atomic():
@@ -1050,29 +1028,26 @@ class ContactPage(views.View):
                 )
 
             if is_ajax:
-                return JsonResponse({"status": "success"})
+                return JsonResponse({"status": "success", **contact_security.context(request)})
 
             messages.success(request, "Your message has been sent successfully!")
             return redirect("contact")
 
-        # Form invalid
-        if is_ajax:
-            errors = {
-                field: [{"message": str(e)} for e in errs]
-                for field, errs in form.errors.items()
-            }
-            return JsonResponse({"status": "error", "errors": errors}, status=400)
+        return self.invalid_response(request, form, 400)
 
-        return render(
-            request,
-            "website/contact.html",
-            {
-                "form": form,
-                "faqs": FAQ.objects.all(),
-                "contact": ContactInfo.objects.first(),
-            },
-        )
-    
+    def invalid_response(self, request, form, status, security_error=None):
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            if security_error:
+                errors = {'__all__': [{"message": security_error}]}
+            else:
+                errors = {field: [{"message": str(e)} for e in errs] for field, errs in form.errors.items()}
+            return JsonResponse({"status": "error", "errors": errors}, status=status)
+        return render(request, "website/contact.html", {
+            "form": form, "faqs": FAQ.objects.all(), "contact": ContactInfo.objects.first(),
+            "security_error": security_error,
+            **contact_security.context(request),
+        }, status=status)
+
 
 def newsletter_subscribe(request):
     if request.method == "POST":

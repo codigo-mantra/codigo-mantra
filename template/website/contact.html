@@ -81,6 +81,8 @@
             <!-- LEFT: Application Form -->
             <form method="POST" id="contactForm" novalidate>
                 {% csrf_token %}
+                <input type="hidden" name="contact_started" value="{{ contact_started }}">
+                <div hidden aria-hidden="true"><input type="text" name="company_website" tabindex="-1" autocomplete="off"></div>
                 <div class="apply-card">
 
                     <div class="form-row ">
@@ -137,6 +139,13 @@
                     </div>
                     {% endif %}
 
+                    {% if form.non_field_errors %}<div class="text-danger">{{ form.non_field_errors }}</div>{% endif %}
+                    {% if security_error %}<div class="text-danger">{{ security_error }}</div>{% endif %}
+                    <div class="form-group">
+                        {{ form.captcha }}
+                        <p id="err-captcha" role="alert" hidden style="color: #FF0000;">Please complete the CAPTCHA before submitting.</p>
+                    </div>
+                    {% if form.captcha.errors %}<div class="text-danger">{{ form.captcha.errors }}</div>{% endif %}
                     <!-- ERROR MESSAGES -->
                     <div id="contactFormErrors" style="text-align: right; ">
                         <p id="err-general" class="contact-form-error" style="display:none; ">We could not submit your
@@ -321,6 +330,8 @@
         contactForm.addEventListener('submit', function (e) {
             e.preventDefault();
             hideAllErrors();
+            const captchaError = document.getElementById('err-captcha');
+            captchaError.hidden = true;
 
             const submitBtn = contactForm.querySelector('[type=submit]');
 
@@ -333,6 +344,12 @@
             if (!firstName || !email || !phone || !message) {
                 const fieldsErr = document.getElementById('err-fields');
                 if (fieldsErr) fieldsErr.style.display = 'block';
+                return;
+            }
+
+            const captchaResponse = contactForm.querySelector('[name="g-recaptcha-response"]');
+            if (!captchaResponse || !captchaResponse.value.trim()) {
+                captchaError.hidden = false;
                 return;
             }
 
@@ -350,6 +367,7 @@
                 .then(data => {
                     if (data.status === 'success') {
                         contactForm.reset();
+                        contactForm.querySelector('[name=contact_started]').value = data.contact_started;
                         const modalEl = document.getElementById('contactModal');
                         if (modalEl && window.bootstrap && bootstrap.Modal) {
                             bootstrap.Modal.getOrCreateInstance(modalEl).show();
@@ -358,9 +376,14 @@
                         // Show field errors
                         if (data.errors) {
                             Object.keys(data.errors).forEach(field => {
+                                if (field === 'captcha') {
+                                    captchaError.textContent = data.errors[field][0].message;
+                                    captchaError.hidden = false;
+                                    return;
+                                }
                                 if (field === '__all__') {
                                     const genErr = document.getElementById('err-general');
-                                    if (genErr) genErr.style.display = 'block';
+                                    if (genErr) { genErr.textContent = data.errors[field][0].message; genErr.style.display = 'block'; }
                                     return;
                                 }
                                 const input = contactForm.querySelector(`[name=${field}]`);
@@ -386,6 +409,7 @@
                     if (netErr) netErr.style.display = 'block';
                 })
                 .finally(() => {
+                    if (window.grecaptcha) window.grecaptcha.reset();
                     if (submitBtn) submitBtn.disabled = false;
                 });
         });
