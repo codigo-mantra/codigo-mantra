@@ -69,7 +69,12 @@ def claim(namespace, value, limit, seconds=900):
 
 
 def preflight(request):
-    if not claim('ip', client_ip(request), 5):
+    # The server cannot identify an individual machine behind shared Wi-Fi/NAT.
+    # Use the signed, server-issued browser key so one user cannot block others.
+    user_key = request.session.get('contact_nonce')
+    if not user_key:
+        raise ContactRejected('Unable to verify this submission. Please reload and try again.')
+    if not claim('user', user_key, 5):
         raise ContactRejected('Too many submissions. Please try again in 15 minutes.', 429)
     if request.POST.get('company_website', '').strip():
         raise ContactRejected('Unable to verify this submission. Please reload and try again.')
