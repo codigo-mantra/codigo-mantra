@@ -112,12 +112,62 @@
 
                     <!-- Technologies list -->
                     <div class="cs-filter-list" id="list-technologies">
-                        {% for tech in technologies %}
-                        <label class="cs-radio-item">
-                            <input type="checkbox" name="cs-filter" value="{{ tech.slug }}">
-                            <span class="cs-radio-dot"></span>{{ tech.name }}
-                        </label>
-                        {% endfor %}
+                        {% if technology_categories %}
+                        <div class="cs-accordion">
+                            {% for category in technology_categories reversed%}
+                            <div class="cs-accordion-item{% if forloop.first %} open{% endif %}">
+                                <button type="button" class="cs-accordion-trigger" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}"
+                                    aria-controls="cs-tech-category-{{ category.pk }}">
+                                    <span class="cs-accordion-title">{{ category.name }}</span>
+                                    <svg class="cs-accordion-chevron" width="16" height="16" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M6 9l6 6 6-6" />
+                                    </svg>
+                                </button>
+                                <div class="cs-accordion-panel" id="cs-tech-category-{{ category.pk }}">
+                                    <div class="cs-filter-list">
+                                        {% for tech in category.technologies.all %}
+                                        <label class="cs-radio-item">
+                                            <input type="checkbox" name="cs-filter" value="{{ tech.slug }}">
+                                            <span class="cs-radio-dot"></span>{{ tech.name }}
+                                        </label>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+
+                            {% if uncategorized_technologies %}
+                            <div class="cs-accordion-item">
+                                <button type="button" class="cs-accordion-trigger" aria-expanded="false"
+                                    aria-controls="cs-tech-category-uncategorized">
+                                    <span class="cs-accordion-title">Other</span>
+                                    <svg class="cs-accordion-chevron" width="16" height="16" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2">
+                                        <path d="M6 9l6 6 6-6" />
+                                    </svg>
+                                </button>
+                                <div class="cs-accordion-panel" id="cs-tech-category-uncategorized">
+                                    <div class="cs-filter-list">
+                                        {% for tech in uncategorized_technologies %}
+                                        <label class="cs-radio-item">
+                                            <input type="checkbox" name="cs-filter" value="{{ tech.slug }}">
+                                            <span class="cs-radio-dot"></span>{{ tech.name }}
+                                        </label>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        </div>
+                        {% else %}
+                            {% for tech in technologies %}
+                            <label class="cs-radio-item">
+                                <input type="checkbox" name="cs-filter" value="{{ tech.slug }}">
+                                <span class="cs-radio-dot"></span>{{ tech.name }}
+                            </label>
+                            {% endfor %}
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -148,12 +198,25 @@
                                     </a>
                                 </div>
                                 <p class="cs-card-desc">{{case_study.content}}</p>
+
+                                <div class="cs-card-tech-stack">
+                                    {% for tech in case_study.technologies.all %}
+                                    <div class="cs-tech-tech" data-tech="{{ tech.slug }}">{{ tech.name }}</div>
+                                    {% endfor %}
+                                </div>
                             </div>
 
                         </div>
                     </div>
                     {%endfor%}
 
+                </div>
+
+                <!-- Load More / View Less Button -->
+                <div class="cs-load-more-wrap text-center" id="cs-load-more-wrap">
+                    <button type="button" class="cs-load-more-btn" id="cs-load-more-btn" data-state="load-more">
+                        <span id="cs-load-more-label">Load More</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -212,22 +275,125 @@
 
         if (!toggleInput) return;
 
+        function setAccordionOpen(itemEl, open) {
+            if (!itemEl) return;
+            itemEl.classList.toggle('open', open);
+            const trigger = itemEl.querySelector('.cs-accordion-trigger');
+            if (trigger) trigger.setAttribute('aria-expanded', open ? 'true' : 'false');
+        }
+
+        document.querySelectorAll('.cs-accordion-trigger').forEach(trigger => {
+            trigger.addEventListener('click', function () {
+                const item = this.closest('.cs-accordion-item');
+                if (!item) return;
+                setAccordionOpen(item, !item.classList.contains('open'));
+            });
+        });
+
+        // ── PAGINATION & FILTERING ──
+        const INITIAL_LIMIT = 6;
+        const LOAD_STEP = 4;
+        let visibleLimit = INITIAL_LIMIT;
+
+        const loadMoreWrap = document.getElementById('cs-load-more-wrap');
+        const loadMoreBtn = document.getElementById('cs-load-more-btn');
+        const loadMoreLabel = document.getElementById('cs-load-more-label');
+
         // ── GET ACTIVE LIST ──
         function getActiveList() {
             return toggleInput.checked ? listTechnologies : listIndustries;
         }
 
-        // ── SHOW ALL CARDS ──
-        function showAllCards() {
-            cards.forEach(c => c.classList.remove('hidden'));
+        // ── UPDATE TECH BADGE ACTIVE STATES ──
+        function updateTechBadgesActiveState() {
+            const checkedTechs = Array.from(listTechnologies.querySelectorAll('input[type="checkbox"]:checked'))
+                .map(cb => (cb.value || '').trim().toLowerCase())
+                .filter(Boolean);
+
+            document.querySelectorAll('.cs-tech-tech').forEach(badge => {
+                const badgeTech = (badge.getAttribute('data-tech') || '').trim().toLowerCase();
+                if (checkedTechs.length > 0 && checkedTechs.includes(badgeTech)) {
+                    badge.classList.add('active');
+                } else {
+                    badge.classList.remove('active');
+                }
+            });
+        }
+
+        // ── APPLY FILTER & PAGINATION ──
+        function applyFilter() {
+            const isTech = toggleInput.checked;
+            const attr = isTech ? 'data-technologies' : 'data-industries';
+            const activeList = getActiveList();
+
+            const checked = Array.from(activeList.querySelectorAll('input[type="checkbox"]:checked'))
+                .map(cb => (cb.value || '').trim().toLowerCase())
+                .filter(Boolean);
+
+            if (allBtn) allBtn.classList.toggle('active', checked.length === 0);
+
+            const matchingCards = [];
+            cards.forEach(card => {
+                if (checked.length === 0) {
+                    matchingCards.push(card);
+                } else {
+                    const cardVals = (card.getAttribute(attr) || '').split(' ').map(v => v.trim().toLowerCase());
+                    const match = checked.some(val => cardVals.includes(val.toLowerCase()));
+                    if (match) {
+                        matchingCards.push(card);
+                    }
+                }
+            });
+
+            cards.forEach(card => {
+                const idx = matchingCards.indexOf(card);
+                if (idx !== -1 && idx < visibleLimit) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+
+            if (loadMoreWrap && loadMoreBtn && loadMoreLabel) {
+                if (matchingCards.length <= INITIAL_LIMIT) {
+                    loadMoreWrap.style.display = 'none';
+                } else {
+                    loadMoreWrap.style.display = 'block';
+                    if (visibleLimit >= matchingCards.length) {
+                        loadMoreLabel.textContent = 'View Less';
+                        loadMoreBtn.setAttribute('data-state', 'view-less');
+                    } else {
+                        loadMoreLabel.textContent = 'Load More';
+                        loadMoreBtn.setAttribute('data-state', 'load-more');
+                    }
+                }
+            }
+
+            updateTechBadgesActiveState();
+        }
+
+        // ── LOAD MORE / VIEW LESS CLICK ──
+        if (loadMoreBtn) {
+            loadMoreBtn.addEventListener('click', function () {
+                const state = this.getAttribute('data-state');
+                if (state === 'view-less') {
+                    visibleLimit = INITIAL_LIMIT;
+                    const gridEl = document.getElementById('cs-grid');
+                    if (gridEl) {
+                        gridEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                } else {
+                    visibleLimit += LOAD_STEP;
+                }
+                applyFilter();
+            });
         }
 
         // ── RESET TO ALL STATE ──
         function resetToAll() {
             document.querySelectorAll('.cs-radio-item input[type="checkbox"]').forEach(cb => cb.checked = false);
-            const allCb = getActiveList().querySelector('input[value="all"]');
-            if (allCb) allCb.checked = true;
-            showAllCards();
+            visibleLimit = INITIAL_LIMIT;
+            applyFilter();
             if (allBtn) allBtn.classList.add('active');
 
             // Revert to default list visibility (only active list)
@@ -245,51 +411,11 @@
             });
         }
 
-        // ── APPLY FILTER ──
-        function applyFilter() {
-            const isTech = toggleInput.checked;
-            const attr = isTech ? 'data-technologies' : 'data-industries';
-            const activeList = getActiveList();
-
-            const checked = Array.from(activeList.querySelectorAll('input[type="checkbox"]:checked'))
-                .map(cb => cb.value)
-                .filter(v => v !== 'all');
-
-            if (checked.length === 0) {
-                showAllCards();
-            } else {
-                cards.forEach(card => {
-                    const cardVals = (card.getAttribute(attr) || '').split(' ').map(v => v.trim().toLowerCase());
-                    const match = checked.some(val => cardVals.includes(val.toLowerCase()));
-                    card.classList.toggle('hidden', !match);
-                });
-            }
-        }
-
         // ── CHECKBOX CHANGE ──
         document.querySelectorAll('.cs-radio-item input[type="checkbox"]').forEach(checkbox => {
             checkbox.addEventListener('change', function () {
-                const activeList = getActiveList();
-                const allCb = activeList.querySelector('input[value="all"]');
-
-                if (this.value === 'all') {
-                    activeList.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
-                    this.checked = true;
-                    showAllCards();
-                    if (allBtn) allBtn.classList.add('active');
-                } else {
-                    if (allCb) allCb.checked = false;
-                    if (allBtn) allBtn.classList.remove('active');
-                    applyFilter();
-
-                    const anyChecked = Array.from(activeList.querySelectorAll('input[type="checkbox"]:checked'))
-                        .filter(cb => cb.value !== 'all').length > 0;
-                    if (!anyChecked) {
-                        if (allCb) allCb.checked = true;
-                        if (allBtn) allBtn.classList.add('active');
-                        showAllCards();
-                    }
-                }
+                visibleLimit = INITIAL_LIMIT;
+                applyFilter();
 
                 // Close sidebar on mobile after selection
                 if (window.innerWidth < 992 && sidebarCol) {
@@ -320,9 +446,8 @@
 
             // Reset
             document.querySelectorAll('.cs-radio-item input[type="checkbox"]').forEach(cb => cb.checked = false);
-            const allCb = getActiveList().querySelector('input[value="all"]');
-            if (allCb) allCb.checked = true;
-            showAllCards();
+            visibleLimit = INITIAL_LIMIT;
+            applyFilter();
             if (allBtn) allBtn.classList.add('active');
         });
 
@@ -351,10 +476,9 @@
         // ── INIT ──
         labelIndustries.classList.add('active-label');
         labelTechnologies.classList.remove('active-label');
-        const initAllCb = listIndustries.querySelector('input[value="all"]');
-        if (initAllCb) initAllCb.checked = true;
         if (allBtn) allBtn.classList.add('active');
-        showAllCards();
+        visibleLimit = INITIAL_LIMIT;
+        applyFilter();
 
 
     });
@@ -425,10 +549,37 @@ $(document).ready(function () {
 </script>
 <script>
     document.querySelectorAll(".cs-card").forEach(card => {
-        card.addEventListener("click", function () {
+        card.addEventListener("click", function (e) {
+            if (e.target.closest('.cs-tech-tech')) {
+                return;
+            }
             const link = card.querySelector(".cs-card-arrow");
             if (link) {
                 window.location.href = link.getAttribute("href");
+            }
+        });
+    });
+
+    document.querySelectorAll('.cs-tech-tech').forEach(badge => {
+        badge.addEventListener('click', function (e) {
+            e.stopPropagation();
+            const techSlug = this.getAttribute('data-tech');
+            if (!techSlug) return;
+
+            const toggleInput = document.getElementById('cs-toggle-input');
+            const listTechnologies = document.getElementById('list-technologies');
+
+            if (toggleInput && !toggleInput.checked) {
+                toggleInput.checked = true;
+                toggleInput.dispatchEvent(new Event('change'));
+            }
+
+            if (listTechnologies) {
+                const cb = listTechnologies.querySelector(`input[value="${techSlug}"]`);
+                if (cb) {
+                    cb.checked = !cb.checked;
+                    cb.dispatchEvent(new Event('change'));
+                }
             }
         });
     });

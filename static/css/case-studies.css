@@ -18,7 +18,7 @@ section.case-study-hero {
   width: 100%;
   height: 299px;
   border-radius: 27px;
-background: lightgray 50% / cover no-repeat;
+  background: lightgray 50% / cover no-repeat;
   box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.15);
   object-fit: cover;
   object-position: left;
@@ -385,6 +385,57 @@ background: lightgray 50% / cover no-repeat;
   display: flex;
 }
 
+.cs-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cs-accordion-item {
+  border-radius: 14px;
+  background: #050505;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.cs-accordion-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 12px;
+  cursor: pointer;
+  border: none;
+  background: #050505;
+  color: var(--white, #F6F6F6);
+  font-family: Lato;
+  font-size: 17px;
+  font-weight: 400;
+}
+
+.cs-accordion-chevron {
+  transition: transform 0.2s ease;
+}
+
+.cs-accordion-item.open .cs-accordion-chevron {
+  transform: rotate(180deg);
+}
+
+.cs-accordion-panel {
+  display: none;
+  padding: 8px 10px 2px;
+  background: #050505;
+}
+
+.cs-accordion-item.open .cs-accordion-panel {
+  display: block;
+}
+
+.cs-accordion-panel .cs-filter-list {
+  display: flex;
+}
+
 /* ── RADIO/CHECKBOX ITEMS ── */
 .cs-radio-item {
   display: flex;
@@ -402,7 +453,10 @@ background: lightgray 50% / cover no-repeat;
   letter-spacing: -0.096px;
   transition: background 0.2s, color 0.2s;
   user-select: none;
-  background: rgba(0, 0, 0, 0.61);
+  /* background: rgba(0, 0, 0, 0.61); */
+}
+
+.cs-radio-item:not(:last-child) {
   margin-bottom: 16px;
 }
 
@@ -479,7 +533,6 @@ background: lightgray 50% / cover no-repeat;
   padding: 10px 12px;
   flex-direction: column;
   align-items: flex-start;
-  gap: 10px;
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -505,11 +558,76 @@ background: lightgray 50% / cover no-repeat;
   display: block;
 }
 
-.cs-card-body {
+.cs-card-body > div {
+  width: 100%;
+}
+
+.cs-card-tech-stack {
   display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 10px;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.cs-tech-tech {
+background: rgba(255, 255, 255, 0.10);
+  padding: 4px 10px;
+  border-radius: 20px;
+  color: var(--white, #F6F6F6);
+font-family: Lato;
+font-size: 12px;
+font-style: normal;
+font-weight: 400;
+line-height: 150%; /* 18px */
+letter-spacing: 0.24px;
+  transition: all 0.25s ease;
+  cursor: pointer;
+  user-select: none;
+  box-shadow: 0px 1px 0px #ffffffdb, 0px -1px 0px #ffffffdb;
+}
+
+.cs-tech-tech:hover {
+  background: rgba(240, 93, 53, 0.2);
+  border-color: rgba(240, 93, 53, 0.4);
+  color: #F05D35;
+}
+
+.cs-tech-tech.active {
+  background: #F05D35;
+  color: #FFFFFF;
+  border-color: #F05D35;
+  box-shadow: 0 2px 8px rgba(240, 93, 53, 0.4);
+}
+
+/* ── LOAD MORE / VIEW LESS BUTTON ── */
+.cs-load-more-wrap {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+}
+
+.cs-load-more-btn {
+  background:#F05D35;
+  color: #fff;
+  border: 1.5px solid #F05D35;
+  padding: 12px 36px;
+  border-radius: 40px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.cs-load-more-btn:hover {
+  background: #F05D35;
+  color: #FFFFFF;
+  box-shadow: 0 4px 20px rgba(240, 93, 53, 0.4);
+  transform: translateY(-2px);
 }
 
 .cs-card-title {
@@ -568,6 +686,7 @@ background: lightgray 50% / cover no-repeat;
 .cm-card-header-text {
   display: flex;
   justify-content: space-between;
+  margin-top: 10px;
 }
 
 @media (max-width: 767px) {
@@ -904,10 +1023,10 @@ p.job-meta-sub {
   text-align: left;
   position: relative;
   cursor: pointer;
-      display: flex;
-    gap: 12px;
-    align-content: center;
-    align-items: center;
+  display: flex;
+  gap: 12px;
+  align-content: center;
+  align-items: center;
 }
 
 .tz-caret {

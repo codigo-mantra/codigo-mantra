@@ -959,18 +959,31 @@ class PortfolioPage(views.View):
             "services", "industries", "technologies", "images"
         )
         
-        # Exclude the first 2 projects (which are shown on the index page)
-        # We start from index 2
-        case_studies = all_case_studies[0:6] 
+        case_studies = all_case_studies 
         featured_projects = all_case_studies[2:5] # Show next 3 as featured on this page
         
         industries = Industry.objects.all()
         technologies = Technology.objects.all()
+        technology_categories = (
+            TechnologyCategory.objects
+            .annotate(technologies_count=Count("technologies"))
+            .filter(technologies_count__gt=0)
+            .prefetch_related(
+                Prefetch(
+                    "technologies",
+                    queryset=Technology.objects.order_by("name"),
+                )
+            )
+            .order_by("name")
+        )
+        uncategorized_technologies = Technology.objects.filter(category__isnull=True).order_by("name")
         
         return render(request,'website/portfolio.html',{
             'case_studies': case_studies, 
             'industries': industries, 
             'technologies': technologies,
+            'technology_categories': technology_categories,
+            'uncategorized_technologies': uncategorized_technologies,
             'featured_projects': featured_projects
         })
     

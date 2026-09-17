@@ -65,12 +65,26 @@ class Industry(TimeStamp):
 
     def __str__(self):
         return self.name
-    
+
+       
+
+class TechnologyCategory(TimeStamp):
+    name = models.CharField(max_length=255, unique=True)
+
+    def __str__(self):
+        return self.name
 
 class Technology(TimeStamp):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=255)
     slug = models.SlugField(unique=True)
+    category = models.ForeignKey(
+        TechnologyCategory,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="technologies",
+    )
 
     def __str__(self):
         return self.name
@@ -132,6 +146,7 @@ class Service_page(TimeStamp):
     def __str__(self):
         return self.name
 
+   
 class CaseStudy(TimeStamp):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=255)
@@ -156,6 +171,7 @@ class CaseStudy(TimeStamp):
     services = models.ManyToManyField(Service, through="CaseStudyService")
     industries = models.ManyToManyField(Industry, through="CaseStudyIndustry")
     technologies = models.ManyToManyField(Technology, through="CaseStudyTechnology")
+
 
     def __str__(self):
         return self.title
