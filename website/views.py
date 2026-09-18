@@ -989,21 +989,32 @@ class PortfolioPage(views.View):
     
 
 class CaseStudyDetailPage(views.View):
-    def get(self,request, pk):
-
+    def get(self, request, slug=None, pk=None):
         case_studies = CaseStudy.objects.filter(show_on_other_projects=True).order_by('display_order').prefetch_related(
             "services", "industries", "technologies", "images"
         )
-        try:
-            case_study = CaseStudy.objects.get(pk=pk)
-        except CaseStudy.DoesNotExist:
-            print("Case study not found.")
+        target = slug or pk
+        case_study = None
+        if target:
+            # Case-insensitive slug search (matches "BellsCRM", "bellscrm", etc.)
+            case_study = CaseStudy.objects.filter(slug__iexact=target).first()
+            if not case_study:
+                # Fallback to UUID/PK search
+                try:
+                    case_study = CaseStudy.objects.filter(pk=target).first()
+                except Exception:
+                    case_study = None
+
+        if not case_study:
             return redirect('portfolio')
 
         # Get exactly 3 other projects to avoid slice issues in template
-        other_projects_list = case_studies.exclude(pk=pk)[:3]
+        other_projects_list = case_studies.exclude(pk=case_study.pk)[:3]
 
-        return render(request,'website/portfolio_details.html',{'case_study':case_study, 'case_studies':other_projects_list})
+        return render(request, 'website/portfolio_details.html', {
+            'case_study': case_study,
+            'case_studies': other_projects_list
+        })
 
     
 

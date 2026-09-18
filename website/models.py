@@ -5,6 +5,7 @@ from django.db import models
 from ckeditor.fields import RichTextField
 from django.core.validators import RegexValidator
 from django.utils.html import strip_tags
+from django.utils.text import slugify
 
 class TimeStamp(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
@@ -172,6 +173,24 @@ class CaseStudy(TimeStamp):
     industries = models.ManyToManyField(Industry, through="CaseStudyIndustry")
     technologies = models.ManyToManyField(Technology, through="CaseStudyTechnology")
 
+
+    def save(self, *args, **kwargs):
+        base_text = self.project_name if (self.project_name and self.project_name.strip()) else self.title
+        if base_text:
+            expected_slug = slugify(base_text).lower()
+            if not self.slug or self.slug.lower() != expected_slug:
+                new_slug = expected_slug
+                original_slug = new_slug
+                counter = 1
+                while CaseStudy.objects.filter(slug=new_slug).exclude(pk=self.pk).exists():
+                    new_slug = f"{original_slug}-{counter}"
+                    counter += 1
+                self.slug = new_slug
+            else:
+                self.slug = self.slug.lower()
+        elif self.slug:
+            self.slug = self.slug.lower()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.title

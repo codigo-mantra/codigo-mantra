@@ -30,7 +30,7 @@
                 <div class="case-study-slide case-study-slider" id="project">
                     {# Change 'case_studies' to 'featured_projects' to limit to exactly 3 #}
                     {% for case_study in featured_projects %}
-                    <a href="{% url 'case_study_detail' case_study.id %}" class="case-study-link">
+                    <a href="{% url 'case_study_detail' case_study.slug|default:case_study.pk %}" class="case-study-link">
                         <div class="case-study-image" aria-hidden="true">
                             {% if case_study.cover_image %}
                             <img loading="lazy" src="{{ case_study.cover_image.url }}" alt="{{ case_study.title }}">
@@ -188,7 +188,7 @@
                             <div>
                                 <div class="cm-card-header-text">
                                     <h5 class="cs-card-title">{{case_study.project_name}}</h5>
-                                    <a href="{% url 'case_study_detail' case_study.pk %}" class="cs-card-arrow">
+                                    <a href="{% url 'case_study_detail' case_study.slug|default:case_study.pk %}" class="cs-card-arrow">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="13"
                                             viewBox="0 0 14 13" fill="none">
                                             <path

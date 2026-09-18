@@ -1,6 +1,15 @@
 {%extends 'base.html' %}
 {% load static %}
-{% block title %}Case Study Details | CodigoMantra{% endblock %}
+{% block title %}{{ case_study.project_name|default:case_study.title }} Case Study | Codigo Mantra{% endblock %}
+
+{% block meta_canonical %}
+<link rel="canonical" href="https://codigomantra.com{{ request.path }}">
+{% endblock %}
+
+{% block meta_description %}
+<meta name="description"
+    content="{{ case_study.content|default:case_study.index_content|default:case_study.description|striptags|truncatewords:25|truncatechars:160 }}">
+{% endblock %}
 
 {% block content %}
 <section class="case-study-hero">
@@ -115,7 +124,7 @@
                     {% if other_study.id != case_study.id %}
                     <div class="cs-card">
                         <div class="cs-card-img">
-                            <a href="{% url 'case_study_detail' other_study.pk %}">
+                            <a href="{% url 'case_study_detail' other_study.slug|default:other_study.pk %}">
                                 {% if other_study.cover_image %}
                                 <img loading="lazy" src="{{ other_study.cover_image.url }}" alt="{{ other_study.project_name }}">
                                 {% elif other_study.images.all %}
@@ -130,7 +139,7 @@
                             <div>
                                 <div class="cm-card-header-text">
                                     <h5 class="cs-card-title">{{ other_study.project_name }}</h5>
-                                    <a href="{% url 'case_study_detail' other_study.pk %}" class="cs-card-arrow">
+                                    <a href="{% url 'case_study_detail' other_study.slug|default:other_study.pk %}" class="cs-card-arrow">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="13"
                                             viewBox="0 0 14 13" fill="none">
                                             <path

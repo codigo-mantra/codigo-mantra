@@ -6,8 +6,15 @@ from .models import (
     ServiceCapabilityItem, ServiceWhyChooseItem,
     IndustryDetail, IndustryImpactItem, IndustrySolutionItem,
     IndustryProvideItem, IndustryWhyChooseItem,
-    Service_index, Industry, Service_page, Blog, BlogDetails, BlogFAQ
+    Service_index, Industry, Service_page, Blog, BlogDetails, BlogFAQ, CaseStudy
 )
+
+
+@admin.register(CaseStudy)
+class CaseStudyAdmin(admin.ModelAdmin):
+    list_display = ("project_name", "title", "slug", "display_order", "created_at")
+    search_fields = ("project_name", "title", "slug", "content")
+    prepopulated_fields = {"slug": ("project_name",)}
 
 
 class BlogDetailsInline(admin.StackedInline):
@@ -158,7 +165,7 @@ manual_models = [
     ServiceCapabilityItem, ServiceWhyChooseItem,
     IndustryDetail, IndustryImpactItem, IndustrySolutionItem,
     IndustryProvideItem, IndustryWhyChooseItem,
-    Service_index, Industry, Service_page, Blog, BlogDetails, BlogFAQ
+    Service_index, Industry, Service_page, Blog, BlogDetails, BlogFAQ, CaseStudy
 ]
 
 for model in app_models:

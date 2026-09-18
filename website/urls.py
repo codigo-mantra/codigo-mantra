@@ -14,7 +14,7 @@ urlpatterns = [
     path('career/', CareerPage.as_view(), name='career'),
     path('career/apply/<str:job_id>/', CareerFormPage.as_view(), name='career-apply'),
     path('portfolio/', PortfolioPage.as_view(), name='portfolio'),
-    path('portfolio/<str:pk>/', CaseStudyDetailPage.as_view(), name='case_study_detail'),
+    path('portfolio/<slug:slug>/', CaseStudyDetailPage.as_view(), name='case_study_detail'),
     path('newsletter/subscribe/', newsletter_subscribe, name='newsletter-subscribe'),
     # URL to intentionally trigger a 500 error for testing
     path('trigger-error/', trigger_error, name='trigger_error'),
